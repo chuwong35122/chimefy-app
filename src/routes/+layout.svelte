@@ -4,7 +4,9 @@
 
 </script>
 
-<div class="w-screen h-screen bg-black">
+<div class="w-screen h-screen bg-dark-900">
 <NavBar />
-	<slot />
+	<div class="w-full grid place-items-center pt-12">
+    <slot />
+  </div>
 </div>

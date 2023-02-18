@@ -6,9 +6,9 @@
 </script>
 
 <div class="w-full px-4 py-4 flex flex-row items-center justify-between">
-	<div class="w-12 h-12 grid place-items-center">
+	<a href='/' class="w-12 h-12 grid place-items-center">
 		<div>Logo</div>
-	</div>
+	</a>
 
 	<div class="w-60 flex flex-row items-center justify-between">
 		<a href="/session">Session</a>

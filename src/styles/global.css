@@ -5,3 +5,8 @@
 html {
   @apply text-white;
 }
+
+input:focus {
+  @apply ring-primary-600 !important;
+  @apply ring-0 !important;
+}
