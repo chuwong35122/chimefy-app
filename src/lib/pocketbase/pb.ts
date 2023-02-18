@@ -8,3 +8,7 @@ export const user = writable(pb.authStore.model);
 pb.authStore.onChange(() => {
 	user.set(pb.authStore.model);
 });
+
+export function logout() {
+	pb.authStore.clear();
+}
