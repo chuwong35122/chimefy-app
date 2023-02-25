@@ -38,6 +38,7 @@
 		"classnames": "^2.3.2",
 		"flowbite": "^1.6.3",
 		"flowbite-svelte": "^0.29.13",
-		"pocketbase": "^0.10.2"
+		"pocketbase": "^0.10.2",
+		"yup": "^1.0.0"
 	}
 }

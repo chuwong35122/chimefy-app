@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { logout, user } from '../../lib/pocketbase/pb';
+	import { logout, pb, user } from '../../lib/pocketbase/pb';
 	import { Dropdown, DropdownItem } from 'flowbite-svelte';
+	import { spotifyRedirect } from '$lib/spotify';
 
 	const avatarSeed = Math.random() * 10000;
 </script>
@@ -36,7 +37,8 @@
 				<DropdownItem on:click={logout}>Logout</DropdownItem>
 			</Dropdown>
 		{:else}
-			<button>Login</button>
+
+			<a href='/auth' class='bg-primary-600 p-2 rounded-lg font-semibold text-dark duration-200 hover:bg-primary-500'>Login</a>
 		{/if}
 	</div>
 </div>
