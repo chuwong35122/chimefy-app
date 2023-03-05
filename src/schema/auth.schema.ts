@@ -1,8 +1,8 @@
 import { string, object } from 'yup';
 
 export const LoginValidationSchema = object({
-	email: string().email('This is not a valid email').required('Email is required'),
-	password: string().required('Password is required')
+	password: string().required('Password is required'),
+	email: string().email('This is not a valid email').required('Email is required')
 });
 
 export const SignupValidationSchema = object({
