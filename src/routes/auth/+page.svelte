@@ -8,6 +8,7 @@
 
 	export let form: { status: number; message: string };
 	let showLoginPassword = false;
+	let isLoading = false
 
 	let inputErr = '';
 
@@ -28,6 +29,7 @@
 			await LoginValidationSchema.validate(loginInfo, {
 				strict: true
 			});
+			isLoading = true
 			await fetch(action, {
 				method: 'POST',
 				body: data
@@ -35,6 +37,7 @@
 		} catch (e) {
 			const err = e as ValidationError;
 			inputErr = err.message;
+			isLoading = false
 			cancel();
 		}
 	};
@@ -75,7 +78,7 @@
 			class="mb-2"
 			type={showLoginPassword ? 'text' : 'password'}
 		/>
-		<PrimaryButton class="my-2">Login</PrimaryButton>
+		<PrimaryButton {isLoading} class="my-2">Login</PrimaryButton>
 		<a href="/auth/register" class="underline text-gray-300 text-sm">Create an account</a>
 	</form>
 	{#if form}
