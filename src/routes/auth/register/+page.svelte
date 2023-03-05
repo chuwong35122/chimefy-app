@@ -9,6 +9,7 @@
 	export let form: { status: number; message: string };
 
 	let showSignupPassword = false;
+	let isLoading = false
 
 	export let formErr = '';
 	let signupData = {
@@ -23,6 +24,7 @@
 			await SignupValidationSchema.validate(signupInfo, {
 				strict: true
 			});
+			isLoading = true
 			await fetch(action, {
 				method: 'POST',
 				body: data
@@ -30,6 +32,7 @@
 		} catch (e) {
 			const err = e as ValidationError;
 			formErr = err.message;
+			isLoading = false
 			cancel();
 		}
 	};
@@ -71,7 +74,7 @@
 				class="mb-2"
 				type={showSignupPassword ? 'text' : 'password'}
 			/>
-			<PrimaryButton class="my-2">Sign up</PrimaryButton>
+			<PrimaryButton {isLoading} class="my-2">Sign up</PrimaryButton>
 			<a href="/auth" class='underline text-gray-300 text-sm'>Want to Login?</a>
 		</div>
 	</form>
