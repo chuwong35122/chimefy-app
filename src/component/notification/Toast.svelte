@@ -1,0 +1,59 @@
+<script lang="ts">
+	import { Toast } from 'flowbite-svelte';
+	import { fly } from 'svelte/transition';
+
+	export let type: 'error' | 'info' | 'warn' = 'info';
+	export let message = '';
+
+	let show = true;
+	let counter = 6;
+
+	function trigger() {
+		show = true;
+		counter = 6;
+		timeout();
+	}
+
+	function timeout(): any {
+		if (--counter > 0) return setTimeout(timeout, 1000);
+		show = false;
+	}
+
+	function getToastColor() {
+		if (type === 'warn') {
+			return 'yellow';
+		} else if (type === 'error') {
+			return 'red';
+		}
+
+		return 'green';
+	}
+
+	trigger();
+</script>
+
+<Toast
+	color={getToastColor()}
+	bind:open={show}
+	simple
+	transition={fly}
+	params={{ y: 200 }}
+	divClass="p-2 w-full"
+>
+	<svelte:fragment slot="icon">
+		<svg
+			aria-hidden="true"
+			class="w-5 h-5"
+			fill="currentColor"
+			viewBox="0 0 20 20"
+			xmlns="http://www.w3.org/2000/svg"
+			><path
+				fill-rule="evenodd"
+				d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+				clip-rule="evenodd"
+			/></svg
+		>
+		<span class="sr-only">Error icon</span>
+	</svelte:fragment>
+	<div>{message}</div>
+</Toast>
