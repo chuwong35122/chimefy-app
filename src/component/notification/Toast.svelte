@@ -1,41 +1,52 @@
 <script lang="ts">
 	import { Toast } from 'flowbite-svelte';
 	import { fly } from 'svelte/transition';
+	import { toastValue, type ToastType } from '$lib/notification/toast';
 
-	export let type: 'error' | 'info' | 'warn' = 'info';
-	export let message = '';
+	const COUNTER_COUNTDOWN = 5;
 
-	let show = true;
-	let counter = 6;
+	let show = false;
+	let counter = COUNTER_COUNTDOWN;
+
+	$: if($toastValue && $toastValue?.message && $toastValue?.type) {
+		trigger()
+	}
+
+	function resetToastValue() {
+		toastValue.set({ message: undefined, type: undefined });
+	}
 
 	function trigger() {
 		show = true;
-		counter = 6;
+		counter = COUNTER_COUNTDOWN;
 		timeout();
 	}
 
-	function timeout(): any {
-		if (--counter > 0) return setTimeout(timeout, 1000);
-		show = false;
+	function timeout() {
+		if (--counter > 0) {
+			setTimeout(timeout, 1000);
+		} else {
+			resetToastValue();
+			show = false;
+		}
 	}
 
-	function getToastColor() {
+	function getToastColor(type: ToastType | undefined) {
 		if (type === 'warn') {
 			return 'yellow';
 		} else if (type === 'error') {
 			return 'red';
+		}else if(type === 'info') {
+			return 'blue'
 		}
 
 		return 'green';
 	}
-
-	trigger();
 </script>
 
 <Toast
-	color={getToastColor()}
+	color={getToastColor($toastValue?.type)}
 	bind:open={show}
-	simple
 	transition={fly}
 	params={{ y: 200 }}
 	divClass="p-2 w-full"
@@ -55,5 +66,5 @@
 		>
 		<span class="sr-only">Error icon</span>
 	</svelte:fragment>
-	<div>{message}</div>
+	<div>{$toastValue?.message}</div>
 </Toast>
