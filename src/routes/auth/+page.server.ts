@@ -10,7 +10,7 @@ export const actions: Actions = {
 			await locals.pb.collection('users').authWithPassword(data.email, data.password);
 		} catch (e) {
 			const err = e as ClientResponseError;
-			return fail(err.status, { message: err.message });
+			return fail(err.status, { message: err.message, status: err.status });
 		}
 		throw redirect(303, '/session');
 	}
