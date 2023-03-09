@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { Input } from 'flowbite-svelte';
+	import { Button, ButtonGroup, Input } from 'flowbite-svelte';
 	import PrimaryButton from '../../../component/buttons/PrimaryButton.svelte';
 	import { toastValue } from '$lib/notification/toast';
 	import type { ActionData } from './$types';
 	import { enhance } from '$app/forms';
+	import Icon from '@iconify/svelte';
 
 	export let form: ActionData;
 	$: if (form?.status === 400 || form?.status === 404) {
@@ -13,7 +14,8 @@
 		toastValue.set({ message: form?.message, type: 'info' });
 	}
 
-	let showSignupPassword = false;
+	let showPassword = false;
+	let showConfirmPassword = false;
 	let isLoading = false;
 
 	let signupData = {
@@ -47,25 +49,45 @@
 				class="mb-2"
 			/>
 			<label for="email">Password</label>
-			<Input
-				required
-				name="password"
-				bind:value={signupData.password}
-				placeholder="Password"
-				color="green"
-				class="mb-2"
-				type={showSignupPassword ? 'text' : 'password'}
-			/>
+			<ButtonGroup class="mb-2 w-full">
+				<Input
+					required
+					name="password"
+					bind:value={signupData.password}
+					placeholder="Password"
+					color="green"
+					type={showPassword ? 'text' : 'password'}
+				/>
+				<Button size="xs" color="dark" on:click={() => (showPassword = !showPassword)}>
+					<Icon
+						icon={showPassword
+							? 'material-symbols:visibility'
+							: 'material-symbols:visibility-off'}
+						width={20}
+						height={20}
+					/>
+				</Button>
+			</ButtonGroup>
 			<label for="email">Confirm password</label>
-			<Input
-				required
-				name="passwordConfirm"
-				bind:value={signupData.passwordConfirm}
-				placeholder="Confirm Password"
-				color="green"
-				class="mb-2"
-				type={showSignupPassword ? 'text' : 'password'}
-			/>
+			<ButtonGroup class="mb-2 w-full">
+				<Input
+					required
+					name="passwordConfirm"
+					bind:value={signupData.passwordConfirm}
+					placeholder="Confirm Password"
+					color="green"
+					type={showConfirmPassword ? 'text' : 'password'}
+				/>
+				<Button size="xs" color="dark" on:click={() => (showConfirmPassword = !showConfirmPassword)}>
+					<Icon
+						icon={showConfirmPassword
+							? 'material-symbols:visibility'
+							: 'material-symbols:visibility-off'}
+						width={20}
+						height={20}
+					/>
+				</Button>
+			</ButtonGroup>
 			<PrimaryButton {isLoading} class="my-2">Sign up</PrimaryButton>
 			<a href="/auth" class="underline text-gray-300 text-sm">Want to Login?</a>
 		</div>
