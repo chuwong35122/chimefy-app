@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Input } from 'flowbite-svelte';
+	import { Button, ButtonGroup, Input } from 'flowbite-svelte';
 	import PrimaryButton from '../../component/buttons/PrimaryButton.svelte';
 	import { toastValue } from '$lib/notification/toast';
 	import type { ActionData } from './$types';
+	import Icon from '@iconify/svelte';
 
 	export let form: ActionData;
 
@@ -45,15 +46,19 @@
 			class="mb-2"
 		/>
 		<label for="password">Password</label>
+		<ButtonGroup class="mb-2 w-full">
 		<Input
 			name="password"
 			required
 			bind:value={data.password}
 			placeholder="password"
 			color="green"
-			class="mb-2"
 			type={showLoginPassword ? 'text' : 'password'}
 		/>
+		<Button size='xs' color='dark' on:click={() => showLoginPassword = !showLoginPassword}>
+			<Icon icon={showLoginPassword ? "material-symbols:visibility" : "material-symbols:visibility-off"} width={20} height={20} />
+		</Button>
+		</ButtonGroup>
 		<PrimaryButton class="my-2">Login</PrimaryButton>
 		<a href="/auth/register" class="underline text-gray-300 text-sm">Create an account</a>
 	</form>
