@@ -2,28 +2,25 @@
 	import { enhance, type SubmitFunction } from '$app/forms';
 	import { Input } from 'flowbite-svelte';
 	import PrimaryButton from '../../component/buttons/PrimaryButton.svelte';
-	import { LoginValidationSchema } from '../../schema/auth.schema';
+	import { LoginValidationSchema } from '../../lib/schema/auth.schema';
 	import type { ValidationError } from 'yup';
 	import { toastValue } from '$lib/notification/toast';
+	
+		let showLoginPassword = false;
+		let isLoading = false
 
 	export let form: { status: number; message: string };
 	$: if(form?.status === 400) {
 		toastValue.set({message: form?.message, type: 'error'})
+		isLoading = false;
 	}else if(form?.status === 200) {
 		toastValue.set({message: form?.message, type: 'info'})
 	}
-
-	let showLoginPassword = false;
-	let isLoading = false
 
 	let data = {
 		email: '',
 		password: ''
 	};
-
-	$: if(form?.status === 400) {
-			isLoading = false
-	}
 
 	// https://kit.svelte.dev/docs/form-actions#progressive-enhancement-use-enhance
 	// https://www.youtube.com/watch?v=doDKaKDvB30
@@ -49,8 +46,7 @@
 </script>
 
 <div class="w-[400px]">
-	<p>{JSON.stringify(form)}</p>
-	<form method="post" action="?/login" use:enhance={handleLogin}>
+	<form method="post" use:enhance={handleLogin}>
 		<div class="w-full grid place-items-center">
 			<h1 class="text-4xl font-semibold">Login to AppName</h1>
 		</div>
