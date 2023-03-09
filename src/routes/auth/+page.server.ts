@@ -3,7 +3,7 @@ import type { ClientResponseError } from 'pocketbase';
 
 // Runs a server-side function with form actions
 export const actions: Actions = {
-	login: async ({ locals, request }) => {
+	default: async ({ locals, request }) => {
 		const formData = await request.formData();
 		const data = Object.fromEntries([...formData]);
 		try {
