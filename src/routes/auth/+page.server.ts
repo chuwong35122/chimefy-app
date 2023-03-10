@@ -22,7 +22,7 @@ export const actions: Actions = {
 		}
 
 		try {
-			await locals.pb.collection('users').authWithPassword(data.email, data.password);
+			const res = await locals.pb.collection('users').authWithPassword(data.email, data.password);
 		} catch (e) {
 			const err = e as ClientResponseError;
 			return fail(err.status, { message: err.message, status: err.status });

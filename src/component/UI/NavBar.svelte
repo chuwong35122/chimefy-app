@@ -1,16 +1,14 @@
 <script lang="ts">
-	import { logout, pb, user } from '../../lib/pocketbase/pb';
+	import { logout, pb, user } from '$lib/pocketbase/pb';
 	import { Dropdown, DropdownItem } from 'flowbite-svelte';
-	import { spotifyRedirect } from '$lib/spotify';
 
 	const avatarSeed = Math.random() * 10000;
 </script>
 
 <div class="w-full px-4 py-4 flex flex-row items-center justify-between">
-	<a href='/' class="w-12 h-12 grid place-items-center">
+	<a href="/" class="w-12 h-12 grid place-items-center">
 		<div>Logo</div>
 	</a>
-
 	<div class="w-60 flex flex-row items-center justify-between">
 		<a href="/session">Session</a>
 		<a href="/radio">Radio</a>
@@ -18,7 +16,7 @@
 	</div>
 
 	<div>
-		{#if $user}
+		{#if $user?.id}
 			<div class="w-12 h-12">
 				<img
 					src={`https://api.dicebear.com/5.x/thumbs/svg?seed=${avatarSeed}`}
@@ -37,8 +35,11 @@
 				<DropdownItem on:click={logout}>Logout</DropdownItem>
 			</Dropdown>
 		{:else}
-
-			<a href='/auth' class='bg-primary-600 p-2 rounded-lg font-semibold text-dark duration-200 hover:bg-primary-500'>Login</a>
+			<a
+				href="/auth"
+				class="bg-primary-600 p-2 rounded-lg font-semibold text-dark duration-200 hover:bg-primary-500"
+				>Login</a
+			>
 		{/if}
 	</div>
 </div>
