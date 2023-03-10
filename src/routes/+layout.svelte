@@ -2,6 +2,13 @@
 	import '../styles/global.css';
 	import NavBar from '../component/UI/NavBar.svelte';
 	import Toast from '../component/notification/Toast.svelte';
+	import { user as userStore } from '$lib/pocketbase/pb';
+	import type { Record } from 'pocketbase';
+
+	export let data : {user: Record};
+	$: if(data) {
+		userStore.set(data.user)
+	}
 </script>
 
 <div class="w-screen h-screen bg-dark-900">

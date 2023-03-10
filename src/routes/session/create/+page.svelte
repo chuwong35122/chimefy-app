@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Input } from 'flowbite-svelte';
-	import ThemedButton from '../../../component/UI/ThemedButton.svelte';
+	// import ThemedButton from '../../../component/UI/ThemedButton.svelte';
 
 	function handleSubmit() {
     console.log('e')
@@ -16,7 +16,7 @@
     <label for='sessionName' class='text-white font-light text-sm'>Session Name</label>
     <Input color="green" placeholder="Session name" class="w-full !rounded-full" />
   </div>
-    <ThemedButton type='input' label="search" />
+    <!-- <ThemedButton type='input' label="search" /> -->
     <div class="w-full grid place-items-end">
       <a href="/session/create" class="text-sm text-dark-200 font-light hover:text-white duration-200"
 			>Create music session</a
