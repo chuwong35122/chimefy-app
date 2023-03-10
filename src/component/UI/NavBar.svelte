@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { logout, pb, user } from '$lib/pocketbase/pb';
+	import { logout, user } from '$lib/pocketbase/pb';
 	import { Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 
-	const avatarSeed = Math.random() * 10000;
+	const avatarSeed = 1;
 </script>
 
 <div class="w-full px-4 py-4 flex flex-row items-center justify-between">
