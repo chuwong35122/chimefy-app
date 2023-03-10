@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { logout, pb, user } from '$lib/pocketbase/pb';
 	import { Dropdown, DropdownItem } from 'flowbite-svelte';
+	import { page } from '$app/stores';
+	import Icon from '@iconify/svelte';
 
 	const avatarSeed = Math.random() * 10000;
 </script>
@@ -9,10 +11,38 @@
 	<a href="/" class="w-12 h-12 grid place-items-center">
 		<div>Logo</div>
 	</a>
-	<div class="w-60 flex flex-row items-center justify-between">
-		<a href="/session">Session</a>
-		<a href="/radio">Radio</a>
-		<a href="/contact">Contact Us</a>
+	<div class="w-80 flex flex-row items-center justify-between">
+
+		<a href='/session'
+			class={`flex flex-row items-center p-2 px-3 duration-200 hover:text-white ${
+				$page.route.id === '/session'
+					? 'text-white bg-[rgba(255,255,255,0.08)] rounded-lg'
+					: 'text-gray-400'
+			}`}
+		>
+			<Icon icon="material-symbols:meeting-room-rounded" width={24} height={24} class="mb-1" />
+			<p class="text-lg font-semibold h-full duration-200 ml-2 hover:text-white">Session</p>
+		</a>
+		<a href='/radio'
+			class={`flex flex-row items-center p-2 px-3 duration-200 hover:text-white ${
+				$page.route.id === '/radio'
+					? 'text-white bg-[rgba(255,255,255,0.08)] rounded-lg'
+					: 'text-gray-400'
+			}`}
+		>
+			<Icon icon="material-symbols:radio" width={24} height={24} class="mb-1" />
+			<p class="text-lg font-semibold h-full duration-200 ml-2">Radio</p>
+		</a>
+		<a href='/contact'
+			class={`flex flex-row items-center p-2 px-3 duration-200 hover:text-white ${
+				$page.route.id === '/contact'
+					? 'text-white bg-[rgba(255,255,255,0.08)] rounded-lg'
+					: 'text-gray-400'
+			}`}
+		>
+			<Icon icon="mdi:email" width={24} height={24} class="mb-1" />
+			<p class={`text-lg font-semibold ml-2`}>Contact</p>
+		</a>
 	</div>
 
 	<div>
