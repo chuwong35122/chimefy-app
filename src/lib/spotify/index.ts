@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import type { SpotifyUserProfile, SpotifyTokenResponse } from '../../interfaces/spotify.interface';
+import type { SpotifyUserProfile, SpotifyTokenResponse } from '../interfaces/spotify.interface';
 import { randomString } from '../../utils/random/randomstring';
 import { PUBLIC_SPOTIFY_CALLBACK_URI, PUBLIC_SPOTIFY_CLIENT_ID } from '$env/static/public';
 
