@@ -15,13 +15,13 @@
 
 	<ButtonGroup size="lg" class="w-full focus:shadow-lg focus:shadow-white">
 		<InputAddon
-			class="bg-[rgba(255,255,255,0.05)] !border-2 !border-r-0 !rounded-l-full border-white"
+			class="!bg-[rgba(255,255,255,0.05)] !border-2 !border-r-0 !rounded-l-full border-white"
 		>
 			<Icon icon="material-symbols:meeting-room-rounded" width={32} height={32} />
 		</InputAddon>
 		<Input
 			placeholder="Session ID"
-			defaultClass="border-white p-4 border-2 w-full bg-[rgba(255,255,255,0.05)] !border-l-0 !border-r-0 placeholder:text-[rgba(255,255,255,0.4)] text-xl text-white focus:border-white"
+			defaultClass="border-white p-4 border-2 w-full !bg-[rgba(255,255,255,0.05)] !border-l-0 !border-r-0 placeholder:text-[rgba(255,255,255,0.4)] !text-xl text-white focus:border-white"
 		/>
 		<Button
 			color="dark"
