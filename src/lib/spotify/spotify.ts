@@ -20,6 +20,7 @@ const SCOPES = [
 ];
 
 export function redirectToSpotifyAuth() {
+	// TODO: refresh token if there is one saved inside local storage
 	const rndString = randomString(16);
 	const AUTH_PARAMS = {
 		response_type: 'code',
