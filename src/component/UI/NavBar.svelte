@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { logout, user } from '$lib/pocketbase/pb';
-	import { Dropdown, DropdownItem } from 'flowbite-svelte';
+	import { Dropdown, DropdownItem, Badge, Tooltip } from 'flowbite-svelte';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
+	import { redirectToSpotifyAuth, spotifyUser } from '$lib/spotify/spotify';
 
 	const avatarSeed = 1;
 </script>
@@ -12,8 +13,8 @@
 		<div>Logo</div>
 	</a>
 	<div class="w-80 flex flex-row items-center justify-between">
-
-		<a href='/session'
+		<a
+			href="/session"
 			class={`flex flex-row items-center p-2 px-3 duration-200 hover:text-white ${
 				$page.route.id === '/session'
 					? 'text-white bg-[rgba(255,255,255,0.08)] rounded-lg'
@@ -23,7 +24,8 @@
 			<Icon icon="material-symbols:meeting-room-rounded" width={24} height={24} class="mb-1" />
 			<p class="text-lg font-semibold h-full duration-200 ml-2 hover:text-white">Session</p>
 		</a>
-		<a href='/radio'
+		<a
+			href="/radio"
 			class={`flex flex-row items-center p-2 px-3 duration-200 hover:text-white ${
 				$page.route.id === '/radio'
 					? 'text-white bg-[rgba(255,255,255,0.08)] rounded-lg'
@@ -33,7 +35,8 @@
 			<Icon icon="material-symbols:radio" width={24} height={24} class="mb-1" />
 			<p class="text-lg font-semibold h-full duration-200 ml-2">Radio</p>
 		</a>
-		<a href='/contact'
+		<a
+			href="/contact"
 			class={`flex flex-row items-center p-2 px-3 duration-200 hover:text-white ${
 				$page.route.id === '/contact'
 					? 'text-white bg-[rgba(255,255,255,0.08)] rounded-lg'
@@ -46,19 +49,30 @@
 	</div>
 
 	<div>
-		{#if $user?.id}
-			<div class="w-12 h-12">
+		{#if $spotifyUser?.id}
+			<div class="w-12 h-12 relative">
 				<img
+					id="profile-img"
 					src={`https://api.dicebear.com/5.x/thumbs/svg?seed=${avatarSeed}`}
 					width="60"
 					height="60"
 					alt="Current avatar"
 					class="rounded-full object-contain cursor-pointer"
 				/>
+				<div class="absolute bottom-0 right-0">
+					{#if $user?.id}
+						<div class="bg-green-500 w-3 h-3 rounded-full" />
+					{:else}
+						<div class="bg-red-500 w-3 h-3 rounded-full" />
+					{/if}
+				</div>
 			</div>
+			<Tooltip placement='bottom' triggeredBy="[id='profile-img']">{$user?.id ? 'You have log-in to AppName' : 'You have not log-in to Appname'}</Tooltip>
 			<Dropdown>
 				<div slot="header" class="px-4 py-2">
-					<span class="block text-sm text-gray-900 dark:text-white"> {$user?.displayedName} </span>
+					<span class="block text-sm text-gray-900 dark:text-white">
+						{$spotifyUser.display_name}
+					</span>
 				</div>
 				<DropdownItem>Profile</DropdownItem>
 				<DropdownItem>Settings</DropdownItem>
@@ -66,10 +80,14 @@
 			</Dropdown>
 		{:else}
 			<a
-				href="/auth"
-				class="bg-primary-600 p-2 rounded-lg font-semibold text-dark duration-200 hover:bg-primary-500"
-				>Login</a
+				href={redirectToSpotifyAuth()}
+				class="flex flex-row items-center p-2 px-3 hover:scale-105 duration-200"
 			>
+				<Icon icon="logos:spotify-icon" width={24} height={24} />
+				<p class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white">
+					Login to Spotify
+				</p>
+			</a>
 		{/if}
 	</div>
 </div>

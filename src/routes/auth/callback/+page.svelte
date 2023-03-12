@@ -1,10 +1,16 @@
 <script lang="ts">
 	import { spotifyToken, spotifyUser } from '$lib/spotify/spotify';
 	import type { SpotifyTokenResponse, SpotifyUserProfile } from '$lib/interfaces/spotify.interface';
+	import PrimaryButton from '../../../component/buttons/PrimaryButton.svelte';
+	import { goto } from '$app/navigation';
+	import { browser } from "$app/environment"
 
 	export let data: { tokens: SpotifyTokenResponse; userProfile: SpotifyUserProfile };
 
 	$: if (data) {
+		if(browser) {
+			window.localStorage.setItem('tokens', JSON.stringify(data.tokens))
+		}
 		if (data.tokens) {
 			spotifyToken.set(data.tokens);
 		}
@@ -25,5 +31,5 @@
       draggable="false"
 		/>
 	{/if}
-  <a href="/session" class='p-2 rounded-full bg-primary-500 mt-4 text-lg font-semibold text-center duration-200 hover:scale-105'>Return to Session</a>
+	<PrimaryButton on:click={() => goto('/auth')} class='mt-4'>Login to AppName</PrimaryButton>
 </div>
