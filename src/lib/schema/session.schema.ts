@@ -8,7 +8,7 @@ export const CreateSessionSchema = object({
 		.test({
 			name: 'musicType',
 			test: (val, ctx) => {
-				if (MUSIC_GENRE.includes(val)) {
+				if (!MUSIC_GENRE.includes(val)) {
 					return ctx.createError({ message: 'Music genre is invalid!' });
 				}
 				return true;
