@@ -7,7 +7,6 @@ export const pb = new Pocketbase(PUBLIC_POCKETBASE_API_URL);
 export const user = writable(pb.authStore.model);
 
 pb.authStore.onChange((val) => {
-	console.log(val);
 	user.set(pb.authStore.model);
 });
 
