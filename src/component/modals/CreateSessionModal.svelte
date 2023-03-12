@@ -111,6 +111,5 @@
   {errors}
 </Toast>
  {/if}
-    <!-- <Button type="submit" class="w-full1">Login to your account</Button> -->
 	<PrimaryButton on:click={onCreateSession}>Create Session!</PrimaryButton>
 </form>
