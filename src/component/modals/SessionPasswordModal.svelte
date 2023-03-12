@@ -32,7 +32,7 @@
 		<h2 class="text-xl font-regular text-black mb-4">Session's Password</h2>
 		<ButtonGroup size="lg" class="w-96 focus:shadow-lg focus:shadow-white mb-4">
 			<InputAddon
-				class="!bg-[rgba(255,255,255,0.05)] !border-2 !border-r-0 !rounded-l-full border-dark-400"
+				class="!bg-[rgba(255,255,255,0.05)] !border-dark-400 !border-2 !border-r-0 !rounded-l-full"
 			>
 				<Icon icon="material-symbols:password-rounded" width={32} height={32} />
 			</InputAddon>
@@ -41,13 +41,13 @@
 				bind:value={password}
 				placeholder="Password"
 				type="password"
-				defaultClass="border-dark-400 border-2 w-full !bg-[rgba(255,255,255,0.05)] !border-l-0 !border-r-0 placeholder:text-[rgba(0,0,0,0.4)] !text-lg focus:border-dark-400 border-dark-400 text-black"
+				defaultClass="!border-dark-400 border-2 w-full !bg-[rgba(255,255,255,0.05)] !border-l-0 !border-r-0 placeholder:text-[rgba(0,0,0,0.4)] !text-lg focus:border-dark-400 border-dark-400 text-black"
 			/>
 			<Button
 				type="submit"
 				color="dark"
 				id="enter-btn"
-				btnClass="border-white bg-[rgba(255,255,255,0.05)] px-4 border-2 border-l-0 rounded-r-full hover:text-primary-500 duration-200 border-dark-400"
+				btnClass="border-dark-400 bg-[rgba(255,255,255,0.05)] px-4 border-2 border-l-0 rounded-r-full hover:text-primary-500 duration-200 border-dark-400"
 			>
 				<Icon icon="mdi:location-enter" width={32} height={32} />
 			</Button>
