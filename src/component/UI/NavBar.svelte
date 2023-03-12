@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { logout, user } from '$lib/pocketbase/pb';
-	import { Dropdown, DropdownItem, Badge, Tooltip } from 'flowbite-svelte';
+	import { Dropdown, DropdownItem, Tooltip } from 'flowbite-svelte';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 	import { redirectToSpotifyAuth, spotifyUser } from '$lib/spotify/spotify';
@@ -67,7 +67,7 @@
 					{/if}
 				</div>
 			</div>
-			<Tooltip placement='bottom' triggeredBy="[id='profile-img']">{$user?.id ? 'You have log-in to AppName' : 'You have not log-in to Appname'}</Tooltip>
+			<Tooltip placement='left' triggeredBy="[id='profile-img']">{$user?.id ? 'You have log-in to AppName' : 'You have not log-in to Appname'}</Tooltip>
 			<Dropdown>
 				<div slot="header" class="px-4 py-2">
 					<span class="block text-sm text-gray-900 dark:text-white">
