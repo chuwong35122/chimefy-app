@@ -35,27 +35,28 @@
 	<h1 class="text-4xl font-semibold">Join a Session</h1>
 	<div class="my-4" />
 
-	<ButtonGroup size="lg" class="w-full focus:shadow-lg focus:shadow-white">
-		<InputAddon
-			class="!bg-[rgba(255,255,255,0.05)] !border-2 !border-r-0 !rounded-l-full border-white"
-		>
-			<Icon icon="material-symbols:meeting-room-rounded" width={32} height={32} />
-		</InputAddon>
-		<Input
-			bind:value={input}
-			placeholder="Session ID"
-			defaultClass="border-white p-4 border-2 w-full !bg-[rgba(255,255,255,0.05)] !border-l-0 !border-r-0 placeholder:text-[rgba(255,255,255,0.4)] !text-xl text-white focus:border-white"
-		/>
-		<Button
-			on:click={onOpenPasswordModal}
-			color="dark"
-			id="search-btn"
-			btnClass="border-white bg-[rgba(255,255,255,0.05)] px-4 border-2 border-l-0 rounded-r-full hover:text-primary-500 duration-200"
-		>
-			<Icon icon="mdi:location-enter" width={32} height={32} />
-		</Button>
-		<Tooltip triggeredBy="[id=search-btn]" placement="right">Search</Tooltip>
-	</ButtonGroup>
+	<form on:submit|preventDefault={onOpenPasswordModal}>
+		<ButtonGroup size="lg" class="w-full focus:shadow-lg focus:shadow-white">
+			<InputAddon
+				class="!bg-[rgba(255,255,255,0.05)] !border-2 !border-r-0 !rounded-l-full border-white"
+			>
+				<Icon icon="material-symbols:meeting-room-rounded" width={32} height={32} />
+			</InputAddon>
+			<Input
+				bind:value={input}
+				placeholder="Session ID"
+				defaultClass="border-white p-4 border-2 w-full !bg-[rgba(255,255,255,0.05)] !border-l-0 !border-r-0 placeholder:text-[rgba(255,255,255,0.4)] !text-xl text-white focus:border-white"
+			/>
+			<Button
+				color="dark"
+				id="search-btn"
+				btnClass="border-white bg-[rgba(255,255,255,0.05)] px-4 border-2 border-l-0 rounded-r-full hover:text-primary-500 duration-200"
+			>
+				<Icon icon="mdi:location-enter" width={32} height={32} />
+			</Button>
+			<Tooltip triggeredBy="[id=search-btn]" placement="right">Search</Tooltip>
+		</ButtonGroup>
+	</form>
 	<div class="h-6" />
 	<div class="w-full grid place-items-center">
 		<button
