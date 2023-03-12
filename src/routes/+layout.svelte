@@ -10,7 +10,7 @@
 	import { browser } from "$app/environment"
 
 	export let data: { user: Record };
-	$: if (data) {
+	$: if (data && data.user) {
 		userStore.set(data.user);
 	}
 
@@ -21,7 +21,7 @@
 		}
 	}
 
-	$: if($userStore?.id && $spotifyUser.id) {
+	$: if($userStore?.id && $spotifyUser?.id) {
 		toastValue.set({message: "You're all set. Appname is ready!", type: 'info'})
 	}
 </script>
