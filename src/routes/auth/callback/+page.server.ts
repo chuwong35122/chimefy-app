@@ -10,7 +10,7 @@ import {
 import { getBearerToken } from '$lib/spotify/spotify';
 import qs from 'querystring';
 
-export const load: PageServerLoad = async ({ fetch, url }) => {
+export const load: PageServerLoad = async ({ fetch, url, locals }) => {
 	const code = url.searchParams.get('code') ?? '';
 	const authHeader =
 		'Basic ' +
