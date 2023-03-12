@@ -13,26 +13,26 @@
 	}
 
 	function enterSession() {
-    if(!password) return;
+		if (!password) return;
 
 		const result = checkHash(password, $currentSession.password);
 		if (!result) {
 			error = 'Password incorrect!';
-      return
-		}else{
-      if($currentSession) {
-        goto(`session/${$currentSession.id}`)
-      }
-    }
+			return;
+		} else {
+			if ($currentSession) {
+				goto(`session/${$currentSession.id}`);
+			}
+		}
 	}
 </script>
 
 <div class="w-full grid place-items-center p-6">
 	<form class="grid place-items-center" on:submit|preventDefault={enterSession}>
-		<h2 class="text-xl font-regular text-white mb-4">Session's Password</h2>
+		<h2 class="text-xl font-regular text-black mb-4">Session's Password</h2>
 		<ButtonGroup size="lg" class="w-96 focus:shadow-lg focus:shadow-white mb-4">
 			<InputAddon
-				class="!bg-[rgba(255,255,255,0.05)] !border-2 !border-r-0 !rounded-l-full border-white"
+				class="!bg-[rgba(255,255,255,0.05)] !border-2 !border-r-0 !rounded-l-full border-dark-400"
 			>
 				<Icon icon="material-symbols:password-rounded" width={32} height={32} />
 			</InputAddon>
@@ -41,12 +41,13 @@
 				bind:value={password}
 				placeholder="Password"
 				type="password"
-				defaultClass="border-white border-2 w-full !bg-[rgba(255,255,255,0.05)] !border-l-0 !border-r-0 placeholder:text-[rgba(255,255,255,0.4)] !text-xl text-white focus:border-white"
+				defaultClass="border-dark-400 border-2 w-full !bg-[rgba(255,255,255,0.05)] !border-l-0 !border-r-0 placeholder:text-[rgba(0,0,0,0.4)] !text-lg focus:border-dark-400 border-dark-400 text-black"
 			/>
 			<Button
+				type="submit"
 				color="dark"
 				id="enter-btn"
-				btnClass="border-white bg-[rgba(255,255,255,0.05)] px-4 border-2 border-l-0 rounded-r-full hover:text-primary-500 duration-200"
+				btnClass="border-white bg-[rgba(255,255,255,0.05)] px-4 border-2 border-l-0 rounded-r-full hover:text-primary-500 duration-200 border-dark-400"
 			>
 				<Icon icon="mdi:location-enter" width={32} height={32} />
 			</Button>
