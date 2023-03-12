@@ -7,29 +7,36 @@
 	import { goto } from '$app/navigation';
 
 	let openCreateSessionModal = false;
-	let enterSessionPasswordModal = false
+	let enterSessionPasswordModal = false;
 	let input = '';
 
 	async function onOpenPasswordModal() {
 		const session = await getSessionData(input);
-		if(!session?.id) return;
+		if (!session?.id) return;
 
-		if(session?.password) {
-			enterSessionPasswordModal = true	
-		}else{
-			goto(`session/${session.id}`)
+		if (session?.password) {
+			enterSessionPasswordModal = true;
+		} else {
+			goto(`session/${session.id}`);
 		}
-		
 	}
 </script>
 
-<Modal bind:open={openCreateSessionModal} size="xs" autoclose={false} class="w-full z-10">
+<Modal
+	bind:open={openCreateSessionModal}
+	size="xs"
+	autoclose={false}
+	class="w-full z-10"
+>
 	<CreateSessionModal />
 </Modal>
-<Modal bind:open={enterSessionPasswordModal} size='sm' autoclose={false} class='w-full z-10 bg-dark-600 border border-dark-300' backdropClasses='bg-dark-800 opacity-90'>
-		<SessionPasswordModal />
+<Modal
+	bind:open={enterSessionPasswordModal}
+	size="sm"
+	autoclose={false}
+>
+	<SessionPasswordModal />
 </Modal>
-
 
 <div class="w-96 md:w-[600px] lg:w[1000px] p-8 rounded-2xl flex flex-col items-center">
 	<h1 class="text-4xl font-semibold">Join a Session</h1>
@@ -48,6 +55,7 @@
 				defaultClass="border-white p-4 border-2 w-full !bg-[rgba(255,255,255,0.05)] !border-l-0 !border-r-0 placeholder:text-[rgba(255,255,255,0.4)] !text-xl text-white focus:border-white"
 			/>
 			<Button
+				type="submit"
 				color="dark"
 				id="search-btn"
 				btnClass="border-white bg-[rgba(255,255,255,0.05)] px-4 border-2 border-l-0 rounded-r-full hover:text-primary-500 duration-200"
