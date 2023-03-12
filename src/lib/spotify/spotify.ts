@@ -1,12 +1,12 @@
 import { writable } from 'svelte/store';
-import type { SpotifyUserProfile, SpotifyTokenResponse } from '../interfaces/spotify.interface';
-import { randomString } from '../../utils/random/randomstring';
+import type { SpotifyTokenResponse, SpotifyUserProfile } from '$lib/interfaces/spotify.interface';
 import { PUBLIC_SPOTIFY_CALLBACK_URI, PUBLIC_SPOTIFY_CLIENT_ID } from '$env/static/public';
+import { randomString } from '$lib/utils/random/randomstring';
 
-export const spotifyAuth = writable<SpotifyTokenResponse>();
-export const spotifyProfile = writable<SpotifyUserProfile>();
+export const spotifyToken = writable<SpotifyTokenResponse>();
+export const spotifyUser = writable<SpotifyUserProfile>();
 
-export function spotifyRedirect() {
+export function redirectToSpotifyAuth() {
 	const rndString = randomString(16);
 	const AUTH_PARAMS = {
 		response_type: 'code',
