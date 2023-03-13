@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { spotifyToken, spotifyUser } from '$lib/spotify/spotify';
-	import type { SpotifyTokenResponse, SpotifyUserProfile } from '$lib/interfaces/spotify/spotify.interface';
 	import PrimaryButton from '../../../component/buttons/PrimaryButton.svelte';
 	import { goto } from '$app/navigation';
 	import { browser } from "$app/environment"
+import type {PublicUser, AccessToken} from 'spotify-types'
 
-	export let data: { tokens: SpotifyTokenResponse; userProfile: SpotifyUserProfile };
+	export let data: { tokens: AccessToken; userProfile: PublicUser };
 
 	$: if (data) {
 		if(browser) {
@@ -21,7 +21,7 @@
 </script>
 
 <div class="w-100vw grid place-items center">
-	{#if $spotifyUser && $spotifyUser?.images[0]}
+	{#if $spotifyUser && $spotifyUser?.images && $spotifyUser?.images[0]}
 		<img
 			src={$spotifyUser.images[0].url}
 			width="300"

@@ -5,7 +5,6 @@ export interface MusicSession {
 	type: string;
 	participants: MusicSessionMember;
 }
-
 export interface MusicSessionMember {
 	admins: string[];
 	members: string[];

@@ -1,6 +1,5 @@
 import type { PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
-import type { SpotifyTokenResponse } from '$lib/interfaces/spotify.interface';
 import { PRIVATE_SPOTIFY_CLIENT_SECRET } from '$env/static/private';
 import {
 	PUBLIC_SPOTIFY_CLIENT_ID,
@@ -9,6 +8,7 @@ import {
 } from '$env/static/public';
 import { getBearerToken } from '$lib/spotify/spotify';
 import qs from 'querystring';
+import type { AccessToken } from 'spotify-types';
 
 export const load: PageServerLoad = async ({ fetch, url, locals }) => {
 	const code = url.searchParams.get('code') ?? '';
@@ -30,7 +30,7 @@ export const load: PageServerLoad = async ({ fetch, url, locals }) => {
 				Authorization: authHeader
 			}
 		});
-		const authResponse = (await authRes.json()) as SpotifyTokenResponse;
+		const authResponse = (await authRes.json()) as AccessToken;
 
 		const userProfileRes = await fetch(`${PUBLIC_SPOTIFY_BASE_URL}/me`, {
 			headers: {
