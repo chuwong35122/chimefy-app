@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { spotifyToken, spotifyUser } from '$lib/spotify/spotify';
-	import type { SpotifyTokenResponse, SpotifyUserProfile } from '$lib/interfaces/spotify.interface';
+	import type { SpotifyTokenResponse, SpotifyUserProfile } from '$lib/interfaces/spotify/spotify.interface';
 	import PrimaryButton from '../../../component/buttons/PrimaryButton.svelte';
 	import { goto } from '$app/navigation';
 	import { browser } from "$app/environment"
