@@ -47,8 +47,9 @@
         ...data,
         participants: {
           admins: [$user.id],
-          members: [$user.id]
+          members: [$user.id],
         },
+				queues: [],
 				password: sha1(data.password)
       }
       const record = await pb.collection('sessions').create(payload);
