@@ -3,7 +3,7 @@ import { pb } from '$lib/pocketbase/pb';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params }) => {
-	const data = await pb.collection('sessions').getOne(params.sessionId);
+	const data = await pb.collection('sessions').getOne<MusicSession>(params.sessionId);
 
 	return {
 		session: data
