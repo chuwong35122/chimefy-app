@@ -4,8 +4,8 @@ import { randomString } from '$lib/utils/random/randomstring';
 import type { PublicUser } from 'spotify-types';
 import type { AuthTokens } from '$lib/interfaces/spotify/auth.interface';
 
-export const spotifyToken = writable<AuthTokens | undefined>();
 export const spotifyUser = writable<PublicUser | undefined>();
+export const spotifyAccessToken = writable('');
 
 const SCOPES = [
 	'user-read-playback-state',

@@ -4,7 +4,7 @@
 	import MusicSearchResult from './MusicSearchResult.svelte';
 	import type { Track } from 'spotify-types';
 	import { searchTrack } from '$lib/session/track';
-	import { spotifyToken } from '$lib/spotify/spotify';
+	import { spotifyAccessToken } from '$lib/spotify/spotify';
 
 	let timer: NodeJS.Timer;
 	let searchTerms = '';
@@ -19,7 +19,7 @@
 	let trackSearchResults: Track[] = [];
 
 	async function debounce() {
-    if (!$spotifyToken?.access_token) return;
+    if (!$spotifyAccessToken) return;
     
 		clearTimeout(timer);
 		timer = setTimeout(async () => {
@@ -28,7 +28,7 @@
         trackSearchResults = []
         return;
       }
-      const tracks = await searchTrack(debouncedSearchTerms, type, $spotifyToken.access_token);
+      const tracks = await searchTrack(debouncedSearchTerms, type, $spotifyAccessToken);
       trackSearchResults = tracks;
 		}, 500);
 	}
