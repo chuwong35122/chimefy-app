@@ -5,12 +5,19 @@
 	import { getSessionData } from '$lib/session/session';
 	import SessionPasswordModal from '../../component/modals/SessionPasswordModal.svelte';
 	import { goto } from '$app/navigation';
+	import { spotifyUser } from '$lib/spotify/spotify';
+	import { toastValue } from '$lib/notification/toast';
 
 	let openCreateSessionModal = false;
 	let enterSessionPasswordModal = false;
 	let input = '';
 
 	async function onOpenPasswordModal() {
+		if(!$spotifyUser) {
+			toastValue.set({message: 'Please login to Spotify', type: 'info'})
+			return
+		};
+		
 		const session = await getSessionData(input);
 		if (!session?.id) return;
 
@@ -19,6 +26,15 @@
 		} else {
 			goto(`session/${session.id}`);
 		}
+	}
+
+	function handleOpenCreateModal() {
+		if(!$spotifyUser) {
+			toastValue.set({message: 'Please login to Spotify', type: 'info'})
+			return
+		};
+
+		openCreateSessionModal = true
 	}
 </script>
 
@@ -68,7 +84,7 @@
 	<div class="h-6" />
 	<div class="w-full grid place-items-center">
 		<button
-			on:click={() => (openCreateSessionModal = true)}
+			on:click={handleOpenCreateModal}
 			class="text-sm text-dark-200 font-light hover:text-white duration-200 underline underline-offset-2"
 			>Create new music session</button
 		>

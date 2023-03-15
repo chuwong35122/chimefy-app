@@ -13,6 +13,15 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.locals.user = undefined;
 	}
 
+	if (!event.locals.user) {
+		if (event.url.pathname.startsWith('/session')) {
+			return new Response('Redirect', {
+				status: 303,
+				headers: { Location: '/auth' }
+			});
+		}
+	}
+
 	const response = await resolve(event);
 
 	response.headers.set('set-cookie', event.locals.pb.authStore.exportToCookie({ secure: false }));
