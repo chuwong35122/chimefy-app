@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { logout, user } from '$lib/pocketbase/pb';
+	import { logout, pb, user } from '$lib/pocketbase/pb';
 	import { Dropdown, DropdownItem, Tooltip } from 'flowbite-svelte';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
@@ -50,7 +50,7 @@
 		{#if $spotifyUser?.id}
 			<div class="w-12 h-12">
 				{#if $spotifyUser && $spotifyUser?.images && $spotifyUser?.images[0]}
-					<div class='relative'>
+					<div class="relative">
 						<img
 							id="profile-img"
 							src={$spotifyUser.images[0].url}
