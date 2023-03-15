@@ -49,12 +49,16 @@
 		}
 
 		// Retrieve Spotify user profile
-		const profileRes = await fetch('/api/spotify/profile', {
+		try{
+			const profileRes = await fetch('/api/spotify/profile', {
 			method: 'POST',
 			body: JSON.stringify({ access_token: $spotifyAccessToken })
 		});
 		const profile = (await profileRes.json()) as PrivateUser;
 		spotifyUser.set(profile);
+		}catch(e){
+			toastValue.set({message: 'Cannot retrieve your Spotify profile', type: 'error'})
+		}
 	});
 </script>
 

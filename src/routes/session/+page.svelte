@@ -13,7 +13,7 @@
 	let input = '';
 
 	async function onOpenPasswordModal() {
-		if(!$spotifyUser) {
+		if(!$spotifyUser?.id) {
 			toastValue.set({message: 'Please login to Spotify', type: 'info'})
 			return
 		};
@@ -29,7 +29,7 @@
 	}
 
 	function handleOpenCreateModal() {
-		if(!$spotifyUser) {
+		if(!$spotifyUser?.id) {
 			toastValue.set({message: 'Please login to Spotify', type: 'info'})
 			return
 		};
