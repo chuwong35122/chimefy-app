@@ -50,21 +50,21 @@
 		{#if $spotifyUser?.id}
 			<div class="w-12 h-12">
 				{#if $spotifyUser && $spotifyUser?.images && $spotifyUser?.images[0]}
-					<div class="relative">
+					<div class="relative cursor-pointer bg-dark-400/60 w-12 h-12 rounded-full p-1 hover:bg-dark-400/30 duration-200">
 						<img
 							id="profile-img"
 							src={$spotifyUser.images[0].url}
 							width="300"
 							height="300"
 							alt="Spotify Profile"
-							class="rounded-full cursor-pointer hover:scale-110 duraiton-200"
+							class="rounded-full"
 							draggable="false"
 						/>
-						<div class="absolute bottom-0 right-0">
+						<div class="absolute bottom-0 right-2">
 							{#if $user?.id}
-								<div class="bg-green-500 w-3 h-3 rounded-full" />
+								<div class="bg-green-500 w-2 h-2 rounded-full" />
 							{:else}
-								<div class="bg-red-500 w-3 h-3 rounded-full" />
+								<div class="bg-red-500 w-2 h-2 rounded-full" />
 							{/if}
 						</div>
 					</div>

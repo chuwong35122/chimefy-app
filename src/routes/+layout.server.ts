@@ -1,7 +1,7 @@
 import type { AuthTokens } from '$lib/interfaces/spotify/auth.interface';
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = async ({ locals, fetch, url }) => {
+export const load: LayoutServerLoad = async ({ locals, fetch, url, cookies }) => {
 	const code = url.searchParams.get('code');
 	if (code) {
 		const authRes = await fetch(`/api/spotify/auth/token?code=${code ?? ''}`);
