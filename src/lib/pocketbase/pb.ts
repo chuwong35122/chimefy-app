@@ -1,7 +1,7 @@
 import Pocketbase from 'pocketbase';
 import { writable } from 'svelte/store';
 import { PUBLIC_POCKETBASE_API_URL } from '$env/static/public';
-import { spotifyToken, spotifyUser } from '$lib/spotify/spotify';
+import { spotifyAccessToken, spotifyUser } from '$lib/spotify/spotify';
 
 export const pb = new Pocketbase(PUBLIC_POCKETBASE_API_URL);
 
@@ -13,6 +13,6 @@ pb.authStore.onChange((val) => {
 
 export function logout() {
 	pb.authStore.clear();
-	spotifyToken.set(undefined);
+	spotifyAccessToken.set('');
 	spotifyUser.set(undefined);
 }
