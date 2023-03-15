@@ -48,38 +48,41 @@
 
 	<div>
 		{#if $spotifyUser?.id}
-			<div class="w-12 h-12 relative">
+			<div class="w-12 h-12">
 				{#if $spotifyUser && $spotifyUser?.images && $spotifyUser?.images[0]}
-				<img
-					src={$spotifyUser.images[0].url}
-					width="300"
-					height="300"
-					alt="Spotify Profile"
-					class="rounded-full"
-					draggable="false"
-				/>
-			{/if}
-				<div class="absolute bottom-0 right-0">
-					{#if $user?.id}
-						<div class="bg-green-500 w-3 h-3 rounded-full" />
-					{:else}
-						<div class="bg-red-500 w-3 h-3 rounded-full" />
-					{/if}
-				</div>
+					<div class='relative'>
+						<img
+							id="profile-img"
+							src={$spotifyUser.images[0].url}
+							width="300"
+							height="300"
+							alt="Spotify Profile"
+							class="rounded-full cursor-pointer hover:scale-110 duraiton-200"
+							draggable="false"
+						/>
+						<div class="absolute bottom-0 right-0">
+							{#if $user?.id}
+								<div class="bg-green-500 w-3 h-3 rounded-full" />
+							{:else}
+								<div class="bg-red-500 w-3 h-3 rounded-full" />
+							{/if}
+						</div>
+					</div>
+					<Dropdown>
+						<div slot="header" class="px-4 py-2">
+							<span class="block text-sm text-gray-900 dark:text-white">
+								{$spotifyUser.display_name}
+							</span>
+						</div>
+						<DropdownItem>Profile</DropdownItem>
+						<DropdownItem>Settings</DropdownItem>
+						<DropdownItem on:click={logout}>Logout</DropdownItem>
+					</Dropdown>
+				{/if}
 			</div>
 			<Tooltip placement="left" triggeredBy="[id='profile-img']"
 				>{$user?.id ? 'You have log-in to AppName' : 'You have not log-in to Appname'}</Tooltip
 			>
-			<Dropdown>
-				<div slot="header" class="px-4 py-2">
-					<span class="block text-sm text-gray-900 dark:text-white">
-						{$spotifyUser.display_name}
-					</span>
-				</div>
-				<DropdownItem>Profile</DropdownItem>
-				<DropdownItem>Settings</DropdownItem>
-				<DropdownItem on:click={logout}>Logout</DropdownItem>
-			</Dropdown>
 		{:else}
 			<a
 				href={redirectToSpotifyAuth()}
