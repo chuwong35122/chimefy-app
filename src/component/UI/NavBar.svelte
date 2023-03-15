@@ -4,8 +4,6 @@
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 	import { redirectToSpotifyAuth, spotifyUser } from '$lib/spotify/spotify';
-
-	const avatarSeed = 1;
 </script>
 
 <div class="w-full px-4 py-4 flex flex-row items-center justify-between">
@@ -51,14 +49,16 @@
 	<div>
 		{#if $spotifyUser?.id}
 			<div class="w-12 h-12 relative">
+				{#if $spotifyUser && $spotifyUser?.images && $spotifyUser?.images[0]}
 				<img
-					id="profile-img"
-					src={`https://api.dicebear.com/5.x/thumbs/svg?seed=${avatarSeed}`}
-					width="60"
-					height="60"
-					alt="Current avatar"
-					class="rounded-full object-contain cursor-pointer"
+					src={$spotifyUser.images[0].url}
+					width="300"
+					height="300"
+					alt="Spotify Profile"
+					class="rounded-full"
+					draggable="false"
 				/>
+			{/if}
 				<div class="absolute bottom-0 right-0">
 					{#if $user?.id}
 						<div class="bg-green-500 w-3 h-3 rounded-full" />
