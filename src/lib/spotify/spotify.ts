@@ -1,10 +1,11 @@
 import { writable } from 'svelte/store';
 import { PUBLIC_SPOTIFY_CALLBACK_URI, PUBLIC_SPOTIFY_CLIENT_ID } from '$env/static/public';
 import { randomString } from '$lib/utils/random/randomstring';
-import type { PublicUser, AccessToken } from 'spotify-types';
+import type { PublicUser } from 'spotify-types';
+import type { AuthTokens } from '$lib/interfaces/spotify/auth.interface';
 
-export const spotifyToken = writable<AccessToken>();
-export const spotifyUser = writable<PublicUser>();
+export const spotifyToken = writable<AuthTokens | undefined>();
+export const spotifyUser = writable<PublicUser | undefined>();
 
 const SCOPES = [
 	'user-read-playback-state',
