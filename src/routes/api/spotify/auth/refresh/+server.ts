@@ -12,5 +12,5 @@ export const POST: RequestHandler = async ({ fetch }) => {
 			'Content-Type': 'application/x-www-form-urlencoded'
 		}
 	});
-	return await res.json();
+	return json(await res.json());
 };
