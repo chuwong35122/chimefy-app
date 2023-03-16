@@ -19,17 +19,17 @@
 	let trackSearchResults: Track[] = [];
 
 	async function debounce() {
-    if (!$spotifyAccessToken) return;
-    
+		if (!$spotifyAccessToken) return;
+
 		clearTimeout(timer);
 		timer = setTimeout(async () => {
 			debouncedSearchTerms = searchTerms;
-      if(!debouncedSearchTerms) {
-        trackSearchResults = []
-        return;
-      }
-      const tracks = await searchTrack(debouncedSearchTerms, type, $spotifyAccessToken);
-      trackSearchResults = tracks;
+			if (!debouncedSearchTerms) {
+				trackSearchResults = [];
+				return;
+			}
+			const tracks = await searchTrack(debouncedSearchTerms, type, $spotifyAccessToken);
+			trackSearchResults = tracks;
 		}, 500);
 	}
 </script>
@@ -43,7 +43,7 @@
 			class="!rounded-full !blur:border-gray-200 !border-gray-200"
 		/>
 	</form>
-	<div class='h-[450px] overflow-y-auto overflow-x-hidden'>
+	<div class="h-[450px] overflow-y-auto overflow-x-hidden">
 		{#if trackSearchResults.length > 0}
 			{#each trackSearchResults as track}
 				<MusicSearchResult {track} />

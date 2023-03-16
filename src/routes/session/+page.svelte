@@ -13,11 +13,11 @@
 	let input = '';
 
 	async function onOpenPasswordModal() {
-		if(!$spotifyUser?.id) {
-			toastValue.set({message: 'Please login to Spotify', type: 'info'})
-			return
-		};
-		
+		if (!$spotifyUser?.id) {
+			toastValue.set({ message: 'Please login to Spotify', type: 'info' });
+			return;
+		}
+
 		const session = await getSessionData(input);
 		if (!session?.id) return;
 
@@ -29,28 +29,19 @@
 	}
 
 	function handleOpenCreateModal() {
-		if(!$spotifyUser?.id) {
-			toastValue.set({message: 'Please login to Spotify', type: 'info'})
-			return
-		};
+		if (!$spotifyUser?.id) {
+			toastValue.set({ message: 'Please login to Spotify', type: 'info' });
+			return;
+		}
 
-		openCreateSessionModal = true
+		openCreateSessionModal = true;
 	}
 </script>
 
-<Modal
-	bind:open={openCreateSessionModal}
-	size="xs"
-	autoclose={false}
-	class="w-full z-10"
->
+<Modal bind:open={openCreateSessionModal} size="xs" autoclose={false} class="w-full z-10">
 	<CreateSessionModal />
 </Modal>
-<Modal
-	bind:open={enterSessionPasswordModal}
-	size="sm"
-	autoclose={false}
->
+<Modal bind:open={enterSessionPasswordModal} size="sm" autoclose={false}>
 	<SessionPasswordModal />
 </Modal>
 

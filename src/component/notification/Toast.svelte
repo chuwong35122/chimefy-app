@@ -9,8 +9,8 @@
 	let show = false;
 	let counter = COUNTER_COUNTDOWN;
 
-	$: if($toastValue && $toastValue?.message && $toastValue?.type) {
-		trigger()
+	$: if ($toastValue && $toastValue?.message && $toastValue?.type) {
+		trigger();
 	}
 
 	function resetToastValue() {
@@ -37,8 +37,8 @@
 			return 'yellow';
 		} else if (type === 'error') {
 			return 'red';
-		}else if(type === 'info') {
-			return 'blue'
+		} else if (type === 'info') {
+			return 'blue';
 		}
 
 		return 'green';
@@ -53,16 +53,16 @@
 	divClass="p-2 w-full"
 >
 	<svelte:fragment slot="icon">
-	{#if $toastValue.type === 'error'}
-	<Icon icon='material-symbols:error' width={30} height={30} class='text-red-400' />
-	<span class="sr-only">Error icon</span>
-	{:else if $toastValue.type === 'warn'}
-	<Icon icon='material-symbols:error' width={30} height={30} class='text-amber-400' />
-	<span class="sr-only">Warn icon</span>
-	{:else if $toastValue.type === 'info'}
-	<Icon icon='material-symbols:info' width={30} height={30} class='text-blue-500'  />
-	<span class="sr-only">Info icon</span>
-	{/if}
+		{#if $toastValue.type === 'error'}
+			<Icon icon="material-symbols:error" width={30} height={30} class="text-red-400" />
+			<span class="sr-only">Error icon</span>
+		{:else if $toastValue.type === 'warn'}
+			<Icon icon="material-symbols:error" width={30} height={30} class="text-amber-400" />
+			<span class="sr-only">Warn icon</span>
+		{:else if $toastValue.type === 'info'}
+			<Icon icon="material-symbols:info" width={30} height={30} class="text-blue-500" />
+			<span class="sr-only">Info icon</span>
+		{/if}
 	</svelte:fragment>
 	<div>{$toastValue?.message}</div>
 </Toast>

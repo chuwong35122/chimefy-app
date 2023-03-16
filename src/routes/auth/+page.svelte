@@ -47,17 +47,23 @@
 		/>
 		<label for="password">Password</label>
 		<ButtonGroup class="mb-2 w-full">
-		<Input
-			name="password"
-			required
-			bind:value={data.password}
-			placeholder="password"
-			color="green"
-			type={showLoginPassword ? 'text' : 'password'}
-		/>
-		<Button size='xs' color='dark' on:click={() => showLoginPassword = !showLoginPassword}>
-			<Icon icon={showLoginPassword ? "material-symbols:visibility" : "material-symbols:visibility-off"} width={20} height={20} />
-		</Button>
+			<Input
+				name="password"
+				required
+				bind:value={data.password}
+				placeholder="password"
+				color="green"
+				type={showLoginPassword ? 'text' : 'password'}
+			/>
+			<Button size="xs" color="dark" on:click={() => (showLoginPassword = !showLoginPassword)}>
+				<Icon
+					icon={showLoginPassword
+						? 'material-symbols:visibility'
+						: 'material-symbols:visibility-off'}
+					width={20}
+					height={20}
+				/>
+			</Button>
 		</ButtonGroup>
 		<PrimaryButton class="my-2">Login</PrimaryButton>
 		<a href="/auth/register" class="underline text-gray-300 text-sm">Create an account</a>
