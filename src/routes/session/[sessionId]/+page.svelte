@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+
 	import type { MusicSession } from '$lib/interfaces/session.interface';
 	import { toastValue } from '$lib/notification/toast';
 	import { pb } from '$lib/pocketbase/pb';
 	import Icon from '@iconify/svelte';
-	import { Button, Search, Select, Tooltip } from 'flowbite-svelte';
+	import { Tooltip } from 'flowbite-svelte';
 	import type { Record } from 'pocketbase';
 	import { onDestroy, onMount } from 'svelte';
-	import { compute_rest_props } from 'svelte/internal';
 	import TrackSearchTab from '../../../component/music/TrackSearchTab.svelte';
 
 	// TODO: Store session password and check before entering
@@ -22,15 +21,9 @@
 
 	onMount(async () => {
 		session = data.session;
-		pb.collection('sessions').subscribe(data.session.sessionId, async (e) => {
-			const _session = await pb.collection('sessions').getOne<MusicSession>(sessionId);
-			session = _session;
-		});
-		// pb.collection('sessions').subscribe(data.sessionId, async(e) => {
-		//   console.log(e)
-		//   const sessionData = await pb.collection('sessions').getOne(data.sessionId)
-		//   console.log(sessionData)
-		//   // sessionData = e.record
+		// pb.collection('sessions').subscribe(data.session.sessionId, async (e) => {
+		// 	const _session = await pb.collection('sessions').getOne<MusicSession>(sessionId);
+		// 	session = _session;
 		// });
 	});
 
@@ -77,7 +70,7 @@
 			/>
 		</button>
 	</div>
-	<div>{JSON.stringify(session)}</div>
+	<!-- <div>{JSON.stringify(session)}</div> -->
 	<div class="flex flex-row w-full">
 		<TrackSearchTab />
 	</div>
