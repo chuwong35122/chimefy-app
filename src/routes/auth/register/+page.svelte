@@ -60,9 +60,7 @@
 				/>
 				<Button size="xs" color="dark" on:click={() => (showPassword = !showPassword)}>
 					<Icon
-						icon={showPassword
-							? 'material-symbols:visibility'
-							: 'material-symbols:visibility-off'}
+						icon={showPassword ? 'material-symbols:visibility' : 'material-symbols:visibility-off'}
 						width={20}
 						height={20}
 					/>
@@ -78,7 +76,11 @@
 					color="green"
 					type={showConfirmPassword ? 'text' : 'password'}
 				/>
-				<Button size="xs" color="dark" on:click={() => (showConfirmPassword = !showConfirmPassword)}>
+				<Button
+					size="xs"
+					color="dark"
+					on:click={() => (showConfirmPassword = !showConfirmPassword)}
+				>
 					<Icon
 						icon={showConfirmPassword
 							? 'material-symbols:visibility'

@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import type { MusicSession } from '$lib/interfaces/session.interface';
 	import { toastValue } from '$lib/notification/toast';
 	import { pb } from '$lib/pocketbase/pb';
@@ -41,26 +40,33 @@
 				? 'This session is a private session'
 				: 'This session is a public session'}</Tooltip
 		>
-<div>
-	<div class="flex flex-row items-center">
-		<div id="isPrivate-icon" class='cursor-pointer'>
-			{#if session?.isPrivate}
-				<Icon icon="material-symbols:lock" width="20" height="20" class="text-dark-400 hover:text-dark-300 duration-200" />
-			{:else}
-				<Icon
-					icon="material-symbols:lock-open-rounded"
-					width="20"
-					height="20"
-					class="text-dark-400 hover:text-dark-300 duration-200"
-				/>
-			{/if}
+		<div>
+			<div class="flex flex-row items-center">
+				<div id="isPrivate-icon" class="cursor-pointer">
+					{#if session?.isPrivate}
+						<Icon
+							icon="material-symbols:lock"
+							width="20"
+							height="20"
+							class="text-dark-400 hover:text-dark-300 duration-200"
+						/>
+					{:else}
+						<Icon
+							icon="material-symbols:lock-open-rounded"
+							width="20"
+							height="20"
+							class="text-dark-400 hover:text-dark-300 duration-200"
+						/>
+					{/if}
+				</div>
+				<h1 class="text-2xl font-medium ml-2 mr-2">{session?.name}</h1>
+				<div
+					class="mt-2 bg-dark-300/60 rounded-full hover:bg-dark-300 duration-200 w-12 grid place-items-center cursor-default"
+				>
+					<span class="font-medium text-xs text-black">{session?.type}</span>
+				</div>
+			</div>
 		</div>
-		<h1 class="text-2xl font-medium ml-2 mr-2">{session?.name}</h1>
-		<div class="mt-2 bg-dark-300/60 rounded-full hover:bg-dark-300 duration-200 w-12 grid place-items-center cursor-default">
-			<span class="font-medium text-xs text-black">{session?.type}</span>
-		</div>
-	</div>
-</div>
 		<button id="copy-id-btn" on:click={onCopySessionId} class="hover:scale-[1.1] duration-200">
 			<Icon
 				icon="material-symbols:content-copy"
