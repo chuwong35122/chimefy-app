@@ -8,11 +8,16 @@
 	import { onDestroy, onMount } from 'svelte';
 	import TrackSearchTab from '../../../component/music/TrackSearchTab.svelte';
 	import {socket} from '$lib/socket/client'
+	import { currentSession } from '$lib/session/session';
 
 	// TODO: Store session password and check before entering
 	export let data: { session: MusicSession & Record };
+
+	$: if(data && data.session) {
+		currentSession.set(data.session)
+	}
+
 	let sessionId = data.session.id;
-	let session: MusicSession;
 
 	function onCopySessionId() {
 		toastValue.set({ message: "Session's ID copied!", type: 'info' });
@@ -20,17 +25,17 @@
 	}
 
 	onMount(async () => {
+		const sessionId = $currentSession?.id;
+		if(!sessionId) return
+
 		socket.on('connect', () => {
 			console.log('Connected')
 		})
 
-
-
-		session = data.session;
-		// pb.collection('sessions').subscribe(data.session.sessionId, async (e) => {
-		// 	const _session = await pb.collection('sessions').getOne<MusicSession>(sessionId);
-		// 	session = _session;
-		// });
+		pb.collection('sessions').subscribe(sessionId, async () => {
+			const session = await pb.collection('sessions').getOne<MusicSession & Record>(sessionId)
+			currentSession.set(session)
+		})
 	});
 
 	onDestroy(() => {
@@ -43,14 +48,14 @@
 	<Tooltip triggeredBy="[id=copy-id-btn]">Copy Session's ID</Tooltip>
 	<div class="flex flex-row justify-between items-emd w-full">
 		<Tooltip triggeredBy="[id='isPrivate-icon']"
-			>{session?.isPrivate
+			>{$currentSession?.isPrivate
 				? 'This session is a private session'
 				: 'This session is a public session'}</Tooltip
 		>
 		<div>
 			<div class="flex flex-row items-center">
 				<div id="isPrivate-icon" class="cursor-pointer">
-					{#if session?.isPrivate}
+					{#if $currentSession?.isPrivate}
 						<Icon
 							icon="material-symbols:lock"
 							width="20"
@@ -66,11 +71,11 @@
 						/>
 					{/if}
 				</div>
-				<h1 class="text-2xl font-medium ml-2 mr-2">{session?.name}</h1>
+				<h1 class="text-2xl font-medium ml-2 mr-2">{$currentSession?.name}</h1>
 				<div
-					class="mt-2 bg-dark-300/60 rounded-full hover:bg-dark-300 duration-200 w-12 grid place-items-center cursor-default"
+					class="mt-2 px-1 bg-dark-300/60 rounded-full hover:bg-dark-300 duration-200 grid place-items-center cursor-default"
 				>
-					<span class="font-medium text-xs text-black">{session?.type}</span>
+					<span class="font-medium text-xs text-black">{$currentSession?.type}</span>
 				</div>
 			</div>
 		</div>

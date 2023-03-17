@@ -4,7 +4,7 @@
 	import MusicSearchResult from './MusicSearchResult.svelte';
 	import type { Track } from 'spotify-types';
 	import { searchTrack } from '$lib/session/track';
-	import { spotifyAccessToken } from '$lib/spotify/spotify';
+	import { spotifyAccessToken, spotifyUser } from '$lib/spotify/spotify';
 
 	let timer: NodeJS.Timer;
 	let searchTerms = '';

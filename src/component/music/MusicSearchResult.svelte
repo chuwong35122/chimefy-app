@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { currentSession } from '$lib/session/session';
+	import { checkSessionRole, currentSession } from '$lib/session/session';
 	import { pb, user } from '$lib/pocketbase/pb';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import Icon from '@iconify/svelte';
 	import type { Track } from 'spotify-types';
+	import { socket } from '$lib/socket/client';
+	import { toastValue } from '$lib/notification/toast';
 
 	export let track: Track;
 
@@ -14,33 +16,47 @@
 	}
 
 	async function handleAddQueue() {
-		const id = $user?.id;
-		const sessionAdmins = $currentSession?.participants.admins;
+		const userId = $user?.id;
 		const sessionId = $currentSession?.id;
+		if (!userId || !sessionId) return;
 
-		if (!id || !sessionId) return;
-		if (!sessionAdmins.includes(id)) return;
+		const userRole = checkSessionRole(userId, $currentSession);
+		if (userRole === 'member') {
+			toastValue.set({ message: "Only session's admin add music to the queue", type: 'info' });
+			return;
+		}
 
-		// await pb.collection(sessionId, {
-
-		// })
-		console.log(track.id);
+		const session = { ...$currentSession };
+		const sessionQueues = [...$currentSession.queues];
+		sessionQueues.push({
+			trackId: track.id,
+			trackImageUrl: track?.album?.images[0]?.url,
+			addedSince: new Date()
+		});
+		session.queues = sessionQueues;
+		try {
+			await pb.collection('sessions').update(sessionId, session);
+			socket.emit('addQueue', track);
+			toastValue.set({ message: `${track?.name} added to queue`, type: 'info' });
+		} catch (e) {
+			toastValue.set({ message: `Cannot add track`, type: 'error' });
+		}
 	}
 </script>
 
 <div
+	on:mousedown={handleAddQueue}
 	class="w-80 p-1 my-1 hover:bg-gradient-to-r bg-black hover:from-[rgba(255,255,255,0.2)] to-[rgba(255,255,255,0.8)] duration-200 rounded-xl cursor-pointer group/track"
 >
 	<div class="flex flex-row items-center">
 		<div
 			class="bg-[rgba(255,255,255,0.3)] grid place-items-center mr-4 relative rounded-lg overflow-hidden"
 		>
-			<button
-				on:click={handleAddQueue}
+			<div
 				class="absolute invisible group/track group-hover/track:visible text-primary-600 bg-[rgba(0,0,0,0.3)] rounded-full hover:scale-110"
 			>
 				<Icon icon="material-symbols:play-circle" width="40" height="40" />
-			</button>
+			</div>
 			<img
 				src={trackImage}
 				on:error={handleError}
