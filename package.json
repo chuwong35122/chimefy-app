@@ -40,12 +40,15 @@
 	"dependencies": {
 		"@popperjs/core": "^2.11.6",
 		"classnames": "^2.3.2",
+		"express": "^4.18.2",
 		"flowbite": "^1.6.3",
 		"flowbite-svelte": "^0.29.13",
 		"moment": "^2.29.4",
 		"pocketbase": "^0.12.0",
 		"querystring": "^0.2.1",
 		"sha1": "^1.1.1",
+		"socket.io": "^4.6.1",
+		"socket.io-client": "^4.6.1",
 		"yup": "^1.0.0"
 	}
 }

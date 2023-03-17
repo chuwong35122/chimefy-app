@@ -7,6 +7,7 @@
 	import type { Record } from 'pocketbase';
 	import { onDestroy, onMount } from 'svelte';
 	import TrackSearchTab from '../../../component/music/TrackSearchTab.svelte';
+	import {socket} from '$lib/socket/client'
 
 	// TODO: Store session password and check before entering
 	export let data: { session: MusicSession & Record };
@@ -19,6 +20,12 @@
 	}
 
 	onMount(async () => {
+		socket.on('connect', () => {
+			console.log('Connected')
+		})
+
+
+
 		session = data.session;
 		// pb.collection('sessions').subscribe(data.session.sessionId, async (e) => {
 		// 	const _session = await pb.collection('sessions').getOne<MusicSession>(sessionId);
