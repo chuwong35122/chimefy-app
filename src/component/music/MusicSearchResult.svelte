@@ -6,13 +6,15 @@
 	import type { Track } from 'spotify-types';
 	import { socket } from '$lib/socket/client';
 	import { toastValue } from '$lib/notification/toast';
+	import { joinArtists } from '$lib/utils/track';
 
 	export let track: Track;
+	let imgRef: HTMLImageElement
 
-	let trackImage = track.album.images[0].url;
 	let { minutes, seconds } = millisecondToMinuteSeconds(track.duration_ms);
-	function handleError() {
-		trackImage = '/logo/disc.png';
+
+	function handleImageError() {
+		imgRef.src = '/logo/disc.png';
 	}
 
 	async function handleAddQueue() {
@@ -30,6 +32,9 @@
 		const sessionQueues = [...$currentSession.queues];
 		sessionQueues.push({
 			trackId: track.id,
+			trackName: track.name,
+			artist: joinArtists(track),
+			duration: `${minutes}:${seconds}`,
 			trackImageUrl: track?.album?.images[0]?.url,
 			addedSince: new Date()
 		});
@@ -58,8 +63,9 @@
 				<Icon icon="material-symbols:play-circle" width="40" height="40" />
 			</div>
 			<img
-				src={trackImage}
-				on:error={handleError}
+				bind:this={imgRef}
+				src={track.album.images[0].url}
+				on:error={handleImageError}
 				alt={`${track.name} cover image`}
 				width="80"
 				height="80"
@@ -69,7 +75,7 @@
 		<div class="overflow-hidden">
 			<p class="font-medium text-sm text-clip">{track.name}</p>
 			<p class="font-light text-xs text-dark-300">
-				{track.artists.map((artist) => artist.name).join(', ')}
+				{joinArtists(track)}
 			</p>
 			<div class="h-2" />
 			<p class="text-xs text-dark-300">{minutes}:{seconds}</p>
