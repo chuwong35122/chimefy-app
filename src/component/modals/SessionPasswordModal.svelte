@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { currentSession } from '$lib/session/session';
-	import { checkHash } from '$lib/utils/common/hash';
+	import { currentSession, currentSessionPassword } from '$lib/session/session';
+	import { checkHash, hashText } from '$lib/utils/common/hash';
 	import Icon from '@iconify/svelte';
 	import { Button, ButtonGroup, InputAddon, Tooltip, Input, Toast } from 'flowbite-svelte';
 
@@ -16,6 +16,8 @@
 		if (!password) return;
 
 		const result = checkHash(password, $currentSession.password);
+		const hashedPassword = hashText(password)
+		currentSessionPassword.set(hashedPassword)
 		if (!result) {
 			error = 'Password incorrect!';
 			return;
