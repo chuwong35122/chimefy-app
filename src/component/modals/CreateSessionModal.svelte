@@ -45,10 +45,12 @@
 		try {
 			const payload: MusicSession = {
 				...data,
-				participants: [{
-					userId: $user.id,
-					role: 'admin'
-				}],
+				participants: [
+					{
+						userId: $user.id,
+						role: 'admin'
+					}
+				],
 				queues: [],
 				password: sha1(data.password)
 			};

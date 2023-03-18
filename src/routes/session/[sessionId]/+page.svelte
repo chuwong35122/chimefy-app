@@ -28,11 +28,11 @@
 	}
 
 	onMount(async () => {
-		const {isPrivate, password} = $currentSession;
-		const hasCorrectPassword = $currentSessionPassword === password
-		if(!$currentSession || !isPrivate || !hasCorrectPassword) {
-			goto('/session')
-			toastValue.set({message: "You need session's password", type: 'warn'})
+		const { isPrivate, password } = $currentSession;
+		const hasCorrectPassword = $currentSessionPassword === password;
+		if (!$currentSession || !isPrivate || !hasCorrectPassword) {
+			goto('/session');
+			toastValue.set({ message: "You need session's password", type: 'warn' });
 		}
 		const sessionId = $currentSession?.id;
 		if (!sessionId) return;

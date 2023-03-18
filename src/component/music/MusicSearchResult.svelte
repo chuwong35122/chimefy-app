@@ -9,7 +9,7 @@
 	import { joinArtists } from '$lib/utils/track';
 
 	export let track: Track;
-	let imgRef: HTMLImageElement
+	let imgRef: HTMLImageElement;
 
 	let { minutes, seconds } = millisecondToMinuteSeconds(track.duration_ms);
 
