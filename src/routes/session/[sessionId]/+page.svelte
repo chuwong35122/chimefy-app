@@ -7,14 +7,15 @@
 	import type { Record } from 'pocketbase';
 	import { onDestroy, onMount } from 'svelte';
 	import TrackSearchTab from '../../../component/music/TrackSearchTab.svelte';
-	import {socket} from '$lib/socket/client'
+	import { socket } from '$lib/socket/client';
 	import { currentSession } from '$lib/session/session';
+	import TrackQueueList from '../../../component/music/TrackQueueList.svelte';
 
 	// TODO: Store session password and check before entering
 	export let data: { session: MusicSession & Record };
 
-	$: if(data && data.session) {
-		currentSession.set(data.session)
+	$: if (data && data.session) {
+		currentSession.set(data.session);
 	}
 
 	let sessionId = data.session.id;
@@ -26,16 +27,16 @@
 
 	onMount(async () => {
 		const sessionId = $currentSession?.id;
-		if(!sessionId) return
+		if (!sessionId) return;
 
 		socket.on('connect', () => {
-			console.log('Connected')
-		})
+			console.log('Connected');
+		});
 
 		pb.collection('sessions').subscribe(sessionId, async () => {
-			const session = await pb.collection('sessions').getOne<MusicSession & Record>(sessionId)
-			currentSession.set(session)
-		})
+			const session = await pb.collection('sessions').getOne<MusicSession & Record>(sessionId);
+			currentSession.set(session);
+		});
 	});
 
 	onDestroy(() => {
@@ -88,8 +89,10 @@
 			/>
 		</button>
 	</div>
-	<!-- <div>{JSON.stringify(session)}</div> -->
-	<div class="flex flex-row w-full">
+	<div class="flex flex-row w-full h-full">
 		<TrackSearchTab />
+		<div class="w-full overflow-y-auto">
+			<TrackQueueList />
+		</div>
 	</div>
 </div>
