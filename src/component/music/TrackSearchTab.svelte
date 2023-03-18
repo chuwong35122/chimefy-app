@@ -19,7 +19,10 @@
 	let trackSearchResults: Track[] = [];
 
 	async function debounce() {
-		if (!$spotifyAccessToken) return;
+		if (!$spotifyAccessToken) {
+			trackSearchResults = []
+			return
+		};
 
 		clearTimeout(timer);
 		timer = setTimeout(async () => {
