@@ -16,8 +16,8 @@
 		if (!password) return;
 
 		const result = checkHash(password, $currentSession.password);
-		const hashedPassword = hashText(password)
-		currentSessionPassword.set(hashedPassword)
+		const hashedPassword = hashText(password);
+		currentSessionPassword.set(hashedPassword);
 		if (!result) {
 			error = 'Password incorrect!';
 			return;
