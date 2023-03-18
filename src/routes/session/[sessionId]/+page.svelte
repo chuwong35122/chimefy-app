@@ -8,8 +8,10 @@
 	import { onDestroy, onMount } from 'svelte';
 	import TrackSearchTab from '../../../component/music/TrackSearchTab.svelte';
 	import { socket } from '$lib/socket/client';
-	import { currentSession } from '$lib/session/session';
+	import { currentSession, currentSessionPassword } from '$lib/session/session';
 	import TrackQueueList from '../../../component/music/TrackQueueList.svelte';
+	import { checkHash } from '$lib/utils/common/hash';
+	import { goto } from '$app/navigation';
 
 	// TODO: Store session password and check before entering
 	export let data: { session: MusicSession & Record };
@@ -26,6 +28,12 @@
 	}
 
 	onMount(async () => {
+		const {isPrivate, password} = $currentSession;
+		const hasCorrectPassword = $currentSessionPassword === password
+		if(!$currentSession || !isPrivate || !hasCorrectPassword) {
+			goto('/session')
+			toastValue.set({message: "You need session's password", type: 'warn'})
+		}
 		const sessionId = $currentSession?.id;
 		if (!sessionId) return;
 
