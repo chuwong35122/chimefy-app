@@ -12,3 +12,7 @@ export function millisecondToMinuteSeconds(ms: number) {
 	const seconds = parseInt(((ms % 60000) / 1000).toFixed(0));
 	return { minutes: zeroPad(minutes, 2), seconds: zeroPad(seconds, 2) };
 }
+
+export function minuteSecondsToTime(minutes: number, seconds: number) {
+	return `${zeroPad(minutes, 2)}:${zeroPad(seconds, 2)}`;
+}

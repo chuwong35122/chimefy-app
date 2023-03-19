@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { currentSession } from '$lib/session/session';
+	import { minuteSecondsToTime } from '$lib/utils/common/time';
 	// TODO: Create scroll animation
 	let imgRef: HTMLImageElement;
 
@@ -24,7 +25,9 @@
 					class="object-cover rounded-2xl absolute z-0"
 				/>
 				<div class="absolute z-20 p-2 bottom-0">
-					<p class="text-lg leading-tight">{queue?.duration}</p>
+					<p class="text-lg leading-tight">
+						{minuteSecondsToTime(queue.durationMinutes ?? 0, queue.durationSeconds ?? 0)}
+					</p>
 					<p class="text-2xl font-normal leading-tight">{queue?.trackName}</p>
 					<p class="text-sm leading-tight">{queue?.artist}</p>
 				</div>
