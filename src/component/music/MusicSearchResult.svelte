@@ -34,7 +34,8 @@
 			trackId: track.id,
 			trackName: track.name,
 			artist: joinArtists(track),
-			duration: `${minutes}:${seconds}`,
+			durationMinutes: parseInt(minutes),
+			durationSeconds: parseInt(seconds),
 			trackImageUrl: track?.album?.images[0]?.url,
 			addedSince: new Date()
 		});

@@ -1,4 +1,8 @@
-import type { MusicSession, MusicSessionRole } from '$lib/interfaces/session.interface';
+import type {
+	MusicSession,
+	MusicSessionRole,
+	SessionPlayingInfo
+} from '$lib/interfaces/session.interface';
 import { toastValue } from '$lib/notification/toast';
 import { pb } from '$lib/pocketbase/pb';
 import type { ClientResponseError, Record } from 'pocketbase';
@@ -6,6 +10,9 @@ import { writable } from 'svelte/store';
 
 export const currentSession = writable<Record & MusicSession>();
 export const currentSessionPassword = writable('');
+export const socketId = writable('');
+
+export const playingInfo = writable<SessionPlayingInfo>();
 
 export function checkSessionRole(
 	userId: string,
