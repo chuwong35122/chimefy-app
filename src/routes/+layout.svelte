@@ -22,10 +22,6 @@
 		if (data.user) userStore.set(data.user);
 	}
 
-	$: if ($userStore?.id && $spotifyUser?.id) {
-		toastValue.set({ message: "You're all set. Appname is ready!", type: 'info' });
-	}
-
 	onMount(async () => {
 		if (!data.user) {
 			goto('/auth');
@@ -58,6 +54,10 @@
 			spotifyUser.set(profile);
 		} catch (e) {
 			toastValue.set({ message: 'Cannot retrieve your Spotify profile', type: 'error' });
+		}
+
+		if ($userStore?.id && $spotifyUser?.id) {
+			toastValue.set({ message: "You're all set. Appname is ready!", type: 'info' });
 		}
 	});
 </script>

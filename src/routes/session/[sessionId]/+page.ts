@@ -1,4 +1,4 @@
-import type { MusicSession } from '$lib/interfaces/session.interface';
+import type { MusicSession } from '$lib/interfaces/session/session.interface';
 import { pb } from '$lib/pocketbase/pb';
 import type { PageLoad } from './$types';
 

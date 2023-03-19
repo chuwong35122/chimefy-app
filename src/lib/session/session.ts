@@ -2,7 +2,7 @@ import type {
 	MusicSession,
 	MusicSessionRole,
 	SessionPlayingInfo
-} from '$lib/interfaces/session.interface';
+} from '$lib/interfaces/session/session.interface';
 import { toastValue } from '$lib/notification/toast';
 import { pb } from '$lib/pocketbase/pb';
 import type { ClientResponseError, Record } from 'pocketbase';
