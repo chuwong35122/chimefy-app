@@ -1,12 +1,25 @@
 <script lang="ts">
 	import { currentSession } from '$lib/session/session';
+	import { socket } from '$lib/socket/client';
 	import { minuteSecondsToTime } from '$lib/utils/common/time';
+	import { onDestroy, onMount } from 'svelte';
+	import { toastValue } from '$lib/notification/toast';
 	// TODO: Create scroll animation
 	let imgRef: HTMLImageElement;
 
 	function handleImageError() {
 		imgRef.src = '/logo/disc.png';
 	}
+
+	onMount(() => {
+		socket.on('onQueueAdded', (message: string) => {
+			toastValue.set({message: message, type: 'info'})
+		})
+	})
+	
+	onDestroy(() => {
+		socket.off('onQueueAdded')
+	})
 </script>
 
 <div class="w-full h-full grid place-items-center">

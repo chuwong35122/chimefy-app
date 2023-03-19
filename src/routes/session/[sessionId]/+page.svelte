@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { MusicSession, SessionJoinRequest } from '$lib/interfaces/session.interface';
+	import type { MusicSession, SessionJoinRequest } from '$lib/interfaces/session/session.interface';
 	import { toastValue } from '$lib/notification/toast';
 	import { pb, user } from '$lib/pocketbase/pb';
 	import Icon from '@iconify/svelte';
@@ -65,6 +65,7 @@
 	onDestroy(() => {
 		console.log('destroying');
 		pb.collection('sessions').unsubscribe(sessionId);
+		socket.off('onNewComerJoin')
 	});
 </script>
 

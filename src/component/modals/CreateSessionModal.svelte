@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { MUSIC_GENRE } from '$lib/constants/music/genres';
-	import type { MusicSession } from '$lib/interfaces/session.interface';
+	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 	import { pb, user } from '$lib/pocketbase/pb';
 	import { CreateSessionSchema } from '$lib/schema/session.schema';
 	import Icon from '@iconify/svelte';
