@@ -7,6 +7,9 @@
 	import { socket } from '$lib/socket/client';
 	import { toastValue } from '$lib/notification/toast';
 	import { joinArtists } from '$lib/utils/track';
+	import type { SessionTrackQueueRequest } from '$lib/interfaces/session/queue.interface';
+	import { spotifyUser } from '$lib/spotify/spotify';
+	import type { MusicSessionQueue } from '$lib/interfaces/session/session.interface';
 
 	export let track: Track;
 	let imgRef: HTMLImageElement;
@@ -30,7 +33,7 @@
 
 		const session = { ...$currentSession };
 		const sessionQueues = [...$currentSession.queues];
-		sessionQueues.push({
+		const newQueue: MusicSessionQueue = {
 			trackId: track.id,
 			trackName: track.name,
 			artist: joinArtists(track),
@@ -38,11 +41,18 @@
 			durationSeconds: parseInt(seconds),
 			trackImageUrl: track?.album?.images[0]?.url,
 			addedSince: new Date()
-		});
+		};
+		sessionQueues.push(newQueue);
 		session.queues = sessionQueues;
 		try {
 			await pb.collection('sessions').update(sessionId, session);
-			socket.emit('addQueue', track);
+			socket.emit('addQueue', {
+				sessionId: sessionId,
+				userId: userId,
+				socketId: socket.id,
+				spotifyDisplayName: $spotifyUser?.display_name ?? '',
+				track: newQueue
+			} as SessionTrackQueueRequest);
 			toastValue.set({ message: `${track?.name} added to queue`, type: 'info' });
 		} catch (e) {
 			toastValue.set({ message: `Cannot add track`, type: 'error' });
