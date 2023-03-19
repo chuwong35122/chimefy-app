@@ -1,17 +1,17 @@
 <script lang="ts">
-	import type { MusicSession } from '$lib/interfaces/session.interface';
+	import type { MusicSession, SessionJoinRequest } from '$lib/interfaces/session.interface';
 	import { toastValue } from '$lib/notification/toast';
-	import { pb } from '$lib/pocketbase/pb';
+	import { pb, user } from '$lib/pocketbase/pb';
 	import Icon from '@iconify/svelte';
 	import { Tooltip } from 'flowbite-svelte';
 	import type { Record } from 'pocketbase';
 	import { onDestroy, onMount } from 'svelte';
 	import TrackSearchTab from '../../../component/music/TrackSearchTab.svelte';
 	import { socket } from '$lib/socket/client';
-	import { currentSession, currentSessionPassword } from '$lib/session/session';
+	import { currentSession, currentSessionPassword, playingInfo, socketId } from '$lib/session/session';
 	import TrackQueueList from '../../../component/music/TrackQueueList.svelte';
-	import { checkHash } from '$lib/utils/common/hash';
 	import { goto } from '$app/navigation';
+	import { spotifyUser } from '$lib/spotify/spotify';
 
 	// TODO: Store session password and check before entering
 	export let data: { session: MusicSession & Record };
@@ -22,23 +22,38 @@
 
 	let sessionId = data.session.id;
 
+	playingInfo.subscribe(info => {
+		
+	})
+
 	function onCopySessionId() {
 		toastValue.set({ message: "Session's ID copied!", type: 'info' });
 		navigator.clipboard.writeText(sessionId);
 	}
 
 	onMount(async () => {
-		const { isPrivate, password } = $currentSession;
-		const hasCorrectPassword = $currentSessionPassword === password;
-		if (!$currentSession || !isPrivate || !hasCorrectPassword) {
-			goto('/session');
-			toastValue.set({ message: "You need session's password", type: 'warn' });
-		}
+		// const { isPrivate, password } = $currentSession;
+		// const hasCorrectPassword = $currentSessionPassword === password;
+		// if (!$currentSession || !isPrivate || !hasCorrectPassword) {
+		// 	goto('/session');
+		// 	toastValue.set({ message: "You need session's password", type: 'warn' });
+		// }
 		const sessionId = $currentSession?.id;
-		if (!sessionId) return;
+		if (!sessionId || !$user || !$user?.id) return;
 
+		const socketConnection = socket.connect();
 		socket.on('connect', () => {
-			console.log('Connected');
+			socketId.set(socketConnection.id);
+			socket.emit('joinSession', {
+				sessionId: sessionId,
+				socketId: socketConnection.id,
+				userId: $user?.id,
+				spotifyDisplayName: $spotifyUser?.display_name ?? ''
+			} as SessionJoinRequest);
+		});
+
+		socket.on('onNewComerJoin', (message) => {
+			toastValue.set({ message: message, type: 'info' });
 		});
 
 		pb.collection('sessions').subscribe(sessionId, async () => {
