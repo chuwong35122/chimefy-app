@@ -12,6 +12,7 @@
 	import TrackQueueList from '../../../component/music/TrackQueueList.svelte';
 	import { goto } from '$app/navigation';
 	import { spotifyUser } from '$lib/spotify/spotify';
+	import MusicPlayerController from '../../../component/music/MusicPlayerController.svelte';
 
 	// TODO: Store session password and check before entering
 	export let data: { session: MusicSession & Record };
@@ -69,7 +70,7 @@
 	});
 </script>
 
-<div class="w-[1000px] h-[600px] p-8 bg-[rgba(255,255,255,0.05)] rounded-xl">
+<div class="w-[1000px] h-[600px] p-6 bg-[rgba(255,255,255,0.05)] rounded-xl">
 	<Tooltip triggeredBy="[id=copy-id-btn]">Copy Session's ID</Tooltip>
 	<div class="flex flex-row justify-between items-emd w-full">
 		<Tooltip triggeredBy="[id='isPrivate-icon']"
@@ -119,4 +120,7 @@
 			<TrackQueueList />
 		</div>
 	</div>
+</div>
+<div class="w-[1000px] h-20 mt-6">
+<MusicPlayerController />
 </div>
