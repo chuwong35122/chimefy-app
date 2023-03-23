@@ -1,5 +1,9 @@
 import type { SessionTrackQueueRequest } from '$lib/interfaces/session/queue.interface';
-import type { SessionJoinRequest } from '$lib/interfaces/session/session.interface';
+import type {
+	OnChangePlayingInfoRequest,
+	SessionJoinRequest,
+	SessionJoinResponse
+} from '$lib/interfaces/session/session.interface';
 import { Server } from 'socket.io';
 
 export default function injectSocketIO(server: any) {
@@ -7,9 +11,11 @@ export default function injectSocketIO(server: any) {
 
 	io.on('connection', (socket) => {
 		socket.on('joinSession', async (joinRequest: SessionJoinRequest) => {
-			const { sessionId, spotifyDisplayName } = joinRequest;
+			const { sessionId, spotifyDisplayName, playingInfo } = joinRequest;
 			socket.join(sessionId);
-			socket.to(sessionId).emit('onNewComerJoin', `Say hi to ${spotifyDisplayName}`);
+			socket
+				.to(sessionId)
+				.emit('onNewComerJoin', { spotifyDisplayName, playingInfo } as SessionJoinResponse);
 		});
 
 		socket.on('addQueue', (queueRequest: SessionTrackQueueRequest) => {
@@ -19,6 +25,11 @@ export default function injectSocketIO(server: any) {
 					.to(sessionId)
 					.emit('onQueueAdded', `${track?.trackName} has been added by ${spotifyDisplayName}`);
 			}
+		});
+
+		socket.on('onChangePlayingInfo', (request: OnChangePlayingInfoRequest) => {
+			console.log(request);
+			socket.to(request.sessionId).emit('handleChangePlayingInfo', request.playingInfo);
 		});
 
 		socket.on('disconnect', () => {
