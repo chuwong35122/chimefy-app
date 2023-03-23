@@ -23,6 +23,7 @@
 	import TrackQueueList from '../../../component/music/TrackQueueList.svelte';
 	import { spotifyUser } from '$lib/spotify/spotify';
 	import MusicPlayerController from '../../../component/music/MusicPlayerController.svelte';
+	import SessionQueueMembers from '../../../component/music/SessionQueueMembers.svelte';
 
 	// TODO: Store session password and check before entering
 	export let data: { session: MusicSession & Record };
@@ -75,8 +76,8 @@
 				_session.participants.push({
 					userId: $user?.id ?? '',
 					role: sessionRole,
-					socketId: socketConnection.id,
-					profileImg: $spotifyUser?.images && $spotifyUser.images[0].url
+					profileImg: $spotifyUser?.images && $spotifyUser.images[0].url,
+					spotifyDisplayedName: $spotifyUser?.display_name ?? ''
 				});
 				pb.collection('sessions').update($currentSession?.id, _session);
 			}
@@ -147,4 +148,5 @@
 </div>
 <div class="w-[1000px] h-24 mt-6">
 	<MusicPlayerController />
+	<SessionQueueMembers />
 </div>

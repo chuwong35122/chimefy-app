@@ -62,7 +62,7 @@
 	});
 </script>
 
-<div class="w-screen h-screen overflow-hidden bg-dark-900">
+<div class="w-screen h-screen overflow-x-hidden bg-dark-900">
 	<NavBar />
 	<div class="w-full grid place-items-center pt-12">
 		<slot />
