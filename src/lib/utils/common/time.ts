@@ -10,7 +10,7 @@ export function zeroPad(num: number, places: number) {
 export function millisecondToMinuteSeconds(ms: number) {
 	const minutes = Math.floor(ms / 60000);
 	const seconds = parseInt(((ms % 60000) / 1000).toFixed(0));
-	return { minutes: zeroPad(minutes, 2), seconds: zeroPad(seconds, 2) };
+	return `${zeroPad(minutes, 2)}:${zeroPad(seconds, 2)}`;
 }
 
 export function minuteSecondsToTime(minutes: number | undefined, seconds: number | undefined) {
@@ -32,4 +32,16 @@ export function calculatePercentageFromTime(
 	const fromSeconds = fromMinute * 60 + fromSecond;
 	const toSeconds = toMinute * 60 + toSecond;
 	return Math.floor(fromSeconds / toSeconds);
+}
+
+export function calculateMinutesFromMillisecond(ms: number) {
+	const seconds = Math.floor(ms / 1000);
+	return Math.floor(seconds / 60);
+}
+
+export function calculateSecondsFromMillisecond(ms: number) {
+	const minutes = calculateMinutesFromMillisecond(ms);
+	const seconds = Math.floor(ms / 1000);
+	const remainingSeconds = seconds - minutes * 60;
+	return remainingSeconds;
 }
