@@ -10,6 +10,7 @@
 	import type { ValidationError } from 'yup';
 	import PrimaryButton from '../buttons/PrimaryButton.svelte';
 	import sha1 from 'sha1';
+	import { spotifyUser } from '$lib/spotify/spotify';
 
 	let showPassword = false;
 	export let data = {
@@ -48,7 +49,9 @@
 				participants: [
 					{
 						userId: $user.id,
-						role: 'admin'
+						role: 'admin',
+						profileImg: $spotifyUser?.images ? $spotifyUser?.images[0]?.url : undefined,
+						spotifyDisplayedName: $spotifyUser?.display_name ?? ''
 					}
 				],
 				queues: [],

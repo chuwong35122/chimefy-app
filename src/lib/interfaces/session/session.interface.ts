@@ -10,8 +10,8 @@ export interface MusicSession {
 }
 export interface MusicSessionMember {
 	userId: string;
+	spotifyDisplayedName: string;
 	role: MusicSessionRole;
-	socketId?: string;
 	profileImg: string | undefined;
 }
 
