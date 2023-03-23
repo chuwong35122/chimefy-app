@@ -1,9 +1,14 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { currentSession, currentSessionPassword } from '$lib/session/session';
+	import type { MusicSession } from '$lib/interfaces/session/session.interface';
+	import { pb, user } from '$lib/pocketbase/pb';
+	import { checkSessionRole, currentSession, currentSessionPassword } from '$lib/session/session';
+	import { socket } from '$lib/socket/client';
+	import { spotifyUser } from '$lib/spotify/spotify';
 	import { checkHash, hashText } from '$lib/utils/common/hash';
 	import Icon from '@iconify/svelte';
 	import { Button, ButtonGroup, InputAddon, Tooltip, Input, Toast } from 'flowbite-svelte';
+	import type { Record } from 'pocketbase';
 
 	let password = '';
 	let error = '';
@@ -12,7 +17,7 @@
 		error = '';
 	}
 
-	function enterSession() {
+	async function enterSession() {
 		if (!password) return;
 
 		const result = checkHash(password, $currentSession.password);
@@ -22,7 +27,21 @@
 			error = 'Password incorrect!';
 			return;
 		} else {
-			if ($currentSession) {
+			if ($currentSession && $user) {
+				const session = await pb
+					.collection('sessions')
+					.getOne<MusicSession & Record>($currentSession.id);
+				const participants = session.participants;
+				const target = participants.find((participant) => participant.userId === $user?.id);
+				if (!target) {
+					participants.push({
+						userId: $user?.id,
+						profileImg: $spotifyUser?.images ? $spotifyUser?.images[0].url : undefined,
+						role: checkSessionRole($user.id, $currentSession),
+						spotifyDisplayedName: $spotifyUser?.display_name ?? ''
+					});
+					await pb.collection('sessions').update(session.id, session);
+				}
 				goto(`session/${$currentSession.id}`);
 			}
 		}
