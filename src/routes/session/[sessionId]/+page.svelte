@@ -6,8 +6,6 @@
 	} from '$lib/interfaces/session/session.interface';
 	import { toastValue } from '$lib/notification/toast';
 	import { pb, user } from '$lib/pocketbase/pb';
-	import Icon from '@iconify/svelte';
-	import { Tooltip } from 'flowbite-svelte';
 	import type { Record } from 'pocketbase';
 	import { onDestroy, onMount } from 'svelte';
 	import TrackSearchTab from '../../../component/music/TrackSearchTab.svelte';
