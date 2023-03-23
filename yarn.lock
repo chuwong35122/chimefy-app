@@ -1716,10 +1716,10 @@ playwright-core@1.30.0:
   resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.30.0.tgz#de987cea2e86669e3b85732d230c277771873285"
   integrity sha512-7AnRmTCf+GVYhHbLJsGUtskWTE33SwMZkybJ0v6rqR1boxq2x36U7p1vDRV7HO2IwTZgmycracLxPEJI49wu4g==
 
-pocketbase@^0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/pocketbase/-/pocketbase-0.12.0.tgz#ddc8616305776f3d26f230119562645d71b7cdf8"
-  integrity sha512-q+a9siWZisQu50dex6oZP0Xqxden9DDL1JalopVdkHntGHyBBcbcASPowaA8A0bO5grPjN1wSHnInwP+UuCp9A==
+pocketbase@^0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/pocketbase/-/pocketbase-0.12.1.tgz#f3655ca9d8b28729401fc6b55552e4708d4a04ed"
+  integrity sha512-kihThVla/JontCGA2zVGuxk1vWtz/yt7FqnL241oxd+w7RBVNzLIRKN6GolnY9DGOekNmFRb57CL24sbUm4wJA==
 
 postcss-import@^14.1.0:
   version "14.1.0"

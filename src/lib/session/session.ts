@@ -4,23 +4,33 @@ import type {
 	SessionPlayingInfo
 } from '$lib/interfaces/session/session.interface';
 import { toastValue } from '$lib/notification/toast';
-import { pb } from '$lib/pocketbase/pb';
+import { pb, user } from '$lib/pocketbase/pb';
 import type { ClientResponseError, Record } from 'pocketbase';
 import { writable } from 'svelte/store';
 
 export const currentSession = writable<Record & MusicSession>();
 export const currentSessionPassword = writable('');
 export const socketId = writable('');
+export const currentSessionRole = writable<MusicSessionRole>('member');
 
 export const playingInfo = writable<SessionPlayingInfo>();
+
+user.subscribe((val) => {
+	currentSession.subscribe((session) => {
+		if (session && val) {
+			const role = checkSessionRole(val?.id, session);
+			currentSessionRole.set(role);
+		}
+	});
+});
 
 export function checkSessionRole(
 	userId: string | undefined,
 	session: MusicSession | undefined
-): MusicSessionRole | undefined {
-	if (!userId || !session) return undefined;
+): MusicSessionRole {
+	if (!userId || !session) return 'member';
 	const member = session?.participants?.find((participant) => participant.userId === userId);
-	return member?.role;
+	return member?.role ?? 'member';
 }
 
 export async function getSessionData(id: string) {

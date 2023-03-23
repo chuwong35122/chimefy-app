@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { checkSessionRole, currentSession } from '$lib/session/session';
+	import { currentSession, currentSessionRole } from '$lib/session/session';
 	import { pb, user } from '$lib/pocketbase/pb';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import Icon from '@iconify/svelte';
@@ -23,8 +23,7 @@
 		const sessionId = $currentSession?.id;
 		if (!userId || !sessionId) return;
 
-		const userRole = checkSessionRole(userId, $currentSession);
-		if (userRole === 'member') {
+		if ($currentSessionRole === 'member') {
 			toastValue.set({ message: "Only session's admin add music to the queue", type: 'info' });
 			return;
 		}
