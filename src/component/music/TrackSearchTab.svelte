@@ -37,7 +37,7 @@
 	}
 </script>
 
-<div class="mt-6 h-full">
+<div class="mt-6 px-4">
 	<form class="flex gap-2 w-80">
 		<Search
 			on:keyup={debounce}
@@ -46,7 +46,7 @@
 			class="!rounded-full !blur:border-gray-200 !border-gray-200"
 		/>
 	</form>
-	<div class="h-[450px] overflow-y-auto overflow-x-hidden">
+	<div class="h-[560px] overflow-y-auto overflow-x-hidden">
 		{#if trackSearchResults.length > 0}
 			{#each trackSearchResults as track}
 				<MusicSearchResult {track} />
