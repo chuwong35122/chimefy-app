@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { checkSessionRole, currentSession, playingInfo } from '$lib/session/session';
+	import { currentSessionRole, currentSession, playingInfo } from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import { onMount } from 'svelte';
-	import { user } from '$lib/pocketbase/pb';
 	import { socket } from '$lib/socket/client';
 	import type {
 		OnChangePlayingInfoRequest,
@@ -16,11 +15,11 @@
 	let isPlaying = false;
 	let playingMs = 0;
 
-	playingInfo.subscribe(val => {
-		if(val) {
-			isPlaying = (val.status === 'playing')
+	playingInfo.subscribe((val) => {
+		if (val) {
+			isPlaying = val.status === 'playing';
 		}
-	})
+	});
 	playingInfo.set({
 		trackName: 'Flowers',
 		artist: 'Miley Cyrus',
@@ -32,9 +31,6 @@
 	});
 
 	function handleChangeSessionInfo() {
-		const role = checkSessionRole($user?.id, $currentSession);
-		if (role === 'member') return;
-
 		const changePlayingInfoRequest: OnChangePlayingInfoRequest = {
 			playingInfo: $playingInfo,
 			sessionId: $currentSession?.id
@@ -44,13 +40,13 @@
 	}
 
 	function togglePlay() {
-		isPlaying = true
+		isPlaying = true;
 
 		const _playingInfo = $playingInfo;
-		_playingInfo.status = 'playing'
+		_playingInfo.status = 'playing';
 		handleChangeSessionInfo();
 
-			timer = setInterval(() => {
+		timer = setInterval(() => {
 			playingMs += 1000;
 			playingInfo.set({
 				trackName: 'Flowers',
@@ -65,7 +61,6 @@
 				// go new track
 			}
 		}, 1000);
-		
 	}
 
 	function togglePause() {
@@ -79,8 +74,14 @@
 	// request for current playing music
 	onMount(() => {
 		socket.on('handleChangePlayingInfo', (info: SessionPlayingInfo) => {
-			console.log(info);
 			playingInfo.set(info);
+			if ($currentSessionRole === 'member') {
+				if (info.status === 'playing') {
+					togglePlay();
+				} else {
+					togglePause();
+				}
+			}
 		});
 	});
 </script>

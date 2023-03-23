@@ -16,11 +16,11 @@
 		checkSessionRole,
 		currentSession,
 		currentSessionPassword,
+		currentSessionRole,
 		playingInfo,
 		socketId
 	} from '$lib/session/session';
 	import TrackQueueList from '../../../component/music/TrackQueueList.svelte';
-	import { goto } from '$app/navigation';
 	import { spotifyUser } from '$lib/spotify/spotify';
 	import MusicPlayerController from '../../../component/music/MusicPlayerController.svelte';
 
@@ -45,7 +45,6 @@
 		// 	goto('/session');
 		// 	toastValue.set({ message: "You need session's password", type: 'warn' });
 		// }
-		const sessionId = $currentSession?.id;
 		if (!sessionId || !$user || !$user?.id || !$spotifyUser) return;
 
 		const socketConnection = socket.connect();
@@ -62,13 +61,14 @@
 		// Connect to Music session and request for its states
 		socket.on('connect', () => {
 			socketId.set(socketConnection.id);
-			console.log('1', socketConnection.id);
 			socket.emit('joinSession', joinSessionRequest);
 		});
 
 		socket.on('onNewComerJoin', (joinResponse: SessionJoinResponse) => {
 			toastValue.set({ message: `Say hi to ${joinResponse.spotifyDisplayName} 👋`, type: 'info' });
 			const sessionRole = checkSessionRole($user?.id, $currentSession);
+			currentSessionRole.set(sessionRole)
+			
 			if (sessionRole === 'member') {
 				playingInfo.set(joinResponse.playingInfo);
 				const _session = $currentSession;
@@ -89,8 +89,7 @@
 	});
 
 	onDestroy(() => {
-		console.log('destroying');
-		pb.collection('sessions').unsubscribe(sessionId);
+		pb.collection('sessions').unsubscribe()
 		socket.removeAllListeners();
 	});
 </script>
