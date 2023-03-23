@@ -12,6 +12,7 @@ export interface MusicSessionMember {
 	userId: string;
 	role: MusicSessionRole;
 	socketId?: string;
+	profileImg: string | undefined;
 }
 
 export interface MusicSessionQueue {
@@ -23,13 +24,6 @@ export interface MusicSessionQueue {
 	addedSince: Date;
 }
 
-export interface SessionJoinRequest {
-	sessionId: string;
-	userId: string;
-	socketId: string;
-	spotifyDisplayName: string;
-}
-
 export type SessionStatus = 'playing' | 'pause';
 export interface SessionPlayingInfo {
 	trackName: string;
@@ -38,4 +32,23 @@ export interface SessionPlayingInfo {
 	artist: string;
 	trackCoverImg?: string;
 	trackDurationMs: number;
+	currentDurationMs: number;
+}
+
+export interface SessionJoinRequest {
+	sessionId: string;
+	userId: string;
+	socketId: string;
+	spotifyDisplayName: string;
+	playingInfo: SessionPlayingInfo;
+}
+
+export interface SessionJoinResponse {
+	spotifyDisplayName: string;
+	playingInfo: SessionPlayingInfo;
+}
+
+export interface OnChangePlayingInfoRequest {
+	sessionId: string;
+	playingInfo: SessionPlayingInfo;
 }

@@ -1,5 +1,9 @@
 <script lang="ts">
-	import type { MusicSession, SessionJoinRequest } from '$lib/interfaces/session/session.interface';
+	import type {
+		MusicSession,
+		SessionJoinRequest,
+		SessionJoinResponse
+	} from '$lib/interfaces/session/session.interface';
 	import { toastValue } from '$lib/notification/toast';
 	import { pb, user } from '$lib/pocketbase/pb';
 	import Icon from '@iconify/svelte';
@@ -8,7 +12,13 @@
 	import { onDestroy, onMount } from 'svelte';
 	import TrackSearchTab from '../../../component/music/TrackSearchTab.svelte';
 	import { socket } from '$lib/socket/client';
-	import { currentSession, currentSessionPassword, playingInfo, socketId } from '$lib/session/session';
+	import {
+		checkSessionRole,
+		currentSession,
+		currentSessionPassword,
+		playingInfo,
+		socketId
+	} from '$lib/session/session';
 	import TrackQueueList from '../../../component/music/TrackQueueList.svelte';
 	import { goto } from '$app/navigation';
 	import { spotifyUser } from '$lib/spotify/spotify';
@@ -23,10 +33,6 @@
 
 	let sessionId = data.session.id;
 
-	playingInfo.subscribe(info => {
-		
-	})
-
 	function onCopySessionId() {
 		toastValue.set({ message: "Session's ID copied!", type: 'info' });
 		navigator.clipboard.writeText(sessionId);
@@ -40,21 +46,40 @@
 		// 	toastValue.set({ message: "You need session's password", type: 'warn' });
 		// }
 		const sessionId = $currentSession?.id;
-		if (!sessionId || !$user || !$user?.id) return;
+		if (!sessionId || !$user || !$user?.id || !$spotifyUser) return;
 
 		const socketConnection = socket.connect();
+
+		// Admin: send current playing track to new comers
+		const joinSessionRequest: SessionJoinRequest = {
+			sessionId: sessionId,
+			socketId: socketConnection.id,
+			userId: $user?.id,
+			spotifyDisplayName: $spotifyUser.display_name ?? '',
+			playingInfo: $playingInfo
+		};
+
+		// Connect to Music session and request for its states
 		socket.on('connect', () => {
 			socketId.set(socketConnection.id);
-			socket.emit('joinSession', {
-				sessionId: sessionId,
-				socketId: socketConnection.id,
-				userId: $user?.id,
-				spotifyDisplayName: $spotifyUser?.display_name ?? ''
-			} as SessionJoinRequest);
+			console.log('1', socketConnection.id);
+			socket.emit('joinSession', joinSessionRequest);
 		});
 
-		socket.on('onNewComerJoin', (message) => {
-			toastValue.set({ message: message, type: 'info' });
+		socket.on('onNewComerJoin', (joinResponse: SessionJoinResponse) => {
+			toastValue.set({ message: `Say hi to ${joinResponse.spotifyDisplayName} 👋`, type: 'info' });
+			const sessionRole = checkSessionRole($user?.id, $currentSession);
+			if (sessionRole === 'member') {
+				playingInfo.set(joinResponse.playingInfo);
+				const _session = $currentSession;
+				_session.participants.push({
+					userId: $user?.id ?? '',
+					role: sessionRole,
+					socketId: socketConnection.id,
+					profileImg: $spotifyUser?.images && $spotifyUser.images[0].url
+				});
+				pb.collection('sessions').update($currentSession?.id, _session);
+			}
 		});
 
 		pb.collection('sessions').subscribe(sessionId, async () => {
@@ -66,11 +91,11 @@
 	onDestroy(() => {
 		console.log('destroying');
 		pb.collection('sessions').unsubscribe(sessionId);
-		socket.off('onNewComerJoin')
+		socket.removeAllListeners();
 	});
 </script>
 
-<div class="w-[1000px] h-[600px] p-6 bg-[rgba(255,255,255,0.05)] rounded-xl">
+<div class="w-[1000px] h-[640px] p-6 bg-[rgba(255,255,255,0.05)] rounded-xl">
 	<Tooltip triggeredBy="[id=copy-id-btn]">Copy Session's ID</Tooltip>
 	<div class="flex flex-row justify-between items-emd w-full">
 		<Tooltip triggeredBy="[id='isPrivate-icon']"
@@ -121,6 +146,6 @@
 		</div>
 	</div>
 </div>
-<div class="w-[1000px] h-20 mt-6">
-<MusicPlayerController />
+<div class="w-[1000px] h-24 mt-6">
+	<MusicPlayerController />
 </div>
