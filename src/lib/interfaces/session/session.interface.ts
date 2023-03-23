@@ -18,8 +18,7 @@ export interface MusicSessionQueue {
 	trackId: string;
 	trackName: string;
 	artist: string;
-	durationMinutes: number;
-	durationSeconds: number;
+	durationMs: number;
 	trackImageUrl?: string;
 	addedSince: Date;
 }
@@ -33,10 +32,10 @@ export interface SessionJoinRequest {
 
 export type SessionStatus = 'playing' | 'pause';
 export interface SessionPlayingInfo {
+	trackName: string;
 	status: SessionStatus;
 	trackId: string;
-	trackDurationMinutes: number;
-	trackDurationSeconds: number;
-	currentDurationMinutes: number;
-	currentDurationSeconds: number;
+	artist: string;
+	trackCoverImg?: string;
+	trackDurationMs: number;
 }

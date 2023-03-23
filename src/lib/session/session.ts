@@ -15,8 +15,8 @@ export const socketId = writable('');
 export const playingInfo = writable<SessionPlayingInfo>();
 
 export function checkSessionRole(
-	userId: string,
-	session: MusicSession
+	userId: string | undefined,
+	session: MusicSession | undefined
 ): MusicSessionRole | undefined {
 	if (!userId || !session) return undefined;
 	const member = session?.participants?.find((participant) => participant.userId === userId);

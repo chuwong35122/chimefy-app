@@ -14,8 +14,6 @@
 	export let track: Track;
 	let imgRef: HTMLImageElement;
 
-	let { minutes, seconds } = millisecondToMinuteSeconds(track.duration_ms);
-
 	function handleImageError() {
 		imgRef.src = '/logo/disc.png';
 	}
@@ -37,8 +35,7 @@
 			trackId: track.id,
 			trackName: track.name,
 			artist: joinArtists(track),
-			durationMinutes: parseInt(minutes),
-			durationSeconds: parseInt(seconds),
+			durationMs: track.duration_ms,
 			trackImageUrl: track?.album?.images[0]?.url,
 			addedSince: new Date()
 		};
@@ -88,8 +85,7 @@
 			<p class="font-light text-xs text-dark-300">
 				{joinArtists(track)}
 			</p>
-			<div class="h-2" />
-			<p class="text-xs text-dark-300">{minutes}:{seconds}</p>
+			<p class="text-xs text-dark-300">{millisecondToMinuteSeconds(track?.duration_ms ?? 0)}</p>
 		</div>
 	</div>
 </div>
