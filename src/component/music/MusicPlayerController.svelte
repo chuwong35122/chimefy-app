@@ -3,41 +3,86 @@
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import { onMount } from 'svelte';
-	import {user} from '$lib/pocketbase/pb'
+	import { user } from '$lib/pocketbase/pb';
 	import { socket } from '$lib/socket/client';
+	import type {
+		OnChangePlayingInfoRequest,
+		SessionPlayingInfo
+	} from '$lib/interfaces/session/session.interface';
 
 	let timer: NodeJS.Timer;
 
-	let isPlaying = false;
 	let volume = 0;
+	let isPlaying = false;
 	let playingMs = 0;
+
+	playingInfo.subscribe(val => {
+		if(val) {
+			isPlaying = (val.status === 'playing')
+		}
+	})
 	playingInfo.set({
 		trackName: 'Flowers',
 		artist: 'Miley Cyrus',
 		status: 'playing',
 		trackId: '0yLdNVWF3Srea0uzk55zFn',
 		trackDurationMs: 200454,
-		trackCoverImg: 'https://i.scdn.co/image/ab67616d0000b273f429549123dbe8552764ba1d'
+		trackCoverImg: 'https://i.scdn.co/image/ab67616d0000b273f429549123dbe8552764ba1d',
+		currentDurationMs: 0
 	});
 
+	function handleChangeSessionInfo() {
+		const role = checkSessionRole($user?.id, $currentSession);
+		if (role === 'member') return;
+
+		const changePlayingInfoRequest: OnChangePlayingInfoRequest = {
+			playingInfo: $playingInfo,
+			sessionId: $currentSession?.id
+		};
+
+		socket.emit('onChangePlayingInfo', changePlayingInfoRequest);
+	}
+
 	function togglePlay() {
-		isPlaying = true;
-		if (isPlaying) {
+		isPlaying = true
+
+		const _playingInfo = $playingInfo;
+		_playingInfo.status = 'playing'
+		handleChangeSessionInfo();
+
 			timer = setInterval(() => {
-				playingMs += 1000;
-				if ($playingInfo && playingMs >= $playingInfo?.trackDurationMs) {
-					// go new track
-				}
-			}, 1000);
-		}
+			playingMs += 1000;
+			playingInfo.set({
+				trackName: 'Flowers',
+				artist: 'Miley Cyrus',
+				status: 'playing',
+				trackId: '0yLdNVWF3Srea0uzk55zFn',
+				trackDurationMs: 200454,
+				currentDurationMs: playingMs,
+				trackCoverImg: 'https://i.scdn.co/image/ab67616d0000b273f429549123dbe8552764ba1d'
+			});
+			if ($playingInfo && playingMs >= $playingInfo?.trackDurationMs) {
+				// go new track
+			}
+		}, 1000);
+		
 	}
 
 	function togglePause() {
 		isPlaying = false;
+		const _prevInfo = { ...$playingInfo };
+		playingInfo.set({ ..._prevInfo, status: 'pause' });
+		handleChangeSessionInfo();
 		clearInterval(timer);
 	}
 
 	// request for current playing music
+	onMount(() => {
+		socket.on('handleChangePlayingInfo', (info: SessionPlayingInfo) => {
+			console.log(info);
+			playingInfo.set(info);
+		});
+	});
 </script>
 
 <div
