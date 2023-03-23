@@ -10,6 +10,7 @@ export default function injectSocketIO(server: any) {
 	const io = new Server(server);
 
 	io.on('connection', (socket) => {
+		console.log(`${socket.id} connected!`);
 		socket.on('joinSession', async (joinRequest: SessionJoinRequest) => {
 			const { sessionId, spotifyDisplayName, playingInfo } = joinRequest;
 			socket.join(sessionId);
@@ -28,13 +29,12 @@ export default function injectSocketIO(server: any) {
 		});
 
 		socket.on('onChangePlayingInfo', (request: OnChangePlayingInfoRequest) => {
-			console.log(request);
 			socket.to(request.sessionId).emit('handleChangePlayingInfo', request.playingInfo);
 		});
 
 		socket.on('disconnect', () => {
 			// send notification
+			console.log(`${socket.id} disconnected!`);
 		});
 	});
-	console.log('SocketIO injected');
 }
