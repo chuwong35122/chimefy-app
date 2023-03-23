@@ -10,3 +10,24 @@ input:focus {
 	@apply ring-primary-600 !important;
 	@apply ring-0 !important;
 }
+
+/* width */
+::-webkit-scrollbar {
+	width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #191414;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #a3a1a1;
+	border-radius: 20px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #5e5b5b;
+}

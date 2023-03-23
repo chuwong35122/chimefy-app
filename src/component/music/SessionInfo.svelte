@@ -1,0 +1,57 @@
+<script lang="ts">
+	import { toastValue } from "$lib/notification/toast";
+	import { Tooltip } from "flowbite-svelte";
+  import {currentSession} from '$lib/session/session'
+	import Icon from "@iconify/svelte";
+
+  export let sessionId = ''
+
+	function onCopySessionId() {
+		toastValue.set({ message: "Session's ID copied!", type: 'info' });
+		navigator.clipboard.writeText(sessionId);
+	}
+</script>
+
+  <Tooltip triggeredBy="[id=copy-id-btn]">Copy Session's ID</Tooltip>
+  <Tooltip triggeredBy="[id='isPrivate-icon']"
+    >{$currentSession?.isPrivate
+      ? 'This session is a private session'
+      : 'This session is a public session'}</Tooltip
+  >
+	<div class="w-full flex flex-row justify-between items-end">
+		<div>
+			<div class="flex flex-row items-center">
+				<div id="isPrivate-icon" class="cursor-pointer">
+					{#if $currentSession?.isPrivate}
+						<Icon
+							icon="material-symbols:lock"
+							width="20"
+							height="20"
+							class="text-dark-400 hover:text-dark-300 duration-200"
+						/>
+					{:else}
+						<Icon
+							icon="material-symbols:lock-open-rounded"
+							width="20"
+							height="20"
+							class="text-dark-400 hover:text-dark-300 duration-200"
+						/>
+					{/if}
+				</div>
+				<h1 class="text-2xl font-medium ml-2 mr-2">{$currentSession?.name}</h1>
+				<div
+					class="mt-2 px-1 bg-dark-300/60 rounded-full hover:bg-dark-300 duration-200 grid place-items-center cursor-default"
+				>
+					<span class="font-medium text-xs text-black">{$currentSession?.type}</span>
+				</div>
+			</div>
+		</div>
+		<button id="copy-id-btn" on:click={onCopySessionId} class="hover:scale-[1.1] duration-200">
+			<Icon
+				icon="material-symbols:content-copy"
+				width={30}
+				height={30}
+				class="text-gray-500 hover:text-gray-300 duration-200"
+			/>
+		</button>
+	</div>

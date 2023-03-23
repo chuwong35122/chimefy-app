@@ -24,6 +24,7 @@
 	import { spotifyUser } from '$lib/spotify/spotify';
 	import MusicPlayerController from '../../../component/music/MusicPlayerController.svelte';
 	import SessionQueueMembers from '../../../component/music/SessionQueueMembers.svelte';
+	import SessionInfo from '../../../component/music/SessionInfo.svelte';
 
 	// TODO: Store session password and check before entering
 	export let data: { session: MusicSession & Record };
@@ -33,11 +34,6 @@
 	}
 
 	let sessionId = data.session.id;
-
-	function onCopySessionId() {
-		toastValue.set({ message: "Session's ID copied!", type: 'info' });
-		navigator.clipboard.writeText(sessionId);
-	}
 
 	onMount(async () => {
 		// const { isPrivate, password } = $currentSession;
@@ -68,8 +64,8 @@
 		socket.on('onNewComerJoin', (joinResponse: SessionJoinResponse) => {
 			toastValue.set({ message: `Say hi to ${joinResponse.spotifyDisplayName} 👋`, type: 'info' });
 			const sessionRole = checkSessionRole($user?.id, $currentSession);
-			currentSessionRole.set(sessionRole)
-			
+			currentSessionRole.set(sessionRole);
+
 			if (sessionRole === 'member') {
 				playingInfo.set(joinResponse.playingInfo);
 				const _session = $currentSession;
@@ -90,59 +86,21 @@
 	});
 
 	onDestroy(() => {
-		pb.collection('sessions').unsubscribe()
+		pb.collection('sessions').unsubscribe();
 		socket.removeAllListeners();
 	});
 </script>
 
-<div class="w-[1000px] h-[640px] p-6 bg-[rgba(255,255,255,0.05)] rounded-xl">
-	<Tooltip triggeredBy="[id=copy-id-btn]">Copy Session's ID</Tooltip>
-	<div class="flex flex-row justify-between items-emd w-full">
-		<Tooltip triggeredBy="[id='isPrivate-icon']"
-			>{$currentSession?.isPrivate
-				? 'This session is a private session'
-				: 'This session is a public session'}</Tooltip
-		>
-		<div>
-			<div class="flex flex-row items-center">
-				<div id="isPrivate-icon" class="cursor-pointer">
-					{#if $currentSession?.isPrivate}
-						<Icon
-							icon="material-symbols:lock"
-							width="20"
-							height="20"
-							class="text-dark-400 hover:text-dark-300 duration-200"
-						/>
-					{:else}
-						<Icon
-							icon="material-symbols:lock-open-rounded"
-							width="20"
-							height="20"
-							class="text-dark-400 hover:text-dark-300 duration-200"
-						/>
-					{/if}
-				</div>
-				<h1 class="text-2xl font-medium ml-2 mr-2">{$currentSession?.name}</h1>
-				<div
-					class="mt-2 px-1 bg-dark-300/60 rounded-full hover:bg-dark-300 duration-200 grid place-items-center cursor-default"
-				>
-					<span class="font-medium text-xs text-black">{$currentSession?.type}</span>
-				</div>
-			</div>
-		</div>
-		<button id="copy-id-btn" on:click={onCopySessionId} class="hover:scale-[1.1] duration-200">
-			<Icon
-				icon="material-symbols:content-copy"
-				width={30}
-				height={30}
-				class="text-gray-500 hover:text-gray-300 duration-200"
-			/>
-		</button>
-	</div>
+<div class="p-4 w-[1000px]">
+	<SessionInfo {sessionId} />
+</div>
+<div class="w-[1000px] h-[640px] bg-[rgba(255,255,255,0.05)] rounded-xl">
 	<div class="flex flex-row w-full h-full">
 		<TrackSearchTab />
-		<div class="w-full overflow-y-auto">
-			<TrackQueueList />
+		<div class="w-full">
+			<div class="w-full h-full overflow-y-auto">
+				<TrackQueueList />
+			</div>
 		</div>
 	</div>
 </div>
