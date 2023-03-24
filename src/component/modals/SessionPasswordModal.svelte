@@ -3,13 +3,12 @@
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 	import { pb, user } from '$lib/pocketbase/pb';
 	import { checkSessionRole, currentSession, currentSessionPassword } from '$lib/session/session';
-	import { socket } from '$lib/socket/client';
 	import { spotifyUser } from '$lib/spotify/spotify';
 	import { checkHash, hashText } from '$lib/utils/common/hash';
 	import Icon from '@iconify/svelte';
 	import { Button, ButtonGroup, InputAddon, Tooltip, Input, Toast } from 'flowbite-svelte';
 	import type { Record } from 'pocketbase';
-
+	
 	let password = '';
 	let error = '';
 
