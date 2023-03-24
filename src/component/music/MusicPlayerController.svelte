@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { currentSessionRole, currentSession, playingInfo } from '$lib/session/session';
+	import {
+		currentSessionRole,
+		currentSession,
+		playingInfo,
+		SpotifyPlayer
+	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import { onMount } from 'svelte';
@@ -8,6 +13,9 @@
 		OnChangePlayingInfoRequest,
 		SessionPlayingInfo
 	} from '$lib/interfaces/session/session.interface';
+	import { spotifyAccessToken } from '$lib/spotify/spotify';
+	import { toastValue } from '$lib/notification/toast';
+	import { Tooltip } from 'flowbite-svelte';
 
 	let timer: NodeJS.Timer;
 
@@ -72,7 +80,26 @@
 	}
 
 	// request for current playing music
-	onMount(() => {
+	onMount(async () => {
+		window.onSpotifyWebPlaybackSDKReady = () => {
+			const token = $spotifyAccessToken ?? '';
+			const player = new Spotify.Player({
+				name: 'Unnamed App',
+				getOAuthToken: (cb) => {
+					cb(token);
+				},
+				volume: 0.5
+			});
+			player.connect();
+			SpotifyPlayer.set(player);
+			$SpotifyPlayer.on('ready', () => {
+				toastValue.set({ message: 'Spotify Player is ready! 🎧', type: 'info' });
+			});
+			$SpotifyPlayer.on('authentication_error', (e) => {
+				console.log(e);
+			});
+		};
+
 		socket.on('handleChangePlayingInfo', (info: SessionPlayingInfo) => {
 			playingInfo.set(info);
 			if ($currentSessionRole === 'member') {
@@ -87,7 +114,7 @@
 </script>
 
 <div
-	class="w-full h-full p-4 rounded-xl bg-dark-500 flex flex-row items-center justify-between hover:bg-white/10 duration-200"
+	class="relative w-full h-full p-4 rounded-xl bg-dark-500 flex flex-row items-center justify-between hover:bg-white/10 duration-200"
 >
 	{#if $playingInfo && $playingInfo?.trackCoverImg}
 		<div class="flex flex-row items-center">
@@ -147,6 +174,12 @@
 		{:else if volume >= 60}
 			<Icon icon="material-symbols:volume-up-rounded" class="w-6 h-6" />
 		{/if}
-		<input bind:value={volume} type="range" id="volume-sider" class="accent-white w-24" />
+		<div class="flex flex-col items-center justify-around">
+			<input bind:value={volume} type="range" id="volume-sider" class="accent-white w-24" />
+		</div>
 	</div>
+	<div class="absolute right-4 bottom-2">
+		<Icon id='connected-player' icon='material-symbols:speaker-group' class='w-4 h-4 text-dark-200' />
+	</div>
+	<Tooltip triggeredBy="[id=connected-player]" placement='bottom'>Connected to {$SpotifyPlayer?._options?.name}</Tooltip>
 </div>
