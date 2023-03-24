@@ -14,6 +14,7 @@ export const socketId = writable('');
 export const currentSessionRole = writable<MusicSessionRole>('member');
 
 export const playingInfo = writable<SessionPlayingInfo>();
+export const SpotifyPlayer = writable<Spotify.Player>();
 
 user.subscribe((val) => {
 	currentSession.subscribe((session) => {
