@@ -10,7 +10,7 @@
 	<a href="/" class="w-12 h-12 grid place-items-center">
 		<div>Logo</div>
 	</a>
-	<div class="w-80 flex flex-row items-center justify-between">
+	<div class="w-56 md:w-96 flex flex-row items-center justify-between">
 		<a
 			href="/session"
 			class={`flex flex-row items-center p-2 px-3 duration-200 hover:text-white ${
@@ -20,7 +20,9 @@
 			}`}
 		>
 			<Icon icon="material-symbols:meeting-room-rounded" width={24} height={24} class="mb-1" />
-			<p class="text-lg font-semibold h-full duration-200 ml-2 hover:text-white">Session</p>
+			<p class="text-lg font-semibold h-full duration-200 ml-2 hover:text-white hidden md:block">
+				Session
+			</p>
 		</a>
 		<a
 			href="/radio"
@@ -31,7 +33,7 @@
 			}`}
 		>
 			<Icon icon="material-symbols:radio" width={24} height={24} class="mb-1" />
-			<p class="text-lg font-semibold h-full duration-200 ml-2">Radio</p>
+			<p class="text-lg font-semibold h-full duration-200 ml-2 hidden md:block">Radio</p>
 		</a>
 		<a
 			href="/contact"
@@ -42,7 +44,7 @@
 			}`}
 		>
 			<Icon icon="mdi:email" width={24} height={24} class="mb-1" />
-			<p class={`text-lg font-semibold ml-2`}>Contact</p>
+			<p class={`text-lg font-semibold ml-2 hidden md:block`}>Contact</p>
 		</a>
 	</div>
 
@@ -86,14 +88,16 @@
 				>{$user?.id ? 'You have log-in to AppName' : 'You have not log-in to Appname'}</Tooltip
 			>
 		{:else}
-			<a
-				href={redirectToSpotifyAuth()}
-				class="flex flex-row items-center p-2 px-3 hover:scale-105 duration-200"
-			>
-				<Icon icon="logos:spotify-icon" width={24} height={24} />
-				<p class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white">
-					Login to Spotify
-				</p>
+			<a href={redirectToSpotifyAuth()} class="p-2 px-3 hover:scale-105 duration-200">
+				<div class="flex flex-row items-center">
+					<Icon icon="logos:spotify-icon" width={24} height={24} />
+					<p class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white hidden md:block">
+						Login to Spotify
+					</p>
+					<p class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white md:hidden">
+						Login
+					</p>
+				</div>
 			</a>
 		{/if}
 	</div>
