@@ -113,11 +113,12 @@
 	});
 </script>
 
-<div
-	class="relative w-full h-full p-4 rounded-xl bg-dark-500 flex flex-row items-center justify-between hover:bg-white/10 duration-200"
+<div class='relative w-full p-4 rounded-xl bg-dark-500 hover:bg-white/10 duration-200'>
+	<div
+	class="flex flex-row items-center justify-between"
 >
 	{#if $playingInfo && $playingInfo?.trackCoverImg}
-		<div class="flex flex-row items-center">
+		<div class="flex flex-col lg:flex-row items-center text-center lg:text-start">
 			<img
 				src={$playingInfo.trackCoverImg}
 				alt="Playing track cover"
@@ -159,9 +160,9 @@
 			</button>
 		</div>
 		<div class="flex flex-row items-center w-full justify-between my-[-8px]">
-			<div class="text-xs">{millisecondToMinuteSeconds(playingMs)}</div>
-			<input type="range" class="w-[500px] h-8 accent-primary-500 mx-2" />
-			<div class="text-xs">
+			<div class="text-xs hidden lg:block">{millisecondToMinuteSeconds(playingMs)}</div>
+			<input type="range" class="w-[500px] h-8 accent-primary-500 mx-2 hidden lg:block" />
+			<div class="text-xs hidden lg:block">
 				{millisecondToMinuteSeconds($playingInfo?.trackDurationMs ?? 0)}
 			</div>
 		</div>
@@ -175,11 +176,23 @@
 			<Icon icon="material-symbols:volume-up-rounded" class="w-6 h-6" />
 		{/if}
 		<div class="flex flex-col items-center justify-around">
-			<input bind:value={volume} type="range" id="volume-sider" class="accent-white w-24" />
+			<input bind:value={volume} type="range" id="volume-sider" class="accent-white w-16 md:w-24" />
 		</div>
 	</div>
 	<div class="absolute right-4 bottom-2">
 		<Icon id='connected-player' icon='material-symbols:speaker-group' class='w-4 h-4 text-dark-200' />
 	</div>
 	<Tooltip triggeredBy="[id=connected-player]" placement='bottom'>Connected to {$SpotifyPlayer?._options?.name}</Tooltip>
+	
 </div>
+<div class="grid place-items-center mt-4">
+	<div class="w-[300px] md:w-[560px] flex flex-row items-center justify-between">
+		<div class="text-xs lg:hidden block">{millisecondToMinuteSeconds(playingMs)}</div>
+		<div class="text-xs lg:hidden block">
+			{millisecondToMinuteSeconds($playingInfo?.trackDurationMs ?? 0)}
+		</div>
+	</div>
+	<input type="range" class="lg:hidden w-[300px] md:w-[560px] h-8 accent-primary-500 mx-2 block" />
+</div>
+</div>
+
