@@ -38,12 +38,12 @@
 </script>
 
 <div class="mt-6 px-4 w-full grid place-items-center">
-	<form class="flex gap-2 w-full lg:w-80">
+	<form class="flex gap-2 w-full">
 		<Search
 			on:keyup={debounce}
 			bind:value={searchTerms}
 			size="md"
-			class="!rounded-full !blur:border-gray-200 !border-gray-200"
+			class="!rounded-full !blur:border-gray-200 !border-gray-200 mb-2"
 		/>
 	</form>
 	<div class="w-full h-[400px] lg:h-[560px] overflow-y-auto overflow-x-hidden">
