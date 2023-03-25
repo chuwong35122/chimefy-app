@@ -58,7 +58,7 @@
 
 <div
 	on:mousedown={handleAddQueue}
-	class="w-80 p-1 my-1 hover:bg-gradient-to-r bg-black hover:from-[rgba(255,255,255,0.2)] to-[rgba(255,255,255,0.8)] duration-200 rounded-xl cursor-pointer group/track"
+	class="w-full p-1 my-1 hover:bg-gradient-to-r bg-black hover:from-[rgba(255,255,255,0.2)] to-[rgba(255,255,255,0.8)] duration-200 rounded-xl cursor-pointer group/track"
 >
 	<div class="flex flex-row items-center">
 		<div
