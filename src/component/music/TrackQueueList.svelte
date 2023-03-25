@@ -24,11 +24,11 @@
 	})
 </script>
 
-<div class="w-full h-full grid place-items-center">
-	<!-- Each Queues -->
+<!-- Each Queues -->
+<div class="w-full grid place-items-center">
 	{#each $currentSession?.queues as queue}
-		<div class="w-[600px] h-[400px] grid place-items-center">
-			<div class="w-96 h-96 rounded-2xl overflow-hidden relative cursor-pointer my-8">
+		<!-- <div class="w-[600px] h-[400px] grid place-items-center"> -->
+			<div class="w-60 h-60 lg:w-96 lg:h-96 rounded-2xl overflow-hidden relative cursor-pointer my-8">
 				<div class="gradient-hover-effect" />
 				<img
 					bind:this={imgRef}
@@ -47,7 +47,7 @@
 					<p class="text-sm leading-tight">{queue?.artist}</p>
 				</div>
 			</div>
-		</div>
+		<!-- </div> -->
 	{/each}
 	<!-- Each Queues -->
 </div>

@@ -93,20 +93,25 @@
 	<title>Session - {$currentSession.name}</title>
 	<script src="https://sdk.scdn.co/spotify-player.js"></script>
 </svelte:head>
-<div class="p-4 w-[1000px]">
+<div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
 	<SessionInfo {sessionId} />
 </div>
-<div class="w-[1000px] h-[640px] bg-[rgba(255,255,255,0.05)] rounded-xl">
-	<div class="flex flex-row w-full h-full">
+<div class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px] bg-[rgba(255,255,255,0.05)] rounded-xl">
+	<div class="flex flex-col lg:flex-row w-full">
 		<TrackSearchTab />
 		<div class="w-full">
-			<div class="w-full h-full overflow-y-auto">
+			<div class="w-full grid place-items-center my-2">
+				<p class="text-2xl font-semibold">
+					Queues
+				</p>
+			</div>
+			<div class="w-full h-[592px] overflow-y-auto">
 				<TrackQueueList />
 			</div>
 		</div>
 	</div>
 </div>
-<div class="w-[1000px] h-24 mt-6">
+<div class="w-[400px] md:w-[640px] lg:w-[1000px] h-24 mt-6">
 	<MusicPlayerController />
 	<SessionQueueMembers />
 </div>
