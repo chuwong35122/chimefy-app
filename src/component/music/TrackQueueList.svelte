@@ -7,8 +7,6 @@
 	// TODO: Create scroll animation
 	let imgRef: HTMLImageElement;
 
-	let minutes = '';
-	let seconds = ''
 	function handleImageError() {
 		imgRef.src = '/logo/disc.png';
 	}
@@ -27,7 +25,6 @@
 <!-- Each Queues -->
 <div class="w-full grid place-items-center">
 	{#each $currentSession?.queues as queue}
-		<!-- <div class="w-[600px] h-[400px] grid place-items-center"> -->
 			<div class="w-60 h-60 lg:w-96 lg:h-96 rounded-2xl overflow-hidden relative cursor-pointer my-8">
 				<div class="gradient-hover-effect" />
 				<img
@@ -47,7 +44,6 @@
 					<p class="text-sm leading-tight">{queue?.artist}</p>
 				</div>
 			</div>
-		<!-- </div> -->
 	{/each}
 	<!-- Each Queues -->
 </div>

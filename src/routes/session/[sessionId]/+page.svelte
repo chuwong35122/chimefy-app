@@ -89,10 +89,6 @@
 	});
 </script>
 
-<svelte:head>
-	<title>Session - {$currentSession.name}</title>
-	<script src="https://sdk.scdn.co/spotify-player.js"></script>
-</svelte:head>
 <div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
 	<SessionInfo {sessionId} />
 </div>
