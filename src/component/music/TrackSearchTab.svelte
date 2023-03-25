@@ -37,8 +37,8 @@
 	}
 </script>
 
-<div class="mt-6 px-4">
-	<form class="flex gap-2 w-80">
+<div class="mt-6 px-4 w-full grid place-items-center">
+	<form class="flex gap-2 w-full lg:w-80">
 		<Search
 			on:keyup={debounce}
 			bind:value={searchTerms}
@@ -46,11 +46,13 @@
 			class="!rounded-full !blur:border-gray-200 !border-gray-200"
 		/>
 	</form>
-	<div class="h-[560px] overflow-y-auto overflow-x-hidden">
+	<div class="w-full h-[400px] lg:h-[560px] overflow-y-auto overflow-x-hidden">
 		{#if trackSearchResults.length > 0}
 			{#each trackSearchResults as track}
 				<MusicSearchResult {track} />
 			{/each}
+		{:else}
+		<div class='h-[100px]'/>
 		{/if}
 	</div>
 </div>
