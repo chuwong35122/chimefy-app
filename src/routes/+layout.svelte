@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../styles/global.css';
-	import NavBar from '../component/UI/NavBar.svelte';
-	import Toast from '../component/notification/Toast.svelte';
+	import NavBar from '$lib/components/UI/NavBar.svelte';
+	import Toast from '$lib/components/notification/Toast.svelte';
 	import { user as userStore } from '$lib/pocketbase/pb';
 	import type { Record } from 'pocketbase';
 	import { spotifyAccessToken, spotifyRefreshToken, spotifyUser } from '$lib/spotify/spotify';
