@@ -1,13 +1,12 @@
 # PR Name
 ## New Features
 - Lorem Ipsum
-___
 ## Bug Fixed
 - Lorem Ipsum
-___
+
 ## Work in Progress
-- Lorem Ipsum___
+- Lorem Ipsum
 ## Note
 - Lorem Ipsum
-___
+
 ## Screenshots
