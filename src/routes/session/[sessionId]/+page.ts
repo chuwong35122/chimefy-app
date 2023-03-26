@@ -14,6 +14,4 @@ export const load: PageLoad = async ({ params }) => {
 			message: 'Session not found.'
 		});
 	}
-	
-
 };

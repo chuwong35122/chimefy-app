@@ -52,7 +52,7 @@
 				<MusicSearchResult {track} />
 			{/each}
 		{:else}
-		<div class='h-[100px]'/>
+			<div class="h-[100px]" />
 		{/if}
 	</div>
 </div>
