@@ -25,13 +25,6 @@
 		errors = '';
 	}
 
-	let genres = MUSIC_GENRE.map((val) => {
-		return {
-			value: val,
-			name: val
-		};
-	});
-
 	async function onCreateSession() {
 		if (!$user?.id) return;
 
@@ -69,9 +62,9 @@
 </script>
 
 <form class="flex flex-col space-y-6">
-	<h3 class="text-xl font-medium text-gray-900 dark:text-white p-0">Create Your Session</h3>
+	<h3 class="text-xl font-medium text-white p-0">Create Your Session</h3>
 	<Label class="space-y-2">
-		<span>Your session name</span>
+		<span class="text-white">Your session name</span>
 		<Input
 			bind:value={data.name}
 			name="name"
@@ -79,10 +72,11 @@
 			placeholder="Session Name"
 			required
 			color="green"
+			defaultClass="placeholder:text-dark-300 w-full"
 		/>
 	</Label>
 	<Label class="space-y-2">
-		<label for="password">Set Session Password</label>
+		<label for="password" class="text-white">Set Session Password</label>
 		<ButtonGroup class="mb-2 w-full">
 			<Input
 				name="password"
@@ -91,6 +85,7 @@
 				placeholder="Password"
 				color="green"
 				type={showPassword ? 'text' : 'password'}
+				defaultClass="placeholder:text-dark-300 w-full"
 			/>
 			<Button size="xs" on:click={() => (showPassword = !showPassword)}>
 				<Icon
@@ -102,12 +97,21 @@
 			</Button>
 		</ButtonGroup>
 	</Label>
-
-	<Label
-		>Select an option
-		<Select underline color="green" class="mt-2" items={genres} bind:value={data.type} />
+	<Label class="space-y-2">
+		<span class="text-white">Your session name</span>
+		<Input
+			bind:value={data.type}
+			name="type"
+			type="text"
+			placeholder="Ex. Chill/ Hiphop/ LoFi/ Work"
+			required
+			color="green"
+			defaultClass="placeholder:text-dark-300 w-full"
+		/>
 	</Label>
-	<Toggle color="green" bind:checked={data.isPrivate}>Set this session private?</Toggle>
+	<Toggle color="green" bind:checked={data.isPrivate} class="text-white"
+		>Set this session private?</Toggle
+	>
 	{#if errors}
 		<Toast color="red" divClass="p-2 w-full">
 			<svelte:fragment slot="icon">
