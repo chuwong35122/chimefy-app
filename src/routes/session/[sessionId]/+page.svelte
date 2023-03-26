@@ -77,10 +77,6 @@
 			}
 		});
 
-		pb.collection('sessions').subscribe(sessionId, async () => {
-			const session = await pb.collection('sessions').getOne<MusicSession & Record>(sessionId);
-			currentSession.set(session);
-		});
 	});
 
 	onDestroy(() => {
@@ -89,6 +85,9 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Session - {$currentSession.name}</title>
+</svelte:head>
 <div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
 	<SessionInfo {sessionId} />
 </div>
