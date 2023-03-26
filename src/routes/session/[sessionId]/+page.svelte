@@ -8,7 +8,7 @@
 	import { pb, user } from '$lib/pocketbase/pb';
 	import type { Record } from 'pocketbase';
 	import { onDestroy, onMount } from 'svelte';
-	import TrackSearchTab from '../../../component/music/TrackSearchTab.svelte';
+	import TrackSearchTab from '$lib/components/music/TrackSearchTab.svelte';
 	import { socket } from '$lib/socket/client';
 	import {
 		checkSessionRole,
@@ -18,11 +18,11 @@
 		playingInfo,
 		socketId
 	} from '$lib/session/session';
-	import TrackQueueList from '../../../component/music/TrackQueueList.svelte';
+	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
 	import { spotifyUser } from '$lib/spotify/spotify';
-	import MusicPlayerController from '../../../component/music/MusicPlayerController.svelte';
-	import SessionQueueMembers from '../../../component/music/SessionQueueMembers.svelte';
-	import SessionInfo from '../../../component/music/SessionInfo.svelte';
+	import MusicPlayerController from '$lib/components/music/MusicPlayerController.svelte';
+	import SessionQueueMembers from '$lib/components/music/SessionQueueMembers.svelte';
+	import SessionInfo from '$lib/components/music/SessionInfo.svelte';
 
 	// TODO: Store session password and check before entering
 	export let data: { session: MusicSession & Record };

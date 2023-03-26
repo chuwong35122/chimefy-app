@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { Button, ButtonGroup, Input, InputAddon, Modal, Tooltip } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
-	import CreateSessionModal from '../../component/modals/CreateSessionModal.svelte';
+	import CreateSessionModal from '$lib/components/modals/CreateSessionModal.svelte';
 	import { getSessionData } from '$lib/session/session';
-	import SessionPasswordModal from '../../component/modals/SessionPasswordModal.svelte';
+	import SessionPasswordModal from '$lib/components/modals/SessionPasswordModal.svelte';
 	import { goto } from '$app/navigation';
 	import { spotifyUser } from '$lib/spotify/spotify';
 	import { toastValue } from '$lib/notification/toast';

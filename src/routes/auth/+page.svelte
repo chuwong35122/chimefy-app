@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Button, ButtonGroup, Input } from 'flowbite-svelte';
-	import PrimaryButton from '../../component/buttons/PrimaryButton.svelte';
+	import PrimaryButton from '$lib/components/buttons/PrimaryButton.svelte';
 	import { toastValue } from '$lib/notification/toast';
 	import type { ActionData } from './$types';
 	import Icon from '@iconify/svelte';
