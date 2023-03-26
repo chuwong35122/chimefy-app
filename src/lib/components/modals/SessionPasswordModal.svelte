@@ -8,7 +8,7 @@
 	import Icon from '@iconify/svelte';
 	import { Button, ButtonGroup, InputAddon, Tooltip, Input, Toast } from 'flowbite-svelte';
 	import type { Record } from 'pocketbase';
-	
+
 	let password = '';
 	let error = '';
 

@@ -42,5 +42,5 @@
 			</div>
 		{/each}
 	</div>
-  <div class="h-12" />
+	<div class="h-12" />
 </div>
