@@ -7,10 +7,14 @@ import type {
 import { Server } from 'socket.io';
 
 export default function injectSocketIO(server: any) {
-	const io = new Server(server);
+	const io = new Server(server, {
+		cors: {
+			origin: '*'
+		}
+	});
 
 	io.on('connection', (socket) => {
-		console.log(`${socket.id} connected!`);
+		// console.log(`${socket.id} connected!`);
 		socket.on('joinSession', async (joinRequest: SessionJoinRequest) => {
 			const { sessionId, spotifyDisplayName, playingInfo } = joinRequest;
 			socket.join(sessionId);
@@ -34,7 +38,7 @@ export default function injectSocketIO(server: any) {
 
 		socket.on('disconnect', () => {
 			// send notification
-			console.log(`${socket.id} disconnected!`);
+			// console.log(`${socket.id} disconnected!`);
 		});
 	});
 }
