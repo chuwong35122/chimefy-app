@@ -3,6 +3,7 @@
 	import { Tooltip } from 'flowbite-svelte';
 	import { currentSession } from '$lib/session/session';
 	import Icon from '@iconify/svelte';
+	import Chip from '../UI/Chip.svelte';
 
 	export let sessionId = '';
 
@@ -39,11 +40,7 @@
 				{/if}
 			</div>
 			<h1 class="text-2xl font-medium ml-2 mr-2">{$currentSession?.name}</h1>
-			<div
-				class="mt-2 px-1 bg-dark-300/60 rounded-full hover:bg-dark-300 duration-200 grid place-items-center cursor-default"
-			>
-				<span class="font-medium text-xs text-black">{$currentSession?.type}</span>
-			</div>
+			<Chip label={$currentSession?.type} />
 		</div>
 	</div>
 	<button id="copy-id-btn" on:click={onCopySessionId} class="hover:scale-[1.1] duration-200">

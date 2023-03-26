@@ -7,6 +7,7 @@
 	import { goto } from '$app/navigation';
 	import { spotifyUser } from '$lib/spotify/spotify';
 	import { toastValue } from '$lib/notification/toast';
+	import SessionList from '$lib/components/session/SessionList.svelte';
 
 	let openCreateSessionModal = false;
 	let enterSessionPasswordModal = false;
@@ -80,4 +81,7 @@
 			>Create new music session</button
 		>
 	</div>
+</div>
+<div class='grid place-items-center mt-[400px] my-20'>
+	<SessionList />
 </div>
