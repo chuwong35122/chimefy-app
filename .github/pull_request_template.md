@@ -1,4 +1,4 @@
-# Set up project & Test PoC
+# PR Name
 ## New Features
 - Lorem Ipsum
 ___
