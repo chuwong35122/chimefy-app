@@ -38,7 +38,7 @@
 	}
 </script>
 
-<Modal bind:open={openCreateSessionModal} size="xs" autoclose={false} class="w-full z-10">
+<Modal bind:open={openCreateSessionModal} size="xs" autoclose={false} class="w-full z-10 !bg-dark-600" backdropClasses='bg-dark-300/[0.15]'>
 	<CreateSessionModal />
 </Modal>
 <Modal bind:open={enterSessionPasswordModal} size="sm" autoclose={false}>
