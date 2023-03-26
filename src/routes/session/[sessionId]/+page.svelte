@@ -76,7 +76,6 @@
 				pb.collection('sessions').update($currentSession?.id, _session);
 			}
 		});
-
 	});
 
 	onDestroy(() => {
@@ -91,14 +90,14 @@
 <div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
 	<SessionInfo {sessionId} />
 </div>
-<div class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px] bg-[rgba(255,255,255,0.05)] rounded-xl">
+<div
+	class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px] bg-[rgba(255,255,255,0.05)] rounded-xl"
+>
 	<div class="flex flex-col lg:flex-row w-full">
 		<TrackSearchTab />
 		<div class="w-full">
 			<div class="w-full grid place-items-center my-2">
-				<p class="text-2xl font-semibold">
-					Queues
-				</p>
+				<p class="text-2xl font-semibold">Queues</p>
 			</div>
 			<div class="w-full h-[592px] overflow-y-auto">
 				<TrackQueueList />

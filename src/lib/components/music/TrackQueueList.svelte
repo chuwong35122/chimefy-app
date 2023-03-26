@@ -8,7 +8,7 @@
 	import { Tooltip } from 'flowbite-svelte';
 	import type { MusicSession, MusicSessionQueue } from '$lib/interfaces/session/session.interface';
 	import { pb } from '$lib/pocketbase/pb';
-	import type {Record} from 'pocketbase'
+	import type { Record } from 'pocketbase';
 	// TODO: Create scroll animation
 	let imgRef: HTMLImageElement;
 
@@ -17,58 +17,63 @@
 	}
 
 	async function removeQueue(index: number) {
-		if(!$currentSession || !$currentSession?.id) return;
+		if (!$currentSession || !$currentSession?.id) return;
 
 		const _currentSession = $currentSession;
-		const queues = _currentSession.queues
-		queues.splice(index, 1)
-		await pb.collection('sessions').update($currentSession?.id, _currentSession)
+		const queues = _currentSession.queues;
+		queues.splice(index, 1);
+		await pb.collection('sessions').update($currentSession?.id, _currentSession);
 	}
-	
 
 	onMount(() => {
 		if (!$currentSession || !$currentSession?.id) return;
 
 		pb.collection('sessions').subscribe($currentSession?.id, async () => {
-			const session = await pb.collection('sessions').getOne<MusicSession & Record>($currentSession?.id);
+			const session = await pb
+				.collection('sessions')
+				.getOne<MusicSession & Record>($currentSession?.id);
 			currentSession.set(session);
 		});
-		
+
 		socket.on('onQueueAdded', (message: string) => {
-			toastValue.set({message: message, type: 'info'})
-		})
-	})
+			toastValue.set({ message: message, type: 'info' });
+		});
+	});
 
 	onDestroy(() => {
-		socket.off('onQueueAdded')
-	})
+		socket.off('onQueueAdded');
+	});
 </script>
 
 <!-- Each Queues -->
 <div class="w-full grid place-items-center">
 	{#each $currentSession?.queues as queue, i}
-			<div class="w-60 h-60 lg:w-96 lg:h-96 rounded-2xl overflow-hidden relative cursor-pointer my-8">
-				<div class="gradient-hover-effect" />
-				<img
-					bind:this={imgRef}
-					src={queue?.trackImageUrl}
-					width="400"
-					height="400"
-					alt={`${queue.trackName} cover`}
-					on:error={handleImageError}
-					class="object-cover rounded-2xl absolute z-0"
-				/>
-				<div class="absolute z-20 p-2 bottom-0">
-					<p class="leading-tight">
-						{millisecondToMinuteSeconds(queue.durationMs ?? 0)}
-					</p>
-					<p class="text-2xl font-normal leading-tight">{queue?.trackName}</p>
-					<p class="text-sm leading-tight">{queue?.artist}</p>
-				</div>
-				<button on:click={() => removeQueue(i)} id='delete-btn' class="absolute z-20 p-2 top-0 right-0">
-					<Icon icon='mdi:trash' class='w-6 h-6 text-dark-200 hover:scale-110 duration-200' />
-				</button>
+		<div class="w-60 h-60 lg:w-96 lg:h-96 rounded-2xl overflow-hidden relative cursor-pointer my-8">
+			<div class="gradient-hover-effect" />
+			<img
+				bind:this={imgRef}
+				src={queue?.trackImageUrl}
+				width="400"
+				height="400"
+				alt={`${queue.trackName} cover`}
+				on:error={handleImageError}
+				class="object-cover rounded-2xl absolute z-0"
+			/>
+			<div class="absolute z-20 p-2 bottom-0">
+				<p class="leading-tight">
+					{millisecondToMinuteSeconds(queue.durationMs ?? 0)}
+				</p>
+				<p class="text-2xl font-normal leading-tight">{queue?.trackName}</p>
+				<p class="text-sm leading-tight">{queue?.artist}</p>
 			</div>
+			<button
+				on:click={() => removeQueue(i)}
+				id="delete-btn"
+				class="absolute z-20 p-2 top-0 right-0"
+			>
+				<Icon icon="mdi:trash" class="w-6 h-6 text-dark-200 hover:scale-110 duration-200" />
+			</button>
+		</div>
 	{/each}
 	<Tooltip triggeredBy="[id=delete-btn]" placement="right">Remove Queue</Tooltip>
 	<!-- Each Queues -->

@@ -91,7 +91,9 @@
 			<a href={redirectToSpotifyAuth()} class="p-2 px-3 hover:scale-105 duration-200">
 				<div class="flex flex-row items-center">
 					<Icon icon="logos:spotify-icon" width={24} height={24} />
-					<p class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white hidden md:block">
+					<p
+						class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white hidden md:block"
+					>
 						Login to Spotify
 					</p>
 					<p class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white md:hidden">
