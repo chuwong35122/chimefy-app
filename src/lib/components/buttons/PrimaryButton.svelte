@@ -8,8 +8,7 @@
 	export let isLoading = false;
 </script>
 
-<button
-	on:click
+<div
 	{...props}
 	class={`bg-primary-600 font-regular text-white p-2 w-full hover:bg-primary-400 duration-200 rounded-full hover:scale-[1.03] ${props.class}`}
 >
@@ -18,4 +17,4 @@
 	{:else}
 		<slot />
 	{/if}
-</button>
+</div>
