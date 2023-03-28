@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let label = '';
 	export let required = false;
-	export let labelPosition: 'start' | 'center' | 'end';
+	export let labelPosition: 'start' | 'center' | 'end' = 'start';
 	export let value = ''
 	export let labelClass = ''
 	let props = {
@@ -22,7 +22,7 @@
 	}
 </script>
 
-<div class={`grid place-items-center ${getLabelPositionClass()}`}>
+<div class={`grid ${getLabelPositionClass()}`}>
 	<label for={props.name} class={`text-dark-200 text-xs mb-1 ${labelClass}`}>{label}</label>
 	<input
 		bind:value={value}
