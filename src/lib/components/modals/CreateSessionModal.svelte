@@ -97,7 +97,7 @@
 		</ButtonGroup>
 	</Label>
 	<Label class="space-y-2">
-		<span class="text-white">Your session name</span>
+		<span class="text-white">Music Type</span>
 		<Input
 			bind:value={data.type}
 			name="type"
