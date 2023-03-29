@@ -90,7 +90,9 @@
 					/>
 				</Button>
 			</ButtonGroup>
-			<PrimaryButton {isLoading} class="my-2">Sign up</PrimaryButton>
+			<button class='w-full'>
+				<PrimaryButton {isLoading} class="my-2">Sign up</PrimaryButton>
+			</button>
 			<a href="/auth" class="underline text-gray-300 text-sm">Want to Login?</a>
 		</div>
 	</form>
