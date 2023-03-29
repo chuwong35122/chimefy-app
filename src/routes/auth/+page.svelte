@@ -65,7 +65,11 @@
 				/>
 			</Button>
 		</ButtonGroup>
-		<PrimaryButton class="my-2">Login</PrimaryButton>
+		<button class='w-full'>
+			<PrimaryButton class="my-2">
+				Login
+			</PrimaryButton>
+		</button>
 		<a href="/auth/register" class="underline text-gray-300 text-sm">Create an account</a>
 	</form>
 </div>
