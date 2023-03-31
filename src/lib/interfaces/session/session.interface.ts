@@ -25,13 +25,8 @@ export interface MusicSessionQueue {
 }
 
 export type SessionStatus = 'playing' | 'pause';
-export interface SessionPlayingInfo {
-	trackName: string;
+export interface SessionPlayingInfo extends MusicSessionQueue {
 	status: SessionStatus;
-	trackId: string;
-	artist: string;
-	trackCoverImg?: string;
-	trackDurationMs: number;
 	currentDurationMs: number;
 }
 
