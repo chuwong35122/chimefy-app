@@ -3,8 +3,8 @@
 		currentSessionRole,
 		currentSession,
 		playingInfo,
-		SpotifyPlayer,
-		checkSessionRole
+		checkSessionRole,
+		spotifyPlayerDeviceId
 	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
@@ -17,7 +17,15 @@
 	import { spotifyAccessToken } from '$lib/spotify/spotify';
 	import { toastValue } from '$lib/notification/toast';
 	import { Tooltip } from 'flowbite-svelte';
+	import {
+		changeSessionPlayInfo,
+		detectSessionChange,
+		forwardTrack,
+		playTrack,
+		updatePlayInfo
+	} from '$lib/spotify/player';
 
+	let SpotifyPlayer: Spotify.Player;
 	let timer: NodeJS.Timer;
 	let debounceTimer: NodeJS.Timer;
 
@@ -25,55 +33,36 @@
 	let debouncedVolume = 0;
 	let playingMs = 0;
 
-	playingInfo.set({
-		trackName: 'Flowers',
-		artist: 'Miley Cyrus',
-		status: 'playing',
-		trackId: '0yLdNVWF3Srea0uzk55zFn',
-		trackDurationMs: 200454,
-		trackCoverImg: 'https://i.scdn.co/image/ab67616d0000b273f429549123dbe8552764ba1d',
-		currentDurationMs: 0
-	});
-
 	async function debounceSetVolume() {
 		clearTimeout(debounceTimer);
 		debounceTimer = setTimeout(async () => {
 			debouncedVolume = volume / 100;
-			await $SpotifyPlayer.setVolume(debouncedVolume);
+			await SpotifyPlayer.setVolume(debouncedVolume);
 		}, 300);
 	}
 
 	function handleChangeSessionInfo() {
-		if ($currentSessionRole !== 'admin') return;
-
-		const changePlayingInfoRequest: OnChangePlayingInfoRequest = {
-			playingInfo: $playingInfo,
-			sessionId: $currentSession?.id
-		};
-
-		socket.emit('onChangePlayingInfo', changePlayingInfoRequest);
+		if ($currentSession) changeSessionPlayInfo($currentSession, $currentSessionRole, $playingInfo);
 	}
 
 	async function togglePlay() {
-		const _playingInfo = $playingInfo;
-		_playingInfo.status = 'playing';
-		playingInfo.set(_playingInfo);
-		await $SpotifyPlayer?.togglePlay();
-		handleChangeSessionInfo();
+		if (!$currentSession || !$currentSessionRole || !playingInfo || !spotifyPlayerDeviceId) return;
+
+		await playTrack($playingInfo, $spotifyPlayerDeviceId, $currentSession);
+		updatePlayInfo($playingInfo, $currentSession, $currentSessionRole);
 
 		timer = setInterval(() => {
 			playingMs += 1000;
-			playingInfo.set({
-				trackName: 'Flowers',
-				artist: 'Miley Cyrus',
-				status: 'playing',
-				trackId: '0yLdNVWF3Srea0uzk55zFn',
-				trackDurationMs: 200454,
-				currentDurationMs: playingMs,
-				trackCoverImg: 'https://i.scdn.co/image/ab67616d0000b273f429549123dbe8552764ba1d'
-			});
-			if ($playingInfo && playingMs >= $playingInfo?.trackDurationMs) {
-				// go new track
+			if ($currentSession?.queues && $currentSession?.queues[0]) {
+				playingInfo.set({
+					...$currentSession.queues[0],
+					status: 'playing',
+					currentDurationMs: playingMs
+				});
+			}
+			if ($playingInfo && playingMs >= $playingInfo?.currentDurationMs) {
+				// TODO: add track
+				forwardTrack();
 			}
 		}, 1000);
 	}
@@ -81,7 +70,12 @@
 	async function togglePause() {
 		const _prevInfo = { ...$playingInfo };
 		playingInfo.set({ ..._prevInfo, status: 'pause' });
-		await $SpotifyPlayer?.togglePlay();
+		await fetch('/api/spotify/playback/pause', {
+			body: JSON.stringify({
+				device_id: $spotifyPlayerDeviceId,
+				access_token: $spotifyAccessToken
+			})
+		});
 		handleChangeSessionInfo();
 		clearInterval(timer);
 	}
@@ -90,38 +84,26 @@
 	onMount(async () => {
 		window.onSpotifyWebPlaybackSDKReady = () => {
 			const token = $spotifyAccessToken ?? '';
-			const player = new Spotify.Player({
-				name: 'Unnamed App',
+			SpotifyPlayer = new Spotify.Player({
+				name: 'Chimefy Player',
 				getOAuthToken: (cb) => {
 					cb(token);
 				},
 				volume: 0.5
 			});
-			SpotifyPlayer.set(player);
-			$SpotifyPlayer.connect();
-			$SpotifyPlayer.on('ready', () => {
+			SpotifyPlayer.connect();
+			SpotifyPlayer.on('ready', async ({ device_id }) => {
+				spotifyPlayerDeviceId.set(device_id);
 				toastValue.set({ message: 'Spotify Player is ready! 🎧', type: 'info' });
+				await playTrack($playingInfo, device_id, $currentSession)
 			});
-			// $SpotifyPlayer.on('authentication_error', (e) => {
-			// 	console.log(e);
-			// });
 		};
 
-		socket.on('handleChangePlayingInfo', (info: SessionPlayingInfo) => {
-			if ($currentSessionRole === 'admin') return;
-			playingInfo.set(info);
-			if ($currentSessionRole === 'member') {
-				if (info.status === 'playing') {
-					togglePlay();
-				} else {
-					togglePause();
-				}
-			}
-		});
+		detectSessionChange($currentSessionRole);
 	});
 
 	onDestroy(() => {
-		$SpotifyPlayer?.disconnect();
+		SpotifyPlayer?.disconnect();
 	});
 </script>
 
@@ -129,13 +111,14 @@
 	<title>Session - {$currentSession.name}</title>
 	<script src="https://sdk.scdn.co/spotify-player.js"></script>
 </svelte:head>
-<div>{$playingInfo.status}</div>
+
 <div class="relative w-full p-4 rounded-xl bg-dark-500 hover:bg-white/10 duration-200">
+	<div>{JSON.stringify(playingInfo)}</div>
 	<div class="flex flex-row items-center justify-between">
-		{#if $playingInfo && $playingInfo?.trackCoverImg}
+		{#if $playingInfo && $playingInfo?.trackImageUrl}
 			<div class="flex flex-col lg:flex-row items-center text-center lg:text-start">
 				<img
-					src={$playingInfo.trackCoverImg}
+					src={$playingInfo.trackImageUrl}
 					alt="Playing track cover"
 					class="w-16 h-16 rounded-full mr-4"
 				/>
@@ -178,7 +161,7 @@
 				<div class="text-xs hidden lg:block">{millisecondToMinuteSeconds(playingMs)}</div>
 				<input type="range" class="w-[500px] h-8 accent-primary-500 mx-2 hidden lg:block" />
 				<div class="text-xs hidden lg:block">
-					{millisecondToMinuteSeconds($playingInfo?.trackDurationMs ?? 0)}
+					{millisecondToMinuteSeconds($playingInfo?.durationMs ?? 0)}
 				</div>
 			</div>
 		</div>
@@ -208,14 +191,14 @@
 			/>
 		</div>
 		<Tooltip triggeredBy="[id=connected-player]" placement="bottom"
-			>Connected to {$SpotifyPlayer?._options?.name}</Tooltip
+			>Connected to {SpotifyPlayer?._options?.name}</Tooltip
 		>
 	</div>
 	<div class="grid place-items-center mt-4">
 		<div class="w-[300px] md:w-[560px] flex flex-row items-center justify-between">
 			<div class="text-xs lg:hidden block">{millisecondToMinuteSeconds(playingMs)}</div>
 			<div class="text-xs lg:hidden block">
-				{millisecondToMinuteSeconds($playingInfo?.trackDurationMs ?? 0)}
+				{millisecondToMinuteSeconds($playingInfo?.durationMs ?? 0)}
 			</div>
 		</div>
 		<input
