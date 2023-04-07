@@ -18,7 +18,7 @@
 		{#each participants as member}
 			<div class="grid place-items-center relative group">
 				<div
-					class="w-24 h-24 lg:w-32 lg:h-32 rounded-full absolute top-0 bg-gradient-to-b from-dark-400/40 to-white/30 grid place-items-center hover:from-dark-400/0 hover:to-white/0 duration-300"
+					class="w-24 h-24 lg:w-32 lg:h-32 rounded-full absolute top-0 bg-gradient-to-b from-dark-300/40 to-white/30 grid place-items-center hover:from-dark-300/0 hover:to-white/0 duration-300"
 				>
 					{#if member.role === 'admin'}
 						<Icon
