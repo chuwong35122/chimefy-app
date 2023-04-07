@@ -53,7 +53,7 @@
 			<div class="w-12 h-12">
 				{#if $spotifyUser && $spotifyUser?.images && $spotifyUser?.images[0]}
 					<div
-						class="relative cursor-pointer bg-dark-400/60 w-12 h-12 rounded-full p-1 hover:bg-dark-400/30 duration-200"
+						class="relative cursor-pointer bg-dark-300/60 w-12 h-12 rounded-full p-1 hover:bg-dark-300/30 duration-200"
 					>
 						<img
 							id="profile-img"

@@ -28,14 +28,14 @@
 						icon="material-symbols:lock"
 						width="20"
 						height="20"
-						class="text-dark-400 hover:text-dark-300 duration-200"
+						class="text-dark-300 hover:text-dark-300 duration-200"
 					/>
 				{:else}
 					<Icon
 						icon="material-symbols:lock-open-rounded"
 						width="20"
 						height="20"
-						class="text-dark-400 hover:text-dark-300 duration-200"
+						class="text-dark-300 hover:text-dark-300 duration-200"
 					/>
 				{/if}
 			</div>
