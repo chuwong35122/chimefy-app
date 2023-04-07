@@ -60,7 +60,7 @@
 	});
 </script>
 
-<Tooltip triggeredBy="[id=search-btn]" placement="bottom">Search</Tooltip>
+<Tooltip triggeredBy="[id=search-list-btn]" placement="bottom">Search</Tooltip>
 <Tooltip triggeredBy="[id=refresh-btn]" placement="bottom">Refresh this list</Tooltip>
 <div class="rounded-xl w-full bg-dark-500 p-4 hover:bg-white/10 duration-200 mt-2 mb-8 relative">
 	<div class="flex flex-row justify-between items-center w-full">
@@ -89,7 +89,7 @@
 		/>
 		<button
 			on:click|preventDefault={getSessionList}
-			id="search-btn"
+			id="search-list-btn"
 			class="hidden lg:grid place-items-center bg-white hover:bg-white/60 duration-200 rounded-lg p-1 active:scale-105"
 		>
 			<Icon icon="material-symbols:search" class="w-8 h-8 text-black" />
