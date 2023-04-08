@@ -14,7 +14,7 @@
 </script>
 
 <div class="grid place-items-center mb-4">
-	<h2 class="text-2xl font-semibold">Public Radio</h2>
+	<h2 class="text-2xl font-semibold">Public Radio 📻</h2>
 </div>
 
 <SessionSearchFilter />
