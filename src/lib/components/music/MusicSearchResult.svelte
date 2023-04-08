@@ -32,6 +32,7 @@
 		const sessionQueues = [...$currentSession.queues];
 		const newQueue: MusicSessionQueue = {
 			trackId: track.id,
+			trackUri: track.uri,
 			trackName: track.name,
 			artist: joinArtists(track),
 			durationMs: track.duration_ms,

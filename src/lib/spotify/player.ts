@@ -24,17 +24,27 @@ export function changeSessionPlayInfo(
 	socket.emit('onChangePlayingInfo', changePlayingInfoRequest);
 }
 
-export async function playTrack(info: SessionPlayingInfo, deviceId: string, session: MusicSession) {
-	console.log(info);
+export async function playTrack(
+	info: SessionPlayingInfo,
+	deviceId: string,
+	session: MusicSession,
+	access_token: string
+) {
 	try {
-		await fetch('/api/spotify/playback/play', {
+		const payload = {
+			uris: session?.queues?.map((q) => q?.trackUri),
+			device_id: deviceId,
+			position_ms: info?.currentDurationMs ?? 0,
+			access_token: access_token
+		};
+		console.log(payload);
+		const res = await fetch('/api/spotify/playback/play', {
 			method: 'POST',
-			body: JSON.stringify({
-				context_uri: info?.trackId,
-				device_id: deviceId,
-				position_ms: info?.currentDurationMs ?? 0
-			})
+			body: JSON.stringify(payload)
 		});
+
+		const playback = await res.json();
+		console.log({ playback });
 
 		if (session?.queues && session?.queues[0]) {
 			playingInfo.set({

@@ -17,6 +17,7 @@ export interface MusicSessionMember {
 
 export interface MusicSessionQueue {
 	trackId: string;
+	trackUri: string;
 	trackName: string;
 	artist: string;
 	durationMs: number;

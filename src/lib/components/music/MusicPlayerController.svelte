@@ -9,11 +9,6 @@
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import { onDestroy, onMount } from 'svelte';
-	import { socket } from '$lib/socket/client';
-	import type {
-		OnChangePlayingInfoRequest,
-		SessionPlayingInfo
-	} from '$lib/interfaces/session/session.interface';
 	import { spotifyAccessToken } from '$lib/spotify/spotify';
 	import { toastValue } from '$lib/notification/toast';
 	import { Tooltip } from 'flowbite-svelte';
@@ -46,10 +41,10 @@
 	}
 
 	async function togglePlay() {
-		if (!$currentSession || !$currentSessionRole || !playingInfo || !spotifyPlayerDeviceId) return;
+		if (!$currentSession || !$currentSessionRole || !$spotifyAccessToken || !$spotifyPlayerDeviceId) return;
 
-		await playTrack($playingInfo, $spotifyPlayerDeviceId, $currentSession);
-		updatePlayInfo($playingInfo, $currentSession, $currentSessionRole);
+		await playTrack($playingInfo, $spotifyPlayerDeviceId, $currentSession, $spotifyAccessToken);
+		await updatePlayInfo($playingInfo, $currentSession, $currentSessionRole);
 
 		timer = setInterval(() => {
 			playingMs += 1000;
@@ -71,6 +66,7 @@
 		const _prevInfo = { ...$playingInfo };
 		playingInfo.set({ ..._prevInfo, status: 'pause' });
 		await fetch('/api/spotify/playback/pause', {
+			method: 'POST',
 			body: JSON.stringify({
 				device_id: $spotifyPlayerDeviceId,
 				access_token: $spotifyAccessToken
@@ -82,21 +78,25 @@
 
 	// request for current playing music
 	onMount(async () => {
-		window.onSpotifyWebPlaybackSDKReady = () => {
-			const token = $spotifyAccessToken ?? '';
+		window.onSpotifyWebPlaybackSDKReady = async () => {
+			console.log($spotifyAccessToken)
+			// const token = $spotifyAccessToken ?? '';
 			SpotifyPlayer = new Spotify.Player({
 				name: 'Chimefy Player',
 				getOAuthToken: (cb) => {
-					cb(token);
+					cb($spotifyAccessToken);
 				},
 				volume: 0.5
 			});
-			SpotifyPlayer.connect();
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
+				console.log({device_id})
 				spotifyPlayerDeviceId.set(device_id);
 				toastValue.set({ message: 'Spotify Player is ready! 🎧', type: 'info' });
-				await playTrack($playingInfo, device_id, $currentSession)
+				await playTrack($playingInfo, device_id, $currentSession, $spotifyAccessToken);
 			});
+
+			// Put the connect() at the bottom most of player.on()
+			await SpotifyPlayer?.connect();
 		};
 
 		detectSessionChange($currentSessionRole);
