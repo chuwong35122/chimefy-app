@@ -24,6 +24,17 @@ export function changeSessionPlayInfo(
 	socket.emit('onChangePlayingInfo', changePlayingInfoRequest);
 }
 
+export async function setActiveSpotifyPlayer(device_id: string, access_token: string) {
+	await fetch('/api/spotify/playback/transfer', {
+		method: 'POST',
+		body: JSON.stringify({
+			device_id,
+			access_token,
+			play: true
+		})
+	});
+}
+
 export async function playTrack(
 	info: SessionPlayingInfo,
 	deviceId: string,
