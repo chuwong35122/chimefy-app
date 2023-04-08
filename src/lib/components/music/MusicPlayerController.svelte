@@ -17,6 +17,7 @@
 		detectSessionChange,
 		forwardTrack,
 		playTrack,
+		setActiveSpotifyPlayer,
 		updatePlayInfo
 	} from '$lib/spotify/player';
 
@@ -89,9 +90,9 @@
 				volume: 0.5
 			});
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
-				console.log({device_id})
 				spotifyPlayerDeviceId.set(device_id);
 				toastValue.set({ message: 'Spotify Player is ready! 🎧', type: 'info' });
+				await setActiveSpotifyPlayer(device_id, $spotifyAccessToken);
 				await playTrack($playingInfo, device_id, $currentSession, $spotifyAccessToken);
 			});
 
