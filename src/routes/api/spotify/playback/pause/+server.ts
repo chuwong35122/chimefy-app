@@ -5,8 +5,10 @@ import { getBearerToken } from '$lib/spotify/spotify';
 
 // context_uri: [spotify:track]
 export const POST: RequestHandler = async ({ fetch, request }) => {
-	const { access_token, device_id } = await request.json();
+	const req = request.clone();
+	const { access_token, device_id } = await req.json();
 
+	console.log(await request.json());
 	const addQueueRes = await fetch(`${PUBLIC_SPOTIFY_BASE_URL}/me/player/pause`, {
 		method: 'PUT',
 		headers: {

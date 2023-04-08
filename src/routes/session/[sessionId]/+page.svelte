@@ -13,13 +13,12 @@
 	import {
 		checkSessionRole,
 		currentSession,
-		currentSessionPassword,
 		currentSessionRole,
 		playingInfo,
 		socketId
 	} from '$lib/session/session';
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
-	import { spotifyUser } from '$lib/spotify/spotify';
+	import { spotifyAccessToken, spotifyUser } from '$lib/spotify/spotify';
 	import MusicPlayerController from '$lib/components/music/MusicPlayerController.svelte';
 	import SessionQueueMembers from '$lib/components/music/SessionQueueMembers.svelte';
 	import SessionInfo from '$lib/components/music/SessionInfo.svelte';
@@ -90,6 +89,7 @@
 <div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
 	<SessionInfo {sessionId} />
 </div>
+{#if $spotifyAccessToken}
 <div
 	class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px] bg-[rgba(255,255,255,0.05)] rounded-xl"
 >
@@ -108,4 +108,5 @@
 <div class="w-[400px] md:w-[640px] lg:w-[1000px] h-24 mt-6">
 	<MusicPlayerController />
 	<SessionQueueMembers />
-</div>
+</div> 
+{/if}
