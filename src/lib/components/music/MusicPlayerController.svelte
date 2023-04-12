@@ -4,7 +4,10 @@
 		currentSession,
 		playingInfo,
 		checkSessionRole,
-		spotifyPlayerDeviceId
+		spotifyPlayerDeviceId,
+
+		hasConfirmedBroadcast
+
 	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
@@ -20,7 +23,11 @@
 		setActiveSpotifyPlayer,
 		updatePlayInfo
 	} from '$lib/spotify/player';
+	import SpotifyTrackBroadcastModal from '../modals/SpotifyTrackBroadcastModal.svelte';
+	import { pb } from '$lib/pocketbase/pb';
+	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 
+	let popupModal = false;
 	let SpotifyPlayer: Spotify.Player;
 	let timer: NodeJS.Timer;
 	let debounceTimer: NodeJS.Timer;
@@ -42,8 +49,14 @@
 	}
 
 	async function togglePlay() {
-		if (!$currentSession || !$currentSessionRole || !$spotifyAccessToken || !$spotifyPlayerDeviceId) return;
+		if ($currentSession?.status === 'waiting' && !$hasConfirmedBroadcast && $currentSessionRole === 'admin') {
+			popupModal = true;
+			return;
+		}
+		if (!$currentSession || !$currentSessionRole || !$spotifyAccessToken || !$spotifyPlayerDeviceId)
+			return;
 
+		if (popupModal) popupModal = false;
 		await playTrack($playingInfo, $spotifyPlayerDeviceId, $currentSession, $spotifyAccessToken);
 		await updatePlayInfo($playingInfo, $currentSession, $currentSessionRole);
 
@@ -65,7 +78,13 @@
 
 	async function togglePause() {
 		const _prevInfo = { ...$playingInfo };
+		const payload: MusicSession = {
+			...$currentSession,
+			status: 'waiting'
+		};
 		playingInfo.set({ ..._prevInfo, status: 'pause' });
+		await pb.collection('sessions').update($currentSession.id, payload);
+
 		await fetch('/api/spotify/playback/pause', {
 			method: 'POST',
 			body: JSON.stringify({
@@ -79,8 +98,9 @@
 
 	// request for current playing music
 	onMount(async () => {
+		console.log('1');
 		window.onSpotifyWebPlaybackSDKReady = async () => {
-			console.log($spotifyAccessToken)
+			console.log($spotifyAccessToken);
 			// const token = $spotifyAccessToken ?? '';
 			SpotifyPlayer = new Spotify.Player({
 				name: 'Chimefy Player',
@@ -92,10 +112,9 @@
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
 				spotifyPlayerDeviceId.set(device_id);
 				toastValue.set({ message: 'Spotify Player is ready! 🎧', type: 'info' });
-				if(device_id && $currentSession?.queues.length > 0) {
-					await setActiveSpotifyPlayer(device_id, $spotifyAccessToken);
-					await playTrack($playingInfo, device_id, $currentSession, $spotifyAccessToken);
-				}
+				// await setActiveSpotifyPlayer(device_id, $spotifyAccessToken);
+				// await togglePlay()
+				// await playTrack($playingInfo, device_id, $currentSession, $spotifyAccessToken);
 			});
 
 			// Put the connect() at the bottom most of player.on()
@@ -115,8 +134,8 @@
 	<script src="https://sdk.scdn.co/spotify-player.js"></script>
 </svelte:head>
 
+<SpotifyTrackBroadcastModal open={popupModal} on:broadcast={togglePlay} />
 <div class="relative w-full p-4 rounded-xl bg-dark-500 hover:bg-white/10 duration-200">
-	<div>{JSON.stringify(playingInfo)}</div>
 	<div class="flex flex-row items-center justify-between">
 		{#if $playingInfo && $playingInfo?.trackImageUrl}
 			<div class="flex flex-col lg:flex-row items-center text-center lg:text-start">
@@ -130,6 +149,8 @@
 					<p class="text-xs truncate w-28 text-dark-200">{$playingInfo?.artist}</p>
 				</div>
 			</div>
+		{:else}
+			<div class="w-20 h-16" />
 		{/if}
 
 		<div class="flex flex-col items-center">
@@ -160,13 +181,15 @@
 					/>
 				</button>
 			</div>
-			<div class="flex flex-row items-center w-full justify-between my-[-8px]">
-				<div class="text-xs hidden lg:block">{millisecondToMinuteSeconds(playingMs)}</div>
-				<input type="range" class="w-[500px] h-8 accent-primary-500 mx-2 hidden lg:block" />
-				<div class="text-xs hidden lg:block">
-					{millisecondToMinuteSeconds($playingInfo?.durationMs ?? 0)}
+			{#if $playingInfo?.status === 'playing'}
+				<div class="flex flex-row items-center w-full justify-between my-[-8px]">
+					<div class="text-xs hidden lg:block">{millisecondToMinuteSeconds(playingMs)}</div>
+					<input type="range" class="w-[500px] h-8 accent-primary-500 mx-2 hidden lg:block" />
+					<div class="text-xs hidden lg:block">
+						{millisecondToMinuteSeconds($playingInfo?.durationMs ?? 0)}
+					</div>
 				</div>
-			</div>
+			{/if}
 		</div>
 		<div class="flex flex-row items-center">
 			{#if volume === 0}
@@ -197,16 +220,18 @@
 			>Connected to {SpotifyPlayer?._options?.name}</Tooltip
 		>
 	</div>
-	<div class="grid place-items-center mt-4">
-		<div class="w-[300px] md:w-[560px] flex flex-row items-center justify-between">
-			<div class="text-xs lg:hidden block">{millisecondToMinuteSeconds(playingMs)}</div>
-			<div class="text-xs lg:hidden block">
-				{millisecondToMinuteSeconds($playingInfo?.durationMs ?? 0)}
+	{#if $playingInfo?.status === 'playing'}
+		<div class="grid place-items-center mt-4">
+			<div class="w-[300px] md:w-[560px] flex flex-row items-center justify-between">
+				<div class="text-xs lg:hidden block">{millisecondToMinuteSeconds(playingMs)}</div>
+				<div class="text-xs lg:hidden block">
+					{millisecondToMinuteSeconds($playingInfo?.durationMs ?? 0)}
+				</div>
 			</div>
+			<input
+				type="range"
+				class="lg:hidden w-[300px] md:w-[560px] h-8 accent-primary-500 mx-2 block"
+			/>
 		</div>
-		<input
-			type="range"
-			class="lg:hidden w-[300px] md:w-[560px] h-8 accent-primary-500 mx-2 block"
-		/>
-	</div>
+	{/if}
 </div>
