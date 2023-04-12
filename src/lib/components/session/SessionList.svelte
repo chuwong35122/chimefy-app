@@ -42,11 +42,17 @@
 						class="w-20 h-20 rounded-full mr-4"
 					/>
 					{#if session?.queues && session?.queues[0]}
-						<div class='flex flex-items flex-col lg:flex-row'>
-							<p class="font-light text-xs text-dark-200 mr-2 uppercase">Now Playing</p>
-							<p class="font-light text-xs w-80 text-ellipsis">
-								{session?.queues[0]?.trackName} - {session?.queues[0]?.artist}
-							</p>
+						<div class="flex flex-col h-full w-36 md:w-56 lg:w-80">
+							{#if session?.status === 'broadcasting'}
+								<p class="text-xs uppercase mb-1">Now Playing</p>
+							{:else}
+								<p class="text-xs uppercase mb-1">Waiting to play</p>
+							{/if}
+							<div>
+								<p class="font-light text-xs text-ellipsis">
+									{session?.queues[0]?.trackName}
+								</p>
+							</div>
 						</div>
 					{/if}
 				</div>
