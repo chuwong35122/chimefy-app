@@ -51,7 +51,7 @@ export async function playTrack(
 			position_ms: info?.currentDurationMs ?? 0,
 			access_token: access_token
 		};
-		const res = await fetch('/api/spotify/playback/play', {
+		await fetch('/api/spotify/playback/play', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -59,18 +59,14 @@ export async function playTrack(
 			body: JSON.stringify(payload)
 		});
 
-		await res.json();
-
 		if (session?.queues && session?.queues[0]) {
 			playingInfo.set({
 				...session.queues[0],
 				status: 'playing',
-				currentDurationMs: 0
+				currentDurationMs: payload.position_ms
 			});
 		}
-	} catch (e) {
-		console.log(e);
-	}
+	} catch (e) {}
 }
 
 export async function updatePlayInfo(
@@ -91,9 +87,8 @@ export async function forwardTrack() {
 
 export function detectSessionChange(role: MusicSessionRole) {
 	socket.on('handleChangePlayingInfo', (info: SessionPlayingInfo) => {
-		if (role === 'admin') return;
-		playingInfo.set(info);
 		if (role === 'member') {
+			playingInfo.set(info);
 			if (info.status === 'playing') {
 				// togglePlay();
 				console.log('play');

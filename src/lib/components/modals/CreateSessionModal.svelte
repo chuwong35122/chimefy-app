@@ -47,7 +47,8 @@
 					}
 				],
 				queues: [],
-				password: sha1(data.password)
+				password: sha1(data.password),
+				status: 'waiting'
 			};
 			const record = await pb.collection('sessions').create(payload);
 			if (record) {
