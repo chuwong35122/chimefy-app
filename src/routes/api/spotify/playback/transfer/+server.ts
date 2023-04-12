@@ -1,6 +1,7 @@
-import type { RequestHandler } from '../$types';
+import type { RequestHandler } from './$types';
 import { PUBLIC_SPOTIFY_BASE_URL } from '$env/static/public';
 import { getBearerToken } from '$lib/spotify/spotify';
+import { json } from '@sveltejs/kit';
 
 // Transfer playback state to other device
 export const POST: RequestHandler = async ({ fetch, request }) => {
@@ -19,5 +20,6 @@ export const POST: RequestHandler = async ({ fetch, request }) => {
 		})
 	});
 
-	return await res.json();
+	const response = await res.json();
+	return json(response);
 };

@@ -5,9 +5,7 @@
 		playingInfo,
 		checkSessionRole,
 		spotifyPlayerDeviceId,
-
 		hasConfirmedBroadcast
-
 	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
@@ -49,7 +47,11 @@
 	}
 
 	async function togglePlay() {
-		if ($currentSession?.status === 'waiting' && !$hasConfirmedBroadcast && $currentSessionRole === 'admin') {
+		if (
+			$currentSession?.status === 'waiting' &&
+			!$hasConfirmedBroadcast &&
+			$currentSessionRole === 'admin'
+		) {
 			popupModal = true;
 			return;
 		}
@@ -112,7 +114,6 @@
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
 				spotifyPlayerDeviceId.set(device_id);
 				toastValue.set({ message: 'Spotify Player is ready! 🎧', type: 'info' });
-				// await setActiveSpotifyPlayer(device_id, $spotifyAccessToken);
 				// await togglePlay()
 				// await playTrack($playingInfo, device_id, $currentSession, $spotifyAccessToken);
 			});
