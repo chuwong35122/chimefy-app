@@ -92,8 +92,10 @@
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
 				spotifyPlayerDeviceId.set(device_id);
 				toastValue.set({ message: 'Spotify Player is ready! 🎧', type: 'info' });
-				await setActiveSpotifyPlayer(device_id, $spotifyAccessToken);
-				await playTrack($playingInfo, device_id, $currentSession, $spotifyAccessToken);
+				if(device_id && $currentSession?.queues.length > 0) {
+					await setActiveSpotifyPlayer(device_id, $spotifyAccessToken);
+					await playTrack($playingInfo, device_id, $currentSession, $spotifyAccessToken);
+				}
 			});
 
 			// Put the connect() at the bottom most of player.on()

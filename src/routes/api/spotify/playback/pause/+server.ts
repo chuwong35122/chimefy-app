@@ -1,4 +1,3 @@
-import { json } from '@sveltejs/kit';
 import type { RequestHandler } from '../$types';
 import { PUBLIC_SPOTIFY_BASE_URL } from '$env/static/public';
 import { getBearerToken } from '$lib/spotify/spotify';
@@ -8,7 +7,6 @@ export const POST: RequestHandler = async ({ fetch, request }) => {
 	const req = request.clone();
 	const { access_token, device_id } = await req.json();
 
-	console.log(await request.json());
 	const addQueueRes = await fetch(`${PUBLIC_SPOTIFY_BASE_URL}/me/player/pause`, {
 		method: 'PUT',
 		headers: {
@@ -19,5 +17,5 @@ export const POST: RequestHandler = async ({ fetch, request }) => {
 			device_id
 		})
 	});
-	return json(await addQueueRes.json());
+	return await addQueueRes.json();
 };
