@@ -7,6 +7,7 @@ export interface MusicSession {
 	type: string;
 	participants: MusicSessionMember[];
 	queues: MusicSessionQueue[];
+	status: SessionBroadcastStatus;
 }
 export interface MusicSessionMember {
 	userId: string;
@@ -26,6 +27,7 @@ export interface MusicSessionQueue {
 }
 
 export type SessionStatus = 'playing' | 'pause';
+export type SessionBroadcastStatus = 'broadcasting' | 'waiting';
 export interface SessionPlayingInfo extends MusicSessionQueue {
 	status: SessionStatus;
 	currentDurationMs: number;
