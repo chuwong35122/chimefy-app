@@ -62,7 +62,7 @@
 	<NavBar />
 	<div class="w-full grid place-items-center pt-12">
 		<slot />
-		<div class="w-80 absolute bottom-10">
+		<div class="w-80 absolute bottom-10 z-50">
 			<Toast />
 		</div>
 	</div>
