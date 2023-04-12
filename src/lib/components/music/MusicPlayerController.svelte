@@ -163,14 +163,14 @@
 					/>
 				</button>
 				<button on:click={$playingInfo?.status === 'playing' ? togglePause : togglePlay}>
-					{#if $playingInfo && $playingInfo?.status !== 'playing'}
+					{#if $playingInfo && $playingInfo?.status === 'playing'}
 						<Icon
-							icon="material-symbols:play-circle-rounded"
+							icon="material-symbols:pause-circle-rounded"
 							class="w-10 h-10 hover:scale-110 duration-100"
 						/>
 					{:else}
 						<Icon
-							icon="material-symbols:pause-circle-rounded"
+							icon="material-symbols:play-circle-rounded"
 							class="w-10 h-10 hover:scale-110 duration-100"
 						/>
 					{/if}
