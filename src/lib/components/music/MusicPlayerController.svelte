@@ -100,10 +100,7 @@
 
 	// request for current playing music
 	onMount(async () => {
-		console.log('1');
 		window.onSpotifyWebPlaybackSDKReady = async () => {
-			console.log($spotifyAccessToken);
-			// const token = $spotifyAccessToken ?? '';
 			SpotifyPlayer = new Spotify.Player({
 				name: 'Chimefy Player',
 				getOAuthToken: (cb) => {
@@ -114,8 +111,6 @@
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
 				spotifyPlayerDeviceId.set(device_id);
 				toastValue.set({ message: 'Spotify Player is ready! 🎧', type: 'info' });
-				// await togglePlay()
-				// await playTrack($playingInfo, device_id, $currentSession, $spotifyAccessToken);
 			});
 
 			// Put the connect() at the bottom most of player.on()
@@ -182,7 +177,7 @@
 					/>
 				</button>
 			</div>
-			{#if $playingInfo?.status === 'playing'}
+			{#if $currentSession?.status === 'broadcasting'}
 				<div class="flex flex-row items-center w-full justify-between my-[-8px]">
 					<div class="text-xs hidden lg:block">{millisecondToMinuteSeconds(playingMs)}</div>
 					<input type="range" class="w-[500px] h-8 accent-primary-500 mx-2 hidden lg:block" />
@@ -221,7 +216,7 @@
 			>Connected to {SpotifyPlayer?._options?.name}</Tooltip
 		>
 	</div>
-	{#if $playingInfo?.status === 'playing'}
+	{#if $currentSession?.status === 'broadcasting'}
 		<div class="grid place-items-center mt-4">
 			<div class="w-[300px] md:w-[560px] flex flex-row items-center justify-between">
 				<div class="text-xs lg:hidden block">{millisecondToMinuteSeconds(playingMs)}</div>
