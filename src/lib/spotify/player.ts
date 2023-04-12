@@ -27,6 +27,9 @@ export function changeSessionPlayInfo(
 export async function setActiveSpotifyPlayer(device_id: string, access_token: string) {
 	await fetch('/api/spotify/playback/transfer', {
 		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
 		body: JSON.stringify({
 			device_id,
 			access_token,
@@ -48,14 +51,15 @@ export async function playTrack(
 			position_ms: info?.currentDurationMs ?? 0,
 			access_token: access_token
 		};
-		console.log(payload);
 		const res = await fetch('/api/spotify/playback/play', {
 			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
 			body: JSON.stringify(payload)
 		});
 
-		const playback = await res.json();
-		console.log({ playback });
+		await res.json();
 
 		if (session?.queues && session?.queues[0]) {
 			playingInfo.set({
