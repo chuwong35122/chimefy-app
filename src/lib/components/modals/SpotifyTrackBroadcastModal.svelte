@@ -22,9 +22,7 @@
 			hasConfirmedBroadcast.set(true);
 
 			await setActiveSpotifyPlayer($spotifyPlayerDeviceId, $spotifyAccessToken);
-			await pb.collection('sessions').update($currentSession.id, {
-				..._currentSession
-			});
+			await pb.collection('sessions').update($currentSession.id, currentSession);
 			dispatch('broadcast');
 		} catch (e) {
 			toastValue.set({
@@ -35,7 +33,7 @@
 	}
 </script>
 
-<Modal bind:open size="xs" autoclose class="bg-dark-600">
+<Modal bind:open size="xs" autoclose={false} class="bg-dark-600">
 	<div class="text-center w-80 grid place-items-center">
 		<Icon icon="mdi:broadcast" class="w-16 h-16 text-primary-500" />
 		<h1 class="text-lg font-normal text-white">Start Session Broadcast?</h1>
