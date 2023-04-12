@@ -12,7 +12,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { spotifyAccessToken } from '$lib/spotify/spotify';
 	import { toastValue } from '$lib/notification/toast';
-	import { Tooltip } from 'flowbite-svelte';
+	import { Modal, Tooltip } from 'flowbite-svelte';
 	import {
 		changeSessionPlayInfo,
 		detectSessionChange,
@@ -130,7 +130,9 @@
 	<script src="https://sdk.scdn.co/spotify-player.js"></script>
 </svelte:head>
 
-<SpotifyTrackBroadcastModal open={popupModal} on:broadcast={togglePlay} />
+<Modal bind:open={popupModal} size="xs" autoclose={false} class="bg-dark-600">
+	<SpotifyTrackBroadcastModal open={popupModal} on:broadcast={togglePlay} />
+</Modal>
 <div class="relative w-full p-4 rounded-xl bg-dark-500 hover:bg-white/10 duration-200">
 	<div class="flex flex-row items-center justify-between">
 		{#if $playingInfo && $playingInfo?.trackImageUrl}
