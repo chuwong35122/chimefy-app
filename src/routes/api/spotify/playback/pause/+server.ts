@@ -20,7 +20,5 @@ export const POST: RequestHandler = async ({ fetch, request }) => {
 	});
 
 	const response = await res.json();
-	return json({
-		status: response.status
-	});
+	return json(response);
 };
