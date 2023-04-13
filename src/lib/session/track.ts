@@ -20,3 +20,20 @@ export async function searchTrack(q: string, type: SearchType, access_token: str
 	const data = await res.json();
 	return data.tracks.items as Track[];
 }
+
+export function convertTrackMsToPercentage(
+	currentMs: number | undefined,
+	durationMs: number | undefined
+) {
+	if (!currentMs || !durationMs) return 0;
+
+	return (currentMs / durationMs) * 100;
+}
+
+export function convertPercentageToTrackMs(
+	percentage: number | undefined,
+	durationMs: number | undefined
+) {
+	if (!percentage || !durationMs) return 0;
+	return (percentage / 100) * durationMs;
+}
