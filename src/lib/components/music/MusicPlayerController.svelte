@@ -17,6 +17,7 @@
 	import {
 		changeSessionPlayInfo,
 		detectSessionChange,
+		fastForwardCurrentTrack,
 		forwardTrack,
 		playTrack,
 		setActiveSpotifyPlayer,
@@ -37,26 +38,12 @@
 
 	let playingMs = 0;
 
-	let debouncePlayerProgressPercentageTimer: NodeJS.Timer;
-	let playerProgressPercentage = 0;
-	let debouncePlayerProgressPercentage = 0;
-
 	async function debounceSetVolume() {
 		clearTimeout(debounceVolumeTimer);
 		debounceVolumeTimer = setTimeout(async () => {
 			debouncedVolume = volume / 100;
 			await SpotifyPlayer.setVolume(debouncedVolume);
 		}, 300);
-	}
-
-	function debounceSetPlayerProgressPercentage(val: number) {
-		if (debouncePlayerProgressPercentageTimer) {
-			clearTimeout(debouncePlayerProgressPercentageTimer);
-		}
-
-		debouncePlayerProgressPercentageTimer = setTimeout(() => {
-			debouncePlayerProgressPercentage = val;
-		}, 500);
 	}
 
 	function handleChangeSessionInfo() {
@@ -83,10 +70,6 @@
 				status: 'broadcasting'
 			});
 			await playTrack($playingInfo, $spotifyPlayerDeviceId, $currentSession, $spotifyAccessToken);
-			playerProgressPercentage = convertTrackMsToPercentage(
-				$playingInfo?.currentDurationMs,
-				$playingInfo?.durationMs
-			);
 			await updatePlayInfo($playingInfo, $currentSession, $currentSessionRole);
 
 			timer = setInterval(() => {
@@ -97,10 +80,6 @@
 						status: 'playing',
 						currentDurationMs: playingMs
 					});
-					playerProgressPercentage = convertTrackMsToPercentage(
-						playingMs,
-						$playingInfo?.durationMs
-					);
 				}
 				if ($playingInfo && playingMs >= $playingInfo?.durationMs) {
 					// TODO: add track
@@ -115,25 +94,31 @@
 	async function togglePause() {
 		try {
 			const _prevInfo = { ...$playingInfo };
-		const payload: MusicSession = {
-			...$currentSession,
-			status: 'waiting'
-		};
-		playingInfo.set({ ..._prevInfo, status: 'pause' });
-		await pb.collection('sessions').update($currentSession?.id, payload);
+			const payload: MusicSession = {
+				...$currentSession,
+				status: 'waiting'
+			};
+			playingInfo.set({ ..._prevInfo, status: 'pause' });
+			await pb.collection('sessions').update($currentSession?.id, payload);
 
-		await fetch('/api/spotify/playback/pause', {
-			method: 'POST',
-			body: JSON.stringify({
-				device_id: $spotifyPlayerDeviceId,
-				access_token: $spotifyAccessToken
-			})
-		});
-		handleChangeSessionInfo();
-		clearInterval(timer);
-		}catch(e) {
-		console.error(e);
+			await fetch('/api/spotify/playback/pause', {
+				method: 'POST',
+				body: JSON.stringify({
+					device_id: $spotifyPlayerDeviceId,
+					access_token: $spotifyAccessToken
+				})
+			});
+			handleChangeSessionInfo();
+			clearInterval(timer);
+		} catch (e) {
+			console.error(e);
 		}
+	}
+
+	async function handleFastForwardTrack() {
+		if ($currentSessionRole !== 'admin') return;
+		
+		await fastForwardCurrentTrack(playingMs, $spotifyPlayerDeviceId, $spotifyAccessToken, $playingInfo);
 	}
 
 	$: async () => {
@@ -170,8 +155,6 @@
 	onDestroy(() => {
 		SpotifyPlayer?.disconnect();
 	});
-
-	$: debounceSetPlayerProgressPercentage(playerProgressPercentage);
 </script>
 
 <svelte:head>
@@ -229,11 +212,15 @@
 					/>
 				</button>
 			</div>
+			<div>{playingMs}</div>
 			{#if $currentSession?.status === 'broadcasting'}
 				<div class="flex flex-row items-center w-full justify-between my-[-8px]">
 					<div class="text-xs hidden lg:block w-8">{millisecondToMinuteSeconds(playingMs)}</div>
 					<input
-						bind:value={playerProgressPercentage}
+						min={0}
+						bind:value={playingMs}
+						max={$currentSession?.queues[0].durationMs ?? 1}
+						on:mouseup={handleFastForwardTrack}
 						type="range"
 						class="w-[500px] h-8 accent-primary-500 mx-2 hidden lg:block"
 					/>
@@ -281,7 +268,10 @@
 				</div>
 			</div>
 			<input
-				bind:value={playerProgressPercentage}
+				bind:value={playingMs}
+				min={0}
+				max={$currentSession?.queues[0].durationMs ?? 1}
+				on:mouseup={handleFastForwardTrack}
 				type="range"
 				class="lg:hidden w-[300px] md:w-[560px] h-8 accent-primary-500 mx-2 block"
 			/>
