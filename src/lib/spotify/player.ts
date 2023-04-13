@@ -44,29 +44,51 @@ export async function playTrack(
 	session: MusicSession,
 	access_token: string
 ) {
+	const payload = {
+		uris: session?.queues?.map((q) => q?.trackUri),
+		device_id: deviceId,
+		position_ms: info?.currentDurationMs ?? 0,
+		access_token: access_token
+	};
+	await fetch('/api/spotify/playback/play', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(payload)
+	});
+
+	if (session?.queues && session?.queues[0]) {
+		playingInfo.set({
+			...session.queues[0],
+			status: 'playing',
+			currentDurationMs: payload.position_ms
+		});
+	}
+}
+
+export async function fastForwardCurrentTrack(
+	time: number,
+	deviceId: string,
+	access_token: string,
+	sessionPlayingInfo: SessionPlayingInfo
+) {
 	try {
-		const payload = {
-			uris: session?.queues?.map((q) => q?.trackUri),
-			device_id: deviceId,
-			position_ms: info?.currentDurationMs ?? 0,
-			access_token: access_token
-		};
-		await fetch('/api/spotify/playback/play', {
+		await fetch('/api/spotify/playback/seek', {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(payload)
+			body: JSON.stringify({
+				position_ms: time,
+				device_id: deviceId,
+				access_token
+			})
 		});
 
-		if (session?.queues && session?.queues[0]) {
-			playingInfo.set({
-				...session.queues[0],
-				status: 'playing',
-				currentDurationMs: payload.position_ms
-			});
-		}
-	} catch (e) {}
+		const _playingInfo = { ...sessionPlayingInfo };
+		_playingInfo.currentDurationMs = time;
+		playingInfo.set(_playingInfo);
+	} catch (e) {
+		console.log(e);
+	}
 }
 
 export async function updatePlayInfo(
