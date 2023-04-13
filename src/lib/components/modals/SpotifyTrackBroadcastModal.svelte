@@ -20,7 +20,7 @@
 			hasConfirmedBroadcast.set(true);
 
 			await setActiveSpotifyPlayer($spotifyPlayerDeviceId, $spotifyAccessToken);
-			await pb.collection('sessions').update($currentSession.id, currentSession);
+			await pb.collection('sessions').update($currentSession.id, _currentSession);
 			dispatch('broadcast');
 		} catch (e) {
 			toastValue.set({
