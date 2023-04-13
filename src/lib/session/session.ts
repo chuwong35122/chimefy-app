@@ -58,9 +58,6 @@ export async function addSessionParticipant(
 	userId: string | undefined,
 	spotifyUser: PublicUser | undefined
 ) {
-	console.log(session);
-	console.log(userId);
-	console.log(spotifyUser);
 	if (!userId || !spotifyUser || !spotifyUser?.images) return;
 
 	const _session = { ...session };

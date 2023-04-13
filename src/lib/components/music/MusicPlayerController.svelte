@@ -25,22 +25,38 @@
 	import SpotifyTrackBroadcastModal from '../modals/SpotifyTrackBroadcastModal.svelte';
 	import { pb, user } from '$lib/pocketbase/pb';
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
+	import { convertTrackMsToPercentage } from '$lib/session/track';
 
 	let popupModal = false;
 	let SpotifyPlayer: Spotify.Player;
 	let timer: NodeJS.Timer;
-	let debounceTimer: NodeJS.Timer;
 
+	let debounceVolumeTimer: NodeJS.Timer;
 	let volume = 50;
 	let debouncedVolume = 0;
+
 	let playingMs = 0;
 
+	let debouncePlayerProgressPercentageTimer: NodeJS.Timer;
+	let playerProgressPercentage = 0;
+	let debouncePlayerProgressPercentage = 0;
+
 	async function debounceSetVolume() {
-		clearTimeout(debounceTimer);
-		debounceTimer = setTimeout(async () => {
+		clearTimeout(debounceVolumeTimer);
+		debounceVolumeTimer = setTimeout(async () => {
 			debouncedVolume = volume / 100;
 			await SpotifyPlayer.setVolume(debouncedVolume);
 		}, 300);
+	}
+
+	function debounceSetPlayerProgressPercentage(val: number) {
+		if (debouncePlayerProgressPercentageTimer) {
+			clearTimeout(debouncePlayerProgressPercentageTimer);
+		}
+
+		debouncePlayerProgressPercentageTimer = setTimeout(() => {
+			debouncePlayerProgressPercentage = val;
+		}, 500);
 	}
 
 	function handleChangeSessionInfo() {
@@ -60,33 +76,51 @@
 			return;
 
 		if (popupModal) popupModal = false;
-		await playTrack($playingInfo, $spotifyPlayerDeviceId, $currentSession, $spotifyAccessToken);
-		await updatePlayInfo($playingInfo, $currentSession, $currentSessionRole);
 
-		timer = setInterval(() => {
-			playingMs += 1000;
-			if ($currentSession?.queues && $currentSession?.queues[0]) {
-				playingInfo.set({
-					...$currentSession.queues[0],
-					status: 'playing',
-					currentDurationMs: playingMs
-				});
-			}
-			if ($playingInfo && playingMs >= $playingInfo?.currentDurationMs) {
-				// TODO: add track
-				forwardTrack();
-			}
-		}, 1000);
+		try {
+			await pb.collection('sessions').update($currentSession?.id, {
+				...$currentSession,
+				status: 'broadcasting'
+			});
+			await playTrack($playingInfo, $spotifyPlayerDeviceId, $currentSession, $spotifyAccessToken);
+			playerProgressPercentage = convertTrackMsToPercentage(
+				$playingInfo?.currentDurationMs,
+				$playingInfo?.durationMs
+			);
+			await updatePlayInfo($playingInfo, $currentSession, $currentSessionRole);
+
+			timer = setInterval(() => {
+				playingMs += 1000;
+				if ($currentSession?.queues && $currentSession?.queues[0]) {
+					playingInfo.set({
+						...$currentSession.queues[0],
+						status: 'playing',
+						currentDurationMs: playingMs
+					});
+					playerProgressPercentage = convertTrackMsToPercentage(
+						playingMs,
+						$playingInfo?.durationMs
+					);
+				}
+				if ($playingInfo && playingMs >= $playingInfo?.durationMs) {
+					// TODO: add track
+					forwardTrack();
+				}
+			}, 1000);
+		} catch (e) {
+			console.error(e);
+		}
 	}
 
 	async function togglePause() {
-		const _prevInfo = { ...$playingInfo };
+		try {
+			const _prevInfo = { ...$playingInfo };
 		const payload: MusicSession = {
 			...$currentSession,
 			status: 'waiting'
 		};
 		playingInfo.set({ ..._prevInfo, status: 'pause' });
-		await pb.collection('sessions').update($currentSession.id, payload);
+		await pb.collection('sessions').update($currentSession?.id, payload);
 
 		await fetch('/api/spotify/playback/pause', {
 			method: 'POST',
@@ -97,14 +131,17 @@
 		});
 		handleChangeSessionInfo();
 		clearInterval(timer);
+		}catch(e) {
+		console.error(e);
+		}
 	}
 
 	$: async () => {
 		if (!$currentSession || !$user) return;
 
-		const _participant = $currentSession.participants.find(p => p?.userId === $user?.id)
-		if(!_participant) {
-			await addSessionParticipant($currentSession, $user?.id, $spotifyUser)
+		const _participant = $currentSession.participants.find((p) => p?.userId === $user?.id);
+		if (!_participant) {
+			await addSessionParticipant($currentSession, $user?.id, $spotifyUser);
 		}
 	};
 
@@ -133,6 +170,8 @@
 	onDestroy(() => {
 		SpotifyPlayer?.disconnect();
 	});
+
+	$: debounceSetPlayerProgressPercentage(playerProgressPercentage);
 </script>
 
 <svelte:head>
@@ -140,10 +179,11 @@
 	<script src="https://sdk.scdn.co/spotify-player.js"></script>
 </svelte:head>
 
-<Modal bind:open={popupModal} size="xs" autoclose={false} class="bg-dark-600">
+<Modal bind:open={popupModal} size="xs" autoclose={false} class="!bg-dark-600">
 	<SpotifyTrackBroadcastModal on:broadcast={togglePlay} />
 </Modal>
 <div class="relative w-full p-4 rounded-xl bg-dark-500 hover:bg-white/10 duration-200">
+	<div>{$currentSession?.status}</div>
 	<div class="flex flex-row items-center justify-between">
 		{#if $playingInfo && $playingInfo?.trackImageUrl}
 			<div class="flex flex-col lg:flex-row items-center text-center lg:text-start">
@@ -191,9 +231,13 @@
 			</div>
 			{#if $currentSession?.status === 'broadcasting'}
 				<div class="flex flex-row items-center w-full justify-between my-[-8px]">
-					<div class="text-xs hidden lg:block">{millisecondToMinuteSeconds(playingMs)}</div>
-					<input type="range" class="w-[500px] h-8 accent-primary-500 mx-2 hidden lg:block" />
-					<div class="text-xs hidden lg:block">
+					<div class="text-xs hidden lg:block w-8">{millisecondToMinuteSeconds(playingMs)}</div>
+					<input
+						bind:value={playerProgressPercentage}
+						type="range"
+						class="w-[500px] h-8 accent-primary-500 mx-2 hidden lg:block"
+					/>
+					<div class="text-xs hidden lg:block w-8">
 						{millisecondToMinuteSeconds($playingInfo?.durationMs ?? 0)}
 					</div>
 				</div>
@@ -231,12 +275,13 @@
 	{#if $currentSession?.status === 'broadcasting'}
 		<div class="grid place-items-center mt-4">
 			<div class="w-[300px] md:w-[560px] flex flex-row items-center justify-between">
-				<div class="text-xs lg:hidden block">{millisecondToMinuteSeconds(playingMs)}</div>
-				<div class="text-xs lg:hidden block">
+				<div class="text-xs lg:hidden block w-8">{millisecondToMinuteSeconds(playingMs)}</div>
+				<div class="text-xs lg:hidden block w-8">
 					{millisecondToMinuteSeconds($playingInfo?.durationMs ?? 0)}
 				</div>
 			</div>
 			<input
+				bind:value={playerProgressPercentage}
 				type="range"
 				class="lg:hidden w-[300px] md:w-[560px] h-8 accent-primary-500 mx-2 block"
 			/>
