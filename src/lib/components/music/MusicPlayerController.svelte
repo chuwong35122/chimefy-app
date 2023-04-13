@@ -5,12 +5,13 @@
 		playingInfo,
 		checkSessionRole,
 		spotifyPlayerDeviceId,
-		hasConfirmedBroadcast
+		hasConfirmedBroadcast,
+		addSessionParticipant
 	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import { onDestroy, onMount } from 'svelte';
-	import { spotifyAccessToken } from '$lib/spotify/spotify';
+	import { spotifyAccessToken, spotifyUser } from '$lib/spotify/spotify';
 	import { toastValue } from '$lib/notification/toast';
 	import { Modal, Tooltip } from 'flowbite-svelte';
 	import {
@@ -22,7 +23,7 @@
 		updatePlayInfo
 	} from '$lib/spotify/player';
 	import SpotifyTrackBroadcastModal from '../modals/SpotifyTrackBroadcastModal.svelte';
-	import { pb } from '$lib/pocketbase/pb';
+	import { pb, user } from '$lib/pocketbase/pb';
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 
 	let popupModal = false;
@@ -97,6 +98,15 @@
 		handleChangeSessionInfo();
 		clearInterval(timer);
 	}
+
+	$: async () => {
+		if (!$currentSession || !$user) return;
+
+		const _participant = $currentSession.participants.find(p => p?.userId === $user?.id)
+		if(!_participant) {
+			await addSessionParticipant($currentSession, $user?.id, $spotifyUser)
+		}
+	};
 
 	// request for current playing music
 	onMount(async () => {

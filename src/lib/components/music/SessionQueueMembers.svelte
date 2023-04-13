@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { MusicSessionMember } from '$lib/interfaces/session/session.interface';
+	import { user } from '$lib/pocketbase/pb';
 	import { currentSession } from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 
@@ -10,6 +11,10 @@
 			participants = val.participants;
 		}
 	});
+
+	function detectSelf(member: MusicSessionMember) {
+		return member?.userId === $user?.id ? true : false;
+	}
 </script>
 
 <div class="mt-20">
@@ -38,7 +43,7 @@
 					draggable="false"
 					class="w-24 h-24 lg:w-32 lg:h-32 rounded-full"
 				/>
-				<p class="mt-2 text-sm lg:text-md">{member?.spotifyDisplayedName}</p>
+				<p class="mt-2 text-sm lg:text-md">{member?.spotifyDisplayedName} {detectSelf(member) ? '(me)' : ''}</p>
 			</div>
 		{/each}
 	</div>

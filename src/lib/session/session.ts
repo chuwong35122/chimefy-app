@@ -6,6 +6,7 @@ import type {
 import { toastValue } from '$lib/notification/toast';
 import { pb, user } from '$lib/pocketbase/pb';
 import type { ClientResponseError, Record } from 'pocketbase';
+import type { PublicUser } from 'spotify-types';
 import { writable } from 'svelte/store';
 
 export const currentSession = writable<Record & MusicSession>();
@@ -50,4 +51,25 @@ export async function getSessionData(id: string) {
 			toastValue.set({ message: 'Session not found.', type: 'error' });
 		}
 	}
+}
+
+export async function addSessionParticipant(
+	session: MusicSession & Record,
+	userId: string | undefined,
+	spotifyUser: PublicUser | undefined
+) {
+	console.log(session);
+	console.log(userId);
+	console.log(spotifyUser);
+	if (!userId || !spotifyUser || !spotifyUser?.images) return;
+
+	const _session = { ...session };
+	_session.participants.push({
+		userId: userId,
+		spotifyDisplayedName: spotifyUser?.display_name ?? '',
+		role: checkSessionRole(userId, session),
+		profileImg: spotifyUser?.images[0]?.url
+	});
+	console.log(_session);
+	await pb.collection('sessions').update(session?.id, _session);
 }
