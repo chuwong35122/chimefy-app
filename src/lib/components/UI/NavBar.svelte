@@ -8,7 +8,10 @@
 
 <div class="w-full px-4 py-4 flex flex-row items-center justify-between">
 	<a href="/" class="w-12 h-12 grid place-items-center">
-		<div>Logo</div>
+		<div class="flex items-center">
+			<img src='/logo/chimefy/logo_dark.svg' alt='Chimefy Logo' class='w-8 h-8' />
+			<div class='ml-4 text-lg font-semibold'>Chimefy</div>
+		</div>
 	</a>
 	<div class="w-56 md:w-96 flex flex-row items-center justify-between">
 		<a
