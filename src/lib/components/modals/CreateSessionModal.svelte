@@ -131,5 +131,7 @@
 			{errors}
 		</Toast>
 	{/if}
-	<PrimaryButton on:click={onCreateSession}>Create Session!</PrimaryButton>
+	<button on:click={onCreateSession}>
+		<PrimaryButton>Create Session!</PrimaryButton>
+	</button>
 </form>
