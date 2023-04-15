@@ -30,7 +30,7 @@
 	{#each $sessionSearchResult.results as session}
 		<div
 			on:mouseup={() => handleSessionNavigate(session)}
-			class="w-[300px] md:w-[460px] lg:w-[600px] min-h-28 p-4 rounded-xl bg-dark-500 hover:bg-dark-400/20 duration-150 my-2 relative hover:cursor-pointer"
+			class="w-[300px] md:w-[600px] min-h-28 p-4 rounded-xl bg-dark-500 hover:bg-dark-400/20 duration-150 my-2 relative hover:cursor-pointer"
 		>
 			<div class="flex items-center">
 				<p class="mr-2">{session?.name}</p>
