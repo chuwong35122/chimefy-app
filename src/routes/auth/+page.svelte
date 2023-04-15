@@ -33,7 +33,7 @@
 		}}
 	>
 		<div class="w-full grid place-items-center">
-			<h1 class="text-4xl font-semibold">Login to AppName</h1>
+			<h1 class="text-4xl font-semibold">Login to Chimefy</h1>
 		</div>
 		<label for="email">Email</label>
 		<Input
