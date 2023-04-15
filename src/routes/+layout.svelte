@@ -67,8 +67,6 @@
 	});
 
 	$: if ($spotifyUser?.id && $user) {
-		console.log($spotifyUser)
-		console.log($user)
 		if (!$spotifyUser?.product?.includes('premium')) {
 			isSpotifyPremiumModalOpen = true;
 		}
