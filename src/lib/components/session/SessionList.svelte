@@ -30,7 +30,7 @@
 	{#each $sessionSearchResult.results as session}
 		<div
 			on:mouseup={() => handleSessionNavigate(session)}
-			class="w-[300px] lg:w-[600px] min-h-28 p-4 rounded-xl bg-dark-500 hover:bg-dark-400/20 duration-150 my-2 relative hover:cursor-pointer"
+			class="w-[300px] md:w-[460px] lg:w-[600px] min-h-28 p-4 rounded-xl bg-dark-500 hover:bg-dark-400/20 duration-150 my-2 relative hover:cursor-pointer"
 		>
 			<div class="flex items-center">
 				<p class="mr-2">{session?.name}</p>
@@ -39,7 +39,7 @@
 			{#if session?.queues && session?.queues[0]}
 				<div class="mt-1">
 					<p class="font-light text-[10px] text-dark-200">Now Listening</p>
-					<p class="font-normal text-[12px] w-40 lg:w-80 text-ellipsis">
+					<p class="font-normal text-[12px] w-52 md:w-[400px] lg:w-80 text-ellipsis">
 						{session?.queues[0]?.trackName}
 					</p>
 					<p class="font-light text-[8px] w-40 lg:w-80 text-ellipsis text-dark-200">
@@ -48,8 +48,8 @@
 				</div>
 			{/if}
 
-			<div class="absolute bottom-2 right-0 z-10">
-				<div class="flex h-10">
+			<div class="absolute bottom-2 right-0 z-10 w-16">
+				<div class="flex h-10 overflow-hidden">
 					<!-- Participant List -->
 					{#each session.participants as participant, i}
 						<img
