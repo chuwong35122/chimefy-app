@@ -30,17 +30,20 @@
 	{#each $sessionSearchResult.results as session}
 		<div
 			on:mouseup={() => handleSessionNavigate(session)}
-			class="w-[300px] lg:w-[600px] h-28 p-4 rounded-xl bg-dark-500 hover:bg-dark-400/20 duration-150 my-2 relative hover:cursor-pointer"
+			class="w-[300px] lg:w-[600px] min-h-28 p-4 rounded-xl bg-dark-500 hover:bg-dark-400/20 duration-150 my-2 relative hover:cursor-pointer"
 		>
 			<div class="flex items-center">
 				<p class="mr-2">{session?.name}</p>
 				<Chip label={session?.type} />
 			</div>
 			{#if session?.queues && session?.queues[0]}
-				<div class="mt-6">
-					<p class="font-light text-xs text-dark-200">Now Listening</p>
-					<p class="font-light text-xs w-80 text-ellipsis">
-						{session?.queues[0]?.trackName} - {session?.queues[0]?.artist}
+				<div class="mt-1">
+					<p class="font-light text-[10px] text-dark-200">Now Listening</p>
+					<p class="font-normal text-[12px] w-40 lg:w-80 text-ellipsis">
+						{session?.queues[0]?.trackName}
+					</p>
+					<p class="font-light text-[8px] w-40 lg:w-80 text-ellipsis text-dark-200">
+						{session?.queues[0]?.artist}
 					</p>
 				</div>
 			{/if}
