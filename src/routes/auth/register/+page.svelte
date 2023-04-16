@@ -27,7 +27,7 @@
 
 <div class="w-[400px]">
 	<div class="grid place-items-center">
-		<h1 class="text-4xl font-bold">Register to Chimefy</h1>
+		<h1 class="text-4xl font-bold">Register to AppName</h1>
 	</div>
 	<form
 		method="POST"
