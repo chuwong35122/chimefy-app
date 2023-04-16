@@ -36,7 +36,9 @@ export async function getSessionList(name: string, type: string, page: number) {
 			.getList<MusicSession & Record>((page - 1) * 20, page * 20, {
 				filter: searchTerms.join(' && ')
 			});
-		searchedItems = lists.items;
+		searchedItems = lists.items.filter(
+			(item) => item?.participants?.length > 0 && item?.queues?.length > 0
+		);
 		sessionSearchResult.set({
 			results: lists.items,
 			loading: true
