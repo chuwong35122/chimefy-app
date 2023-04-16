@@ -33,6 +33,8 @@
 	let sessionId = data.session.id;
 
 	onMount(async () => {
+		// TODO: add hashed password in query params
+
 		// const { isPrivate, password } = $currentSession;
 		// const hasCorrectPassword = $currentSessionPassword === password;
 		// if (!$currentSession || !isPrivate || !hasCorrectPassword) {
