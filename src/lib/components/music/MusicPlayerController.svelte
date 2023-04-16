@@ -158,7 +158,6 @@
 </script>
 
 <svelte:head>
-	<title>Session - {$currentSession.name}</title>
 	<script src="https://sdk.scdn.co/spotify-player.js"></script>
 </svelte:head>
 

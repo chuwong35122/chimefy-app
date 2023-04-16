@@ -84,7 +84,7 @@
 </script>
 
 <svelte:head>
-	<title>Session - {$currentSession.name}</title>
+	<title>Listening to {$currentSession.name}</title>
 </svelte:head>
 <div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
 	<SessionInfo {sessionId} />
