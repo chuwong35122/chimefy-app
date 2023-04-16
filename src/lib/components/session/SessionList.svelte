@@ -19,7 +19,7 @@
 
 <SessionSearchFilter />
 
-<div class="h-[400px] w-[300px] md:w-[600px] lg:w-[800px] overflow-y-auto">
+<div class="h-[400px] w-[00px] md:w-[600px] lg:w-[800px] overflow-y-auto">
 	{#if $sessionSearchResult.loading}
 		<div class="w-full grid place-items-center">
 			<Spinner color="green" />
@@ -31,7 +31,7 @@
 				on:mouseup={() => handleSessionNavigate(session)}
 				class="w-[400px] md:w-[600px] lg:w-[800px] p-4 rounded-xl bg-dark-500 hover:bg-dark-300/20 duration-150 my-2 relative hover:cursor-pointer"
 			>
-				<div class="flex items-center justify-between">
+				<div class="flex items-center">
 					<p class="mr-2 capitalize text-lg font-medium">{session?.name}</p>
 					<Chip label={session?.type} />
 				</div>
@@ -41,7 +41,7 @@
 						alt="Playing track cover"
 						class="w-20 h-20 rounded-full mr-4"
 					/>
-					{#if session?.queues && session?.queues[0]}
+					{#if session?.queues && session?.queues.length > 0 && session?.queues[0]}
 						<div class="flex flex-col h-full w-36 md:w-56 lg:w-80">
 							{#if session?.status === 'broadcasting'}
 								<p class="text-xs uppercase mb-1">Now Playing</p>
