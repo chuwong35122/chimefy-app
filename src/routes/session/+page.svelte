@@ -60,7 +60,7 @@
 			<Input
 				bind:value={input}
 				placeholder="Session ID"
-				defaultClass="border-white p-4 border-2 w-full !bg-[rgba(255,255,255,0.05)] !border-l-0 !border-r-0 placeholder:text-[rgba(255,255,255,0.4)] !text-xl text-white focus:border-white"
+				defaultClass="border-white p-4 border-2 w-full !bg-[rgba(255,255,255,0.05)] !border-l-0 !border-r-0 placeholder:text-[rgba(255,255,255,0.4)] !text-xl text-white focus:border-white border-dark-300 duration-200"
 			/>
 			<Button
 				type="submit"
