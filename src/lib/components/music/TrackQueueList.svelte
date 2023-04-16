@@ -63,8 +63,16 @@
 				<p class="leading-tight">
 					{millisecondToMinuteSeconds(queue.durationMs ?? 0)}
 				</p>
-				<p class={`font-medium leading-tight ${queue?.trackName.length > 20 ? 'text-lg' : 'text-xl'}`}>{queue?.trackName}</p>
-				<p class={`${queue?.artist.length > 20 ? 'text-xs' : 'text-sm'} leading-tight`}>{queue?.artist}</p>
+				<p
+					class={`font-medium leading-tight ${
+						queue?.trackName.length > 20 ? 'text-lg' : 'text-xl'
+					}`}
+				>
+					{queue?.trackName}
+				</p>
+				<p class={`${queue?.artist.length > 20 ? 'text-xs' : 'text-sm'} leading-tight`}>
+					{queue?.artist}
+				</p>
 			</div>
 			<button
 				on:click={() => removeQueue(i)}

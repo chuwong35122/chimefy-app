@@ -117,8 +117,13 @@
 
 	async function handleFastForwardTrack() {
 		if ($currentSessionRole !== 'admin') return;
-		
-		await fastForwardCurrentTrack(playingMs, $spotifyPlayerDeviceId, $spotifyAccessToken, $playingInfo);
+
+		await fastForwardCurrentTrack(
+			playingMs,
+			$spotifyPlayerDeviceId,
+			$spotifyAccessToken,
+			$playingInfo
+		);
 	}
 
 	$: async () => {

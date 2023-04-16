@@ -1,3 +1,3 @@
 <svelte:head>
-  <title>Contact Chimefy</title>
+	<title>Contact Chimefy</title>
 </svelte:head>

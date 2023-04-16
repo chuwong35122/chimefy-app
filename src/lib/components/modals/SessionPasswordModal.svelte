@@ -54,7 +54,7 @@
 			<InputAddon
 				class="!bg-[rgba(255,255,255,0.05)] !border-dark-300 !border-2 !border-r-0 !rounded-l-full"
 			>
-				<Icon icon="material-symbols:password-rounded" width={32} height={32} class='text-white' />
+				<Icon icon="material-symbols:password-rounded" width={32} height={32} class="text-white" />
 			</InputAddon>
 			<Input
 				name="sessionPassword"
@@ -69,7 +69,7 @@
 				id="enter-btn"
 				btnClass="border-dark-300 bg-[rgba(255,255,255,0.05)] px-4 border-2 border-l-0 rounded-r-full hover:text-primary-500 duration-200 border-dark-300"
 			>
-				<Icon icon="mdi:location-enter" width={32} height={32} class='text-white' />
+				<Icon icon="mdi:location-enter" width={32} height={32} class="text-white" />
 			</Button>
 			<Tooltip triggeredBy="[id=enter-btn]" placement="right">Enter Session</Tooltip>
 		</ButtonGroup>

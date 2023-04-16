@@ -65,10 +65,8 @@
 				/>
 			</Button>
 		</ButtonGroup>
-		<button class='w-full'>
-			<PrimaryButtonWrapper class="my-2">
-				Login
-			</PrimaryButtonWrapper>
+		<button class="w-full">
+			<PrimaryButtonWrapper class="my-2">Login</PrimaryButtonWrapper>
 		</button>
 		<a href="/auth/register" class="underline text-gray-300 text-sm">Create an account</a>
 	</form>

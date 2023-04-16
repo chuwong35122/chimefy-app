@@ -90,23 +90,23 @@
 	<SessionInfo {sessionId} />
 </div>
 {#if $spotifyAccessToken}
-<div
-	class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px] bg-[rgba(255,255,255,0.05)] rounded-xl"
->
-	<div class="flex flex-col lg:flex-row w-full">
-		<TrackSearchTab />
-		<div class="w-full">
-			<div class="w-full grid place-items-center my-2">
-				<p class="text-2xl font-semibold">Queues</p>
-			</div>
-			<div class="w-full h-[592px] overflow-y-auto">
-				<TrackQueueList />
+	<div
+		class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px] bg-[rgba(255,255,255,0.05)] rounded-xl"
+	>
+		<div class="flex flex-col lg:flex-row w-full">
+			<TrackSearchTab />
+			<div class="w-full">
+				<div class="w-full grid place-items-center my-2">
+					<p class="text-2xl font-semibold">Queues</p>
+				</div>
+				<div class="w-full h-[592px] overflow-y-auto">
+					<TrackQueueList />
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<div class="w-[400px] md:w-[640px] lg:w-[1000px] h-24 mt-6">
-	<MusicPlayerController />
-	<SessionQueueMembers />
-</div> 
+	<div class="w-[400px] md:w-[640px] lg:w-[1000px] h-24 mt-6">
+		<MusicPlayerController />
+		<SessionQueueMembers />
+	</div>
 {/if}
