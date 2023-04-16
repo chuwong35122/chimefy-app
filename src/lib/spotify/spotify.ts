@@ -1,9 +1,9 @@
 import { writable } from 'svelte/store';
 import { PUBLIC_SPOTIFY_CALLBACK_URI, PUBLIC_SPOTIFY_CLIENT_ID } from '$env/static/public';
 import { randomString } from '$lib/utils/random/randomstring';
-import type { PrivateUser } from 'spotify-types';
+import type { PublicUser } from 'spotify-types';
 
-export const spotifyUser = writable<PrivateUser | undefined>();
+export const spotifyUser = writable<PublicUser | undefined>();
 export const spotifyAccessToken = writable('');
 export const spotifyRefreshToken = writable('');
 

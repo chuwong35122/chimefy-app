@@ -2,7 +2,7 @@
 	import '../styles/global.css';
 	import NavBar from '$lib/components/UI/NavBar.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
-	import { logout, user, user as userStore } from '$lib/pocketbase/pb';
+	import { user as userStore } from '$lib/pocketbase/pb';
 	import type { Record } from 'pocketbase';
 	import { spotifyAccessToken, spotifyRefreshToken, spotifyUser } from '$lib/spotify/spotify';
 	import { toastValue } from '$lib/notification/toast';
@@ -10,8 +10,6 @@
 	import { onMount } from 'svelte';
 	import type { AuthTokens } from '$lib/interfaces/spotify/auth.interface';
 	import { goto } from '$app/navigation';
-	import { Modal } from 'flowbite-svelte';
-	import SpotifyPremiumInfoModal from '$lib/components/modals/SpotifyPremiumInfoModal.svelte';
 
 	export let data: {
 		user: Record;
@@ -22,13 +20,6 @@
 		if (data.access_token) spotifyAccessToken.set(data.access_token);
 		if (data.refresh_token) spotifyRefreshToken.set(data.refresh_token);
 		if (data.user) userStore.set(data.user);
-	}
-
-	let isSpotifyPremiumModalOpen = false;
-
-	function handleLogout() {
-		isSpotifyPremiumModalOpen = false;
-		logout();
 	}
 
 	onMount(async () => {
@@ -65,19 +56,8 @@
 			toastValue.set({ message: 'Cannot retrieve your Spotify profile', type: 'error' });
 		}
 	});
-
-	$: if ($spotifyUser?.id && $user) {
-		console.log($spotifyUser)
-		console.log($user)
-		if (!$spotifyUser?.product?.includes('premium')) {
-			isSpotifyPremiumModalOpen = true;
-		}
-	}
 </script>
 
-<Modal open={isSpotifyPremiumModalOpen} permanent size="lg" class="modal-glass">
-	<SpotifyPremiumInfoModal on:logout={handleLogout} />
-</Modal>
 <div class="w-screen h-screen overflow-x-hidden bg-dark-900">
 	<NavBar />
 	<div class="w-full grid place-items-center pt-12">
