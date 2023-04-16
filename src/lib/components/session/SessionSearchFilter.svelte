@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { Tooltip } from 'flowbite-svelte';
-	import PrimaryButtonWrapper from '../buttons/PrimaryButtonWrapper.svelte';
+	import PrimaryButton from '../buttons/PrimaryButton.svelte';
 	import TextField from '../UI/TextField.svelte';
 	import { sessionSearchResult } from '$lib/session/search';
 	import { pb } from '$lib/pocketbase/pb';
@@ -95,12 +95,12 @@
 			<Icon icon="material-symbols:search" class="w-8 h-8 text-black" />
 		</button>
 
-		<PrimaryButtonWrapper
+		<PrimaryButton
 			class="!w-80 lg:hidden active:scale-105 mr-2 bg-primary-600 hover:bg-primary-400 duration-200 p-2 rounded-full font-regular"
 		>
-			<button on:click|preventDefault={getSessionList} class='w-full items-center'>Search</button></PrimaryButtonWrapper
+			<button on:click|preventDefault={getSessionList} class='w-full items-center'>Search</button></PrimaryButton
 		>
-		<PrimaryButtonWrapper
+		<PrimaryButton
 			class="!w-80 lg:hidden active:scale-105 mr-2 border border-dark-200 bg-transparent hover:bg-white/10"
 		>
 			<div
@@ -110,7 +110,7 @@
 				<Icon icon="material-symbols:refresh-rounded" class="w-6 h-6" />
 				<span>Refresh</span>
 			</div>
-		</PrimaryButtonWrapper>
+		</PrimaryButton>
 		<button
 			on:click={handleRefreshSessionList}
 			id="refresh-btn"

@@ -7,7 +7,7 @@
 	import { Label, Input, Button, Toggle, ButtonGroup, Select, Toast } from 'flowbite-svelte';
 	import type { ClientResponseError } from 'pocketbase';
 	import type { ValidationError } from 'yup';
-	import PrimaryButtonWrapper from '../buttons/PrimaryButtonWrapper.svelte';
+	import PrimaryButton from '../buttons/PrimaryButton.svelte';
 	import sha1 from 'sha1';
 	import { spotifyUser } from '$lib/spotify/spotify';
 
@@ -132,6 +132,6 @@
 		</Toast>
 	{/if}
 	<button on:click={onCreateSession}>
-		<PrimaryButtonWrapper>Create Session!</PrimaryButtonWrapper>
+		<PrimaryButton>Create Session!</PrimaryButton>
 	</button>
 </form>

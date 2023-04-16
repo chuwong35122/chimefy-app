@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Button, ButtonGroup, Input } from 'flowbite-svelte';
-	import PrimaryButtonWrapper from '$lib/components/buttons/PrimaryButtonWrapper.svelte';
+	import PrimaryButton from '$lib/components/buttons/PrimaryButton.svelte';
 	import { toastValue } from '$lib/notification/toast';
 	import type { ActionData } from './$types';
 	import Icon from '@iconify/svelte';
@@ -65,11 +65,7 @@
 				/>
 			</Button>
 		</ButtonGroup>
-		<PrimaryButtonWrapper class="my-2">
-			<button>
-				Login
-			</button>
-		</PrimaryButtonWrapper>
+		<PrimaryButton class="my-2">Login</PrimaryButton>
 		<a href="/auth/register" class="underline text-gray-300 text-sm">Create an account</a>
 	</form>
 </div>
