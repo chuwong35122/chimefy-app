@@ -25,7 +25,7 @@
 	onMount(async () => {
 		if (!data.user) {
 			goto('/auth');
-			toastValue.set({ message: 'Please login to Chimefy', type: 'info' });
+			toastValue.set({ message: 'Please login to AppName', type: 'info' });
 		}
 		// Refresh Token
 		if ($spotifyRefreshToken) {

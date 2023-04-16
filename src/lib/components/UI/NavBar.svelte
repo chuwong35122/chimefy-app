@@ -88,7 +88,7 @@
 				{/if}
 			</div>
 			<Tooltip placement="left" triggeredBy="[id='profile-img']"
-				>{$user?.id ? 'You have log-in to Chimefy' : 'You have not log-in to Chimefy'}</Tooltip
+				>{$user?.id ? 'You have log-in to AppName' : 'You have not log-in to Appname'}</Tooltip
 			>
 		{:else}
 			<a href={redirectToSpotifyAuth()} class="p-2 px-3 hover:scale-105 duration-200">
