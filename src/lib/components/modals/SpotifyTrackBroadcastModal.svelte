@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PrimaryButton from '../buttons/PrimaryButton.svelte';
+	import PrimaryButtonWrapper from '../buttons/PrimaryButtonWrapper.svelte';
 	import Icon from '@iconify/svelte';
 	import { pb } from '$lib/pocketbase/pb';
 	import { currentSession, hasConfirmedBroadcast } from '$lib/session/session';
@@ -41,8 +41,8 @@
 		</p>
 	</div>
 	<button on:click={onSessionBroadcast}>
-		<PrimaryButton>
+		<PrimaryButtonWrapper>
 			<div class="px-2">Start Broadcast</div>
-		</PrimaryButton>
+		</PrimaryButtonWrapper>
 	</button>
 </div>
