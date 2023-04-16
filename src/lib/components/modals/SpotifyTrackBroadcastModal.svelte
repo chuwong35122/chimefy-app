@@ -42,7 +42,7 @@
 	</div>
 	<button on:click={onSessionBroadcast}>
 		<PrimaryButtonWrapper>
-			<div class="px-2">Start Broadcast</div>
+			Start Broadcast
 		</PrimaryButtonWrapper>
 	</button>
 </div>
