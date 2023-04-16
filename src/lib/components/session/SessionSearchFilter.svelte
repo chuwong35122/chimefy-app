@@ -96,11 +96,11 @@
 			</button>
 		</div>
 		<!-- Chips -->
-		<div class="flex flex-row items-center mt-2 w-[300px] md:w-[588px] overflow-x-auto pb-2">
+		<div class="flex flex-row items-center mt-2 w-[300px] md:w-[588px] pb-2 flex-wrap gap-2 justify-center">
 			{#each SESSION_MUSIC_TYPES as type}
 				<button
 					on:click={() => handleSelectMusicType(type)}
-					class={`px-2 py-1 rounded-full mr-2 ${type === queryInput.musicType ? 'bg-white/50' : 'bg-white/20'} duration-200`}>{type}</button
+					class={`px-2 py-1 rounded-full ${type === queryInput.musicType ? 'bg-white/50' : 'bg-white/20'} duration-200`}>{type}</button
 				>
 			{/each}
 		</div>
