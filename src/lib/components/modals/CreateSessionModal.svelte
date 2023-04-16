@@ -7,9 +7,10 @@
 	import { Label, Input, Button, Toggle, ButtonGroup, Select, Toast } from 'flowbite-svelte';
 	import type { ClientResponseError } from 'pocketbase';
 	import type { ValidationError } from 'yup';
-	import PrimaryButton from '../buttons/PrimaryButton.svelte';
+	import PrimaryButtonWrapper from '../buttons/PrimaryButtonWrapper.svelte';
 	import sha1 from 'sha1';
 	import { spotifyUser } from '$lib/spotify/spotify';
+	import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
 
 	let showPassword = false;
 	export let data = {
@@ -18,6 +19,11 @@
 		isPrivate: false,
 		type: ''
 	};
+
+	const muisicSessionTypes = SESSION_MUSIC_TYPES.map((type) => ({
+		name: type,
+		value: type
+	}));
 
 	let errors = '';
 	$: if (data) {
@@ -97,16 +103,14 @@
 			</Button>
 		</ButtonGroup>
 	</Label>
-	<Label class="space-y-2">
+	<Label>
 		<span class="text-white">Music Type</span>
-		<Input
+		<Select
+			underline
 			bind:value={data.type}
-			name="type"
-			type="text"
-			placeholder="Ex. Chill/ Hiphop/ LoFi/ Work"
-			required
-			color="green"
-			defaultClass="placeholder:text-dark-300 w-full"
+			placeholder="Select music type"
+			items={muisicSessionTypes}
+			class='!text-white'
 		/>
 	</Label>
 	<Toggle color="green" bind:checked={data.isPrivate} class="text-white"
@@ -132,5 +136,7 @@
 			{errors}
 		</Toast>
 	{/if}
-	<PrimaryButton on:click={onCreateSession}>Create Session!</PrimaryButton>
+	<button on:click={onCreateSession}>
+		<PrimaryButtonWrapper>Create Session!</PrimaryButtonWrapper>
+	</button>
 </form>
