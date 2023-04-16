@@ -65,12 +65,12 @@
 			<Button
 				type="submit"
 				color="dark"
-				id="session-search-btn"
+				id="search-btn"
 				btnClass="border-white bg-[rgba(255,255,255,0.05)] px-4 border-2 border-l-0 rounded-r-full hover:text-primary-500 duration-200"
 			>
 				<Icon icon="mdi:location-enter" width={32} height={32} />
 			</Button>
-			<Tooltip triggeredBy="[id=session-search-btn]" placement="right">Search</Tooltip>
+			<Tooltip triggeredBy="[id=search-btn]" placement="right">Search</Tooltip>
 		</ButtonGroup>
 	</form>
 	<div class="h-6" />
