@@ -4,8 +4,7 @@ import type {
 	OnChangePlayingInfoRequest,
 	SessionPlayingInfo
 } from '$lib/interfaces/session/session.interface';
-import { toastValue } from '$lib/notification/toast';
-import { playingInfo, spotifyPlayerDeviceId } from '$lib/session/session';
+import { playingInfo } from '$lib/session/session';
 import { socket } from '$lib/socket/client';
 import type { Record } from 'pocketbase';
 
