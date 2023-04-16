@@ -1,0 +1,20 @@
+export const SESSION_MUSIC_TYPES = [
+	'Chill',
+	'Hiphop',
+	'LoFi',
+	'Work',
+	'Party',
+	'Rock',
+	'Jazz',
+	'Electronic',
+	'Pop',
+	'Rap',
+	'RnB',
+	'Soul',
+	'Funk',
+	'Classical',
+	'Country',
+	'Folk',
+	'Indie',
+	'Anime'
+].sort((a, b) => a.localeCompare(b));
