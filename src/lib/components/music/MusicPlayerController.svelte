@@ -166,7 +166,7 @@
 	<script src="https://sdk.scdn.co/spotify-player.js"></script>
 </svelte:head>
 
-<Modal bind:open={popupModal} size="xs" autoclose={false} class="!bg-dark-600">
+<Modal bind:open={popupModal} size="xs" autoclose={false} class="modal-glass">
 	<SpotifyTrackBroadcastModal on:broadcast={togglePlay} />
 </Modal>
 <div class="relative w-full p-4 rounded-xl bg-dark-500 hover:bg-white/10 duration-200">
