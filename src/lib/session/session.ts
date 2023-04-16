@@ -67,6 +67,5 @@ export async function addSessionParticipant(
 		role: checkSessionRole(userId, session),
 		profileImg: spotifyUser?.images[0]?.url
 	});
-	console.log(_session);
 	await pb.collection('sessions').update(session?.id, _session);
 }
