@@ -19,7 +19,7 @@
 
 <SessionSearchFilter />
 
-<div class="h-[400px] w-[00px] md:w-[600px] lg:w-[800px] overflow-y-auto">
+<div class="h-[400px] md:w-[600px] lg:w-[800px] overflow-y-auto">
 	{#if $sessionSearchResult.loading}
 		<div class="w-full grid place-items-center">
 			<Spinner color="green" />
