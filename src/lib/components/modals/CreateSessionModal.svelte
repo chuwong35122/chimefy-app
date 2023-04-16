@@ -110,7 +110,7 @@
 			bind:value={data.type}
 			placeholder="Select music type"
 			items={muisicSessionTypes}
-			class='!text-white'
+			class="!text-white"
 		/>
 	</Label>
 	<Toggle color="green" bind:checked={data.isPrivate} class="text-white"

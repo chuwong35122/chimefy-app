@@ -43,10 +43,20 @@
 	<title>Join a Session</title>
 </svelte:head>
 
-<Modal bind:open={openCreateSessionModal} size="xs" autoclose={false} class="w-full z-10 modal-glass">
+<Modal
+	bind:open={openCreateSessionModal}
+	size="xs"
+	autoclose={false}
+	class="w-full z-10 modal-glass"
+>
 	<CreateSessionModal />
 </Modal>
-<Modal bind:open={enterSessionPasswordModal} size="sm" autoclose={false} class="w-full z-10 modal-glass">
+<Modal
+	bind:open={enterSessionPasswordModal}
+	size="sm"
+	autoclose={false}
+	class="w-full z-10 modal-glass"
+>
 	<SessionPasswordModal />
 </Modal>
 <div class="w-96 md:w-[600px] lg:w[1000px] p-8 rounded-2xl flex flex-col items-center">
@@ -85,6 +95,6 @@
 		>
 	</div>
 </div>
-<div class='grid place-items-center mt-[400px] my-20'>
+<div class="grid place-items-center mt-[400px] my-20">
 	<SessionList />
 </div>

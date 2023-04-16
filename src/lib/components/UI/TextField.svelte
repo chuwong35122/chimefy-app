@@ -2,12 +2,12 @@
 	export let label = '';
 	export let required = false;
 	export let labelPosition: 'start' | 'center' | 'end' = 'start';
-	export let value = ''
-	export let labelClass = ''
+	export let value = '';
+	export let labelClass = '';
 	let props = {
 		name: $$restProps.name,
 		class: [$$restProps.class],
-		placeholder: $$restProps.placeholder,
+		placeholder: $$restProps.placeholder
 	};
 
 	function getLabelPositionClass() {
@@ -25,7 +25,7 @@
 <div class={`grid ${getLabelPositionClass()}`}>
 	<label for={props.name} class={`text-dark-200 text-xs mb-1 ${labelClass}`}>{label}</label>
 	<input
-		bind:value={value}
+		bind:value
 		name={props.name}
 		type="text"
 		placeholder={props.placeholder}

@@ -43,7 +43,10 @@
 					draggable="false"
 					class="w-24 h-24 lg:w-32 lg:h-32 rounded-full"
 				/>
-				<p class="mt-2 text-sm lg:text-md">{member?.spotifyDisplayedName} {detectSelf(member) ? '(me)' : ''}</p>
+				<p class="mt-2 text-sm lg:text-md">
+					{member?.spotifyDisplayedName}
+					{detectSelf(member) ? '(me)' : ''}
+				</p>
 			</div>
 		{/each}
 	</div>
