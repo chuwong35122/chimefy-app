@@ -1,8 +1,7 @@
 <script lang="ts">
-
 	import { ioClient } from '$lib/socket/client';
 	import { onDestroy, onMount } from 'svelte';
-	import {currentSession, currentSessionRole, memberSessionInitProcess} from '$lib/session/session';
+	import {currentSession, memberSessionInitProcess} from '$lib/session/session';
 	import { spotifyUser } from '$lib/spotify/spotify';
 	import type { SessionJoinRequest } from '$lib/interfaces/session/session.interface';
 	import type { JoinSessionRequest } from '$lib/interfaces/session/socket.interface';
@@ -11,7 +10,7 @@
 	onMount(() => {
 		console.log($currentSession)
 		console.log($spotifyUser)
-		memberSessionInitProcess.update(val => ['session_init', ...val])
+		memberSessionInitProcess.update(val => ['socket_start', ...val])
 
 		// create socket connection
 		socketConnection.on('connect', () => {

@@ -1,8 +1,4 @@
-import type {
-	OnChangePlayingInfoRequest,
-	SessionJoinRequest,
-	SessionJoinResponse
-} from '$lib/interfaces/session/session.interface';
+import type { SessionJoinRequest } from '$lib/interfaces/session/session.interface';
 import type { InitRoomRequest } from '$lib/interfaces/session/socket.interface';
 import { Server } from 'socket.io';
 

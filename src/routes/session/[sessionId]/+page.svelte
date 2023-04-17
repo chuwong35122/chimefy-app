@@ -1,22 +1,14 @@
 <script lang="ts">
 	import type {
 		MusicSession,
-		SessionJoinRequest,
-		SessionJoinResponse
 	} from '$lib/interfaces/session/session.interface';
-	import { toastValue } from '$lib/notification/toast';
 	import { pb, user } from '$lib/pocketbase/pb';
 	import type { Record } from 'pocketbase';
 	import { onDestroy, onMount } from 'svelte';
 	import TrackSearchTab from '$lib/components/music/TrackSearchTab.svelte';	import {
-		checkSessionRole,
 		currentSession,
 		currentSessionRole,
-		playingInfo,
 		adminSessionInitProcess,
-		socketId,
-		sessionInitModalOpen,
-		memberSessionInitProcess,
 		addSessionParticipant
 	} from '$lib/session/session';
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';

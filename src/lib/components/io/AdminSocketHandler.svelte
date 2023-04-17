@@ -23,11 +23,6 @@
         status: $currentSession.status,
       }
       socketConnection.emit('createSession', roomPayload)
-
-			// intialize session socket to the server
-			// broadcast session playing data to the server
-			adminSessionInitProcess.update(val => ['socket_start_success', ...val])
-
 		});
     
     socketConnection.on('onSessionCreated', (val) => {
