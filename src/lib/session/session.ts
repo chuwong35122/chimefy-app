@@ -5,6 +5,7 @@ import type {
 } from '$lib/interfaces/session/session.interface';
 import { toastValue } from '$lib/notification/toast';
 import { pb, user } from '$lib/pocketbase/pb';
+import { wait } from '$lib/utils/common/time';
 import type { ClientResponseError, Record } from 'pocketbase';
 import type { PublicUser } from 'spotify-types';
 import { writable } from 'svelte/store';
@@ -18,6 +19,10 @@ export const currentSessionRole = writable<MusicSessionRole>('member');
 
 export const playingInfo = writable<SessionPlayingInfo>();
 
+export const adminSessionInitProcess = writable(0);
+export const memberSessionInitProcess = writable(0);
+export const sessionInitModalOpen = writable(false);
+
 user.subscribe((val) => {
 	currentSession.subscribe((session) => {
 		if (session && val) {
@@ -26,6 +31,14 @@ user.subscribe((val) => {
 		}
 	});
 });
+
+export async function incrementInitializationProcess(role: MusicSessionRole) {
+	if (role === 'admin') {
+		adminSessionInitProcess.update((val) => val + 1);
+	} else if (role === 'member') {
+		memberSessionInitProcess.update((val) => val + 1);
+	}
+}
 
 export function checkSessionRole(
 	userId: string | undefined,

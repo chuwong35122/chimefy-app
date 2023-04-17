@@ -45,3 +45,7 @@ export function calculateSecondsFromMillisecond(ms: number) {
 	const remainingSeconds = seconds - minutes * 60;
 	return remainingSeconds;
 }
+
+export function wait(ms: number) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}

@@ -3,16 +3,15 @@
 		currentSessionRole,
 		currentSession,
 		playingInfo,
-		checkSessionRole,
 		spotifyPlayerDeviceId,
 		hasConfirmedBroadcast,
-		addSessionParticipant
+		addSessionParticipant,
+		incrementInitializationProcess
 	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import { onDestroy, onMount } from 'svelte';
 	import { spotifyAccessToken, spotifyUser } from '$lib/spotify/spotify';
-	import { toastValue } from '$lib/notification/toast';
 	import { Modal, Tooltip } from 'flowbite-svelte';
 	import {
 		changeSessionPlayInfo,
@@ -26,7 +25,7 @@
 	import SpotifyTrackBroadcastModal from '../modals/SpotifyTrackBroadcastModal.svelte';
 	import { pb, user } from '$lib/pocketbase/pb';
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
-	import { convertTrackMsToPercentage } from '$lib/session/track';
+	import { toastValue } from '$lib/notification/toast';
 
 	let popupModal = false;
 	let SpotifyPlayer: Spotify.Player;
@@ -136,7 +135,11 @@
 	};
 
 	// request for current playing music
+	// TODO: handle error if spotify player cannot be connected!
 	onMount(async () => {
+		console.log('1')
+		incrementInitializationProcess($currentSessionRole)
+
 		window.onSpotifyWebPlaybackSDKReady = async () => {
 			SpotifyPlayer = new Spotify.Player({
 				name: 'Chimefy Player',
@@ -147,8 +150,16 @@
 			});
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
 				spotifyPlayerDeviceId.set(device_id);
-				toastValue.set({ message: 'Spotify Player is ready! 🎧', type: 'info' });
+				if($currentSessionRole === 'member') {
+					setActiveSpotifyPlayer(device_id, $spotifyAccessToken);
+				}
+				console.log('2')
+				toastValue.set({ message: 'Spotify Player connected! 🎵', type: 'info' })
+				incrementInitializationProcess($currentSessionRole)
 			});
+			SpotifyPlayer.on('initialization_error', (err) => {
+				console.log(err.message)
+			})
 
 			// Put the connect() at the bottom most of player.on()
 			await SpotifyPlayer?.connect();
