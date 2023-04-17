@@ -6,11 +6,10 @@ export type AdminSessionInit =
 	| 'socket_started'
 	| 'socket_start_success';
 export type MemberSessionInit =
-	| 'session_init'
 	| 'socket_start'
+	| 'socket_start_success'
 	| 'connecting_player'
-	| 'player_connected'
-	| 'socket_start_success';
+	| 'player_connected';
 
 interface InitProcess {
 	[key: string]: {
@@ -35,14 +34,6 @@ export const ADMIN_SESSION_INTIALIZE_PROCESS: InitProcess = {
 };
 
 export const MEMBER_SESSION_INTIALIZE_PROCESS: InitProcess = {
-	session_init: {
-		step: 'session_init',
-		description: 'Starting Session Initialization Process 🏁'
-	},
-	session_init_success: {
-		step: 'session_init_success',
-		description: 'Session Initialization Process Successful! 🎉'
-	},
 	socket_start: {
 		step: 'socket_start',
 		description: 'Starting Socket Connection 🔌'
