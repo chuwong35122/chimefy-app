@@ -1,45 +1,54 @@
-export const ADMIN_SESSION_INTIALIZE_PROCESS = [
-	{
-		key: 0,
-		step: 'session_init',
-		description: 'Starting Session Initialization Process 🏁'
-	},
-	{
-		key: 1,
-		step: 'connecting_player',
-		description: 'Connecting to Spotify Player 🎵'
-	},
-	{
-		key: 2,
-		step: 'player_connected',
-		description: 'Spotify Player connected! 🎉'
-	},
-	{
-		key: 3,
-		step: 'socket_started',
-		description: 'Socket Connection Started 🔌'
-	}
-];
+export type AdminSessionInit =
+	| 'session_init'
+	| 'session_init_success'
+	| 'connecting_player'
+	| 'player_connected'
+	| 'socket_started'
+	| 'socket_start_success';
+export type MemberSessionInit =
+	| 'session_init'
+	| 'socket_start'
+	| 'connecting_player'
+	| 'player_connected'
+	| 'socket_start_success';
 
-export const MEMBER_SESSION_INTIALIZE_PROCESS = [
-	{
-		key: 0,
+interface InitProcess {
+	[key: string]: {
+		step: AdminSessionInit | MemberSessionInit;
+		description: string;
+	};
+}
+
+export const ADMIN_SESSION_INTIALIZE_PROCESS: InitProcess = {
+	session_init: {
 		step: 'session_init',
 		description: 'Starting Session Initialization Process 🏁'
 	},
-	{
-		key: 1,
+	session_init_success: {
+		step: 'session_init_success',
+		description: 'Session Initialization Process Successful! 🎉'
+	},
+	socket_start_success: {
+		step: 'socket_start_success',
+		description: 'Socket Connection Successful! 🎉'
+	}
+};
+
+export const MEMBER_SESSION_INTIALIZE_PROCESS: InitProcess = {
+	session_init: {
+		step: 'session_init',
+		description: 'Starting Session Initialization Process 🏁'
+	},
+	session_init_success: {
+		step: 'session_init_success',
+		description: 'Session Initialization Process Successful! 🎉'
+	},
+	socket_start: {
 		step: 'socket_start',
 		description: 'Starting Socket Connection 🔌'
 	},
-	{
-		key: 2,
-		step: 'connecting_player',
-		description: 'Connecting to Spotify Player 🎵'
-	},
-	{
-		key: 3,
-		step: 'player_connected',
-		description: 'Spotify Player connected! 🎉'
+	socket_start_success: {
+		step: 'socket_start_success',
+		description: 'Socket Connection Successful! 🎉'
 	}
-];
+};

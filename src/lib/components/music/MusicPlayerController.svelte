@@ -6,7 +6,6 @@
 		spotifyPlayerDeviceId,
 		hasConfirmedBroadcast,
 		addSessionParticipant,
-		incrementInitializationProcess
 	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
@@ -137,9 +136,6 @@
 	// request for current playing music
 	// TODO: handle error if spotify player cannot be connected!
 	onMount(async () => {
-		console.log('1')
-		incrementInitializationProcess($currentSessionRole)
-
 		window.onSpotifyWebPlaybackSDKReady = async () => {
 			SpotifyPlayer = new Spotify.Player({
 				name: 'Chimefy Player',
@@ -153,16 +149,14 @@
 				if($currentSessionRole === 'member') {
 					setActiveSpotifyPlayer(device_id, $spotifyAccessToken);
 				}
-				console.log('2')
 				toastValue.set({ message: 'Spotify Player connected! 🎵', type: 'info' })
-				incrementInitializationProcess($currentSessionRole)
 			});
 			SpotifyPlayer.on('initialization_error', (err) => {
 				console.log(err.message)
 			})
 
 			// Put the connect() at the bottom most of player.on()
-			await SpotifyPlayer?.connect();
+			// await SpotifyPlayer?.connect();
 		};
 
 		detectSessionChange($currentSessionRole);
