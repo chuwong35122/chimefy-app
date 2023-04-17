@@ -4,7 +4,6 @@
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import Icon from '@iconify/svelte';
 	import type { Track } from 'spotify-types';
-	import { socket } from '$lib/socket/client';
 	import { toastValue } from '$lib/notification/toast';
 	import { joinArtists } from '$lib/utils/track';
 	import type { SessionTrackQueueRequest } from '$lib/interfaces/session/queue.interface';
@@ -43,13 +42,6 @@
 		session.queues = sessionQueues;
 		try {
 			await pb.collection('sessions').update(sessionId, session);
-			socket.emit('addQueue', {
-				sessionId: sessionId,
-				userId: userId,
-				socketId: socket.id,
-				spotifyDisplayName: $spotifyUser?.display_name ?? '',
-				track: newQueue
-			} as SessionTrackQueueRequest);
 			toastValue.set({ message: `${track?.name} added to queue`, type: 'info' });
 		} catch (e) {
 			toastValue.set({ message: `Cannot add track`, type: 'error' });

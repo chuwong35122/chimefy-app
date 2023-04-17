@@ -1,12 +1,10 @@
 <script lang="ts">
 	import { currentSession } from '$lib/session/session';
-	import { socket } from '$lib/socket/client';
-	import { millisecondToMinuteSeconds, minuteSecondsToTime } from '$lib/utils/common/time';
+	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import { onDestroy, onMount } from 'svelte';
-	import { toastValue } from '$lib/notification/toast';
 	import Icon from '@iconify/svelte';
 	import { Tooltip } from 'flowbite-svelte';
-	import type { MusicSession, MusicSessionQueue } from '$lib/interfaces/session/session.interface';
+	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 	import { pb } from '$lib/pocketbase/pb';
 	import type { Record } from 'pocketbase';
 	// TODO: Create scroll animation
@@ -34,15 +32,13 @@
 				.getOne<MusicSession & Record>($currentSession?.id);
 			currentSession.set(session);
 		});
-
-		socket.on('onQueueAdded', (message: string) => {
-			toastValue.set({ message: message, type: 'info' });
-		});
 	});
 
-	onDestroy(() => {
-		socket.off('onQueueAdded');
-	});
+	onDestroy(async () => {
+		if(!$currentSession || !$currentSession?.id) return
+
+		await pb.collection('sessions').unsubscribe($currentSession?.id)
+	})
 </script>
 
 <!-- Each Queues -->

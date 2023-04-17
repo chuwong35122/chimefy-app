@@ -1,3 +1,4 @@
+import type { AdminSessionInit, MemberSessionInit } from '$lib/constants/session';
 import type {
 	MusicSession,
 	MusicSessionRole,
@@ -7,7 +8,7 @@ import { toastValue } from '$lib/notification/toast';
 import { pb, user } from '$lib/pocketbase/pb';
 import { wait } from '$lib/utils/common/time';
 import type { ClientResponseError, Record } from 'pocketbase';
-import type { PublicUser } from 'spotify-types';
+import type { PrivateUser, PublicUser } from 'spotify-types';
 import { writable } from 'svelte/store';
 
 export const currentSession = writable<Record & MusicSession>();
@@ -19,8 +20,8 @@ export const currentSessionRole = writable<MusicSessionRole>('member');
 
 export const playingInfo = writable<SessionPlayingInfo>();
 
-export const adminSessionInitProcess = writable(0);
-export const memberSessionInitProcess = writable(0);
+export const adminSessionInitProcess = writable<AdminSessionInit[]>([]);
+export const memberSessionInitProcess = writable<MemberSessionInit[]>([]);
 export const sessionInitModalOpen = writable(false);
 
 user.subscribe((val) => {
@@ -31,14 +32,6 @@ user.subscribe((val) => {
 		}
 	});
 });
-
-export async function incrementInitializationProcess(role: MusicSessionRole) {
-	if (role === 'admin') {
-		adminSessionInitProcess.update((val) => val + 1);
-	} else if (role === 'member') {
-		memberSessionInitProcess.update((val) => val + 1);
-	}
-}
 
 export function checkSessionRole(
 	userId: string | undefined,
@@ -69,16 +62,19 @@ export async function getSessionData(id: string) {
 export async function addSessionParticipant(
 	session: MusicSession & Record,
 	userId: string | undefined,
-	spotifyUser: PublicUser | undefined
+	spotifyUser: PrivateUser | undefined
 ) {
 	if (!userId || !spotifyUser || !spotifyUser?.images) return;
 
 	const _session = { ...session };
-	_session.participants.push({
-		userId: userId,
-		spotifyDisplayedName: spotifyUser?.display_name ?? '',
-		role: checkSessionRole(userId, session),
-		profileImg: spotifyUser?.images[0]?.url
-	});
-	await pb.collection('sessions').update(session?.id, _session);
+	const participant = _session.participants.find((participant) => participant.userId === userId);
+	if (!participant) {
+		_session.participants.push({
+			userId: userId,
+			spotifyDisplayedName: spotifyUser?.display_name ?? '',
+			role: checkSessionRole(userId, session),
+			profileImg: spotifyUser?.images[0]?.url
+		});
+		await pb.collection('sessions').update(session?.id, _session);
+	}
 }

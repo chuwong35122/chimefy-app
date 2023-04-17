@@ -5,7 +5,6 @@ import type {
 	SessionPlayingInfo
 } from '$lib/interfaces/session/session.interface';
 import { playingInfo } from '$lib/session/session';
-import { socket } from '$lib/socket/client';
 import type { Record } from 'pocketbase';
 
 export function changeSessionPlayInfo(
@@ -20,7 +19,7 @@ export function changeSessionPlayInfo(
 		sessionId: currentSession?.id
 	};
 
-	socket.emit('onChangePlayingInfo', changePlayingInfoRequest);
+	// socket.emit('onChangePlayingInfo', changePlayingInfoRequest);
 }
 
 export async function setActiveSpotifyPlayer(device_id: string, access_token: string) {
@@ -107,16 +106,16 @@ export async function forwardTrack() {
 }
 
 export function detectSessionChange(role: MusicSessionRole) {
-	socket.on('handleChangePlayingInfo', (info: SessionPlayingInfo) => {
-		if (role === 'member') {
-			playingInfo.set(info);
-			if (info.status === 'playing') {
-				// togglePlay();
-				console.log('play');
-			} else {
-				// togglePause();
-				console.log('pause');
-			}
-		}
-	});
+	// socket.on('handleChangePlayingInfo', (info: SessionPlayingInfo) => {
+	// 	if (role === 'member') {
+	// 		playingInfo.set(info);
+	// 		if (info.status === 'playing') {
+	// 			// togglePlay();
+	// 			console.log('play');
+	// 		} else {
+	// 			// togglePause();
+	// 			console.log('pause');
+	// 		}
+	// 	}
+	// });
 }
