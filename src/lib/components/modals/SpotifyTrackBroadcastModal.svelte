@@ -2,7 +2,7 @@
 	import PrimaryButtonWrapper from '../buttons/PrimaryButtonWrapper.svelte';
 	import Icon from '@iconify/svelte';
 	import { pb } from '$lib/pocketbase/pb';
-	import { currentSession, hasConfirmedBroadcast } from '$lib/session/session';
+	import { currentSession, hasConfirmedBroadcast} from '$lib/session/session';
 	import { toastValue } from '$lib/notification/toast';
 	import { createEventDispatcher } from 'svelte';
 	import { setActiveSpotifyPlayer } from '$lib/spotify/player';

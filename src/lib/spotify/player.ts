@@ -1,7 +1,7 @@
 import type {
 	MusicSession,
 	MusicSessionRole,
-	OnChangePlayingInfoRequest,
+	// OnChangePlayingInfoRequest,
 	SessionPlayingInfo
 } from '$lib/interfaces/session/session.interface';
 import { playingInfo } from '$lib/session/session';
@@ -14,10 +14,10 @@ export function changeSessionPlayInfo(
 ) {
 	if (!currentSession || currentSessionRole !== 'admin') return;
 
-	const changePlayingInfoRequest: OnChangePlayingInfoRequest = {
-		playingInfo: playingInfo,
-		sessionId: currentSession?.id
-	};
+	// const changePlayingInfoRequest: OnChangePlayingInfoRequest = {
+	// 	playingInfo: playingInfo,
+	// 	sessionId: currentSession?.id
+	// };
 
 	// socket.emit('onChangePlayingInfo', changePlayingInfoRequest);
 }

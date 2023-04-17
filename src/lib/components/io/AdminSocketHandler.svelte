@@ -1,15 +1,12 @@
 <script lang="ts">
-	import type { MusicSession, SessionJoinRequest } from '$lib/interfaces/session/session.interface';
 	import type { InitRoomRequest } from '$lib/interfaces/session/socket.interface';
-	import { adminSessionInitProcess, currentSession, currentSessionRole } from '$lib/session/session';
+	import { adminSessionInitProcess, currentSession, } from '$lib/session/session';
 	import { ioClient } from '$lib/socket/client';
 	import { onDestroy, onMount } from 'svelte';
-  import {spotifyUser} from '$lib/spotify/spotify'
+  import type {SessionJoinRequest} from '$lib/interfaces/session/socket.interface'
 
   const socketConnection = ioClient.connect();
 	onMount(() => {
-    console.log($currentSession)
-		console.log($spotifyUser)
 		// create socket connection
 		socketConnection.on('connect', () => {
       adminSessionInitProcess.update(val => ['session_init', ...val])
@@ -25,7 +22,7 @@
       socketConnection.emit('createSession', roomPayload)
 		});
     
-    socketConnection.on('onSessionCreated', (val) => {
+    socketConnection.on('onSessionCreated', () => {
       adminSessionInitProcess.update(val => ['session_init_success', ...val])
     })
     

@@ -3,8 +3,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import {currentSession, memberSessionInitProcess} from '$lib/session/session';
 	import { spotifyUser } from '$lib/spotify/spotify';
-	import type { SessionJoinRequest } from '$lib/interfaces/session/session.interface';
-	import type { JoinSessionRequest } from '$lib/interfaces/session/socket.interface';
+	import type { JoinSessionRequest, SessionBoardcastRequest } from '$lib/interfaces/session/socket.interface';
 
 	const socketConnection = ioClient.connect();
 	onMount(() => {
@@ -24,7 +23,7 @@
 			memberSessionInitProcess.update(val => ['socket_start_success', ...val])
 		});
 
-		socketConnection.on('onNewComerJoin', (payload: SessionJoinRequest) => {
+		socketConnection.on('onNewComerJoin', (payload: JoinSessionRequest) => {
 			console.log(payload)
 			console.log(`A wild ${payload?.spotifyDisplayName} has appeard`)
 		})
