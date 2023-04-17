@@ -32,21 +32,3 @@ export interface SessionPlayingInfo extends MusicSessionQueue {
 	status: SessionStatus;
 	currentDurationMs: number;
 }
-
-export interface SessionJoinRequest {
-	sessionId: string;
-	userId: string;
-	socketId: string;
-	spotifyDisplayName: string;
-	playingInfo: SessionPlayingInfo;
-}
-
-export interface SessionJoinResponse {
-	spotifyDisplayName: string;
-	playingInfo: SessionPlayingInfo;
-}
-
-export interface OnChangePlayingInfoRequest {
-	sessionId: string;
-	playingInfo: SessionPlayingInfo;
-}

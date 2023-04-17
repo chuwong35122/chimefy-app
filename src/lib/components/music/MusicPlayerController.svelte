@@ -25,6 +25,10 @@
 	import { pb, user } from '$lib/pocketbase/pb';
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 	import { toastValue } from '$lib/notification/toast';
+	import { ioClient } from '$lib/socket/client';
+	import type { SessionBoardcastRequest } from '$lib/interfaces/session/socket.interface';
+
+	const socketConnection = ioClient.connect();
 
 	let popupModal = false;
 	let SpotifyPlayer: Spotify.Player;
@@ -63,10 +67,26 @@
 		if (popupModal) popupModal = false;
 
 		try {
+			const boardcastPayload: SessionBoardcastRequest = {
+				sessionId: $currentSession?.id,
+				status: $playingInfo?.status ?? 'playing',
+				currentDurationMs: $playingInfo?.currentDurationMs ?? 0,
+				trackId: $playingInfo?.trackId ?? $currentSession?.queues[0]?.trackId,
+				trackUri: $playingInfo?.trackUri ?? $currentSession?.queues[0]?.trackUri,
+				trackName: $playingInfo?.trackName ?? $currentSession?.queues[0]?.trackName,
+				artist: $playingInfo?.artist ?? $currentSession?.queues[0]?.artist,
+				durationMs: $playingInfo?.durationMs ?? $currentSession?.queues[0]?.durationMs,
+				trackImageUrl: $playingInfo?.trackImageUrl ?? $currentSession?.queues[0]?.trackImageUrl,
+				addedSince: $playingInfo?.addedSince ?? $currentSession?.queues[0]?.addedSince,
+			};
+			console.log(boardcastPayload)
+			socketConnection.emit('startSessionBroadcast', boardcastPayload)
+
 			await pb.collection('sessions').update($currentSession?.id, {
 				...$currentSession,
 				status: 'broadcasting'
 			});
+
 			await playTrack($playingInfo, $spotifyPlayerDeviceId, $currentSession, $spotifyAccessToken);
 			await updatePlayInfo($playingInfo, $currentSession, $currentSessionRole);
 
@@ -156,10 +176,19 @@
 			})
 
 			// Put the connect() at the bottom most of player.on()
-			// await SpotifyPlayer?.connect();
+			await SpotifyPlayer?.connect();
 		};
 
-		detectSessionChange($currentSessionRole);
+		if($currentSessionRole === 'member') {
+		socketConnection.on('onStartBoardcast', async (payload: SessionBoardcastRequest) => {
+			playingInfo.set({
+				...payload
+			})
+			await togglePlay()
+		})
+	}
+
+		// detectSessionChange($currentSessionRole);
 	});
 
 	onDestroy(() => {

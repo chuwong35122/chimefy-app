@@ -1,5 +1,8 @@
-import type { SessionJoinRequest } from '$lib/interfaces/session/session.interface';
-import type { InitRoomRequest } from '$lib/interfaces/session/socket.interface';
+import type {
+	InitRoomRequest,
+	JoinSessionRequest,
+	SessionBoardcastRequest
+} from '$lib/interfaces/session/socket.interface';
 import { Server } from 'socket.io';
 
 export default function injectSocketIO(server: any) {
@@ -17,10 +20,14 @@ export default function injectSocketIO(server: any) {
 			socket.emit('onSessionCreated'); // emit to that user only
 		});
 
-		socket.on('joinSession', (payload: SessionJoinRequest) => {
+		socket.on('joinSession', (payload: JoinSessionRequest) => {
 			socket.join(payload.sessionId);
 			console.log({ payload });
 			io.emit('onNewComerJoin', payload); // show session join notification
+		});
+
+		socket.on('startSessionBroadcast', (payload: SessionBoardcastRequest) => {
+			io.to(payload.sessionId).emit('onStartBoardcast', payload);
 		});
 	});
 }

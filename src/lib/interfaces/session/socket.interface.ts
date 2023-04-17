@@ -1,7 +1,9 @@
 import type {
 	MusicSessionMember,
 	MusicSessionQueue,
-	SessionBroadcastStatus
+	SessionBroadcastStatus,
+	SessionPlayingInfo,
+	SessionStatus
 } from './session.interface';
 
 export interface InitRoomRequest {
@@ -17,4 +19,13 @@ export interface JoinSessionRequest {
 	sessionId: string;
 	spotifyId: string;
 	spotifyDisplayName: string;
+}
+
+export interface SessionJoinRequest {
+	sessionId: string;
+	spotifyDisplayName: string;
+}
+
+export interface SessionBoardcastRequest extends SessionPlayingInfo {
+	sessionId: string;
 }
