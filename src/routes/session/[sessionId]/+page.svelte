@@ -14,7 +14,7 @@
 		checkSessionRole,
 		currentSession,
 		currentSessionRole,
-		increamentInitializationProcess,
+		incrementInitializationProcess,
 		playingInfo,
 		adminSessionInitProcess,
 		socketId,
@@ -28,7 +28,6 @@
 	import SessionInfo from '$lib/components/music/SessionInfo.svelte';
 	import { Modal } from 'flowbite-svelte';
 	import SessionInitializeProcessModal from '$lib/components/modals/SessionInitializeProcessModal.svelte';
-	import { wait } from '$lib/utils/common/time';
 
 	// TODO: Store session password and check before entering
 	export let data: { session: MusicSession & Record };
@@ -70,12 +69,11 @@
 		// 	goto('/session');
 		// 	toastValue.set({ message: "You need session's password", type: 'warn' });
 		// }
-		await wait(2000)
 		if (!sessionId || !$user || !$user?.id || !$spotifyUser) return;
 	
 		const socketConnection = socket.connect();
 		console.log('3')
-		increamentInitializationProcess($currentSessionRole)
+		incrementInitializationProcess($currentSessionRole)
 		// Admin: send current playing track to new comers
 		
 		const joinSessionRequest: SessionJoinRequest = {
@@ -87,31 +85,24 @@
 		};
 		
 		// Connect to Music session and request for its states (not participants)
-		socket.on('connect', async () => {
+		socket.on('connect', () => {
+			console.log('uwuuwuwu')
 			socketId.set(socketConnection.id);
 			socket.emit('joinSession', joinSessionRequest);
 			console.log('4')
-			increamentInitializationProcess($currentSessionRole)
+			incrementInitializationProcess($currentSessionRole)
 		});
 
-		socket.on('onNewComerJoin', (joinResponse: SessionJoinResponse) => {
-			toastValue.set({ message: `Say hi to ${joinResponse.spotifyDisplayName} 👋`, type: 'info' });
-			const sessionRole = checkSessionRole($user?.id, $currentSession);
-			currentSessionRole.set(sessionRole);
-
-
-			if (sessionRole === 'member') {
-				playingInfo.set(joinResponse.playingInfo);
+		if ($currentSessionRole === 'member') {
 				const _session = $currentSession;
 				_session.participants.push({
 					userId: $user?.id ?? '',
-					role: sessionRole,
+					role: $currentSessionRole,
 					profileImg: $spotifyUser?.images && $spotifyUser.images[0].url,
 					spotifyDisplayedName: $spotifyUser?.display_name ?? ''
 				});
-				pb.collection('sessions').update($currentSession?.id, _session);
+				await pb.collection('sessions').update($currentSession?.id, _session);
 			}
-		});
 	});
 
 	onDestroy(() => {
