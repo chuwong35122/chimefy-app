@@ -29,9 +29,8 @@ export async function setActiveSpotifyPlayer(device_id: string, access_token: st
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-			device_id,
-			access_token,
-			play: true
+			device_id: device_id,
+			access_token: access_token
 		})
 	});
 }
@@ -50,9 +49,6 @@ export async function playTrack(
 	};
 	await fetch('/api/spotify/playback/play', {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
 		body: JSON.stringify(payload)
 	});
 
