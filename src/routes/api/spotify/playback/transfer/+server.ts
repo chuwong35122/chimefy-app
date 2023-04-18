@@ -5,19 +5,21 @@ import { json } from '@sveltejs/kit';
 
 // Transfer playback state to other device
 export const POST: RequestHandler = async ({ fetch, request }) => {
-	const req = await request.json();
-	const { access_token, device_id, play } = req;
+	const req = request.clone();
+	const _req = await req.json();
+	const { device_id, access_token, play } = _req;
+
+	const payload = {
+		device_ids: [device_id]
+	};
 
 	const res = await fetch(`${PUBLIC_SPOTIFY_BASE_URL}/me/player`, {
+		method: 'PUT',
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: getBearerToken(access_token ?? '')
 		},
-		method: 'PUT',
-		body: JSON.stringify({
-			device_ids: [device_id],
-			play: play
-		})
+		body: JSON.stringify(payload)
 	});
 
 	const response = await res.json();

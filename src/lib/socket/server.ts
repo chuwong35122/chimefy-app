@@ -1,6 +1,7 @@
 import type {
 	InitRoomRequest,
 	JoinSessionRequest,
+	PauseSessionBoardcastRequest,
 	SessionBoardcastRequest
 } from '$lib/interfaces/session/socket.interface';
 import { Server } from 'socket.io';
@@ -28,6 +29,10 @@ export default function injectSocketIO(server: any) {
 
 		socket.on('startSessionBroadcast', (payload: SessionBoardcastRequest) => {
 			io.to(payload.sessionId).emit('onStartBoardcast', payload);
+		});
+
+		socket.on('pauseSessionBoardcast', (payload: PauseSessionBoardcastRequest) => {
+			io.to(payload.sessionId).emit('onPauseBoardcast');
 		});
 	});
 }

@@ -26,7 +26,7 @@
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 	import { toastValue } from '$lib/notification/toast';
 	import { ioClient } from '$lib/socket/client';
-	import type { SessionBoardcastRequest } from '$lib/interfaces/session/socket.interface';
+	import type { PauseSessionBoardcastRequest, SessionBoardcastRequest } from '$lib/interfaces/session/socket.interface';
 
 	const socketConnection = ioClient.connect();
 
@@ -53,6 +53,7 @@
 	}
 
 	async function togglePlay() {
+		console.log($spotifyPlayerDeviceId)
 		if (
 			$currentSession?.status === 'waiting' &&
 			!$hasConfirmedBroadcast &&
@@ -116,6 +117,7 @@
 				...$currentSession,
 				status: 'waiting'
 			};
+
 			playingInfo.set({ ..._prevInfo, status: 'pause' });
 			await pb.collection('sessions').update($currentSession?.id, payload);
 
@@ -166,25 +168,29 @@
 			});
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
 				spotifyPlayerDeviceId.set(device_id);
-				if($currentSessionRole === 'member') {
-					setActiveSpotifyPlayer(device_id, $spotifyAccessToken);
-				}
 				toastValue.set({ message: 'Spotify Player connected! 🎵', type: 'info' })
+				await setActiveSpotifyPlayer(device_id, $spotifyAccessToken);
 			});
 			SpotifyPlayer.on('initialization_error', (err) => {
 				console.log(err.message)
 			})
-
+			
 			// Put the connect() at the bottom most of player.on()
 			await SpotifyPlayer?.connect();
 		};
-
+		
 		if($currentSessionRole === 'member') {
-		socketConnection.on('onStartBoardcast', async (payload: SessionBoardcastRequest) => {
+			socketConnection.on('onStartBoardcast', async (payload: SessionBoardcastRequest) => {
 			playingInfo.set({
 				...payload
 			})
-			await togglePlay()
+			if(payload.status === 'playing') {
+				await togglePlay()
+			}
+		})
+
+		socketConnection.on('onPauseBoardcast', async () => {
+			await togglePause()
 		})
 	}
 
