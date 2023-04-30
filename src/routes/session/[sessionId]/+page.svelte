@@ -1,14 +1,12 @@
 <script lang="ts">
-	import type {
-		MusicSession,
-	} from '$lib/interfaces/session/session.interface';
+	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 	import { pb, user } from '$lib/pocketbase/pb';
 	import type { Record } from 'pocketbase';
 	import { onDestroy, onMount } from 'svelte';
-	import TrackSearchTab from '$lib/components/music/TrackSearchTab.svelte';	import {
+	import TrackSearchTab from '$lib/components/music/TrackSearchTab.svelte';
+	import {
 		currentSession,
 		currentSessionRole,
-		adminSessionInitProcess,
 		addSessionParticipant
 	} from '$lib/session/session';
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
@@ -16,8 +14,6 @@
 	import MusicPlayerController from '$lib/components/music/MusicPlayerController.svelte';
 	import SessionQueueMembers from '$lib/components/music/SessionQueueMembers.svelte';
 	import SessionInfo from '$lib/components/music/SessionInfo.svelte';
-	import { Modal } from 'flowbite-svelte';
-	import SessionInitializeProcessModal from '$lib/components/modals/SessionInitializeProcessModal.svelte';
 	import { ioClient } from '$lib/socket/client';
 	import SocketListener from '$lib/components/io/SocketListener.svelte';
 	import AdminSocketHandler from '$lib/components/io/AdminSocketHandler.svelte';
@@ -34,12 +30,9 @@
 	onMount(async () => {
 		// TODO: add hashed password in query params
 		if (!sessionId || !$user || !$user?.id || !$spotifyUser) return;
-		if($currentSessionRole === 'admin') {
-			adminSessionInitProcess.update(val => [...val, 'session_init'])
-		}else if($currentSessionRole === 'member') {
-			addSessionParticipant($currentSession, $user?.id, $spotifyUser)
+		if ($currentSessionRole === 'member') {
+			addSessionParticipant($currentSession, $user?.id, $spotifyUser);
 		}
- 
 	});
 
 	onDestroy(() => {
@@ -53,13 +46,10 @@
 </svelte:head>
 
 {#if $currentSessionRole === 'admin' && $spotifyUser && $currentSession}
-<AdminSocketHandler />
+	<AdminSocketHandler />
 {:else if $currentSessionRole === 'member' && $spotifyUser && $currentSession}
-<SocketListener />
+	<SocketListener />
 {/if}
-<Modal open={true} size="lg" class="modal-glass">
-	<SessionInitializeProcessModal />
-</Modal>
 <div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
 	<SessionInfo {sessionId} />
 </div>

@@ -4,6 +4,7 @@ import { randomString } from '$lib/utils/random/randomstring';
 import type { PrivateUser } from 'spotify-types';
 
 export const spotifyUser = writable<PrivateUser | undefined>();
+export const spotifyPlayerId = writable('');
 export const spotifyAccessToken = writable('');
 export const spotifyRefreshToken = writable('');
 
