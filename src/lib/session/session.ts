@@ -1,4 +1,3 @@
-import type { AdminSessionInit, MemberSessionInit } from '$lib/constants/session';
 import type {
 	MusicSession,
 	MusicSessionRole,
@@ -19,10 +18,6 @@ export const hasConfirmedBroadcast = writable(false);
 export const currentSessionRole = writable<MusicSessionRole>('member');
 
 export const playingInfo = writable<SessionPlayingInfo>();
-
-export const adminSessionInitProcess = writable<AdminSessionInit[]>([]);
-export const memberSessionInitProcess = writable<MemberSessionInit[]>([]);
-export const sessionInitModalOpen = writable(false);
 
 user.subscribe((val) => {
 	currentSession.subscribe((session) => {

@@ -13,13 +13,13 @@
 
 	async function onSessionBroadcast() {
 		if (!$currentSession?.id) return;
-
+		
 		try {
+			await setActiveSpotifyPlayer($spotifyPlayerDeviceId, $spotifyAccessToken)
 			const _currentSession = { ...$currentSession };
 			_currentSession.status = 'broadcasting';
 			hasConfirmedBroadcast.set(true);
 
-			await setActiveSpotifyPlayer($spotifyPlayerDeviceId, $spotifyAccessToken);
 			await pb.collection('sessions').update($currentSession.id, _currentSession);
 			dispatch('broadcast');
 		} catch (e) {

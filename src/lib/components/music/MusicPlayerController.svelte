@@ -10,7 +10,7 @@
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import { onDestroy, onMount } from 'svelte';
-	import { spotifyAccessToken, spotifyUser } from '$lib/spotify/spotify';
+	import { spotifyAccessToken, spotifyPlayerId, spotifyUser } from '$lib/spotify/spotify';
 	import { Modal, Tooltip } from 'flowbite-svelte';
 	import {
 		changeSessionPlayInfo,
@@ -53,7 +53,6 @@
 	}
 
 	async function togglePlay() {
-		console.log($spotifyPlayerDeviceId)
 		if (
 			$currentSession?.status === 'waiting' &&
 			!$hasConfirmedBroadcast &&
@@ -80,7 +79,6 @@
 				trackImageUrl: $playingInfo?.trackImageUrl ?? $currentSession?.queues[0]?.trackImageUrl,
 				addedSince: $playingInfo?.addedSince ?? $currentSession?.queues[0]?.addedSince,
 			};
-			console.log(boardcastPayload)
 			socketConnection.emit('startSessionBroadcast', boardcastPayload)
 
 			await pb.collection('sessions').update($currentSession?.id, {
@@ -169,7 +167,7 @@
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
 				spotifyPlayerDeviceId.set(device_id);
 				toastValue.set({ message: 'Spotify Player connected! 🎵', type: 'info' })
-				await setActiveSpotifyPlayer(device_id, $spotifyAccessToken);
+			spotifyPlayerId.set(device_id);
 			});
 			SpotifyPlayer.on('initialization_error', (err) => {
 				console.log(err.message)

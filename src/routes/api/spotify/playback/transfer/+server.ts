@@ -7,7 +7,7 @@ import { json } from '@sveltejs/kit';
 export const POST: RequestHandler = async ({ fetch, request }) => {
 	const req = request.clone();
 	const _req = await req.json();
-	const { device_id, access_token, play } = _req;
+	const { device_id, access_token } = _req;
 
 	const payload = {
 		device_ids: [device_id]

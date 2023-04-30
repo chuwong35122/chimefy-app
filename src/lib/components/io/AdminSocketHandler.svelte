@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { InitRoomRequest } from '$lib/interfaces/session/socket.interface';
-	import { adminSessionInitProcess, currentSession, } from '$lib/session/session';
+	import { currentSession, } from '$lib/session/session';
 	import { ioClient } from '$lib/socket/client';
 	import { onDestroy, onMount } from 'svelte';
   import type {SessionJoinRequest} from '$lib/interfaces/session/socket.interface'
@@ -9,7 +9,6 @@
 	onMount(() => {
 		// create socket connection
 		socketConnection.on('connect', () => {
-      adminSessionInitProcess.update(val => ['session_init', ...val])
       // create room
       const roomPayload: InitRoomRequest = {
         sessionId: $currentSession.id,
@@ -23,7 +22,6 @@
 		});
     
     socketConnection.on('onSessionCreated', () => {
-      adminSessionInitProcess.update(val => ['session_init_success', ...val])
     })
     
     socketConnection.on('onNewComerJoin', (payload: SessionJoinRequest) => {

@@ -29,3 +29,8 @@ export interface SessionJoinRequest {
 export interface SessionBoardcastRequest extends SessionPlayingInfo {
 	sessionId: string;
 }
+
+export interface PauseSessionBoardcastRequest {
+	sessionId: string;
+	status: SessionStatus;
+}
