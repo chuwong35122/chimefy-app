@@ -1,8 +1,8 @@
 import type {
 	InitRoomRequest,
 	JoinSessionRequest,
-	PauseSessionBoardcastRequest,
-	SessionBoardcastRequest
+	PauseSessionBroadcastRequest,
+	SessionBroadcastRequest
 } from '$lib/interfaces/session/socket.interface';
 import { Server } from 'socket.io';
 
@@ -27,11 +27,11 @@ export default function injectSocketIO(server: any) {
 			io.emit('onNewComerJoin', payload); // show session join notification
 		});
 
-		socket.on('startSessionBroadcast', (payload: SessionBoardcastRequest) => {
+		socket.on('startSessionBroadcast', (payload: SessionBroadcastRequest) => {
 			io.to(payload.sessionId).emit('onStartBoardcast', payload);
 		});
 
-		socket.on('pauseSessionBoardcast', (payload: PauseSessionBoardcastRequest) => {
+		socket.on('pauseSessionBoardcast', (payload: PauseSessionBroadcastRequest) => {
 			io.to(payload.sessionId).emit('onPauseBoardcast');
 		});
 	});

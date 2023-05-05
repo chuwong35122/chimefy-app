@@ -26,11 +26,11 @@ export interface SessionJoinRequest {
 	spotifyDisplayName: string;
 }
 
-export interface SessionBoardcastRequest extends SessionPlayingInfo {
+export interface SessionBroadcastRequest extends SessionPlayingInfo {
 	sessionId: string;
 }
 
-export interface PauseSessionBoardcastRequest {
+export interface PauseSessionBroadcastRequest {
 	sessionId: string;
 	status: SessionStatus;
 }

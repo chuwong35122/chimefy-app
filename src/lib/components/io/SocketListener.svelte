@@ -3,7 +3,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import {currentSession} from '$lib/session/session';
 	import { spotifyUser } from '$lib/spotify/spotify';
-	import type { JoinSessionRequest, SessionBoardcastRequest } from '$lib/interfaces/session/socket.interface';
+	import type { JoinSessionRequest, SessionBroadcastRequest } from '$lib/interfaces/session/socket.interface';
 
 	const socketConnection = ioClient.connect();
 	onMount(() => {

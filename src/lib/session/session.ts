@@ -5,12 +5,11 @@ import type {
 } from '$lib/interfaces/session/session.interface';
 import { toastValue } from '$lib/notification/toast';
 import { pb, user } from '$lib/pocketbase/pb';
-import { wait } from '$lib/utils/common/time';
 import type { ClientResponseError, Record } from 'pocketbase';
-import type { PrivateUser, PublicUser } from 'spotify-types';
+import type { PrivateUser } from 'spotify-types';
 import { writable } from 'svelte/store';
 
-export const currentSession = writable<Record & MusicSession>();
+export const currentSession = writable<MusicSession & Record>();
 export const currentSessionPassword = writable('');
 export const spotifyPlayerDeviceId = writable('');
 export const socketId = writable('');

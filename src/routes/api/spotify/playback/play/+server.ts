@@ -10,7 +10,7 @@ export const POST: RequestHandler = async ({ fetch, request }) => {
 	const _req = await req.json();
 	const { access_token, device_id, uris, position_ms } = _req;
 
-	const res = await fetch(`${PUBLIC_SPOTIFY_BASE_URL}/me/player/play`, {
+	const res = await fetch(`${PUBLIC_SPOTIFY_BASE_URL}/me/player/play?device_id=${device_id}`, {
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: getBearerToken(access_token ?? '')
@@ -18,7 +18,6 @@ export const POST: RequestHandler = async ({ fetch, request }) => {
 		method: 'PUT',
 		body: JSON.stringify({
 			uris: uris,
-			device_id: device_id,
 			position_ms: position_ms
 		})
 	});

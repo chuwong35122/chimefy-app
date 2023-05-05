@@ -10,7 +10,8 @@ export const POST: RequestHandler = async ({ fetch, request }) => {
 	const { device_id, access_token } = _req;
 
 	const payload = {
-		device_ids: [device_id]
+		device_ids: [device_id],
+		play: true
 	};
 
 	const res = await fetch(`${PUBLIC_SPOTIFY_BASE_URL}/me/player`, {
@@ -22,6 +23,8 @@ export const POST: RequestHandler = async ({ fetch, request }) => {
 		body: JSON.stringify(payload)
 	});
 
+	console.log('transfering');
 	const response = await res.json();
+	console.log(response);
 	return json(response);
 };

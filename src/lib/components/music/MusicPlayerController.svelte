@@ -5,7 +5,7 @@
 		playingInfo,
 		spotifyPlayerDeviceId,
 		hasConfirmedBroadcast,
-		addSessionParticipant,
+		addSessionParticipant
 	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
@@ -26,11 +26,14 @@
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 	import { toastValue } from '$lib/notification/toast';
 	import { ioClient } from '$lib/socket/client';
-	import type { PauseSessionBoardcastRequest, SessionBoardcastRequest } from '$lib/interfaces/session/socket.interface';
+	import type {
+		SessionBroadcastRequest
+	} from '$lib/interfaces/session/socket.interface';
+	import { createBroadcastPayload } from '$lib/session/track';
 
 	const socketConnection = ioClient.connect();
 
-	let popupModal = false;
+	let broadcastModal = false;
 	let SpotifyPlayer: Spotify.Player;
 	let timer: NodeJS.Timer;
 
@@ -52,39 +55,19 @@
 		if ($currentSession) changeSessionPlayInfo($currentSession, $currentSessionRole, $playingInfo);
 	}
 
+	// open broadcast modal, and play send track info
 	async function togglePlay() {
-		if (
-			$currentSession?.status === 'waiting' &&
-			!$hasConfirmedBroadcast &&
-			$currentSessionRole === 'admin'
-		) {
-			popupModal = true;
-			return;
-		}
-		if (!$currentSession || !$currentSessionRole || !$spotifyAccessToken || !$spotifyPlayerDeviceId)
-			return;
+		broadcastModal = false;
 
-		if (popupModal) popupModal = false;
+		if($currentSessionRole !== 'admin') return;
+		if(!$hasConfirmedBroadcast && !broadcastModal) {
+			broadcastModal = true
+			return
+		}
 
 		try {
-			const boardcastPayload: SessionBoardcastRequest = {
-				sessionId: $currentSession?.id,
-				status: $playingInfo?.status ?? 'playing',
-				currentDurationMs: $playingInfo?.currentDurationMs ?? 0,
-				trackId: $playingInfo?.trackId ?? $currentSession?.queues[0]?.trackId,
-				trackUri: $playingInfo?.trackUri ?? $currentSession?.queues[0]?.trackUri,
-				trackName: $playingInfo?.trackName ?? $currentSession?.queues[0]?.trackName,
-				artist: $playingInfo?.artist ?? $currentSession?.queues[0]?.artist,
-				durationMs: $playingInfo?.durationMs ?? $currentSession?.queues[0]?.durationMs,
-				trackImageUrl: $playingInfo?.trackImageUrl ?? $currentSession?.queues[0]?.trackImageUrl,
-				addedSince: $playingInfo?.addedSince ?? $currentSession?.queues[0]?.addedSince,
-			};
-			socketConnection.emit('startSessionBroadcast', boardcastPayload)
-
-			await pb.collection('sessions').update($currentSession?.id, {
-				...$currentSession,
-				status: 'broadcasting'
-			});
+			const broadcastPayload = createBroadcastPayload($currentSession, $playingInfo);
+			socketConnection.emit('startSessionBroadcast', broadcastPayload)
 
 			await playTrack($playingInfo, $spotifyPlayerDeviceId, $currentSession, $spotifyAccessToken);
 			await updatePlayInfo($playingInfo, $currentSession, $currentSessionRole);
@@ -103,8 +86,8 @@
 					forwardTrack();
 				}
 			}, 1000);
-		} catch (e) {
-			console.error(e);
+		}catch(e) {
+			console.log(e)
 		}
 	}
 
@@ -166,31 +149,35 @@
 			});
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
 				spotifyPlayerDeviceId.set(device_id);
-				toastValue.set({ message: 'Spotify Player connected! 🎵', type: 'info' })
-			spotifyPlayerId.set(device_id);
+				toastValue.set({ message: 'Spotify player is ready!! 🎵', type: 'info' });
+				spotifyPlayerId.set(device_id);
 			});
 			SpotifyPlayer.on('initialization_error', (err) => {
-				console.log(err.message)
-			})
-			
+				console.log(err.message);
+			});
+
+			SpotifyPlayer.on('player_state_changed', (val) => {
+				console.log(val);
+			});
+
 			// Put the connect() at the bottom most of player.on()
 			await SpotifyPlayer?.connect();
 		};
-		
-		if($currentSessionRole === 'member') {
-			socketConnection.on('onStartBoardcast', async (payload: SessionBoardcastRequest) => {
-			playingInfo.set({
-				...payload
-			})
-			if(payload.status === 'playing') {
-				await togglePlay()
-			}
-		})
 
-		socketConnection.on('onPauseBoardcast', async () => {
-			await togglePause()
-		})
-	}
+		if ($currentSessionRole === 'member') {
+			socketConnection.on('onStartBoardcast', async (payload: SessionBroadcastRequest) => {
+				playingInfo.set({
+					...payload
+				});
+				if (payload.status === 'playing') {
+					await togglePlay();
+				}
+			});
+
+			socketConnection.on('onPauseBoardcast', async () => {
+				await togglePause();
+			});
+		}
 
 		// detectSessionChange($currentSessionRole);
 	});
@@ -204,11 +191,10 @@
 	<script src="https://sdk.scdn.co/spotify-player.js"></script>
 </svelte:head>
 
-<Modal bind:open={popupModal} size="xs" autoclose={false} class="modal-glass">
+<Modal bind:open={broadcastModal} size="xs" autoclose={false} class="modal-glass">
 	<SpotifyTrackBroadcastModal on:broadcast={togglePlay} />
 </Modal>
 <div class="relative w-full p-4 rounded-xl bg-dark-500 hover:bg-white/10 duration-200">
-	<div>{$currentSession?.status}</div>
 	<div class="flex flex-row items-center justify-between">
 		{#if $playingInfo && $playingInfo?.trackImageUrl}
 			<div class="flex flex-col lg:flex-row items-center text-center lg:text-start">
@@ -225,36 +211,36 @@
 		{:else}
 			<div class="w-20 h-16" />
 		{/if}
-
 		<div class="flex flex-col items-center">
-			<div class="flex flex-row items-center mb-2">
-				<button>
-					<Icon
-						icon="material-symbols:skip-previous-rounded"
-						class="w-10 h-10 hover:scale-110 duration-100"
-					/>
-				</button>
-				<button on:click={$playingInfo?.status === 'playing' ? togglePause : togglePlay}>
-					{#if $playingInfo && $playingInfo?.status === 'playing'}
+			{#if $currentSessionRole === 'admin'}
+				<div class="flex flex-row items-center mb-2">
+					<button>
 						<Icon
-							icon="material-symbols:pause-circle-rounded"
+							icon="material-symbols:skip-previous-rounded"
 							class="w-10 h-10 hover:scale-110 duration-100"
 						/>
-					{:else}
+					</button>
+					<button on:click={$playingInfo?.status === 'playing' ? togglePause : togglePlay}>
+						{#if $playingInfo && $playingInfo?.status === 'playing'}
+							<Icon
+								icon="material-symbols:pause-circle-rounded"
+								class="w-10 h-10 hover:scale-110 duration-100"
+							/>
+						{:else}
+							<Icon
+								icon="material-symbols:play-circle-rounded"
+								class="w-10 h-10 hover:scale-110 duration-100"
+							/>
+						{/if}
+					</button>
+					<button>
 						<Icon
-							icon="material-symbols:play-circle-rounded"
+							icon="material-symbols:skip-next-rounded"
 							class="w-10 h-10 hover:scale-110 duration-100"
 						/>
-					{/if}
-				</button>
-				<button>
-					<Icon
-						icon="material-symbols:skip-next-rounded"
-						class="w-10 h-10 hover:scale-110 duration-100"
-					/>
-				</button>
-			</div>
-			<div>{playingMs}</div>
+					</button>
+				</div>
+			{/if}
 			{#if $currentSession?.status === 'broadcasting'}
 				<div class="flex flex-row items-center w-full justify-between my-[-8px]">
 					<div class="text-xs hidden lg:block w-8">{millisecondToMinuteSeconds(playingMs)}</div>
