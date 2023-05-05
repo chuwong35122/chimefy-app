@@ -13,7 +13,7 @@
 
 	async function onSessionBroadcast() {
 		if (!$currentSession?.id) return;
-		
+		// todo: try set play twice
 		try {
 			await setActiveSpotifyPlayer($spotifyPlayerDeviceId, $spotifyAccessToken)
 			const _currentSession = { ...$currentSession };
