@@ -1,9 +1,20 @@
 <script lang="ts">
-	import { logout, pb, user } from '$lib/pocketbase/pb';
-	import { Dropdown, DropdownItem, Tooltip } from 'flowbite-svelte';
+	import { logout } from '$lib/pocketbase/pb';
+	import { Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
-	import { redirectToSpotifyAuth, spotifyUser } from '$lib/spotify/spotify';
+	import { SPOTIFY_AUTH_SCOPES } from '$lib/spotify/spotify';
+	import { supabase } from '$lib/supabase/supabase';
+	import { userStore } from '$lib/supabase/user';
+
+	async function signInWithSpotify() {
+		const { data, error } = await supabase.auth.signInWithOAuth({
+			provider: 'spotify',
+			options: {
+				scopes: SPOTIFY_AUTH_SCOPES.join(' ')
+			}
+		});
+	}
 </script>
 
 <div class="w-full px-4 py-4 flex flex-row items-center justify-between">
@@ -52,33 +63,27 @@
 	</div>
 
 	<div>
-		{#if $spotifyUser?.id}
+		{#if $userStore?.id}
 			<div class="w-12 h-12">
-				{#if $spotifyUser && $spotifyUser?.images && $spotifyUser?.images[0]}
+				{#if $userStore?.user_metadata?.avatar_url}
 					<div
 						class="relative cursor-pointer bg-dark-300/60 w-12 h-12 rounded-full p-1 hover:bg-dark-300/30 duration-200"
 					>
 						<img
 							id="profile-img"
-							src={$spotifyUser.images[0].url}
+							src={$userStore?.user_metadata?.avatar_url}
 							width="300"
 							height="300"
 							alt="Spotify Profile"
 							class="rounded-full"
 							draggable="false"
 						/>
-						<div class="absolute bottom-0 right-2">
-							{#if $user?.id}
-								<div class="bg-green-500 w-2 h-2 rounded-full" />
-							{:else}
-								<div class="bg-red-500 w-2 h-2 rounded-full" />
-							{/if}
-						</div>
+						<div class="absolute bottom-0 right-2" />
 					</div>
 					<Dropdown>
 						<div slot="header" class="px-4 py-2">
 							<span class="block text-sm text-gray-900 dark:text-white">
-								{$spotifyUser.display_name}
+								{$userStore?.user_metadata?.name}
 							</span>
 						</div>
 						<DropdownItem>Profile</DropdownItem>
@@ -87,11 +92,8 @@
 					</Dropdown>
 				{/if}
 			</div>
-			<Tooltip placement="left" triggeredBy="[id='profile-img']"
-				>{$user?.id ? 'You have log-in to AppName' : 'You have not log-in to Appname'}</Tooltip
-			>
 		{:else}
-			<a href={redirectToSpotifyAuth()} class="p-2 px-3 hover:scale-105 duration-200">
+			<button on:click={signInWithSpotify} class="p-2 px-3 hover:scale-105 duration-200">
 				<div class="flex flex-row items-center">
 					<Icon icon="logos:spotify-icon" width={24} height={24} />
 					<p
@@ -103,7 +105,11 @@
 						Login
 					</p>
 				</div>
-			</a>
+			</button>
 		{/if}
 	</div>
+</div>
+
+<div>
+	{JSON.stringify($userStore)}
 </div>

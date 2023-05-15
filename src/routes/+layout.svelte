@@ -2,7 +2,6 @@
 	import '../styles/global.css';
 	import NavBar from '$lib/components/UI/NavBar.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
-	import { logout, user as userStore } from '$lib/pocketbase/pb';
 	import type { Record } from 'pocketbase';
 	import { spotifyAccessToken, spotifyRefreshToken, spotifyUser } from '$lib/spotify/spotify';
 	import { toastValue } from '$lib/notification/toast';
@@ -12,7 +11,8 @@
 	import { goto, invalidate } from '$app/navigation';
 	import { Modal } from 'flowbite-svelte';
 	import SpotifyPremiumInfoModal from '$lib/components/modals/SpotifyPremiumInfoModal.svelte';
-
+	import { userStore } from '$lib/supabase/user';
+	import { logout } from '$lib/supabase/supabase';
 
 	let isSpotifyPremiumModalOpen = false;
 
@@ -20,6 +20,12 @@
 		isSpotifyPremiumModalOpen = false;
 		logout();
 	}
+
+	onMount(() => {
+		supabase.auth.onAuthStateChange((_, session) => {
+			if (session?.user) userStore.set(session.user);
+		});
+	});
 
 	// onMount(async () => {
 	// 	if (!data.user) {
