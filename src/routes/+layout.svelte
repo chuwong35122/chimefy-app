@@ -7,6 +7,7 @@
 	import { Modal } from 'flowbite-svelte';
 	import SpotifyPremiumInfoModal from '$lib/components/modals/SpotifyPremiumInfoModal.svelte';
 	import { logout, userStore } from '$lib/supabase/user';
+	import { spotifyAccessToken } from '$lib/spotify/spotify';
 
 	export let data;
 	$: ({ supabase, session } = data);
@@ -26,6 +27,7 @@
 
 			if (session?.user) {
 				userStore.set(session.user);
+				spotifyAccessToken.set(session.access_token)
 				goto('/session');
 			}
 		});
