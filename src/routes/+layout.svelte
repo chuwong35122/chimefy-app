@@ -11,8 +11,7 @@
 	import { goto, invalidate } from '$app/navigation';
 	import { Modal } from 'flowbite-svelte';
 	import SpotifyPremiumInfoModal from '$lib/components/modals/SpotifyPremiumInfoModal.svelte';
-	import { userStore } from '$lib/supabase/user';
-	import { logout } from '$lib/supabase/supabase';
+	import { logout, userStore } from '$lib/supabase/user';
 
 	let isSpotifyPremiumModalOpen = false;
 
