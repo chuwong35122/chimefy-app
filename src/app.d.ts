@@ -1,5 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 import { Pocketbase, type Record } from 'pocketbase';
+import { SupabaseClient, type Session } from '@supabase/supabase-js';
 
 // for information about these interfaces
 declare global {
@@ -8,8 +9,12 @@ declare global {
 		interface Locals {
 			pb: Pocketbase;
 			user: Record | undefined;
+			supabase: SupabaseClient;
+			getSession(): Promise<Session | null>;
 		}
-		// interface PageData {}
+		interface PageData {
+			session: Session | null;
+		}
 		// interface Platform {}
 	}
 }

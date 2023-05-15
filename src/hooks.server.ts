@@ -1,30 +1,35 @@
+import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
+import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import type { Handle } from '@sveltejs/kit';
-import PocketBase from 'pocketbase';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.pb = new PocketBase('http://127.0.0.1:8090');
+	event.locals.supabase = createSupabaseServerClient({
+		supabaseUrl: PUBLIC_SUPABASE_URL,
+		supabaseKey: PUBLIC_SUPABASE_ANON_KEY,
+		event
+	});
 
-	// load the store data from the request cookie string
-	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
+	event.locals.getSession = async () => {
+		const {
+			data: { session }
+		} = await event.locals.supabase.auth.getSession();
+		return session;
+	};
 
-	if (event.locals.pb.authStore.isValid) {
-		event.locals.user = { ...event.locals.pb.authStore.model };
-	} else {
-		event.locals.user = undefined;
-	}
+	console.log(event.locals.getSession);
 
-	if (!event.locals.user) {
-		if (event.url.pathname.startsWith('/session')) {
-			return new Response('Redirect', {
-				status: 303,
-				headers: { Location: '/auth' }
-			});
+	// if (!event.locals.user) {
+	// 	if (event.url.pathname.startsWith('/session')) {
+	// 		return new Response('Redirect', {
+	// 			status: 303,
+	// 			headers: { Location: '/auth' }
+	// 		});
+	// 	}
+	// }
+
+	return resolve(event, {
+		filterSerializedResponseHeaders(name) {
+			return name === 'content-range';
 		}
-	}
-
-	const response = await resolve(event);
-
-	response.headers.set('set-cookie', event.locals.pb.authStore.exportToCookie({ secure: false }));
-
-	return response;
+	});
 };
