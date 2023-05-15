@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { logout } from '$lib/pocketbase/pb';
 	import { Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 	import { SPOTIFY_AUTH_SCOPES } from '$lib/spotify/spotify';
 	import { supabase } from '$lib/supabase/supabase';
-	import { userStore } from '$lib/supabase/user';
+	import { logout, userStore } from '$lib/supabase/user';
 
 	async function signInWithSpotify() {
 		const { data, error } = await supabase.auth.signInWithOAuth({
@@ -108,8 +107,4 @@
 			</button>
 		{/if}
 	</div>
-</div>
-
-<div>
-	{JSON.stringify($userStore)}
 </div>
