@@ -6,7 +6,6 @@ import qs from 'querystring';
 import type { Track } from 'spotify-types';
 import type { MusicSession } from '$lib/interfaces/session/session.interface';
 import type { SessionPlayingInfo } from '$lib/interfaces/session/session.interface';
-import type { Record } from 'pocketbase';
 
 export async function searchTrack(q: string, type: SearchType, access_token: string) {
 	const payload = {
@@ -42,12 +41,9 @@ export function convertPercentageToTrackMs(
 	return (percentage / 100) * durationMs;
 }
 
-export function createBroadcastPayload(
-	session: MusicSession & Record,
-	playingInfo: SessionPlayingInfo
-) {
+export function createBroadcastPayload(session: MusicSession, playingInfo: SessionPlayingInfo) {
 	const payload: SessionBroadcastRequest = {
-		sessionId: session.id,
+		sessionId: session?.uuid,
 		status: playingInfo?.status ?? 'playing',
 		currentDurationMs: playingInfo?.currentDurationMs ?? 0,
 		trackId: playingInfo?.trackId ?? session?.queues[0]?.trackId,

@@ -8,7 +8,7 @@ import { playingInfo } from '$lib/session/session';
 import type { Record } from 'pocketbase';
 
 export function changeSessionPlayInfo(
-	currentSession: MusicSession & Record,
+	currentSession: MusicSession,
 	currentSessionRole: MusicSessionRole,
 	playingInfo: SessionPlayingInfo
 ) {
@@ -87,7 +87,7 @@ export async function fastForwardCurrentTrack(
 
 export async function updatePlayInfo(
 	info: SessionPlayingInfo,
-	session: MusicSession & Record,
+	session: MusicSession,
 	role: MusicSessionRole
 ) {
 	const _playingInfo = { ...info };

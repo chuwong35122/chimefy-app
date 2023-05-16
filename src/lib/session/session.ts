@@ -4,12 +4,14 @@ import type {
 	SessionPlayingInfo
 } from '$lib/interfaces/session/session.interface';
 import { toastValue } from '$lib/notification/toast';
-import { pb, user } from '$lib/pocketbase/pb';
+import { spotifyUser } from '$lib/spotify/spotify';
+import { supabase } from '$lib/supabase/supabase';
+import { userStore } from '$lib/supabase/user';
 import type { ClientResponseError, Record } from 'pocketbase';
 import type { PrivateUser } from 'spotify-types';
 import { writable } from 'svelte/store';
 
-export const currentSession = writable<MusicSession & Record>();
+export const currentSession = writable<MusicSession>();
 export const currentSessionPassword = writable('');
 export const spotifyPlayerDeviceId = writable('');
 export const socketId = writable('');
@@ -18,10 +20,10 @@ export const currentSessionRole = writable<MusicSessionRole>('member');
 
 export const playingInfo = writable<SessionPlayingInfo>();
 
-user.subscribe((val) => {
+userStore.subscribe((user) => {
 	currentSession.subscribe((session) => {
-		if (session && val) {
-			const role = checkSessionRole(val?.id, session);
+		if (session && user) {
+			const role = checkSessionRole(user?.id, session);
 			currentSessionRole.set(role);
 		}
 	});
@@ -36,25 +38,8 @@ export function checkSessionRole(
 	return member?.role ?? 'member';
 }
 
-export async function getSessionData(id: string) {
-	if (!id) return;
-
-	try {
-		const record = await pb.collection('sessions').getOne<Record & MusicSession>(id);
-		if (record) {
-			currentSession.set(record);
-		}
-		return record;
-	} catch (e) {
-		const err = e as ClientResponseError;
-		if (err.status === 404) {
-			toastValue.set({ message: 'Session not found.', type: 'error' });
-		}
-	}
-}
-
 export async function addSessionParticipant(
-	session: MusicSession & Record,
+	session: MusicSession,
 	userId: string | undefined,
 	spotifyUser: PrivateUser | undefined
 ) {
@@ -69,6 +54,10 @@ export async function addSessionParticipant(
 			role: checkSessionRole(userId, session),
 			profileImg: spotifyUser?.images[0]?.url
 		});
-		await pb.collection('sessions').update(session?.id, _session);
+		await supabase
+			.from('session')
+			.update({ participants: _session.participants })
+			.eq('uuid', _session.uuid);
+		// await pb.collection('sessions').update(session?.id, _session);
 	}
 }

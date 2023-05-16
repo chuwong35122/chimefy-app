@@ -7,6 +7,7 @@
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 	import { pb } from '$lib/pocketbase/pb';
 	import type { Record } from 'pocketbase';
+	import { supabase } from '$lib/supabase/supabase';
 	// TODO: Create scroll animation
 	let imgRef: HTMLImageElement;
 
@@ -15,30 +16,13 @@
 	}
 
 	async function removeQueue(index: number) {
-		if (!$currentSession || !$currentSession?.id) return;
+		if (!$currentSession || !$currentSession?.uuid) return;
 
 		const _currentSession = $currentSession;
 		const queues = _currentSession.queues;
 		queues.splice(index, 1);
-		await pb.collection('sessions').update($currentSession?.id, _currentSession);
+		await supabase.from('session').update(_currentSession).eq('uuid', _currentSession?.uuid)
 	}
-
-	onMount(() => {
-		if (!$currentSession || !$currentSession?.id) return;
-
-		pb.collection('sessions').subscribe($currentSession?.id, async () => {
-			const session = await pb
-				.collection('sessions')
-				.getOne<MusicSession & Record>($currentSession?.id);
-			currentSession.set(session);
-		});
-	});
-
-	onDestroy(async () => {
-		if(!$currentSession || !$currentSession?.id) return
-
-		await pb.collection('sessions').unsubscribe($currentSession?.id)
-	})
 </script>
 
 <!-- Each Queues -->

@@ -100,7 +100,8 @@
 			};
 
 			playingInfo.set({ ..._prevInfo, status: 'pause' });
-			await pb.collection('sessions').update($currentSession?.id, payload);
+			//TODO: fix
+			// await pb.collection('sessions').update($currentSession?.id, payload);
 
 			await fetch('/api/spotify/playback/pause', {
 				method: 'POST',
