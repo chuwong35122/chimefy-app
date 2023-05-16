@@ -2,32 +2,34 @@
 	import { Button, ButtonGroup, Input, InputAddon, Modal, Tooltip } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import CreateSessionModal from '$lib/components/modals/CreateSessionModal.svelte';
-	// import { getSessionData } from '$lib/session/session';
 	import SessionPasswordModal from '$lib/components/modals/SessionPasswordModal.svelte';
 	import { goto } from '$app/navigation';
-	import {userStore} from '$lib/supabase/user'
+	import { userStore } from '$lib/supabase/user';
 	import { toastValue } from '$lib/notification/toast';
 	import SessionList from '$lib/components/session/SessionList.svelte';
+	import type { MusicSession } from '$lib/interfaces/session/session.interface';
+	import { onMount } from 'svelte';
+	import { sessionSearchResult } from '$lib/session/search';
+
+	export let data: { sessions: MusicSession[] | undefined };
 
 	let openCreateSessionModal = false;
 	let enterSessionPasswordModal = false;
 	let input = '';
 
 	async function onOpenPasswordModal() {
-	// 	console.log($userStore?.id)
-	// 	if (!$userStore?.id) {
-	// 		toastValue.set({ message: 'Please login to Spotify', type: 'info' });
-	// 		return;
-	// 	}
-
-	// 	const session = await getSessionData(input);
-	// 	if (!session?.id) return;
-
-	// 	if (session?.password) {
-	// 		enterSessionPasswordModal = true;
-	// 	} else {
-	// 		goto(`session/${session.id}`);
-	// 	}
+		// 	console.log($userStore?.id)
+		// 	if (!$userStore?.id) {
+		// 		toastValue.set({ message: 'Please login to Spotify', type: 'info' });
+		// 		return;
+		// 	}
+		// 	const session = await getSessionData(input);
+		// 	if (!session?.id) return;
+		// 	if (session?.password) {
+		// 		enterSessionPasswordModal = true;
+		// 	} else {
+		// 		goto(`session/${session.id}`);
+		// 	}
 	}
 
 	function handleOpenCreateModal() {
@@ -38,6 +40,15 @@
 
 		openCreateSessionModal = true;
 	}
+
+	onMount(() => {
+		if (data?.sessions) {
+			sessionSearchResult.set({
+				results: data.sessions,
+				loading: false
+			});
+		}
+	});
 </script>
 
 <svelte:head>
