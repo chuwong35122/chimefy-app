@@ -1,19 +1,22 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
-	import { pb, user } from '$lib/pocketbase/pb';
 	import { CreateSessionSchema } from '$lib/schema/session.schema';
 	import Icon from '@iconify/svelte';
 	import { Label, Input, Button, Toggle, ButtonGroup, Select, Toast } from 'flowbite-svelte';
-	import type { ClientResponseError } from 'pocketbase';
 	import type { ValidationError } from 'yup';
 	import PrimaryButtonWrapper from '../buttons/PrimaryButtonWrapper.svelte';
 	import sha1 from 'sha1';
 	import { spotifyUser } from '$lib/spotify/spotify';
 	import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
+	import { supabase } from '$lib/supabase/supabase';
+	import { userStore } from '$lib/supabase/user';
+	import type { PostgrestError } from '@supabase/supabase-js';
+	import { toastValue } from '$lib/notification/toast';
+	import { v4 as uuidv4 } from 'uuid';
 
 	let showPassword = false;
-	export let data = {
+	export let input = {
 		name: '',
 		password: '',
 		isPrivate: false,
@@ -26,15 +29,15 @@
 	}));
 
 	let errors = '';
-	$: if (data) {
+	$: if (input) {
 		errors = '';
 	}
 
 	async function onCreateSession() {
-		if (!$user?.id) return;
+		if (!$userStore?.id) return;
 
 		try {
-			await CreateSessionSchema.validate(data, { strict: true });
+			await CreateSessionSchema.validate(input, { strict: true });
 		} catch (e) {
 			const err = e as ValidationError;
 			errors = err.message;
@@ -43,26 +46,28 @@
 
 		try {
 			const payload: MusicSession = {
-				...data,
+				...input,
+				uuid: uuidv4(),
 				participants: [
 					{
-						userId: $user.id,
+						userId: $userStore.id,
 						role: 'admin',
-						profileImg: $spotifyUser?.images ? $spotifyUser?.images[0]?.url : undefined,
-						spotifyDisplayedName: $spotifyUser?.display_name ?? ''
+						profileImg: $userStore?.user_metadata?.avatar_url ?? undefined,
+						spotifyDisplayedName: $userStore?.user_metadata?.full_name ?? ''
 					}
 				],
 				queues: [],
-				password: sha1(data.password),
+				password: sha1(input.password),
 				status: 'waiting'
 			};
-			const record = await pb.collection('sessions').create(payload);
-			if (record) {
-				goto(`/session/${record.id}`);
-			}
+			const {data} =  await supabase.from('session').insert(payload,).select();
+			//@ts-ignore
+			goto(`/session/${data[0].uuid}`)
+			// goto(`/session/${res?.input?[0]?.id}`)
 		} catch (e) {
-			const err = e as ClientResponseError;
-			errors = err.message;
+			console.log(e)
+			const err = e as PostgrestError;
+			toastValue.set({message: err.message, type: 'error'})
 		}
 	}
 </script>
@@ -72,7 +77,7 @@
 	<Label class="space-y-2">
 		<span class="text-white">Your session name</span>
 		<Input
-			bind:value={data.name}
+			bind:value={input.name}
 			name="name"
 			type="text"
 			placeholder="Session Name"
@@ -87,7 +92,7 @@
 			<Input
 				name="password"
 				required
-				bind:value={data.password}
+				bind:value={input.password}
 				placeholder="Password"
 				color="green"
 				type={showPassword ? 'text' : 'password'}
@@ -107,13 +112,13 @@
 		<span class="text-white">Music Type</span>
 		<Select
 			underline
-			bind:value={data.type}
+			bind:value={input.type}
 			placeholder="Select music type"
 			items={muisicSessionTypes}
 			class="!text-white"
 		/>
 	</Label>
-	<Toggle color="green" bind:checked={data.isPrivate} class="text-white"
+	<Toggle color="green" bind:checked={input.isPrivate} class="text-white"
 		>Set this session private?</Toggle
 	>
 	{#if errors}

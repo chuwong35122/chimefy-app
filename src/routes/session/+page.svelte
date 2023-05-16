@@ -2,10 +2,10 @@
 	import { Button, ButtonGroup, Input, InputAddon, Modal, Tooltip } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import CreateSessionModal from '$lib/components/modals/CreateSessionModal.svelte';
-	import { getSessionData } from '$lib/session/session';
+	// import { getSessionData } from '$lib/session/session';
 	import SessionPasswordModal from '$lib/components/modals/SessionPasswordModal.svelte';
 	import { goto } from '$app/navigation';
-	import { spotifyUser } from '$lib/spotify/spotify';
+	import {userStore} from '$lib/supabase/user'
 	import { toastValue } from '$lib/notification/toast';
 	import SessionList from '$lib/components/session/SessionList.svelte';
 
@@ -14,23 +14,24 @@
 	let input = '';
 
 	async function onOpenPasswordModal() {
-		if (!$spotifyUser?.id) {
-			toastValue.set({ message: 'Please login to Spotify', type: 'info' });
-			return;
-		}
+	// 	console.log($userStore?.id)
+	// 	if (!$userStore?.id) {
+	// 		toastValue.set({ message: 'Please login to Spotify', type: 'info' });
+	// 		return;
+	// 	}
 
-		const session = await getSessionData(input);
-		if (!session?.id) return;
+	// 	const session = await getSessionData(input);
+	// 	if (!session?.id) return;
 
-		if (session?.password) {
-			enterSessionPasswordModal = true;
-		} else {
-			goto(`session/${session.id}`);
-		}
+	// 	if (session?.password) {
+	// 		enterSessionPasswordModal = true;
+	// 	} else {
+	// 		goto(`session/${session.id}`);
+	// 	}
 	}
 
 	function handleOpenCreateModal() {
-		if (!$spotifyUser?.id) {
+		if (!$userStore?.id) {
 			toastValue.set({ message: 'Please login to Spotify', type: 'info' });
 			return;
 		}

@@ -1,6 +1,9 @@
 export type MusicSessionRole = 'admin' | 'member';
 
 export interface MusicSession {
+	id?: number;
+	created_at?: Date;
+	uuid: string;
 	name: string;
 	password: string;
 	isPrivate: boolean;

@@ -20,19 +20,17 @@
 	}
 
 	onMount(() => {
-		const { data } = supabase.auth.onAuthStateChange((_, _session) => {
+		supabase.auth.onAuthStateChange((_, _session) => {
 			if (_session?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');
 			}
 
 			if (session?.user) {
 				userStore.set(session.user);
-				spotifyAccessToken.set(session.access_token)
-				goto('/session');
+				spotifyAccessToken.set(session?.provider_token ?? '');
+				// goto('/session');
 			}
 		});
-
-		return () => data.subscription.unsubscribe();
 	});
 </script>
 

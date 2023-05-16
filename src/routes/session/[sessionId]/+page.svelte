@@ -1,14 +1,8 @@
 <script lang="ts">
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
-	import { pb, user } from '$lib/pocketbase/pb';
-	import type { Record } from 'pocketbase';
 	import { onDestroy, onMount } from 'svelte';
 	import TrackSearchTab from '$lib/components/music/TrackSearchTab.svelte';
-	import {
-		currentSession,
-		currentSessionRole,
-		addSessionParticipant
-	} from '$lib/session/session';
+	import { currentSession, currentSessionRole, addSessionParticipant } from '$lib/session/session';
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
 	import { spotifyAccessToken, spotifyUser } from '$lib/spotify/spotify';
 	import MusicPlayerController from '$lib/components/music/MusicPlayerController.svelte';
@@ -17,26 +11,46 @@
 	import { ioClient } from '$lib/socket/client';
 	import SocketListener from '$lib/components/io/SocketListener.svelte';
 	import AdminSocketHandler from '$lib/components/io/AdminSocketHandler.svelte';
+	import { supabase } from '$lib/supabase/supabase';
+	import type { RealtimeChannel } from '@supabase/supabase-js';
+	import { userStore } from '$lib/supabase/user';
 
 	// TODO: Store session password and check before entering
-	export let data: { session: MusicSession & Record };
+	export let data: { session: MusicSession };
+	let sessionId: string;
+	let sessionChannel: RealtimeChannel;
 
-	$: if (data && data.session) {
+	$: if (data && data?.session) {
 		currentSession.set(data.session);
+		sessionId = data?.session?.uuid ?? ''
 	}
 
-	let sessionId = data.session.id;
-
 	onMount(async () => {
-		// TODO: add hashed password in query params
-		if (!sessionId || !$user || !$user?.id || !$spotifyUser) return;
-		if ($currentSessionRole === 'member') {
-			addSessionParticipant($currentSession, $user?.id, $spotifyUser);
-		}
+		sessionChannel = supabase
+			.channel('session_channel_changes')
+			.on(
+				'postgres_changes',
+				{ event: 'UPDATE', schema: 'public', table: 'session' },
+				(payload) => {
+					currentSession.set(payload.new as MusicSession)
+				}
+			)
+			.subscribe();
 	});
 
-	onDestroy(() => {
-		pb.collection('sessions').unsubscribe();
+	// onDestroy((c
+	// let sessionId = data.session.id;
+
+	// onMount(async () => {
+	// 	// TODO: add hashed password in query params
+	// 	if (!sessionId || !$user || !$user?.id || !$spotifyUser) return;
+	// 	if ($currentSessionRole === 'member') {
+	// 		addSessionParticipant($currentSession, $user?.id, $spotifyUser);
+	// 	}
+	// });
+
+	onDestroy(async () => {
+		// await supabase.removeChannel(sessionChannel);
 		ioClient.removeAllListeners();
 	});
 </script>
@@ -45,15 +59,18 @@
 	<title>Listening to {$currentSession.name}</title>
 </svelte:head>
 
-{#if $currentSessionRole === 'admin' && $spotifyUser && $currentSession}
+<!-- <div>{JSON.stringify($userStore)}</div> -->
+<div>{JSON.stringify(spotifyAccessToken)}</div>
+{#if $currentSessionRole === 'admin' && $userStore && $currentSession}
 	<AdminSocketHandler />
-{:else if $currentSessionRole === 'member' && $spotifyUser && $currentSession}
+{:else if $currentSessionRole === 'member' && $userStore && $currentSession}
 	<SocketListener />
 {/if}
 <div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
 	<SessionInfo {sessionId} />
 </div>
-{#if $spotifyAccessToken}
+
+{#if $userStore}
 	<div
 		class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px] bg-[rgba(255,255,255,0.05)] rounded-xl"
 	>
