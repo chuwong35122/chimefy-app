@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import { Search, Tooltip } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
-	import { getSessionList } from '$lib/session/search';
+	import { getSessionList, listSessions, sessionSearchResult } from '$lib/session/search';
 	import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
 
 	let timer: NodeJS.Timeout;
@@ -21,12 +21,19 @@
 		timer = setTimeout(async () => {
 			debouncedQueryInput = queryInput;
 			const { sessionName, musicType } = debouncedQueryInput;
-			await getSessionList(sessionName, musicType, 1);
+			if (debouncedQueryInput.sessionName) {
+				await getSessionList(sessionName, musicType, 1);
+			} else {
+				const data = await listSessions();
+				sessionSearchResult.set({
+					results: data,
+					loading: false
+				});
+			}
 		}, 500);
 	}
 
 	async function refreshList() {
-		await getSessionList('', '', 1);
 		queryInput = {
 			sessionName: '',
 			musicType: ''
@@ -40,17 +47,14 @@
 			queryInput.musicType = type;
 		}
 
-		await debounceQueryInput();
+		if (queryInput.sessionName) {
+			await debounceQueryInput();
+		}
 	}
 
 	$: if (queryInput.sessionName) {
 		debounceQueryInput();
 	}
-
-	onMount(async () => {
-		const { sessionName, musicType } = queryInput;
-		await getSessionList(sessionName, musicType, 1);
-	});
 </script>
 
 <Tooltip triggeredBy="[id=refresh-btn]" placement="top">Refresh this list</Tooltip>

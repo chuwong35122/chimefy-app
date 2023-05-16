@@ -8,8 +8,8 @@
 	import SessionSearchFilter from './SessionSearchFilter.svelte';
 	import { sessionSearchResult } from '$lib/session/search';
 
-	function handleSessionNavigate(session: MusicSession & Record) {
-		goto(`/session/${session.id}`);
+	function handleSessionNavigate(session: MusicSession) {
+		goto(`/session/${session?.uuid}`);
 	}
 </script>
 
@@ -29,18 +29,24 @@
 		{#each $sessionSearchResult.results as session}
 			<div
 				on:mouseup={() => handleSessionNavigate(session)}
-				class="w-[400px] md:w-[600px] lg:w-[800px] p-4 rounded-xl bg-dark-500 hover:bg-dark-300/20 duration-150 my-2 relative hover:cursor-pointer"
+				class="min-h-28 w-[400px] md:w-[600px] lg:w-[800px] p-4 rounded-xl bg-dark-500 hover:bg-dark-300/20 duration-150 my-2 relative hover:cursor-pointer"
 			>
 				<div class="flex items-center">
 					<p class="mr-2 capitalize text-lg font-medium">{session?.name}</p>
 					<Chip label={session?.type} />
 				</div>
 				<div class="flex items-end mt-2">
-					<img
-						src={session?.queues[0]?.trackImageUrl}
-						alt="Playing track cover"
-						class="w-20 h-20 rounded-full mr-4"
-					/>
+					{#if session?.queues && session?.queues[0]}
+						<div class="w-20 h-20">
+							<img
+								src={session?.queues[0]?.trackImageUrl}
+								alt="Playing track cover"
+								class="w-20 h-20 rounded-full mr-4"
+							/>
+						</div>
+					{:else}
+						<p class="text-xs text-gray-400">Waiting...</p>
+					{/if}
 					{#if session?.queues && session?.queues.length > 0 && session?.queues[0]}
 						<div class="flex flex-col h-full w-36 md:w-56 lg:w-80">
 							{#if session?.status === 'broadcasting'}
@@ -57,6 +63,7 @@
 					{/if}
 				</div>
 
+				<div />
 				<div class="absolute bottom-2 right-0 z-10">
 					<div class="flex h-10">
 						<!-- Participant List -->
@@ -69,7 +76,7 @@
 							/>
 						{/each}
 					</div>
-					<Icon icon="material-symbols:chevron-right-rounded" class="w-12 h-12 text-dark-300" />
+					<Icon icon="material-symbols:chevron-right-rounded" class="w-8 h-8 text-dark-300" />
 				</div>
 			</div>
 		{/each}
