@@ -7,7 +7,6 @@
 	import type { ValidationError } from 'yup';
 	import PrimaryButtonWrapper from '../buttons/PrimaryButtonWrapper.svelte';
 	import sha1 from 'sha1';
-	import { spotifyUser } from '$lib/spotify/spotify';
 	import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
 	import { supabase } from '$lib/supabase/supabase';
 	import { userStore } from '$lib/supabase/user';
@@ -60,14 +59,14 @@
 				password: sha1(input.password),
 				status: 'waiting'
 			};
-			const {data} =  await supabase.from('session').insert(payload,).select();
+			const { data } = await supabase.from('session').insert(payload).select();
 			//@ts-ignore
-			goto(`/session/${data[0].uuid}`)
+			goto(`/session/${data[0].uuid}`);
 			// goto(`/session/${res?.input?[0]?.id}`)
 		} catch (e) {
-			console.log(e)
+			console.log(e);
 			const err = e as PostgrestError;
-			toastValue.set({message: err.message, type: 'error'})
+			toastValue.set({ message: err.message, type: 'error' });
 		}
 	}
 </script>
@@ -86,28 +85,6 @@
 			defaultClass="placeholder:text-dark-300 w-full"
 		/>
 	</Label>
-	<Label class="space-y-2">
-		<label for="password" class="text-white">Set Session Password</label>
-		<ButtonGroup class="mb-2 w-full">
-			<Input
-				name="password"
-				required
-				bind:value={input.password}
-				placeholder="Password"
-				color="green"
-				type={showPassword ? 'text' : 'password'}
-				defaultClass="placeholder:text-dark-300 w-full"
-			/>
-			<Button size="xs" on:click={() => (showPassword = !showPassword)}>
-				<Icon
-					icon={showPassword ? 'material-symbols:visibility' : 'material-symbols:visibility-off'}
-					width={20}
-					height={20}
-					class="text-black"
-				/>
-			</Button>
-		</ButtonGroup>
-	</Label>
 	<Label>
 		<span class="text-white">Music Type</span>
 		<Select
@@ -121,6 +98,30 @@
 	<Toggle color="green" bind:checked={input.isPrivate} class="text-white"
 		>Set this session private?</Toggle
 	>
+	{#if input.isPrivate}
+		<Label class="space-y-2">
+			<label for="password" class="text-white">Set Session Password</label>
+			<ButtonGroup class="mb-2 w-full">
+				<Input
+					name="password"
+					required
+					bind:value={input.password}
+					placeholder="Password"
+					color="green"
+					type={showPassword ? 'text' : 'password'}
+					defaultClass="placeholder:text-dark-300 w-full"
+				/>
+				<Button size="xs" on:click={() => (showPassword = !showPassword)}>
+					<Icon
+						icon={showPassword ? 'material-symbols:visibility' : 'material-symbols:visibility-off'}
+						width={20}
+						height={20}
+						class="text-black"
+					/>
+				</Button>
+			</ButtonGroup>
+		</Label>
+	{/if}
 	{#if errors}
 		<Toast color="red" divClass="p-2 w-full">
 			<svelte:fragment slot="icon">
