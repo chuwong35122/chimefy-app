@@ -19,7 +19,7 @@
 <SessionSearchFilter />
 
 <div
-	class="w-[320px] md:w-[600px] lg:w-[800px] overflow-y-auto grid grid-cols-2 md:grid-cols-3 h-[600px]"
+	class="w-[320px] md:w-[600px] lg:w-[800px] overflow-y-auto grid grid-cols-1 md:grid-cols-3 h-[600px]"
 >
 	{#if $sessionSearchResult.loading}
 		<div class="w-full grid place-items-center">
@@ -65,7 +65,6 @@
 					{/if}
 				</div>
 
-				<div />
 				<div class="absolute bottom-2 flex flex-row justify-between max-w-[70%] overflow-hidden">
 					<div>
 						<div class="h-10">
@@ -87,11 +86,12 @@
 		{/each}
 		<!-- Session Item -->
 	{:else}
-	<div />
+		<div />
 		<div class="h-[200px] w-full rounded-xl p-4 bg-dark-500 grid place-items-center mt-12">
 			<p class="text-xl text-medium">Sorry! No session found!</p>
 			<Icon icon="ri:emotion-sad-line" class="w-16 h-16 my-2" />
 			<p class="text-sm text-dark-200">Tips: Try searching for other things!</p>
 		</div>
+		<div />
 	{/if}
 </div>
