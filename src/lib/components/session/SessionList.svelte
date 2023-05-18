@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
-	import Chip from '../UI/Chip.svelte';
 	import Icon from '@iconify/svelte';
 	import { Spinner } from 'flowbite-svelte';
 	import { goto } from '$app/navigation';
@@ -19,7 +18,9 @@
 
 <SessionSearchFilter />
 
-<div class="h-[400px] md:w-[600px] lg:w-[800px] overflow-y-auto">
+<div
+	class="w-[320px] md:w-[600px] lg:w-[800px] overflow-y-auto grid grid-cols-2 md:grid-cols-3 h-[600px]"
+>
 	{#if $sessionSearchResult.loading}
 		<div class="w-full grid place-items-center">
 			<Spinner color="green" />
@@ -29,12 +30,13 @@
 		{#each $sessionSearchResult.results as session}
 			<div
 				on:mouseup={() => handleSessionNavigate(session)}
-				class="min-h-28 w-[400px] md:w-[600px] lg:w-[800px] p-4 rounded-xl bg-dark-500 hover:bg-dark-300/20 duration-150 my-2 relative hover:cursor-pointer"
+				class="h-64 w-[140px] md:w-[180px] lg:w-[240px] p-4 rounded-xl bg-dark-500 hover:bg-dark-300/20 duration-150 my-2 relative hover:cursor-pointer"
 			>
-				<div class="flex items-center">
-					<p class="mr-2 capitalize text-lg font-medium">{session?.name}</p>
-					<Chip label={session?.type} />
+				<div class="w-full grid place-items-center">
+					<p>{session.type}</p>
+					<div class="w-full border-b-[1px] border-dark-400 my-2" />
 				</div>
+				<p class="mr-2 capitalize text-lg font-medium">{session?.name}</p>
 				<div class="flex items-end mt-2">
 					{#if session?.queues && session?.queues[0]}
 						<div class="w-20 h-20">
@@ -64,17 +66,20 @@
 				</div>
 
 				<div />
-				<div class="absolute bottom-2 right-0 z-10">
-					<div class="flex h-10">
-						<!-- Participant List -->
-						{#each session.participants as participant, i}
-							<img
-								src={participant?.profileImg}
-								draggable="false"
-								alt={`Participant photo ${i + 1}`}
-								class={`w-8 h-8 rounded-full ${i > 0 ? 'ml-[-20px] z-[i+1]' : 'ml-0 z-0'}`}
-							/>
-						{/each}
+				<div class="absolute bottom-2 flex flex-row justify-between max-w-[70%] overflow-hidden">
+					<div>
+						<div class="h-10">
+							<!-- Participant List -->
+							<!-- TODO: Make a faded image as it get near the arrow -->
+							{#each session.participants as participant, i}
+								<img
+									src={participant?.profileImg}
+									draggable="false"
+									alt={`Participant photo ${i + 1}`}
+									class={`w-8 h-8 rounded-full ${i > 0 ? 'ml-[-20px] z-[i+1]' : 'ml-0 z-0'}`}
+								/>
+							{/each}
+						</div>
 					</div>
 					<Icon icon="material-symbols:chevron-right-rounded" class="w-8 h-8 text-dark-300" />
 				</div>
@@ -82,7 +87,8 @@
 		{/each}
 		<!-- Session Item -->
 	{:else}
-		<div class="w-full rounded-xl p-4 bg-dark-500 grid place-items-center">
+	<div />
+		<div class="h-[200px] w-full rounded-xl p-4 bg-dark-500 grid place-items-center mt-12">
 			<p class="text-xl text-medium">Sorry! No session found!</p>
 			<Icon icon="ri:emotion-sad-line" class="w-16 h-16 my-2" />
 			<p class="text-sm text-dark-200">Tips: Try searching for other things!</p>

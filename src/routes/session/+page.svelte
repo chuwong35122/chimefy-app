@@ -11,8 +11,6 @@
 	import { onMount } from 'svelte';
 	import { sessionSearchResult } from '$lib/session/search';
 
-	export let data: { sessions: MusicSession[] | undefined };
-
 	let openCreateSessionModal = false;
 	let enterSessionPasswordModal = false;
 	let input = '';
@@ -40,15 +38,6 @@
 
 		openCreateSessionModal = true;
 	}
-
-	onMount(() => {
-		if (data?.sessions) {
-			sessionSearchResult.set({
-				results: data.sessions,
-				loading: false
-			});
-		}
-	});
 </script>
 
 <svelte:head>

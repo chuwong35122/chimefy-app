@@ -1,7 +1,5 @@
 import type { MusicSession } from '$lib/interfaces/session/session.interface';
-import { pb } from '$lib/pocketbase/pb';
 import { supabase } from '$lib/supabase/supabase';
-import type { Record } from 'pocketbase';
 import { writable } from 'svelte/store';
 
 export interface SessionSearchResult {
@@ -15,29 +13,26 @@ export const sessionSearchResult = writable<SessionSearchResult>({
 });
 
 export async function listSessions(): Promise<MusicSession[]> {
-	const { data } = await supabase.from('session').select().eq('isPrivate', false).limit(20);
+	const { data } = await supabase.from('session').select().eq('isPrivate', false).limit(36);
 	return data as MusicSession[];
 }
 
 // TODO: must have current playing track & multiple listeners
-export async function getSessionList(name: string, type: string, page: number) {
-	sessionSearchResult.set({
-		results: [],
-		loading: true
-	});
+export async function searchSessionList(name: string, type: string): Promise<MusicSession[]> {
+	let _data: MusicSession[] = [];
 
-	// TODO: add filter option
-	try {
-		const { data } = await supabase
-			.from('session')
-			.select('*')
-			.textSearch('name', name)
-			.eq('isPrivate', false)
-			.limit(20);
+	let query = supabase.from('session').select();
+	if (name) {
+		query.textSearch('name', name);
+	}
 
-		sessionSearchResult.set({
-			results: data as MusicSession[],
-			loading: false
-		});
-	} catch (e) {}
+	if (type) {
+		query.filter('type', 'eq', type);
+	}
+
+	query.limit(36).filter('isPrivate', 'eq', false);
+
+	const { data } = await query;
+	_data = data as MusicSession[];
+	return _data as MusicSession[];
 }
