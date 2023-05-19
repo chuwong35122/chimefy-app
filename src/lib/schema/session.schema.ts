@@ -1,9 +1,9 @@
 import { string, object, boolean } from 'yup';
 
 export const CreateSessionSchema = object({
-	isPrivate: boolean().required('isPrivate is required!'),
+	is_private: boolean().required('is_private is required!'),
 	type: string().required('Music type is required!'),
-	password: string().when('isPrivate', {
+	password: string().when('is_private', {
 		is: true,
 		then: (schema) =>
 			schema
