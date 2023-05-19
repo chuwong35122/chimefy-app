@@ -3,7 +3,7 @@
 	import NavBar from '$lib/components/UI/NavBar.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
 	import { onMount } from 'svelte';
-	import { goto, invalidate } from '$app/navigation';
+	import { invalidate } from '$app/navigation';
 	import { Modal } from 'flowbite-svelte';
 	import SpotifyPremiumInfoModal from '$lib/components/modals/SpotifyPremiumInfoModal.svelte';
 	import { logout, userStore } from '$lib/supabase/user';
@@ -20,15 +20,21 @@
 	}
 
 	onMount(() => {
-		supabase.auth.onAuthStateChange((_, _session) => {
+		supabase.auth.onAuthStateChange(async (_, _session) => {
 			if (_session?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');
 			}
 
-			if (session?.user) {
-				userStore.set(session.user);
-				spotifyAccessToken.set(session?.provider_token ?? '');
-				// goto('/session');
+			if (_session?.provider_token) {
+				userStore.set(_session.user);
+				spotifyAccessToken.set({
+					access_token: _session?.provider_token ?? '',
+					refresh_token: _session?.provider_refresh_token ?? ''
+				});
+			}else{
+				// refresh token
+
+				// if not, logout
 			}
 		});
 	});
