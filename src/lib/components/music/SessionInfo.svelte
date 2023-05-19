@@ -15,7 +15,7 @@
 
 <Tooltip triggeredBy="[id=copy-id-btn]">Copy Session's ID</Tooltip>
 <Tooltip triggeredBy="[id='isPrivate-icon']"
-	>{$currentSession?.isPrivate
+	>{$currentSession?.is_private
 		? 'This session is a private session'
 		: 'This session is a public session'}</Tooltip
 >
@@ -23,7 +23,7 @@
 	<div>
 		<div class="flex flex-row items-center">
 			<div id="isPrivate-icon" class="cursor-pointer">
-				{#if $currentSession?.isPrivate}
+				{#if $currentSession?.is_private}
 					<Icon
 						icon="material-symbols:lock"
 						width="20"
