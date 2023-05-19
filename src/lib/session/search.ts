@@ -13,7 +13,7 @@ export const sessionSearchResult = writable<SessionSearchResult>({
 });
 
 export async function listSessions(): Promise<MusicSession[]> {
-	const { data } = await supabase.from('session').select().eq('is_private', false).limit(36);
+	const { data } = await supabase.from('session').select('*').eq('is_private', false).limit(36);
 	return data as MusicSession[];
 }
 

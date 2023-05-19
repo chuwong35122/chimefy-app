@@ -23,13 +23,12 @@ export interface MusicSession {
 	members: MusicSessionMember[];
 	is_playing: boolean;
 	created_by: MusicSessionMember;
-	queues: {
+	queue: {
 		id?: number;
 		updated_since?: Date;
 		queues: MusicSessionQueue[];
 		session_id: number;
 	};
-	// status: SessionBroadcastStatus;
 }
 export interface MusicSessionMember {
 	id?: number;
@@ -47,7 +46,7 @@ export interface MusicSessionQueue {
 	track_name: string;
 	artist: string;
 	duration_ms: number;
-	trackImage_url?: string;
+	track_image_url?: string;
 	added_since: Date;
 }
 
