@@ -14,8 +14,8 @@ export interface CreateMusicSession {
 }
 export interface MusicSession {
 	id?: number;
-	created_at?: Date;
 	uuid?: string;
+	created_at?: Date;
 	name: string;
 	password: string;
 	is_private: boolean;

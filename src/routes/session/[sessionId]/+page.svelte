@@ -16,61 +16,55 @@
 	import { userStore } from '$lib/supabase/user';
 
 	// TODO: Store session password and check before entering
-	export let data: { session: MusicSession };
+	export let data: {session: MusicSession}
+	let {session} = data
+
 	let sessionId: string;
 	let sessionChannel: RealtimeChannel;
 
-	$: if (data && data?.session) {
-		currentSession.set(data.session);
-		sessionId = data?.session?.uuid ?? ''
-	}
-
-	onMount(async () => {
-		sessionChannel = supabase
-			.channel('session_channel_changes')
-			.on(
-				'postgres_changes',
-				{ event: 'UPDATE', schema: 'public', table: 'session' },
-				(payload) => {
-					currentSession.set(payload.new as MusicSession)
-				}
-			)
-			.subscribe();
-	});
-
-	// onDestroy((c
-	// let sessionId = data.session.id;
-
 	// onMount(async () => {
-	// 	// TODO: add hashed password in query params
-	// 	if (!sessionId || !$user || !$user?.id || !$spotifyUser) return;
-	// 	if ($currentSessionRole === 'member') {
-	// 		addSessionParticipant($currentSession, $user?.id, $spotifyUser);
-	// 	}
+	// 	sessionChannel = supabase
+	// 		.channel('session_queues_listener')
+	// 		.on(
+	// 			'postgres_changes',
+	// 			{ event: 'UPDATE', schema: 'public', table: 'session' },
+	// 			(payload) => {
+	// 				currentSession.set(payload.new as MusicSession)
+	// 			}
+	// 		)
+	// 		.subscribe();
 	// });
 
-	onDestroy(async () => {
-		// await supabase.removeChannel(sessionChannel);
-		ioClient.removeAllListeners();
-	});
+	onMount(async () => {
+		currentSession.set(session as MusicSession)
+		sessionId = session?.uuid ?? ''
+		currentSessionRole.set($currentSession.created_by.id === $userStore?.user_metadata?.uuid ? 'admin' : 'member')
+
+		if($currentSessionRole === 'member') {
+			// addSessionParticipant($currentSession, $userStore?.id, $spotifyUser)
+		}
+	})
+
+	// onDestroy(async () => {
+	// 	// await supabase.removeChannel(sessionChannel);
+	// 	ioClient.removeAllListeners();
+	// });
 </script>
 
 <svelte:head>
-	<title>Listening to {$currentSession.name}</title>
+	<title>Listening to {$currentSession?.name}</title>
 </svelte:head>
 
-<!-- <div>{JSON.stringify($userStore)}</div> -->
-<div>{JSON.stringify(spotifyAccessToken)}</div>
-{#if $currentSessionRole === 'admin' && $userStore && $currentSession}
+<!-- {#if $currentSessionRole === 'admin' && $userStore && $currentSession}
 	<AdminSocketHandler />
 {:else if $currentSessionRole === 'member' && $userStore && $currentSession}
 	<SocketListener />
-{/if}
+{/if} -->
 <div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
 	<SessionInfo {sessionId} />
 </div>
 
-{#if $userStore}
+{#if $userStore?.user_metadata?.uuid}
 	<div
 		class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px] bg-[rgba(255,255,255,0.05)] rounded-xl"
 	>
@@ -81,13 +75,13 @@
 					<p class="text-2xl font-semibold">Queues</p>
 				</div>
 				<div class="w-full h-[592px] overflow-y-auto">
-					<TrackQueueList />
+					<!-- <TrackQueueList /> -->
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="w-[400px] md:w-[640px] lg:w-[1000px] h-24 mt-6">
-		<MusicPlayerController />
-		<SessionQueueMembers />
+		<!-- <MusicPlayerController /> -->
+		<!-- <SessionQueueMembers /> -->
 	</div>
 {/if}
