@@ -19,15 +19,15 @@
 <SessionSearchFilter />
 
 <div
-	class="w-[320px] md:w-[600px] lg:w-[800px] overflow-y-auto grid grid-cols-1 md:grid-cols-3 h-[600px]"
+class="w-[320px] md:w-[600px] lg:w-[800px] overflow-y-auto grid grid-cols-1 md:grid-cols-3 h-[600px]"
 >
-	{#if $sessionSearchResult.loading}
-		<div class="w-full grid place-items-center">
-			<Spinner color="green" />
-		</div>
-	{:else if $sessionSearchResult.results.length > 0}
-		<!-- Session Item -->
-		{#each $sessionSearchResult.results as session}
+{#if $sessionSearchResult.loading}
+<div class="w-full grid place-items-center">
+	<Spinner color="green" />
+</div>
+{:else if $sessionSearchResult.results.length > 0}
+<!-- Session Item -->
+{#each $sessionSearchResult.results as session}
 			<div
 				on:mouseup={() => handleSessionNavigate(session)}
 				class="h-64 w-[140px] md:w-[180px] lg:w-[240px] p-4 rounded-xl bg-dark-500 hover:bg-dark-300/20 duration-150 my-2 relative hover:cursor-pointer"
@@ -38,10 +38,10 @@
 				</div>
 				<p class="mr-2 capitalize text-lg font-medium">{session?.name}</p>
 				<div class="flex items-end mt-2">
-					{#if session?.queues && session?.queues[0]}
+					{#if session?.queue && session?.queue?.queues[0]}
 						<div class="w-20 h-20">
 							<img
-								src={session?.queues[0]?.trackImageUrl}
+								src={session?.queue?.queues[0]?.track_image_url}
 								alt="Playing track cover"
 								class="w-20 h-20 rounded-full mr-4"
 							/>
@@ -49,20 +49,20 @@
 					{:else}
 						<p class="text-xs text-gray-400">Waiting...</p>
 					{/if}
-					{#if session?.queues && session?.queues.length > 0 && session?.queues[0]}
+					<!-- {#if session?.queue && session?.queue.length > 0 && session?.queue?.queues[0]}
 						<div class="flex flex-col h-full w-36 md:w-56 lg:w-80">
-							{#if session?.status === 'broadcasting'}
+							{#if session?.is_playing}
 								<p class="text-xs uppercase mb-1">Now Playing</p>
 							{:else}
 								<p class="text-xs uppercase mb-1">Waiting to play</p>
 							{/if}
 							<div>
 								<p class="font-light text-xs text-ellipsis">
-									{session?.queues[0]?.trackName}
+									{session?.queue.queues[0]?.track_name}
 								</p>
 							</div>
 						</div>
-					{/if}
+					{/if} -->
 				</div>
 
 				<div class="absolute bottom-2 flex flex-row justify-between max-w-[70%] overflow-hidden">
@@ -70,14 +70,14 @@
 						<div class="h-10">
 							<!-- Participant List -->
 							<!-- TODO: Make a faded image as it get near the arrow -->
-							{#each session.participants as participant, i}
+							<!-- {#each session?.members as participant, i}
 								<img
-									src={participant?.profileImg}
+									src={participant?}
 									draggable="false"
 									alt={`Participant photo ${i + 1}`}
 									class={`w-8 h-8 rounded-full ${i > 0 ? 'ml-[-20px] z-[i+1]' : 'ml-0 z-0'}`}
 								/>
-							{/each}
+							{/each} -->
 						</div>
 					</div>
 					<Icon icon="material-symbols:chevron-right-rounded" class="w-8 h-8 text-dark-300" />
