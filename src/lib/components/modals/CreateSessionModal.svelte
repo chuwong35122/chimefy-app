@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import type { MusicSession } from '$lib/interfaces/session/session.interface';
+	import type { CreateMusicSession } from '$lib/interfaces/session/session.interface';
 	import { CreateSessionSchema } from '$lib/schema/session.schema';
 	import Icon from '@iconify/svelte';
 	import { Label, Input, Button, Toggle, ButtonGroup, Select, Toast } from 'flowbite-svelte';
@@ -12,13 +12,12 @@
 	import { userStore } from '$lib/supabase/user';
 	import type { PostgrestError } from '@supabase/supabase-js';
 	import { toastValue } from '$lib/notification/toast';
-	import { v4 as uuidv4 } from 'uuid';
 
 	let showPassword = false;
 	export let input = {
 		name: '',
 		password: '',
-		isPrivate: false,
+		is_private: false,
 		type: ''
 	};
 
@@ -44,25 +43,26 @@
 		}
 
 		try {
-			const payload: MusicSession = {
+			const payload: CreateMusicSession = {
 				...input,
-				uuid: uuidv4(),
-				participants: [
-					{
-						userId: $userStore.id,
-						role: 'admin',
-						profileImg: $userStore?.user_metadata?.avatar_url ?? undefined,
-						spotifyDisplayedName: $userStore?.user_metadata?.full_name ?? ''
-					}
-				],
-				queues: [],
+				name: input.name,
 				password: sha1(input.password),
-				status: 'waiting'
+				is_private: input.is_private,
+				type: input.type,
+				is_playing: false,
+				created_by: $userStore?.id,
+				queues: null
 			};
-			const { data } = await supabase.from('session').insert(payload).select();
-			//@ts-ignore
-			goto(`/session/${data[0].uuid}`);
-			// goto(`/session/${res?.input?[0]?.id}`)
+
+			const { data, error } = await supabase.from('session').insert(payload).select();
+
+			if (data && data[0] && data[0]?.id && data[0]?.uuid != null) {
+				await supabase.from('session_queue').insert({
+					queues: [],
+					session_id: data[0]?.id
+				});
+				goto(`/session/${data[0].uuid}`);
+			}
 		} catch (e) {
 			console.log(e);
 			const err = e as PostgrestError;
@@ -95,10 +95,10 @@
 			class="!text-white"
 		/>
 	</Label>
-	<Toggle color="green" bind:checked={input.isPrivate} class="text-white"
+	<Toggle color="green" bind:checked={input.is_private} class="text-white"
 		>Set this session private?</Toggle
 	>
-	{#if input.isPrivate}
+	{#if input.is_private}
 		<Label class="space-y-2">
 			<label for="password" class="text-white">Set Session Password</label>
 			<ButtonGroup class="mb-2 w-full">
