@@ -15,24 +15,26 @@
 	let enterSessionPasswordModal = false;
 	let input = '';
 
+	$: console.log({openCreateSessionModal})
+
 	async function onOpenPasswordModal() {
 		// 	console.log($userStore?.id)
-		// 	if (!$userStore?.id) {
-		// 		toastValue.set({ message: 'Please login to Spotify', type: 'info' });
-		// 		return;
-		// 	}
-		// 	const session = await getSessionData(input);
-		// 	if (!session?.id) return;
-		// 	if (session?.password) {
-		// 		enterSessionPasswordModal = true;
-		// 	} else {
-		// 		goto(`session/${session.id}`);
-		// 	}
+			// if (!$userStore?.id) {
+			// 	toastValue.set({ message: 'Please login to Spotify', type: 'info' });
+			// 	return;
+			// }
+			// const session = await getSessionData(input);
+			// if (!session?.id) return;
+			// if (session?.password) {
+			// 	enterSessionPasswordModal = true;
+			// } else {
+			// 	goto(`session/${session.id}`);
+			// }
 	}
 
 	function handleOpenCreateModal() {
 		if (!$userStore?.id) {
-			toastValue.set({ message: 'Please login to Spotify', type: 'info' });
+			toastValue.set({ message: 'Please Login', type: 'info' });
 			return;
 		}
 
