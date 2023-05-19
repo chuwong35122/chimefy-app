@@ -15,8 +15,6 @@
 	let enterSessionPasswordModal = false;
 	let input = '';
 
-	$: console.log({openCreateSessionModal})
-
 	async function onOpenPasswordModal() {
 		// 	console.log($userStore?.id)
 			// if (!$userStore?.id) {
