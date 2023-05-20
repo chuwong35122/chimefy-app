@@ -11,11 +11,6 @@
 	let debouncedSearchTerms = '';
 	let type: SearchType = 'track';
 
-	// let searchTypes = [
-	// 	{ value: 'album', name: 'Album' },
-	// 	{ value: 'track', name: 'Track' }
-	// ];
-
 	let trackSearchResults: Track[] = [];
 
 	async function debounce() {
@@ -31,7 +26,7 @@
 				trackSearchResults = [];
 				return;
 			}
-			const tracks = await searchTrack(debouncedSearchTerms, type, $spotifyAccessToken);
+			const tracks = await searchTrack(debouncedSearchTerms, type, $spotifyAccessToken?.access_token);
 			trackSearchResults = tracks;
 		}, 500);
 	}

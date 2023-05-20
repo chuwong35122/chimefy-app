@@ -2,7 +2,12 @@
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 	import { onDestroy, onMount } from 'svelte';
 	import TrackSearchTab from '$lib/components/music/TrackSearchTab.svelte';
-	import { currentSession, currentSessionRole, addSessionParticipant } from '$lib/session/session';
+	import {
+		currentSession,
+		currentSessionRole,
+		addSessionParticipant,
+		currentSessionQueue
+	} from '$lib/session/session';
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
 	import { spotifyAccessToken, spotifyUser } from '$lib/spotify/spotify';
 	import MusicPlayerController from '$lib/components/music/MusicPlayerController.svelte';
@@ -14,36 +19,39 @@
 	import { supabase } from '$lib/supabase/supabase';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { userStore } from '$lib/supabase/user';
+	import type { MusicSessionQueue } from '$lib/interfaces/session/queue.interface';
 
 	// TODO: Store session password and check before entering
-	export let data: {session: MusicSession}
-	let {session} = data
+	export let data: { session: MusicSession; queues: MusicSessionQueue };
+	let { session, queues } = data;
 
 	let sessionId: string;
 	let sessionChannel: RealtimeChannel;
 
-	// onMount(async () => {
-	// 	sessionChannel = supabase
-	// 		.channel('session_queues_listener')
-	// 		.on(
-	// 			'postgres_changes',
-	// 			{ event: 'UPDATE', schema: 'public', table: 'session' },
-	// 			(payload) => {
-	// 				currentSession.set(payload.new as MusicSession)
-	// 			}
-	// 		)
-	// 		.subscribe();
-	// });
-
 	onMount(async () => {
-		currentSession.set(session as MusicSession)
-		sessionId = session?.uuid ?? ''
-		currentSessionRole.set($currentSession.created_by.id === $userStore?.user_metadata?.uuid ? 'admin' : 'member')
+		currentSession.set(session as MusicSession);
+		sessionId = session?.uuid ?? '';
+		currentSessionRole.set(
+			$currentSession.created_by.id === $userStore?.user_metadata?.uuid ? 'admin' : 'member'
+		);
+		currentSessionQueue.set(queues as MusicSessionQueue);
 
-		if($currentSessionRole === 'member') {
+		if ($currentSessionRole === 'member') {
 			// addSessionParticipant($currentSession, $userStore?.id, $spotifyUser)
 		}
-	})
+
+		sessionChannel = supabase
+			.channel('session_queue_listener')
+			.on(
+				'postgres_changes',
+				{ event: '*', schema: 'public', table: 'session_queue' },
+				(payload) => {
+					console.log(payload.new);
+					currentSessionQueue.set(payload.new as MusicSessionQueue);
+				}
+			)
+			.subscribe();
+	});
 
 	// onDestroy(async () => {
 	// 	// await supabase.removeChannel(sessionChannel);
@@ -55,6 +63,7 @@
 	<title>Listening to {$currentSession?.name}</title>
 </svelte:head>
 
+<!-- <div>{JSON.stringify(queues)}</div> -->
 <!-- {#if $currentSessionRole === 'admin' && $userStore && $currentSession}
 	<AdminSocketHandler />
 {:else if $currentSessionRole === 'member' && $userStore && $currentSession}
@@ -64,7 +73,7 @@
 	<SessionInfo {sessionId} />
 </div>
 
-{#if $userStore?.user_metadata?.uuid}
+{#if $userStore}
 	<div
 		class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px] bg-[rgba(255,255,255,0.05)] rounded-xl"
 	>
@@ -75,7 +84,7 @@
 					<p class="text-2xl font-semibold">Queues</p>
 				</div>
 				<div class="w-full h-[592px] overflow-y-auto">
-					<!-- <TrackQueueList /> -->
+					<TrackQueueList />
 				</div>
 			</div>
 		</div>

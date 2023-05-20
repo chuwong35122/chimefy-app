@@ -1,3 +1,5 @@
+import type { MusicSessionQueue } from './queue.interface';
+
 export type MusicSessionRole = 'admin' | 'member';
 
 export interface CreateMusicSession {
@@ -36,31 +38,6 @@ export interface MusicSessionMember {
 	member_user_id: number;
 	is_admin: boolean;
 	session_id: number;
-}
-
-export interface CreateMusicSessionQueue {
-	track_id: string;
-	track_uri: string;
-	track_name: string;
-	artist: string;
-	duration_ms: number;
-	track_image_url?: string;
-	added_by: string;
-}
-
-export interface MusicSessionQueue {
-	id?: string;
-	updated_since?: Date;
-	session_id: number;
-	session_uuid: string;
-	track_id: string;
-	track_uri: string;
-	track_name: string;
-	artist: string;
-	duration_ms: number;
-	track_image_url?: string;
-	added_since: Date;
-	added_by: MusicSessionMember;
 }
 
 export type SessionStatus = 'playing' | 'pause';
