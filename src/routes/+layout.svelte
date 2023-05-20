@@ -2,15 +2,18 @@
 	import '../styles/global.css';
 	import NavBar from '$lib/components/UI/NavBar.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
 	import { Modal } from 'flowbite-svelte';
 	import SpotifyPremiumInfoModal from '$lib/components/modals/SpotifyPremiumInfoModal.svelte';
 	import { logout, userStore } from '$lib/supabase/user';
-	import { spotifyAccessToken } from '$lib/spotify/spotify';
+	import { setTokenStore } from '$lib/spotify/spotify';
 
 	export let data;
 	$: ({ supabase, session } = data);
+
+	let now = new Date();
+	let timer: NodeJS.Timer;
 
 	let isSpotifyPremiumModalOpen = false;
 
@@ -21,22 +24,37 @@
 
 	onMount(() => {
 		supabase.auth.onAuthStateChange(async (_, _session) => {
+			if (!_session) {
+				await logout();
+				return;
+			}
+
 			if (_session?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');
 			}
 
-			if (_session?.provider_token) {
-				userStore.set(_session.user);
-				spotifyAccessToken.set({
-					access_token: _session?.provider_token ?? '',
-					refresh_token: _session?.provider_refresh_token ?? ''
-				});
-			}else{
-				// refresh token
+			userStore.set(_session.user);
+			setTokenStore(data?.session?.provider_token, data?.session?.provider_refresh_token);
 
-				// if not, logout
-			}
+			timer = setInterval(async () => {
+				now = new Date();
+				if (session && session.expires_at != null && now.getMilliseconds() >= session?.expires_at) {
+					console.log('Refreshing Token!');
+					const { data, error } = await supabase.auth.refreshSession();
+					if (error) {
+						await logout();
+					}
+					if (data.session) {
+						setTokenStore(data?.session?.provider_token, data?.session?.provider_refresh_token);
+						userStore.set(data?.user);
+					}
+				}
+			}, 1000);
 		});
+	});
+
+	onDestroy(() => {
+		clearInterval(timer);
 	});
 </script>
 
