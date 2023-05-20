@@ -46,10 +46,9 @@
 			const payload: CreateMusicSession = {
 				...input,
 				name: input.name,
-				password: sha1(input.password),
+				password: input.password ? sha1(input.password) : null,
 				is_private: input.is_private,
 				type: input.type,
-				is_playing: false,
 				created_by: $userStore?.id,
 				queues: null
 			};
@@ -68,6 +67,7 @@
 
 				const _queueId = (queueResponse?.data as any)[0].id;
 				await supabase.from('session').update({ queues: _queueId }).eq('id', data[0]?.id);
+				await supabase.from('session_member').insert({ members: [], session_uuid: data[0]?.uuid, session_id: data[0]?.id }).select();
 				goto(`/session/${data[0].uuid}`);
 			}
 		} catch (e) {
