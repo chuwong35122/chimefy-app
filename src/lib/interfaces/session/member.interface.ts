@@ -5,3 +5,10 @@ export interface SessionMember {
 	is_admin: boolean;
 	profile_img?: string;
 }
+
+export interface MusicSessionMember {
+	id?: number;
+	session_id: number;
+	session_uuid: string;
+	members: SessionMember[];
+}

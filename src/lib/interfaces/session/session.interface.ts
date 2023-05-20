@@ -8,7 +8,7 @@ export interface CreateMusicSession {
 	created_at?: Date;
 	uuid?: string;
 	name: string;
-	password: string;
+	password: string | null;
 	is_private: boolean;
 	type: string;
 	queues: number | null;

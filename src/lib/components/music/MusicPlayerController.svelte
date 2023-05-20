@@ -6,7 +6,6 @@
 		playingInfo,
 		spotifyPlayerDeviceId,
 		hasConfirmedBroadcast,
-		addSessionParticipant
 	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
@@ -47,7 +46,6 @@
 		clearTimeout(debounceVolumeTimer);
 		debounceVolumeTimer = setTimeout(async () => {
 			debouncedVolume = volume / 100;
-			console.log(debouncedVolume)
 			await SpotifyPlayer.setVolume(debouncedVolume);
 		}, 300);
 	}
@@ -98,7 +96,7 @@
 		}
 	}
 
-	$: console.log(playingInfo)
+	$: console.log($playingInfo)
 
 	async function togglePause() {
 		try {
@@ -134,16 +132,7 @@
 			$playingInfo
 		);
 	}
-
-	// $: async () => {
-	// 	if (!$currentSession || !$user) return;
-
-	// 	const _participant = $currentSession.participants.find((p) => p?.userId === $user?.id);
-	// 	if (!_participant) {
-	// 		await addSessionParticipant($currentSession, $user?.id, $spotifyUser);
-	// 	}
-	// };
-
+	
 	// request for current playing music
 	// TODO: handle error if spotify player cannot be connected!
 	onMount(async () => {
