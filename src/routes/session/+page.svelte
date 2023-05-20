@@ -2,7 +2,7 @@
 	import { Button, ButtonGroup, Input, InputAddon, Modal, Tooltip } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import CreateSessionModal from '$lib/components/modals/CreateSessionModal.svelte';
-	import SessionPasswordModal from '$lib/components/modals/SessionPasswordModal.svelte';
+	// import SessionPasswordModal from '$lib/components/modals/SessionPasswordModal.svelte';
 	import { goto } from '$app/navigation';
 	import { userStore } from '$lib/supabase/user';
 	import { toastValue } from '$lib/notification/toast';
@@ -58,7 +58,7 @@
 	autoclose={false}
 	class="w-full z-10 modal-glass"
 >
-	<SessionPasswordModal />
+	<!-- <SessionPasswordModal /> -->
 </Modal>
 <div class="w-96 md:w-[600px] lg:w[1000px] p-8 rounded-2xl flex flex-col items-center">
 	<h1 class="text-4xl font-semibold">Join a Session</h1>

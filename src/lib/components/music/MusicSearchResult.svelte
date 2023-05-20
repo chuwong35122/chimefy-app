@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { currentSession, currentSessionRole } from '$lib/session/session';
-	import { pb, user } from '$lib/pocketbase/pb';
+	import { currentSession, currentSessionQueue, currentSessionRole } from '$lib/session/session';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import Icon from '@iconify/svelte';
 	import type { Track } from 'spotify-types';
 	import { toastValue } from '$lib/notification/toast';
 	import { joinArtists } from '$lib/utils/track';
-	import type { SessionTrackQueueRequest } from '$lib/interfaces/session/queue.interface';
-	import { spotifyUser } from '$lib/spotify/spotify';
-	import type { MusicSessionQueue } from '$lib/interfaces/session/session.interface';
+	import { userStore } from '$lib/supabase/user';
+	import { supabase } from '$lib/supabase/supabase';
+	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
 
 	export let track: Track;
 	let imgRef: HTMLImageElement;
@@ -18,8 +17,9 @@
 	}
 
 	async function handleAddQueue() {
-		const userId = $user?.id;
+		const userId = $userStore?.id;
 		const sessionId = $currentSession?.id;
+
 		if (!userId || !sessionId) return;
 
 		if ($currentSessionRole === 'member') {
@@ -27,23 +27,27 @@
 			return;
 		}
 
-		const session = { ...$currentSession };
-		const sessionQueues = [...$currentSession.queues];
-		const newQueue: MusicSessionQueue = {
-			trackId: track.id,
-			trackUri: track.uri,
-			trackName: track.name,
+		const queuePayload: MusicQueue = {
+			track_id: track.id,
+			track_uri: track.uri,
+			track_name: track.name,
 			artist: joinArtists(track),
-			durationMs: track.duration_ms,
-			trackImageUrl: track?.album?.images[0]?.url,
-			addedSince: new Date()
+			duration_ms: track.duration_ms,
+			track_image_url: track?.album?.images[0]?.url,
+			added_by: $userStore?.user_metadata?.uuid,
+			added_since: new Date()
 		};
-		sessionQueues.push(newQueue);
-		session.queues = sessionQueues;
+
+		if (!currentSessionQueue || !$currentSessionQueue?.queues) return;
 		try {
-			await pb.collection('sessions').update(sessionId, session);
-			toastValue.set({ message: `${track?.name} added to queue`, type: 'info' });
-		} catch (e) {
+			await supabase
+				.from('session_queue')
+				.update({
+					queues: [...$currentSessionQueue?.queues, queuePayload]
+				})
+				.eq('session_id', $currentSession?.id);
+		} catch (err) {
+			console.log(err);
 			toastValue.set({ message: `Cannot add track`, type: 'error' });
 		}
 	}

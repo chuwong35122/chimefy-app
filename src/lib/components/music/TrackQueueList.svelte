@@ -1,13 +1,10 @@
 <script lang="ts">
-	import { currentSession } from '$lib/session/session';
+	import { currentSessionQueue } from '$lib/session/session';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
-	import { onDestroy, onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 	import { Tooltip } from 'flowbite-svelte';
-	import type { MusicSession } from '$lib/interfaces/session/session.interface';
-	import { pb } from '$lib/pocketbase/pb';
 	import type { Record } from 'pocketbase';
-	import { supabase } from '$lib/supabase/supabase';
+	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
 	// TODO: Create scroll animation
 	let imgRef: HTMLImageElement;
 
@@ -15,40 +12,44 @@
 		imgRef.src = '/logo/disc.png';
 	}
 
-	async function removeQueue(index: number) {
-		if (!$currentSession || !$currentSession?.uuid) return;
+	let queues: MusicQueue[] = [];
+	currentSessionQueue.subscribe((val) => {
+		if (val) queues = val?.queues;
+	});
 
-		const _currentSession = $currentSession;
-		const queues = _currentSession.queues;
-		queues.splice(index, 1);
-		await supabase.from('session').update(_currentSession).eq('uuid', _currentSession?.uuid)
+	async function removeQueue(index: number) {
+		// if (!$currentSession || !$currentSession?.uuid) return;
+		// const _currentSession = $currentSession;
+		// const queues = _currentSession.queues;
+		// queues.splice(index, 1);
+		// await supabase.from('session').update(_currentSession).eq('uuid', _currentSession?.uuid)
 	}
 </script>
 
 <!-- Each Queues -->
 <div class="w-full grid place-items-center">
-	{#each $currentSession?.queues as queue, i}
+	{#each queues as queue, i}
 		<div class="w-60 h-60 lg:w-96 lg:h-96 rounded-2xl overflow-hidden relative cursor-pointer my-8">
 			<div class="gradient-hover-effect" />
 			<img
 				bind:this={imgRef}
-				src={queue?.trackImageUrl}
+				src={queue?.track_image_url}
 				width="400"
 				height="400"
-				alt={`${queue.trackName} cover`}
+				alt={`${queue.track_name} cover`}
 				on:error={handleImageError}
 				class="object-cover rounded-2xl absolute z-0"
 			/>
 			<div class="absolute z-20 p-2 bottom-0">
 				<p class="leading-tight">
-					{millisecondToMinuteSeconds(queue.durationMs ?? 0)}
+					{millisecondToMinuteSeconds(queue.duration_ms ?? 0)}
 				</p>
 				<p
 					class={`font-medium leading-tight ${
-						queue?.trackName.length > 20 ? 'text-lg' : 'text-xl'
+						queue?.track_name.length > 20 ? 'text-lg' : 'text-xl'
 					}`}
 				>
-					{queue?.trackName}
+					{queue?.track_name}
 				</p>
 				<p class={`${queue?.artist.length > 20 ? 'text-xs' : 'text-sm'} leading-tight`}>
 					{queue?.artist}
