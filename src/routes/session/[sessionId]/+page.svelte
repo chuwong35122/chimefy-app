@@ -2,12 +2,7 @@
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 	import { onDestroy, onMount } from 'svelte';
 	import TrackSearchTab from '$lib/components/music/TrackSearchTab.svelte';
-	import {
-		currentSession,
-		currentSessionRole,
-		addSessionParticipant,
-		currentSessionQueue
-	} from '$lib/session/session';
+	import { currentSession, currentSessionRole, currentSessionQueue } from '$lib/session/session';
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
 	import { spotifyAccessToken, spotifyUser } from '$lib/spotify/spotify';
 	import MusicPlayerController from '$lib/components/music/MusicPlayerController.svelte';
@@ -32,16 +27,14 @@
 		currentSession.set(session as MusicSession);
 		sessionId = session?.uuid ?? '';
 		currentSessionRole.set(
-			$currentSession?.created_by?.member_user_id === $userStore?.user_metadata?.uuid ? 'admin' : 'member'
+			$currentSession?.created_by?.member_user_id === $userStore?.user_metadata?.uuid
+				? 'admin'
+				: 'member'
 		);
 		currentSessionQueue.set(queues as MusicSessionQueue);
 
-		if ($currentSessionRole === 'member') {
-			// addSessionParticipant($currentSession, $userStore?.id, $spotifyUser)
-		}
-
 		sessionChannel = supabase
-			.channel('session_queue_listener')
+			.channel(`session_queue_listener_${sessionId}`)
 			.on(
 				'postgres_changes',
 				{ event: '*', schema: 'public', table: 'session_queue' },
