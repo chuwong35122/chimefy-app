@@ -1,3 +1,4 @@
+import type { MusicQueue, MusicSessionQueue } from '$lib/interfaces/session/queue.interface';
 import type {
 	MusicSession,
 	MusicSessionRole,
@@ -5,7 +6,6 @@ import type {
 	SessionPlayingInfo
 } from '$lib/interfaces/session/session.interface';
 import { playingInfo } from '$lib/session/session';
-import type { Record } from 'pocketbase';
 
 export function changeSessionPlayInfo(
 	currentSession: MusicSession,
@@ -38,24 +38,25 @@ export async function setActiveSpotifyPlayer(device_id: string, access_token: st
 export async function playTrack(
 	info: SessionPlayingInfo,
 	deviceId: string,
-	session: MusicSession,
+	queues: MusicQueue[],
 	access_token: string
 ) {
 	const payload = {
-		uris: session?.queues?.map((q) => q?.trackUri),
+		uris: queues?.map((q) => q?.track_uri),
 		device_id: deviceId,
 		position_ms: info?.currentDurationMs ?? 0,
 		access_token: access_token
 	};
+	console.log(payload);
 	await fetch('/api/spotify/playback/play', {
 		method: 'POST',
 		body: JSON.stringify(payload)
 	});
 
-	if (session?.queues && session?.queues[0]) {
+	if (queues && queues[0]) {
 		playingInfo.set({
-			...session.queues[0],
-			status: 'playing',
+			...queues[0],
+			is_playing: true,
 			currentDurationMs: payload.position_ms
 		});
 	}
@@ -91,7 +92,7 @@ export async function updatePlayInfo(
 	role: MusicSessionRole
 ) {
 	const _playingInfo = { ...info };
-	_playingInfo.status = 'playing';
+	_playingInfo.is_playing = true;
 	playingInfo.set(_playingInfo);
 	changeSessionPlayInfo(session, role, info);
 }

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import PrimaryButtonWrapper from '../buttons/PrimaryButtonWrapper.svelte';
 	import Icon from '@iconify/svelte';
-	import { pb } from '$lib/pocketbase/pb';
 	import { currentSession, hasConfirmedBroadcast} from '$lib/session/session';
 	import { toastValue } from '$lib/notification/toast';
 	import { createEventDispatcher } from 'svelte';
@@ -15,12 +14,9 @@
 		if (!$currentSession?.id) return;
 		// todo: try set play twice
 		try {
-			await setActiveSpotifyPlayer($spotifyPlayerDeviceId, $spotifyAccessToken)
-			const _currentSession = { ...$currentSession };
-			_currentSession.status = 'broadcasting';
+			await setActiveSpotifyPlayer($spotifyPlayerDeviceId, $spotifyAccessToken?.access_token)
+			// TODO: move this logic to socketIO
 			hasConfirmedBroadcast.set(true);
-
-			await pb.collection('sessions').update($currentSession.id, _currentSession);
 			dispatch('broadcast');
 		} catch (e) {
 			toastValue.set({

@@ -4,7 +4,6 @@ import type {
 	MusicSessionRole,
 	SessionPlayingInfo
 } from '$lib/interfaces/session/session.interface';
-import { supabase } from '$lib/supabase/supabase';
 import type { PrivateUser } from 'spotify-types';
 import { writable } from 'svelte/store';
 
