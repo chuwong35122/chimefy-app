@@ -33,3 +33,13 @@ export const SPOTIFY_AUTH_SCOPES = [
 export function getBearerToken(access_token: string) {
 	return `Bearer ${access_token}`;
 }
+
+export function setTokenStore(
+	access_token: string | null | undefined,
+	refresh_token: string | null | undefined
+) {
+	spotifyAccessToken.set({
+		access_token: access_token ?? '',
+		refresh_token: refresh_token ?? ''
+	});
+}
