@@ -89,7 +89,7 @@
 		</div>
 	</div>
 	<div class="w-[400px] md:w-[640px] lg:w-[1000px] h-24 mt-6">
-		<!-- <MusicPlayerController /> -->
+		<MusicPlayerController />
 		<!-- <SessionQueueMembers /> -->
 	</div>
 {/if}

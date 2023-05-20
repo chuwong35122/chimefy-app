@@ -1,4 +1,4 @@
-import type { MusicSessionQueue } from './queue.interface';
+import type { MusicQueue, MusicSessionQueue } from './queue.interface';
 
 export type MusicSessionRole = 'admin' | 'member';
 
@@ -10,7 +10,6 @@ export interface CreateMusicSession {
 	password: string;
 	is_private: boolean;
 	type: string;
-	is_playing: boolean;
 	queues: number | null;
 	created_by: string;
 }
@@ -23,7 +22,6 @@ export interface MusicSession {
 	is_private: boolean;
 	type: string;
 	members: MusicSessionMember[];
-	is_playing: boolean;
 	created_by: MusicSessionMember;
 	queue: {
 		id?: number;
@@ -40,9 +38,8 @@ export interface MusicSessionMember {
 	session_id: number;
 }
 
-export type SessionStatus = 'playing' | 'pause';
 export type SessionBroadcastStatus = 'broadcasting' | 'waiting';
-export interface SessionPlayingInfo extends MusicSessionQueue {
-	status: SessionStatus;
+export interface SessionPlayingInfo extends MusicQueue {
+	is_playing: boolean;
 	currentDurationMs: number;
 }
