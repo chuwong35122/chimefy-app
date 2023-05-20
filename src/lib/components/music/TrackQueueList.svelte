@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { currentSessionQueue } from '$lib/session/session';
+	import { currentSessionQueue, currentSession } from '$lib/session/session';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import Icon from '@iconify/svelte';
 	import { Tooltip } from 'flowbite-svelte';
 	import type { Record } from 'pocketbase';
 	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
+	import { supabase } from '$lib/supabase/supabase';
 	// TODO: Create scroll animation
 	let imgRef: HTMLImageElement;
 
@@ -18,11 +19,11 @@
 	});
 
 	async function removeQueue(index: number) {
-		// if (!$currentSession || !$currentSession?.uuid) return;
-		// const _currentSession = $currentSession;
-		// const queues = _currentSession.queues;
-		// queues.splice(index, 1);
-		// await supabase.from('session').update(_currentSession).eq('uuid', _currentSession?.uuid)
+		if(!$currentSession || !$currentSessionQueue) return
+
+		const queues: MusicQueue[] = $currentSessionQueue?.queues
+		queues.splice(index, 1)
+		await supabase.from('session_queue').update({queues}).eq('id', $currentSessionQueue?.id)
 	}
 </script>
 
@@ -58,7 +59,7 @@
 			<button
 				on:click={() => removeQueue(i)}
 				id="delete-btn"
-				class="absolute z-20 p-2 top-0 right-0"
+				class="absolute z-20 p-2 top-0 right-0 active:scale-125 duration-150"
 			>
 				<Icon icon="mdi:trash" class="w-6 h-6 text-dark-200 hover:scale-110 duration-200" />
 			</button>

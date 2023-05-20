@@ -46,7 +46,6 @@
 				'postgres_changes',
 				{ event: '*', schema: 'public', table: 'session_queue' },
 				(payload) => {
-					console.log(payload.new);
 					currentSessionQueue.set(payload.new as MusicSessionQueue);
 				}
 			)
