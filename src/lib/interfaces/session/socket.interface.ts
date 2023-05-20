@@ -1,22 +1,7 @@
-import type {
-	MusicSessionMember,
-	MusicSessionQueue,
-	SessionBroadcastStatus,
-	SessionPlayingInfo,
-	SessionStatus
-} from './session.interface';
-
-export interface InitRoomRequest {
-	sessionId: string;
-	name: string;
-	isPrivate: boolean;
-	participants: MusicSessionMember[];
-	queues: MusicSessionQueue[];
-	status: SessionBroadcastStatus;
-}
+import type { SessionPlayingInfo } from './session.interface';
 
 export interface JoinSessionRequest {
-	sessionId: string;
+	sessionId: number;
 	spotifyId: string;
 	spotifyDisplayName: string;
 }
@@ -32,5 +17,5 @@ export interface SessionBroadcastRequest extends SessionPlayingInfo {
 
 export interface PauseSessionBroadcastRequest {
 	sessionId: string;
-	status: SessionStatus;
+	status: boolean;
 }

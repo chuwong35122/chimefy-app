@@ -7,19 +7,6 @@
 
 	const socketConnection = ioClient.connect();
 	onMount(() => {
-		console.log($currentSession)
-		console.log($spotifyUser)
-
-		// create socket connection
-		socketConnection.on('connect', () => {
-			const payload: JoinSessionRequest = {
-				sessionId: $currentSession.id,
-				spotifyId: $spotifyUser?.id ?? '',
-				spotifyDisplayName: $spotifyUser?.display_name ?? 'anonymous'
-			}
-			
-			socketConnection.emit('joinSession', payload);
-		});
 
 		socketConnection.on('onNewComerJoin', (payload: JoinSessionRequest) => {
 			console.log(payload)

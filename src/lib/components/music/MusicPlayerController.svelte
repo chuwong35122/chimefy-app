@@ -66,8 +66,6 @@
 			return;
 		}
 
-		console.log($currentSessionRole)
-		console.log(broadcastModal)
 		try {
 			// const broadcastPayload = createBroadcastPayload($currentSession, $playingInfo);
 			// socketConnection.emit('startSessionBroadcast', broadcastPayload);

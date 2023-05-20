@@ -11,7 +11,7 @@
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
 	import { spotifyAccessToken, spotifyUser } from '$lib/spotify/spotify';
 	import MusicPlayerController from '$lib/components/music/MusicPlayerController.svelte';
-	import SessionQueueMembers from '$lib/components/music/SessionQueueMembers.svelte';
+	import SessionQueueMembers from '$lib/components/music/members/SessionQueueMembers.svelte';
 	import SessionInfo from '$lib/components/music/SessionInfo.svelte';
 	import { ioClient } from '$lib/socket/client';
 	import SocketListener from '$lib/components/io/SocketListener.svelte';
@@ -32,7 +32,7 @@
 		currentSession.set(session as MusicSession);
 		sessionId = session?.uuid ?? '';
 		currentSessionRole.set(
-			$currentSession.created_by.id === $userStore?.user_metadata?.uuid ? 'admin' : 'member'
+			$currentSession?.created_by?.member_user_id === $userStore?.user_metadata?.uuid ? 'admin' : 'member'
 		);
 		currentSessionQueue.set(queues as MusicSessionQueue);
 
@@ -63,11 +63,11 @@
 </svelte:head>
 
 <!-- <div>{JSON.stringify(queues)}</div> -->
-<!-- {#if $currentSessionRole === 'admin' && $userStore && $currentSession}
+{#if $currentSessionRole === 'admin' && $userStore && $currentSession}
 	<AdminSocketHandler />
 {:else if $currentSessionRole === 'member' && $userStore && $currentSession}
 	<SocketListener />
-{/if} -->
+{/if}
 <div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
 	<SessionInfo {sessionId} />
 </div>
@@ -90,6 +90,6 @@
 	</div>
 	<div class="w-[400px] md:w-[640px] lg:w-[1000px] h-24 mt-6">
 		<MusicPlayerController />
-		<!-- <SessionQueueMembers /> -->
+		<SessionQueueMembers />
 	</div>
 {/if}

@@ -1,28 +1,19 @@
 <script lang="ts">
-	import type { InitRoomRequest } from '$lib/interfaces/session/socket.interface';
 	import { currentSession, } from '$lib/session/session';
 	import { ioClient } from '$lib/socket/client';
 	import { onDestroy, onMount } from 'svelte';
   import type {SessionJoinRequest} from '$lib/interfaces/session/socket.interface'
 
+  // 1. start broadcast
+  // 2
+
   const socketConnection = ioClient.connect();
 	onMount(() => {
 		// create socket connection
 		socketConnection.on('connect', () => {
-      // create room
-      const roomPayload: InitRoomRequest = {
-        sessionId: $currentSession.id,
-        name: $currentSession.name,
-        isPrivate: $currentSession.isPrivate,
-        participants: $currentSession.participants,
-        queues: $currentSession.queues,
-        status: $currentSession.status,
-      }
-      socketConnection.emit('createSession', roomPayload)
+      console.log("Connected to SocketIO")
 		});
     
-    socketConnection.on('onSessionCreated', () => {
-    })
     
     socketConnection.on('onNewComerJoin', (payload: SessionJoinRequest) => {
       console.log(`A wild ${payload?.spotifyDisplayName} has appeard`)
