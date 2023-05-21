@@ -1,5 +1,4 @@
-import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
-import type { MusicSession, MusicSessionInfo } from '$lib/interfaces/session/session.interface';
+import type { MusicSessionInfo } from '$lib/interfaces/session/session.interface';
 import { supabase } from '$lib/supabase/supabase';
 import { writable } from 'svelte/store';
 
