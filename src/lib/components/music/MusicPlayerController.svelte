@@ -22,12 +22,10 @@
 		updatePlayInfo
 	} from '$lib/spotify/player';
 	import SpotifyTrackBroadcastModal from '../modals/SpotifyTrackBroadcastModal.svelte';
-	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 	import { toastValue } from '$lib/notification/toast';
 	import { ioClient } from '$lib/socket/client';
 	import type { SessionBroadcastRequest } from '$lib/interfaces/session/socket.interface';
 	import { supabase } from '$lib/supabase/supabase';
-	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
 
 	const socketConnection = ioClient.connect();
 
