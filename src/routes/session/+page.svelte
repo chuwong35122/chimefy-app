@@ -2,7 +2,6 @@
 	import { Button, ButtonGroup, Input, InputAddon, Modal, Tooltip } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import CreateSessionModal from '$lib/components/modals/CreateSessionModal.svelte';
-	// import SessionPasswordModal from '$lib/components/modals/SessionPasswordModal.svelte';
 	import { goto } from '$app/navigation';
 	import { userStore } from '$lib/supabase/user';
 	import { toastValue } from '$lib/notification/toast';
@@ -10,25 +9,10 @@
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 	import { onMount } from 'svelte';
 	import { sessionSearchResult } from '$lib/session/search';
+	import { supabase } from '$lib/supabase/supabase';
 
 	let openCreateSessionModal = false;
-	let enterSessionPasswordModal = false;
 	let input = '';
-
-	async function onOpenPasswordModal() {
-		// 	console.log($userStore?.id)
-			// if (!$userStore?.id) {
-			// 	toastValue.set({ message: 'Please login to Spotify', type: 'info' });
-			// 	return;
-			// }
-			// const session = await getSessionData(input);
-			// if (!session?.id) return;
-			// if (session?.password) {
-			// 	enterSessionPasswordModal = true;
-			// } else {
-			// 	goto(`session/${session.id}`);
-			// }
-	}
 
 	function handleOpenCreateModal() {
 		if (!$userStore?.id) {
@@ -37,6 +21,11 @@
 		}
 
 		openCreateSessionModal = true;
+	}
+
+	async function enterSession() {
+		const {data, error} = await supabase.from('session').select().eq('uuid', input)
+		console.log(data)
 	}
 </script>
 
@@ -52,19 +41,12 @@
 >
 	<CreateSessionModal />
 </Modal>
-<Modal
-	bind:open={enterSessionPasswordModal}
-	size="sm"
-	autoclose={false}
-	class="w-full z-10 modal-glass"
->
-	<!-- <SessionPasswordModal /> -->
-</Modal>
-<div class="w-96 md:w-[600px] lg:w[1000px] p-8 rounded-2xl flex flex-col items-center">
+
+<div class="rounded-2xl grid place-items-center mt-20">
 	<h1 class="text-4xl font-semibold">Join a Session</h1>
 	<div class="my-4" />
 
-	<form on:submit|preventDefault={onOpenPasswordModal}>
+	<form on:submit|preventDefault={enterSession}>
 		<ButtonGroup size="lg" class="w-full focus:shadow-lg focus:shadow-white">
 			<InputAddon
 				class="!bg-[rgba(255,255,255,0.05)] !border-2 !border-r-0 !rounded-l-full border-white"
@@ -74,7 +56,7 @@
 			<Input
 				bind:value={input}
 				placeholder="Session ID"
-				defaultClass="border-white p-4 border-2 w-full !bg-[rgba(255,255,255,0.05)] !border-l-0 !border-r-0 placeholder:text-[rgba(255,255,255,0.4)] !text-xl text-white focus:border-white"
+				defaultClass="w-[320px] md:w-[400px] lg:w-[460px] text-sm md:text-lg lg:text-xl border-white p-4 border-2 !bg-[rgba(255,255,255,0.05)] !border-l-0 !border-r-0 placeholder:text-[rgba(255,255,255,0.4)] text-white focus:border-white"
 			/>
 			<Button
 				type="submit"
