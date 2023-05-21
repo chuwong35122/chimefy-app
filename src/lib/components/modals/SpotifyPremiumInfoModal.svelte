@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { spotifyUser } from '$lib/spotify/spotify';
 	import { createEventDispatcher } from 'svelte';
 	import SecondaryButtonWrapper from '$lib/components/buttons/SecondaryButtonWrapper.svelte';
+	import {spotifyUserProfile} from '$lib/spotify/spotify'
 
 	const dispatcher = createEventDispatcher();
 	function handleLogout() {
@@ -17,7 +17,7 @@
 		>!
 	</h2>
 	<p class="text-sm">
-		Your current Spotify plan is: <span class="capitalize font-bold">{$spotifyUser?.product}</span>
+		Your current Spotify plan is: <span class="capitalize underline">{$spotifyUserProfile?.product}</span>
 	</p>
 	<div class="w-full h-4" />
 	<p class="text-sm">Please logout and login with a Premium Spotify account.</p>
