@@ -2,6 +2,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import SecondaryButtonWrapper from '$lib/components/buttons/SecondaryButtonWrapper.svelte';
 	import {spotifyUserProfile} from '$lib/spotify/spotify'
+	import { userStore } from '$lib/supabase/user';
+	import { Spinner } from 'flowbite-svelte';
 
 	const dispatcher = createEventDispatcher();
 	function handleLogout() {
@@ -9,6 +11,7 @@
 	}
 </script>
 
+{#if $userStore}
 <div class="w-full text-white">
 	<h1 class="text-xl font-semibold mb-4">Hold Up!</h1>
 	<h2 class="text-sm">
@@ -32,3 +35,6 @@
 		class="text-xs underline underline-offset-1">More about Spotify Premium</a
 	>
 </div>
+{:else}
+<div class='w-40 h-20 grid place-items-center'><Spinner color='green' /></div>
+{/if}
