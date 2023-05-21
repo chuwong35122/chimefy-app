@@ -1,4 +1,4 @@
-import type { MusicSessionMember } from './session.interface';
+import type { MusicSessionMember } from './member.interface';
 
 export interface MusicQueue {
 	added_since: Date;

@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import { searchSessionList, listSessions, sessionSearchResult } from '$lib/session/search';
 	import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
-	import type { MusicSession } from '$lib/interfaces/session/session.interface';
+	import type { MusicSessionInfo } from '$lib/interfaces/session/session.interface';
 
 	export let input = {
 		sessionName: '',
@@ -18,12 +18,13 @@
 		});
 
 		const { sessionName, musicType } = input;
-		let data: MusicSession[] = [];
+		let data: MusicSessionInfo[] = [];
 		if (!sessionName && !musicType) {
 			data = await listSessions();
 		} else {
 			data = await searchSessionList(sessionName, musicType);
 		}
+
 		sessionSearchResult.set({
 			results: data,
 			loading: false

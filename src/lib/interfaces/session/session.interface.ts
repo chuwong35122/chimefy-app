@@ -1,5 +1,4 @@
 import type { MusicQueue, MusicSessionQueue } from './queue.interface';
-import type { SessionMember } from './member.interface';
 
 export type MusicSessionRole = 'admin' | 'member';
 
@@ -22,14 +21,20 @@ export interface MusicSession {
 	password: string;
 	is_private: boolean;
 	type: string;
-	members: SessionMember[];
-	created_by: SessionMember;
-	queue: {
-		id?: number;
-		updated_since?: Date;
-		queues: MusicSessionQueue[];
-		session_id: number;
-	};
+	members: number | null;
+	created_by: number | null;
+	queue: number | null;
+}
+
+export interface MusicSessionInfo {
+	id?: number;
+	uuid?: string;
+	created_at?: Date;
+	name: string;
+	password: string;
+	is_private: boolean;
+	type: string;
+	queue: MusicSessionQueue;
 }
 
 export type SessionBroadcastStatus = 'broadcasting' | 'waiting';
