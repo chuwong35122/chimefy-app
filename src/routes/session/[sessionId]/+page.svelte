@@ -44,8 +44,8 @@
 	});
 
 	onDestroy(() => {
-		sessionChannel.unsubscribe()
-	})
+		sessionChannel.unsubscribe();
+	});
 </script>
 
 <svelte:head>
