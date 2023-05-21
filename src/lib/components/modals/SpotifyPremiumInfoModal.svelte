@@ -19,13 +19,16 @@
 	<p class="text-sm">
 		Your current Spotify plan is: <span class="capitalize font-bold">{$spotifyUser?.product}</span>
 	</p>
-  <div class='w-full h-4' />
+	<div class="w-full h-4" />
 	<p class="text-sm">Please logout and login with a Premium Spotify account.</p>
-	<button on:click={handleLogout} class='w-full my-4'>
+	<button on:click={handleLogout} class="w-full my-4">
 		<SecondaryButtonWrapper>Logout</SecondaryButtonWrapper>
 	</button>
-	
-		<a target='_blank' rel="noreferrer" href="https://www.spotify.com/us/premium/" class="text-xs underline underline-offset-1"
-			>More about Spotify Premium</a
-		>
+
+	<a
+		target="_blank"
+		rel="noreferrer"
+		href="https://www.spotify.com/us/premium/"
+		class="text-xs underline underline-offset-1">More about Spotify Premium</a
+	>
 </div>

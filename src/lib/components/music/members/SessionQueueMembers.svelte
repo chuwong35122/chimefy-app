@@ -21,10 +21,10 @@
 			profile_img: user?.user_metadata?.avatar_url
 		};
 	});
-	
+
 	currentSessionMember.subscribe((members) => {
-		if(self?.member_user_id) {
-			participants = members.filter(member => member.member_user_id !== self.member_user_id)
+		if (self?.member_user_id) {
+			participants = members.filter((member) => member.member_user_id !== self.member_user_id);
 		}
 	});
 
@@ -38,20 +38,22 @@
 		});
 
 		channel.on('presence', { event: 'sync' }, () => {
-			const {members} = channel.presenceState()
-			if(members && members.length > 0) {
-				currentSessionMember.set((members as any) as SessionMember[])
+			const { members } = channel.presenceState();
+			if (members && members.length > 0) {
+				currentSessionMember.set(members as any as SessionMember[]);
 			}
 		});
 		channel.on('presence', { event: 'join' }, ({ newPresences }) => {
-			const newComers = (newPresences as any) as SessionMember[];
-			currentSessionMember.update(member => [...member, ...newComers])
+			const newComers = newPresences as any as SessionMember[];
+			currentSessionMember.update((member) => [...member, ...newComers]);
 		});
 		channel.on('presence', { event: 'leave' }, ({ leftPresences }) => {
-			leftPresences.forEach(left => {
-				const leftId = (left as any) as SessionMember;
-				currentSessionMember.update(member => member.filter(member => member.member_user_id !== leftId.member_user_id))
-			})
+			leftPresences.forEach((left) => {
+				const leftId = left as any as SessionMember;
+				currentSessionMember.update((member) =>
+					member.filter((member) => member.member_user_id !== leftId.member_user_id)
+				);
+			});
 		});
 
 		channel.subscribe(async (status) => {

@@ -19,11 +19,11 @@
 	});
 
 	async function removeQueue(index: number) {
-		if(!$currentSession || !$currentSessionQueue) return
+		if (!$currentSession || !$currentSessionQueue) return;
 
-		const queues: MusicQueue[] = $currentSessionQueue?.queues
-		queues.splice(index, 1)
-		await supabase.from('session_queue').update({queues}).eq('id', $currentSessionQueue?.id)
+		const queues: MusicQueue[] = $currentSessionQueue?.queues;
+		queues.splice(index, 1);
+		await supabase.from('session_queue').update({ queues }).eq('id', $currentSessionQueue?.id);
 	}
 </script>
 

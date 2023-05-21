@@ -26,7 +26,11 @@
 				trackSearchResults = [];
 				return;
 			}
-			const tracks = await searchTrack(debouncedSearchTerms, type, $spotifyAccessToken?.access_token);
+			const tracks = await searchTrack(
+				debouncedSearchTerms,
+				type,
+				$spotifyAccessToken?.access_token
+			);
 			trackSearchResults = tracks;
 		}, 500);
 	}
