@@ -1,7 +1,7 @@
 <script lang="ts">
 	import PrimaryButtonWrapper from '../buttons/PrimaryButtonWrapper.svelte';
 	import Icon from '@iconify/svelte';
-	import { currentSession, hasConfirmedBroadcast} from '$lib/session/session';
+	import { currentSession, hasConfirmedBroadcast } from '$lib/session/session';
 	import { toastValue } from '$lib/notification/toast';
 	import { createEventDispatcher } from 'svelte';
 	import { setActiveSpotifyPlayer } from '$lib/spotify/player';
@@ -14,7 +14,7 @@
 		if (!$currentSession?.id) return;
 		// todo: try set play twice
 		try {
-			await setActiveSpotifyPlayer($spotifyPlayerDeviceId, $spotifyAccessToken?.access_token)
+			await setActiveSpotifyPlayer($spotifyPlayerDeviceId, $spotifyAccessToken?.access_token);
 			// TODO: move this logic to socketIO
 			hasConfirmedBroadcast.set(true);
 			dispatch('broadcast');
@@ -37,8 +37,6 @@
 		</p>
 	</div>
 	<button on:click={onSessionBroadcast}>
-		<PrimaryButtonWrapper>
-			Start Broadcast
-		</PrimaryButtonWrapper>
+		<PrimaryButtonWrapper>Start Broadcast</PrimaryButtonWrapper>
 	</button>
 </div>

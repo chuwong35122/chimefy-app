@@ -19,15 +19,15 @@
 <SessionSearchFilter />
 
 <div
-class="w-[320px] md:w-[600px] lg:w-[800px] overflow-y-auto grid grid-cols-1 md:grid-cols-3 h-[600px]"
+	class="w-[320px] md:w-[600px] lg:w-[800px] overflow-y-auto grid grid-cols-1 md:grid-cols-3 h-[600px]"
 >
-{#if $sessionSearchResult.loading}
-<div class="w-full grid place-items-center">
-	<Spinner color="green" />
-</div>
-{:else if $sessionSearchResult.results.length > 0}
-<!-- Session Item -->
-{#each $sessionSearchResult.results as session}
+	{#if $sessionSearchResult.loading}
+		<div class="w-full grid place-items-center">
+			<Spinner color="green" />
+		</div>
+	{:else if $sessionSearchResult.results.length > 0}
+		<!-- Session Item -->
+		{#each $sessionSearchResult.results as session}
 			<div
 				on:mouseup={() => handleSessionNavigate(session)}
 				class="h-64 w-[140px] md:w-[180px] lg:w-[240px] p-4 rounded-xl bg-dark-500 hover:bg-dark-300/20 duration-150 my-2 relative hover:cursor-pointer"

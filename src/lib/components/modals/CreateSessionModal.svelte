@@ -67,7 +67,10 @@
 
 				const _queueId = (queueResponse?.data as any)[0].id;
 				await supabase.from('session').update({ queues: _queueId }).eq('id', data[0]?.id);
-				await supabase.from('session_member').insert({ members: [], session_uuid: data[0]?.uuid, session_id: data[0]?.id }).select();
+				await supabase
+					.from('session_member')
+					.insert({ members: [], session_uuid: data[0]?.uuid, session_id: data[0]?.id })
+					.select();
 				goto(`/session/${data[0].uuid}`);
 			}
 		} catch (e) {

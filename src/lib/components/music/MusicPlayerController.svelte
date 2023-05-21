@@ -5,7 +5,7 @@
 		currentSessionQueue,
 		playingInfo,
 		spotifyPlayerDeviceId,
-		hasConfirmedBroadcast,
+		hasConfirmedBroadcast
 	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
@@ -96,7 +96,7 @@
 		}
 	}
 
-	$: console.log($playingInfo)
+	$: console.log($playingInfo);
 
 	async function togglePause() {
 		try {
@@ -132,7 +132,7 @@
 			$playingInfo
 		);
 	}
-	
+
 	// request for current playing music
 	// TODO: handle error if spotify player cannot be connected!
 	onMount(async () => {
