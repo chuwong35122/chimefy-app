@@ -7,8 +7,6 @@
 	import { toastValue } from '$lib/notification/toast';
 	import SessionList from '$lib/components/session/SessionList.svelte';
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
-	import { onMount } from 'svelte';
-	import { sessionSearchResult } from '$lib/session/search';
 	import { supabase } from '$lib/supabase/supabase';
 
 	let openCreateSessionModal = false;
@@ -24,8 +22,16 @@
 	}
 
 	async function enterSession() {
-		const {data, error} = await supabase.from('session').select().eq('uuid', input)
-		console.log(data)
+		try {
+			const { data } = await supabase.from('session').select().eq('uuid', input);
+
+			const session = (data as any)[0] as MusicSession;
+			if (session.uuid) {
+				goto(`/session/${session.uuid}`);
+			}
+		} catch (e) {
+			toastValue.set({ message: 'Session not found', type: 'error' });
+		}
 	}
 </script>
 
