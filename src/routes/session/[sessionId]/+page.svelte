@@ -4,11 +4,9 @@
 	import TrackSearchTab from '$lib/components/music/TrackSearchTab.svelte';
 	import { currentSession, currentSessionRole, currentSessionQueue } from '$lib/session/session';
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
-	import { spotifyAccessToken, spotifyUser } from '$lib/spotify/spotify';
 	import MusicPlayerController from '$lib/components/music/MusicPlayerController.svelte';
 	import SessionQueueMembers from '$lib/components/music/members/SessionQueueMembers.svelte';
 	import SessionInfo from '$lib/components/music/SessionInfo.svelte';
-	import { ioClient } from '$lib/socket/client';
 	import SocketListener from '$lib/components/io/SocketListener.svelte';
 	import AdminSocketHandler from '$lib/components/io/AdminSocketHandler.svelte';
 	import { supabase } from '$lib/supabase/supabase';
@@ -45,17 +43,15 @@
 			.subscribe();
 	});
 
-	// onDestroy(async () => {
-	// 	// await supabase.removeChannel(sessionChannel);
-	// 	ioClient.removeAllListeners();
-	// });
+	onDestroy(() => {
+		sessionChannel.unsubscribe()
+	})
 </script>
 
 <svelte:head>
 	<title>Listening to {$currentSession?.name}</title>
 </svelte:head>
 
-<!-- <div>{JSON.stringify(queues)}</div> -->
 {#if $currentSessionRole === 'admin' && $userStore && $currentSession}
 	<AdminSocketHandler />
 {:else if $currentSessionRole === 'member' && $userStore && $currentSession}

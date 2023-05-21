@@ -1,5 +1,4 @@
 import { writable } from 'svelte/store';
-import type { PrivateUser } from 'spotify-types';
 
 export const spotifyAccessToken = writable<{
 	access_token: string;
@@ -8,7 +7,6 @@ export const spotifyAccessToken = writable<{
 	access_token: '',
 	refresh_token: ''
 });
-export const spotifyUser = writable<PrivateUser | undefined>();
 export const spotifyPlayerId = writable('');
 
 export const SPOTIFY_AUTH_SCOPES = [
