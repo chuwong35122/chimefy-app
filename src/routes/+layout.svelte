@@ -7,7 +7,8 @@
 	import { Modal } from 'flowbite-svelte';
 	import SpotifyPremiumInfoModal from '$lib/components/modals/SpotifyPremiumInfoModal.svelte';
 	import { logout, userStore } from '$lib/supabase/user';
-	import { setTokenStore } from '$lib/spotify/spotify';
+	import { setTokenStore, spotifyUserProfile } from '$lib/spotify/spotify';
+	import type { PrivateUser } from 'spotify-types';
 
 	export let data;
 	$: ({ supabase, session } = data);
@@ -15,7 +16,7 @@
 	let now = new Date();
 	let timer: NodeJS.Timer;
 
-	let isSpotifyPremiumModalOpen = false;
+	let isSpotifyPremiumModalOpen = true;
 
 	function handleLogout() {
 		isSpotifyPremiumModalOpen = false;
@@ -35,6 +36,18 @@
 
 			userStore.set(_session.user);
 			setTokenStore(data?.session?.provider_token, data?.session?.provider_refresh_token);
+
+			if (!$spotifyUserProfile) {
+				const profileRes = await fetch('/api/spotify/profile', {
+					method: 'POST',
+					body: JSON.stringify({
+						access_token: data?.session?.provider_token
+					})
+				});
+
+				const profile = (await profileRes.json()) as PrivateUser;
+				spotifyUserProfile.set(profile)
+			}
 
 			timer = setInterval(async () => {
 				now = new Date();

@@ -1,6 +1,6 @@
 import { PUBLIC_SPOTIFY_BASE_URL } from '$env/static/public';
 import { json } from '@sveltejs/kit';
-import type { RequestHandler } from '../$types';
+import type { RequestHandler } from './$types';
 import { getBearerToken } from '$lib/spotify/spotify';
 
 export const POST: RequestHandler = async ({ fetch, request }) => {
