@@ -10,7 +10,7 @@
 	import Icon from '@iconify/svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import { onDestroy, onMount } from 'svelte';
-	import { spotifyAccessToken, spotifyPlayerId, spotifyUser } from '$lib/spotify/spotify';
+	import { spotifyAccessToken, spotifyPlayerId } from '$lib/spotify/spotify';
 	import { Modal, Tooltip } from 'flowbite-svelte';
 	import {
 		changeSessionPlayInfo,
@@ -26,7 +26,6 @@
 	import { toastValue } from '$lib/notification/toast';
 	import { ioClient } from '$lib/socket/client';
 	import type { SessionBroadcastRequest } from '$lib/interfaces/session/socket.interface';
-	import { createBroadcastPayload } from '$lib/session/track';
 	import { supabase } from '$lib/supabase/supabase';
 	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
 
