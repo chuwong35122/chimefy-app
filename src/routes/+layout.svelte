@@ -16,7 +16,7 @@
 	let now = new Date();
 	let timer: NodeJS.Timer;
 
-	let isSpotifyPremiumModalOpen = true;
+	let isSpotifyPremiumModalOpen = false;
 
 	spotifyUserProfile.subscribe((user) => {
 		if (user && user?.product !== 'premium' && $spotifyAccessToken?.access_token) {
