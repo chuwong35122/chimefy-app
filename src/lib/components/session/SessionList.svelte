@@ -1,13 +1,12 @@
 <script lang="ts">
-	import type { MusicSession } from '$lib/interfaces/session/session.interface';
+	import type { MusicSession, MusicSessionInfo } from '$lib/interfaces/session/session.interface';
 	import Icon from '@iconify/svelte';
 	import { Spinner } from 'flowbite-svelte';
 	import { goto } from '$app/navigation';
-	import type { Record } from 'pocketbase';
 	import SessionSearchFilter from './SessionSearchFilter.svelte';
 	import { sessionSearchResult } from '$lib/session/search';
 
-	function handleSessionNavigate(session: MusicSession) {
+	function handleSessionNavigate(session: MusicSessionInfo) {
 		goto(`/session/${session?.uuid}`);
 	}
 </script>
@@ -47,22 +46,9 @@
 							/>
 						</div>
 					{:else}
-						<p class="text-xs text-gray-400">Waiting...</p>
+						<p class="text-xs text-gray-400">No queue yet</p>
 					{/if}
-					<!-- {#if session?.queue && session?.queue.length > 0 && session?.queue?.queues[0]}
-						<div class="flex flex-col h-full w-36 md:w-56 lg:w-80">
-							{#if session?.is_playing}
-								<p class="text-xs uppercase mb-1">Now Playing</p>
-							{:else}
-								<p class="text-xs uppercase mb-1">Waiting to play</p>
-							{/if}
-							<div>
-								<p class="font-light text-xs text-ellipsis">
-									{session?.queue.queues[0]?.track_name}
-								</p>
-							</div>
-						</div>
-					{/if} -->
+				
 				</div>
 
 				<div class="absolute bottom-2 flex flex-row justify-between max-w-[70%] overflow-hidden">
