@@ -3,7 +3,6 @@
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import Icon from '@iconify/svelte';
 	import { Tooltip } from 'flowbite-svelte';
-	import type { Record } from 'pocketbase';
 	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
 	import { supabase } from '$lib/supabase/supabase';
 	// TODO: Create scroll animation

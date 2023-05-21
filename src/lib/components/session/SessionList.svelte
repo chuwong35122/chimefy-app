@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { MusicSession, MusicSessionInfo } from '$lib/interfaces/session/session.interface';
+	import type { MusicSessionInfo } from '$lib/interfaces/session/session.interface';
 	import Icon from '@iconify/svelte';
 	import { Spinner } from 'flowbite-svelte';
 	import { goto } from '$app/navigation';
@@ -48,7 +48,6 @@
 					{:else}
 						<p class="text-xs text-gray-400">No queue yet</p>
 					{/if}
-				
 				</div>
 
 				<div class="absolute bottom-2 flex flex-row justify-between max-w-[70%] overflow-hidden">

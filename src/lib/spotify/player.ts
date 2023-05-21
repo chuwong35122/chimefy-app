@@ -1,4 +1,4 @@
-import type { MusicQueue, MusicSessionQueue } from '$lib/interfaces/session/queue.interface';
+import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
 import type {
 	MusicSession,
 	MusicSessionRole,
