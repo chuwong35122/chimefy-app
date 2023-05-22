@@ -34,7 +34,7 @@ export interface MusicSessionInfo {
 	password: string;
 	is_private: boolean;
 	type: string;
-	queue: MusicSessionQueue;
+	session_queue: MusicSessionQueue[];
 }
 
 export type SessionBroadcastStatus = 'broadcasting' | 'waiting';

@@ -66,7 +66,6 @@
 
 <Tooltip triggeredBy="[id=filter-refresh-btn]" placement="top">Reset Filters!</Tooltip>
 <Tooltip triggeredBy="[id=filter-search-btn]" placement="top">Search!</Tooltip>
-<div class="w-[300px] md:w-[600px] lg:w-[800px]">
 	<form class="w-full flex gap-2">
 		<Search
 			bind:value={input.sessionName}
@@ -97,5 +96,4 @@
 				} duration-200`}>{type}</button
 			>
 		{/each}
-	</div>
 </div>
