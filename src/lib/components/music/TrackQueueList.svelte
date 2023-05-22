@@ -2,7 +2,7 @@
 	import { currentSessionQueue, currentSession } from '$lib/session/session';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import Icon from '@iconify/svelte';
-	import { Tooltip } from 'flowbite-svelte';
+import { Tooltip } from 'flowbite-svelte';
 	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
 	import { supabase } from '$lib/supabase/supabase';
 	// TODO: Create scroll animation
@@ -29,7 +29,7 @@
 <!-- Each Queues -->
 <div class="w-full grid place-items-center">
 	{#each queues as queue, i}
-		<div class="w-60 h-60 lg:w-96 lg:h-96 rounded-2xl overflow-hidden relative cursor-pointer my-8">
+		<div class="rounded-2xl overflow-hidden relative cursor-pointer my-8">
 			<div class="gradient-hover-effect" />
 			<img
 				bind:this={imgRef}
