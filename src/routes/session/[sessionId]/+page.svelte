@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import TrackSearchTab from '$lib/components/music/TrackSearchTab.svelte';
 	import { currentSession, currentSessionRole, currentSessionQueue } from '$lib/session/session';
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
@@ -19,19 +19,16 @@
 	let { session, queues } = data;
 
 	let sessionId: string;
-	let sessionChannel: RealtimeChannel;
 
 	onMount(async () => {
 		currentSession.set(session as MusicSession);
 		sessionId = session?.uuid ?? '';
 		currentSessionRole.set(
-			$currentSession?.created_by?.member_user_id === $userStore?.user_metadata?.uuid
-				? 'admin'
-				: 'member'
+			$currentSession?.created_by === $userStore?.user_metadata?.uuid ? 'admin' : 'member'
 		);
 		currentSessionQueue.set(queues as MusicSessionQueue);
 
-		sessionChannel = supabase
+		supabase
 			.channel(`session_queue_listener_${sessionId}`)
 			.on(
 				'postgres_changes',
@@ -41,10 +38,6 @@
 				}
 			)
 			.subscribe();
-	});
-
-	onDestroy(() => {
-		sessionChannel.unsubscribe();
 	});
 </script>
 
