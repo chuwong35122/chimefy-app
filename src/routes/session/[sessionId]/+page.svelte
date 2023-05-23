@@ -10,7 +10,6 @@
 	import SocketListener from '$lib/components/io/SocketListener.svelte';
 	import AdminSocketHandler from '$lib/components/io/AdminSocketHandler.svelte';
 	import { supabase } from '$lib/supabase/supabase';
-	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { userStore } from '$lib/supabase/user';
 	import type { MusicSessionQueue } from '$lib/interfaces/session/queue.interface';
 
