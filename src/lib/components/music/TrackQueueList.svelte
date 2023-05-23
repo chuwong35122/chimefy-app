@@ -65,5 +65,5 @@
 		</div>
 	{/each}
 	<Tooltip triggeredBy="[id=delete-btn]" placement="right">Remove Queue</Tooltip>
-	<!-- Each Queues -->
 </div>
+<!-- Each Queues -->
