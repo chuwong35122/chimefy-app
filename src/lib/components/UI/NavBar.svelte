@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Dropdown, DropdownItem } from 'flowbite-svelte';
-	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 	import { SPOTIFY_AUTH_SCOPES } from '$lib/spotify/spotify';
 	import { supabase } from '$lib/supabase/supabase';
