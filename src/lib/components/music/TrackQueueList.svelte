@@ -13,7 +13,6 @@
 	}
 
 	let queues: MusicQueue[] = [];
-	console.log(queues);
 	currentSessionQueue.subscribe((val) => {
 		if (val && val?.queues) {
 			queues = val?.queues ?? [];
@@ -32,7 +31,7 @@
 </script>
 
 <!-- Each Queues -->
-<div class="w-full grid place-items-center overflow-x-hidden">
+<div class="w-full grid place-items-center overflow-x-hidden px-2">
 	{#each queues as queue, i}
 		<div
 			class="flex flex-row items-center w-full relative cursor-pointer h-20 hover:bg-black duration-200 rounded-md"
@@ -49,11 +48,11 @@
 					class="object-cover rounded-md mr-2"
 				/>
 				<div class="text-ellipsis w-[80%]">
-					<p class="text-sm">{queue.track_name}</p>
+					<p class="text-sm font-medium">{queue.track_name}</p>
 					<p class="leading-tight text-dark-100 text-xs">
 						{queue?.artist}
 					</p>
-					<p class="leading-tight text-dark-100 text-xs">
+					<p class="leading-tight text-dark-100 text-[11px] font-light">
 						{millisecondToMinuteSeconds(queue.duration_ms)}
 					</p>
 				</div>
