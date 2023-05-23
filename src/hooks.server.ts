@@ -13,19 +13,19 @@ export const handle: Handle = async ({ event, resolve }) => {
 		const {
 			data: { session }
 		} = await event.locals.supabase.auth.getSession();
+
 		return session;
 	};
 
-	console.log(event.locals.getSession);
+	if ((await event.locals.getSession()) == null) {
+		if (event.url.pathname.startsWith('/session')) {
+			return new Response('Redirect', {
+				status: 303,
+				headers: { Location: '/' }
+			});
+		}
+	}
 
-	// if (!event.locals.user) {
-	// 	if (event.url.pathname.startsWith('/session')) {
-	// 		return new Response('Redirect', {
-	// 			status: 303,
-	// 			headers: { Location: '/auth' }
-	// 		});
-	// 	}
-	// }
 
 	return resolve(event, {
 		filterSerializedResponseHeaders(name) {
