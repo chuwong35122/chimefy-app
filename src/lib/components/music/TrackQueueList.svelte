@@ -53,6 +53,9 @@
 					<p class="leading-tight text-dark-100 text-xs">
 						{queue?.artist}
 					</p>
+					<p class="leading-tight text-dark-100 text-xs">
+						{millisecondToMinuteSeconds(queue.duration_ms)}
+					</p>
 				</div>
 				<button
 					on:click={() => removeQueue(i)}
