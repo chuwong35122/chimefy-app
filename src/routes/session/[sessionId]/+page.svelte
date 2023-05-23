@@ -41,7 +41,7 @@
 </script>
 
 <svelte:head>
-	<title>Listening to {$currentSession?.name}</title>
+	<title>{$currentSession?.name ? `Listening to ${$currentSession?.name}` : 'Loading...'}</title>
 </svelte:head>
 
 {#if $currentSessionRole === 'admin' && $userStore && $currentSession}

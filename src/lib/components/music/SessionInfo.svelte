@@ -39,7 +39,9 @@
 					/>
 				{/if}
 			</div>
-			<h1 class="text-2xl font-medium ml-2 mr-2">{$currentSession?.name}</h1>
+			<h1 class="text-2xl font-medium ml-2 mr-2">
+				{$currentSession?.name ? `${$currentSession?.name}` : 'Loading...'}
+			</h1>
 			<Chip label={$currentSession?.type} />
 		</div>
 	</div>
