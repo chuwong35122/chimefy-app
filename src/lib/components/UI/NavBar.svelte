@@ -5,6 +5,7 @@
 	import { SPOTIFY_AUTH_SCOPES } from '$lib/spotify/spotify';
 	import { supabase } from '$lib/supabase/supabase';
 	import { logout, userStore } from '$lib/supabase/user';
+	import NavLink from './NavLink.svelte';
 
 	async function signInWithSpotify() {
 		const { data, error } = await supabase.auth.signInWithOAuth({
@@ -23,42 +24,10 @@
 			<div class="ml-4 text-lg font-semibold">Chimefy</div>
 		</div>
 	</a>
-	<div class="w-56 md:w-96 flex flex-row items-center justify-between">
-		<a
-			href="/session"
-			class={`flex flex-row items-center p-2 px-3 duration-200 hover:text-white ${
-				$page.route.id === '/session'
-					? 'text-white bg-[rgba(255,255,255,0.08)] rounded-lg'
-					: 'text-gray-400'
-			}`}
-		>
-			<Icon icon="material-symbols:meeting-room-rounded" width={24} height={24} class="mb-1" />
-			<p class="text-lg font-semibold h-full duration-200 ml-2 hover:text-white hidden md:block">
-				Session
-			</p>
-		</a>
-		<a
-			href="/radio"
-			class={`flex flex-row items-center p-2 px-3 duration-200 hover:text-white ${
-				$page.route.id === '/radio'
-					? 'text-white bg-[rgba(255,255,255,0.08)] rounded-lg'
-					: 'text-gray-400'
-			}`}
-		>
-			<Icon icon="material-symbols:radio" width={24} height={24} class="mb-1" />
-			<p class="text-lg font-semibold h-full duration-200 ml-2 hidden md:block">Radio</p>
-		</a>
-		<a
-			href="/contact"
-			class={`flex flex-row items-center p-2 px-3 duration-200 hover:text-white ${
-				$page.route.id === '/contact'
-					? 'text-white bg-[rgba(255,255,255,0.08)] rounded-lg'
-					: 'text-gray-400'
-			}`}
-		>
-			<Icon icon="mdi:email" width={24} height={24} class="mb-1" />
-			<p class={`text-lg font-semibold ml-2 hidden md:block`}>Contact</p>
-		</a>
+	<div class={`w-56 md:w-96 flex flex-row items-center justify-between`}>
+		<NavLink icon="material-symbols:meeting-room-rounded" route="/session" routeName="Session" isActive={$userStore?.id != null} />
+		<NavLink icon="material-symbols:radio" route="/radio" routeName="Radio" isActive={$userStore?.id != null}  />
+		<NavLink icon="mdi:email" route="/contact" routeName="Contract" />
 	</div>
 
 	<div>
