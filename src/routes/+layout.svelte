@@ -54,23 +54,6 @@
 				const profile = (await profileRes.json()) as PrivateUser;
 				spotifyUserProfile.set(profile);
 			}
-
-			clearInterval(timer);
-			timer = setInterval(async () => {
-				now = new Date();
-				if (session && session.expires_at != null && now.getMilliseconds() >= session?.expires_at) {
-					console.log('Refreshing Token!');
-					const { data, error } = await supabase.auth.refreshSession();
-
-					if (error) {
-						await logout();
-					}
-					if (data.session) {
-						setTokenStore(data?.session?.provider_token, data?.session?.provider_refresh_token);
-						userStore.set(data?.user);
-					}
-				}
-			}, 1000);
 		});
 	});
 
