@@ -1,29 +1,53 @@
 <script lang="ts">
-	import { currentSession } from '$lib/session/session';
+	import { currentSession, playingInfo } from '$lib/session/session';
 	import { ioClient } from '$lib/socket/client';
 	import { onDestroy, onMount } from 'svelte';
-	import type { SessionJoinRequest } from '$lib/interfaces/session/socket.interface';
-
-	// 1. start broadcast
-	// 2
+	import { userStore } from '$lib/supabase/user';
+	import type {
+		SocketJoinSessionRoom,
+		SocketPlayerBroadcastInfo
+	} from '$lib/interfaces/spotify/broadcast.interface';
+	import type { SessionPlayingInfo } from '$lib/interfaces/session/session.interface';
 
 	const socketConnection = ioClient.connect();
+	let interval: NodeJS.Timer;
+
 	onMount(() => {
-		// create socket connection
 		socketConnection.on('connect', () => {
-			console.log('Connected to SocketIO');
-		});
+			console.log('Connected to Socket.io server!');
 
-		socketConnection.on('onNewComerJoin', (payload: SessionJoinRequest) => {
-			console.log(`A wild ${payload?.spotifyDisplayName} has appeard`);
-		});
+			if (!$currentSession?.uuid || !$userStore?.id) return;
 
-		socketConnection.on('disconnect', () => {
-			// close session socket and document in database
+			const joinSessionRoomPayload: SocketJoinSessionRoom = {
+				session_uuid: $currentSession.uuid,
+				user_id: $userStore.id,
+				session_name: $currentSession.name,
+				display_name: $userStore?.user_metadata?.display_name ?? ''
+			};
+
+			socketConnection.emit('join_session_room', joinSessionRoomPayload);
+
+			interval = setInterval(() => {
+				const playerInfoBroadcastPayload: SocketPlayerBroadcastInfo = {
+					playing_info: $playingInfo,
+					session_uuid: $currentSession?.uuid ?? null
+				};
+
+				if(playerInfoBroadcastPayload?.playing_info && playerInfoBroadcastPayload?.session_uuid) {
+					socketConnection.emit('player_info_broadcast', playerInfoBroadcastPayload);
+				}
+			}, 1000);
 		});
 	});
 
+	socketConnection.on('disconnect', () => {
+		console.log('Disconnected!')
+	})
+
 	onDestroy(() => {
 		socketConnection.disconnect();
+		if(interval) {
+			clearInterval(interval)
+		}
 	});
 </script>

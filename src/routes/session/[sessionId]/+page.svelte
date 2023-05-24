@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import TrackSearchTab from '$lib/components/music/TrackSearchTab.svelte';
 	import { currentSession, currentSessionRole, currentSessionQueue } from '$lib/session/session';
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
@@ -25,7 +25,7 @@
 		);
 	}
 
-	onMount(async () => {
+	onMount(() => {
 		currentSession.set(session as MusicSession);
 		sessionId = session?.uuid ?? '';
 		currentSessionQueue.set(queues as MusicSessionQueue);
@@ -52,6 +52,7 @@
 {:else if $currentSessionRole === 'member' && $userStore && $currentSession}
 	<SocketListener />
 {/if}
+<div>{$currentSessionRole}</div>
 <div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
 	<SessionInfo {sessionId} />
 </div>

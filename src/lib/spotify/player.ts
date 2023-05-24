@@ -7,21 +7,6 @@ import type {
 } from '$lib/interfaces/session/session.interface';
 import { playingInfo } from '$lib/session/session';
 
-export function changeSessionPlayInfo(
-	currentSession: MusicSession,
-	currentSessionRole: MusicSessionRole,
-	playingInfo: SessionPlayingInfo
-) {
-	if (!currentSession || currentSessionRole !== 'admin') return;
-
-	// const changePlayingInfoRequest: OnChangePlayingInfoRequest = {
-	// 	playingInfo: playingInfo,
-	// 	sessionId: currentSession?.id
-	// };
-
-	// socket.emit('onChangePlayingInfo', changePlayingInfoRequest);
-}
-
 export async function setActiveSpotifyPlayer(device_id: string, access_token: string) {
 	await fetch('/api/spotify/playback/transfer', {
 		method: 'POST',
@@ -60,59 +45,4 @@ export async function playTrack(
 			currentDurationMs: payload.position_ms
 		});
 	}
-}
-
-export async function fastForwardCurrentTrack(
-	time: number,
-	deviceId: string,
-	access_token: string,
-	sessionPlayingInfo: SessionPlayingInfo
-) {
-	try {
-		await fetch('/api/spotify/playback/seek', {
-			method: 'POST',
-			body: JSON.stringify({
-				position_ms: time,
-				device_id: deviceId,
-				access_token
-			})
-		});
-
-		const _playingInfo = { ...sessionPlayingInfo };
-		_playingInfo.currentDurationMs = time;
-		playingInfo.set(_playingInfo);
-	} catch (e) {
-		console.log(e);
-	}
-}
-
-export async function updatePlayInfo(
-	info: SessionPlayingInfo,
-	session: MusicSession,
-	role: MusicSessionRole
-) {
-	const _playingInfo = { ...info };
-	_playingInfo.is_playing = true;
-	playingInfo.set(_playingInfo);
-	changeSessionPlayInfo(session, role, info);
-}
-
-export async function forwardTrack() {
-	// go new track
-	// remove pb queue[0]
-}
-
-export function detectSessionChange(role: MusicSessionRole) {
-	// socket.on('handleChangePlayingInfo', (info: SessionPlayingInfo) => {
-	// 	if (role === 'member') {
-	// 		playingInfo.set(info);
-	// 		if (info.status === 'playing') {
-	// 			// togglePlay();
-	// 			console.log('play');
-	// 		} else {
-	// 			// togglePause();
-	// 			console.log('pause');
-	// 		}
-	// 	}
-	// });
 }

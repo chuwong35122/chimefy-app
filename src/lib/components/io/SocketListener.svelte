@@ -1,13 +1,34 @@
 <script lang="ts">
+	import type { SessionPlayingInfo } from '$lib/interfaces/session/session.interface';
+	import type { SocketJoinSessionRoom } from '$lib/interfaces/spotify/broadcast.interface';
+	import { currentSession } from '$lib/session/session';
 	import { ioClient } from '$lib/socket/client';
+	import { userStore } from '$lib/supabase/user';
 	import { onDestroy, onMount } from 'svelte';
-	import type { JoinSessionRequest } from '$lib/interfaces/session/socket.interface';
 
 	const socketConnection = ioClient.connect();
 	onMount(() => {
-		socketConnection.on('onNewComerJoin', (payload: JoinSessionRequest) => {
-			console.log(payload);
-			console.log(`A wild ${payload?.spotifyDisplayName} has appeard`);
+		socketConnection.on('connect', () => {
+			console.log('Connected to Socket.io server!');
+
+			if (!$currentSession?.uuid || !$userStore?.id) return;
+
+			const joinSessionRoomPayload: SocketJoinSessionRoom = {
+				session_uuid: $currentSession.uuid,
+				user_id: $userStore.id,
+				session_name: $currentSession.name,
+				display_name: $userStore?.user_metadata?.display_name ?? ''
+			};
+
+			socketConnection.emit('join_session_room', joinSessionRoomPayload);
+
+			socketConnection.on('join_session_room_response', (message: string) => {
+				console.log(message);
+			});
+
+			socketConnection.on('player_info_broadcast_response', (data: SessionPlayingInfo) => {
+				console.log(data);
+			});
 		});
 
 		socketConnection.on('disconnect', () => {
