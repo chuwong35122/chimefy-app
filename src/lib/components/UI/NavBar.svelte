@@ -1,18 +1,28 @@
 <script lang="ts">
-	import { Dropdown, DropdownItem } from 'flowbite-svelte';
+	import { Dropdown, DropdownItem, Spinner } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import { SPOTIFY_AUTH_SCOPES } from '$lib/spotify/spotify';
 	import { supabase } from '$lib/supabase/supabase';
 	import { logout, userStore } from '$lib/supabase/user';
 	import NavLink from './NavLink.svelte';
 
+	let isLoading = false;
+
 	async function signInWithSpotify() {
+		isLoading = true;
 		await supabase.auth.signInWithOAuth({
 			provider: 'spotify',
 			options: {
 				scopes: SPOTIFY_AUTH_SCOPES.join(' ')
 			}
 		});
+		isLoading = false;
+	}
+
+	async function handleLogout() {
+		isLoading = true;
+		await logout();
+		isLoading = false
 	}
 </script>
 
@@ -65,9 +75,13 @@
 						</div>
 						<DropdownItem>Profile</DropdownItem>
 						<DropdownItem>Settings</DropdownItem>
-						<DropdownItem on:click={logout}>Logout</DropdownItem>
+						<DropdownItem on:click={handleLogout}>Logout</DropdownItem>
 					</Dropdown>
 				{/if}
+			</div>
+		{:else if isLoading}
+			<div class="grid place-items-center">
+				<Spinner color="green" />
 			</div>
 		{:else}
 			<button on:click={signInWithSpotify} class="p-2 px-3 hover:scale-105 duration-200">

@@ -3,6 +3,7 @@ import { writable } from 'svelte/store';
 import { supabase } from './supabase';
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
+import { toastValue } from '$lib/notification/toast';
 
 export const userStore = writable<User | null>(null);
 
@@ -18,7 +19,11 @@ function deleteAllCookies() {
 }
 
 export async function logout() {
-	await supabase.auth.signOut();
+	const { error } = await supabase.auth.signOut();
+	if (error) {
+		toastValue.set({ message: 'Cannot signout due to error', type: 'error' });
+		return;
+	}
 	userStore.set(null);
 	await goto('/');
 	if (browser) {
