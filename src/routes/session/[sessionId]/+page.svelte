@@ -19,12 +19,15 @@
 
 	let sessionId: string;
 
+	$: if ($userStore?.id && $currentSession?.created_by) {
+		currentSessionRole.set(
+			$currentSession?.created_by.toString() === $userStore?.id.toString() ? 'admin' : 'member'
+		);
+	}
+
 	onMount(async () => {
 		currentSession.set(session as MusicSession);
 		sessionId = session?.uuid ?? '';
-		currentSessionRole.set(
-			$currentSession?.created_by === $userStore?.user_metadata?.uuid ? 'admin' : 'member'
-		);
 		currentSessionQueue.set(queues as MusicSessionQueue);
 
 		supabase
