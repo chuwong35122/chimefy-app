@@ -2,7 +2,7 @@
 	import { playingInfo } from '$lib/session/session';
 </script>
 
-<div>
+<div class='h-20'>
 	{#if $playingInfo && $playingInfo?.track_image_url}
 		<div class="flex flex-col lg:flex-row items-center text-center lg:text-start">
 			<img

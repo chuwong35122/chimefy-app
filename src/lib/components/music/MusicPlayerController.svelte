@@ -8,29 +8,18 @@
 		hasConfirmedBroadcast
 	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
-	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import { onDestroy, onMount } from 'svelte';
 	import { spotifyAccessToken, spotifyPlayerId } from '$lib/spotify/spotify';
 	import { Modal, Tooltip } from 'flowbite-svelte';
-	import {
-		changeSessionPlayInfo,
-		detectSessionChange,
-		fastForwardCurrentTrack,
-		forwardTrack,
-		playTrack,
-		setActiveSpotifyPlayer,
-		updatePlayInfo
-	} from '$lib/spotify/player';
+	import { playTrack } from '$lib/spotify/player';
 	import SpotifyTrackBroadcastModal from '../modals/SpotifyTrackBroadcastModal.svelte';
 	import { toastValue } from '$lib/notification/toast';
 	import { ioClient } from '$lib/socket/client';
-	import type { SessionBroadcastRequest } from '$lib/interfaces/session/socket.interface';
-	import { supabase } from '$lib/supabase/supabase';
 	import VolumeController from './player/VolumeController.svelte';
 	import TrackPreview from './player/TrackPreview.svelte';
 	import ControlButtons from './player/ControlButtons.svelte';
-	import PlayerTrackSlider from './player/LargePlayerTrackSlider.svelte';
-	import SmallPlayerTrackSlider from './player/SmallPlayerTrackSlider.svelte';
+	import type { SocketJoinSessionRoom } from '$lib/interfaces/spotify/broadcast.interface';
+	import { userStore } from '$lib/supabase/user';
 
 	const socketConnection = ioClient.connect();
 
@@ -41,11 +30,7 @@
 	let volume = 50;
 	let debouncedVolume = 0;
 
-	let playingMs = 0;
-
-	function handleChangeSessionInfo() {
-		// if ($currentSession) changeSessionPlayInfo($currentSession, $currentSessionRole, $playingInfo);
-	}
+	function handleChangeSessionInfo() {}
 
 	// open broadcast modal, and play send track info
 	async function togglePlay() {
@@ -58,33 +43,12 @@
 		}
 
 		try {
-			// const broadcastPayload = createBroadcastPayload($currentSession, $playingInfo);
-			// socketConnection.emit('startSessionBroadcast', broadcastPayload);
-			console.log($spotifyAccessToken)
-
 			await playTrack(
 				$playingInfo,
 				$spotifyPlayerDeviceId,
 				$currentSessionQueue?.queues ?? [],
 				$spotifyAccessToken?.access_token
 			);
-			await updatePlayInfo($playingInfo, $currentSession, $currentSessionRole);
-
-			timer = setInterval(() => {
-				playingMs += 1000;
-				if ($currentSessionQueue?.queues && $currentSessionQueue?.queues[0]) {
-					playingInfo.set({
-						...$currentSessionQueue.queues[0],
-						is_playing: true,
-						currentDurationMs: playingMs
-					});
-
-					if ($playingInfo && playingMs >= $playingInfo?.duration_ms) {
-						// TODO: add track
-						forwardTrack();
-					}
-				}
-			}, 1000);
 		} catch (e) {
 			console.log(e);
 		}
@@ -94,11 +58,6 @@
 		try {
 			const _prevInfo = { ...$playingInfo };
 			playingInfo.set({ ..._prevInfo, is_playing: false });
-
-			await supabase
-				.from('session_queue')
-				.update({ is_playing: false })
-				.eq('session_id', $currentSession?.id);
 
 			await fetch('/api/spotify/playback/pause', {
 				method: 'POST',
@@ -112,17 +71,6 @@
 		} catch (e) {
 			console.error(e);
 		}
-	}
-
-	async function handleFastForwardTrack() {
-		if ($currentSessionRole !== 'admin') return;
-
-		await fastForwardCurrentTrack(
-			playingMs,
-			$spotifyPlayerDeviceId,
-			$spotifyAccessToken?.access_token,
-			$playingInfo
-		);
 	}
 
 	// request for current playing music
@@ -152,23 +100,6 @@
 			// Put the connect() at the bottom most of player.on()
 			await SpotifyPlayer?.connect();
 		};
-
-		if ($currentSessionRole === 'member') {
-			socketConnection.on('onStartBoardcast', async (payload: SessionBroadcastRequest) => {
-				playingInfo.set({
-					...payload
-				});
-				if (payload.is_playing === true) {
-					await togglePlay();
-				}
-			});
-
-			socketConnection.on('onPauseBoardcast', async () => {
-				await togglePause();
-			});
-		}
-
-		// detectSessionChange($currentSessionRole);
 	});
 
 	onDestroy(() => {
@@ -189,19 +120,17 @@
 		<TrackPreview />
 		<div class="flex flex-col items-center">
 			<ControlButtons {togglePlay} {togglePause} />
-			<PlayerTrackSlider {playingMs} {handleFastForwardTrack} />
 		</div>
-		<VolumeController {volume} {debouncedVolume} {SpotifyPlayer} />
-		<div class="absolute right-4 bottom-2">
+		<div class="flex flex-row">
 			<Icon
 				id="connected-player"
 				icon="material-symbols:speaker-group"
-				class="w-4 h-4 text-dark-200"
+				class="text-dark-200 mt-1 mr-1"
 			/>
+			<VolumeController {volume} {debouncedVolume} {SpotifyPlayer} />
 		</div>
 		<Tooltip triggeredBy="[id=connected-player]" placement="bottom"
 			>Connected to {SpotifyPlayer?._options?.name}</Tooltip
 		>
 	</div>
-<SmallPlayerTrackSlider {playingMs} {handleFastForwardTrack} />
 </div>
