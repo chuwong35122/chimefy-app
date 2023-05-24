@@ -36,7 +36,7 @@
 			routeName="Radio"
 			isActive={$userStore?.id != null}
 		/>
-		<NavLink icon="mdi:email" route="/contact" routeName="Contract" />
+		<NavLink icon="mdi:email" route="/contact" routeName="Contact" />
 	</div>
 
 	<div>
