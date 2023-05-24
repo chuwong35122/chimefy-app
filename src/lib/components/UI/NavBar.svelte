@@ -7,7 +7,7 @@
 	import NavLink from './NavLink.svelte';
 
 	async function signInWithSpotify() {
-		const { data, error } = await supabase.auth.signInWithOAuth({
+		await supabase.auth.signInWithOAuth({
 			provider: 'spotify',
 			options: {
 				scopes: SPOTIFY_AUTH_SCOPES.join(' ')
@@ -24,8 +24,18 @@
 		</div>
 	</a>
 	<div class={`w-56 md:w-96 flex flex-row items-center justify-between`}>
-		<NavLink icon="material-symbols:meeting-room-rounded" route="/session" routeName="Session" isActive={$userStore?.id != null} />
-		<NavLink icon="material-symbols:radio" route="/radio" routeName="Radio" isActive={$userStore?.id != null}  />
+		<NavLink
+			icon="material-symbols:meeting-room-rounded"
+			route="/session"
+			routeName="Session"
+			isActive={$userStore?.id != null}
+		/>
+		<NavLink
+			icon="material-symbols:radio"
+			route="/radio"
+			routeName="Radio"
+			isActive={$userStore?.id != null}
+		/>
 		<NavLink icon="mdi:email" route="/contact" routeName="Contract" />
 	</div>
 

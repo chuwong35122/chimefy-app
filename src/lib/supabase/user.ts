@@ -2,6 +2,7 @@ import type { User } from '@supabase/supabase-js';
 import { writable } from 'svelte/store';
 import { supabase } from './supabase';
 import { browser } from '$app/environment';
+import { goto } from '$app/navigation';
 
 export const userStore = writable<User | null>(null);
 
@@ -19,6 +20,7 @@ function deleteAllCookies() {
 export async function logout() {
 	await supabase.auth.signOut();
 	userStore.set(null);
+	await goto('/');
 	if (browser) {
 		window.localStorage.clear();
 		window.sessionStorage.removeItem('sb-auth-token');
