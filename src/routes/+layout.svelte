@@ -41,7 +41,7 @@
 			}
 
 			userStore.set(_session.user);
-			setTokenStore(data?.session?.provider_token, data?.session?.provider_refresh_token);
+			setTokenStore(_session?.provider_token, _session?.provider_refresh_token);
 
 			if (!$spotifyUserProfile) {
 				const profileRes = await fetch('/api/spotify/profile', {
