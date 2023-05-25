@@ -47,9 +47,9 @@
 	<title>{$currentSession?.name ? `Listening to ${$currentSession?.name}` : 'Loading...'}</title>
 </svelte:head>
 
-{#if $currentSessionRole === 'admin' && $userStore && $currentSession}
+{#if $currentSessionRole === 'admin'}
 	<AdminSocketHandler />
-{:else if $currentSessionRole === 'member' && $userStore && $currentSession}
+{:else if $currentSessionRole === 'member'}
 	<SocketListener />
 {/if}
 <div>{$currentSessionRole}</div>
