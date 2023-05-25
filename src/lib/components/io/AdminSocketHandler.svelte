@@ -8,46 +8,76 @@
 		SocketPlayerBroadcastInfo
 	} from '$lib/interfaces/spotify/broadcast.interface';
 	import type { SessionPlayingInfo } from '$lib/interfaces/session/session.interface';
+	import { Alert } from 'flowbite-svelte';
 
-	const socketConnection = ioClient.connect();
 	let interval: NodeJS.Timer;
+	let socketConnection = ioClient.connect();
 
-	onMount(() => {
-		socketConnection.on('connect', () => {
-			console.log('Connected to Socket.io server!');
+	let isConnected = false;
 
-			if (!$currentSession?.uuid || !$userStore?.id) return;
+	function onConnect() {
+		isConnected = socketConnection.connected;
 
-			const joinSessionRoomPayload: SocketJoinSessionRoom = {
-				session_uuid: $currentSession.uuid,
-				user_id: $userStore.id,
-				session_name: $currentSession.name,
-				display_name: $userStore?.user_metadata?.display_name ?? ''
+		const joinPayload: SocketJoinSessionRoom = {
+			session_uuid: $currentSession?.uuid,
+			user_id: $userStore?.id,
+			session_name: $currentSession?.name,
+			display_name: $userStore?.user_metadata?.display_name ?? ''
+		};
+
+		if (joinPayload.session_uuid && joinPayload.user_id) {
+			socketConnection.emit('join_session_room', joinPayload);
+		}
+
+		interval = setInterval(() => {
+			const playerInfoBroadcastPayload: SocketPlayerBroadcastInfo = {
+				playing_info: $playingInfo,
+				session_uuid: $currentSession?.uuid ?? null
 			};
 
-			socketConnection.emit('join_session_room', joinSessionRoomPayload);
+			if (playerInfoBroadcastPayload?.playing_info && playerInfoBroadcastPayload?.session_uuid) {
+				console.log(playerInfoBroadcastPayload)
+				socketConnection.emit('player_info_broadcast', playerInfoBroadcastPayload);
+			}
+		}, 1000);
+	}
 
-			interval = setInterval(() => {
-				const playerInfoBroadcastPayload: SocketPlayerBroadcastInfo = {
-					playing_info: $playingInfo,
-					session_uuid: $currentSession?.uuid ?? null
-				};
+	function onDisconnect() {
+		isConnected = false;
+	}
 
-				if(playerInfoBroadcastPayload?.playing_info && playerInfoBroadcastPayload?.session_uuid) {
-					socketConnection.emit('player_info_broadcast', playerInfoBroadcastPayload);
-				}
-			}, 1000);
+	onMount(() => {
+		isConnected = socketConnection.connected
+		socketConnection.on('connect', onConnect);
+
+		socketConnection.on('disconnect', onDisconnect);
+
+		socketConnection.on('join_session_room_response', (message: string) => {
+			console.log(message);
 		});
-	});
 
-	socketConnection.on('disconnect', () => {
-		console.log('Disconnected!')
-	})
+		// socketConnection.on('player_info_broadcast_response', (message: string) => {
+		// 	console.log('cat');
+		// });
+
+	});
 
 	onDestroy(() => {
+		console.log('Destroying admin socket connection');
 		socketConnection.disconnect();
-		if(interval) {
-			clearInterval(interval)
-		}
+		socketConnection.removeAllListeners()
+		if (interval) clearInterval(interval);
 	});
 </script>
+
+<div>
+	{#if isConnected}
+		<Alert color="dark">
+			<span class="font-medium">Connected!</span> Wait for the admin to play music...
+		</Alert>
+	{:else}
+		<Alert color="red">
+			<span class="font-medium">Cannot Connect!</span>Try refreshing the page!
+		</Alert>
+	{/if}
+</div>

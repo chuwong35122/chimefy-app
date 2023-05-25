@@ -6,8 +6,8 @@ export interface SocketPlayerBroadcastInfo {
 }
 
 export interface SocketJoinSessionRoom {
-	session_uuid: string;
-	user_id: string;
+	session_uuid: string | undefined;
+	user_id: string | null | undefined;
 	session_name: string;
 	display_name: string;
 }
