@@ -16,13 +16,14 @@
 				scopes: SPOTIFY_AUTH_SCOPES.join(' ')
 			}
 		});
+
 		isLoading = false;
 	}
 
 	async function handleLogout() {
 		isLoading = true;
 		await logout();
-		isLoading = false
+		isLoading = false;
 	}
 </script>
 
