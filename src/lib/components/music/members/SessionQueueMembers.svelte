@@ -57,6 +57,7 @@
 		});
 
 		channel.subscribe(async (status) => {
+			console.log(status)
 			if (status === 'SUBSCRIBED') {
 				await channel.track({ ...self });
 			}

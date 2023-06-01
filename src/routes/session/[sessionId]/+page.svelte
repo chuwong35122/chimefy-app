@@ -7,8 +7,6 @@
 	import MusicPlayerController from '$lib/components/music/MusicPlayerController.svelte';
 	import SessionQueueMembers from '$lib/components/music/members/SessionQueueMembers.svelte';
 	import SessionInfo from '$lib/components/music/SessionInfo.svelte';
-	import SocketListener from '$lib/components/io/SocketListener.svelte';
-	import AdminSocketHandler from '$lib/components/io/AdminSocketHandler.svelte';
 	import { supabase } from '$lib/supabase/supabase';
 	import { userStore } from '$lib/supabase/user';
 	import type { MusicSessionQueue } from '$lib/interfaces/session/queue.interface';
@@ -47,12 +45,6 @@
 	<title>{$currentSession?.name ? `Listening to ${$currentSession?.name}` : 'Loading...'}</title>
 </svelte:head>
 
-{#if $currentSessionRole === 'admin'}
-	<AdminSocketHandler />
-{:else if $currentSessionRole === 'member'}
-	<SocketListener />
-{/if}
-<div>{$currentSessionRole}</div>
 <div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
 	<SessionInfo {sessionId} />
 </div>

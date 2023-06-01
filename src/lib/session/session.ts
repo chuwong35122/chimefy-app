@@ -13,7 +13,6 @@ export const currentSessionMember = writable<SessionMember[]>([]);
 
 export const currentSessionPassword = writable('');
 export const spotifyPlayerDeviceId = writable('');
-export const socketId = writable('');
 export const hasConfirmedBroadcast = writable(false);
 export const currentSessionRole = writable<MusicSessionRole>('member');
 
