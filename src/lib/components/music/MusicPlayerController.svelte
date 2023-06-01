@@ -1,7 +1,6 @@
 <script lang="ts">
 	import {
 		currentSessionRole,
-		currentSession,
 		currentSessionQueue,
 		playingInfo,
 		spotifyPlayerDeviceId,
@@ -17,7 +16,6 @@
 	import VolumeController from './player/VolumeController.svelte';
 	import TrackPreview from './player/TrackPreview.svelte';
 	import ControlButtons from './player/ControlButtons.svelte';
-	import type { SocketJoinSessionRoom } from '$lib/interfaces/spotify/broadcast.interface';
 	import { userStore } from '$lib/supabase/user';
 
 	let broadcastModal = false;
@@ -40,12 +38,12 @@
 		}
 
 		try {
-			// await playTrack(
-			// 	$playingInfo,
-			// 	$spotifyPlayerDeviceId,
-			// 	$currentSessionQueue?.queues ?? [],
-			// 	$spotifyAccessToken?.access_token
-			// );
+			await playTrack(
+				$playingInfo,
+				$spotifyPlayerDeviceId,
+				$currentSessionQueue?.queues ?? [],
+				$spotifyAccessToken?.access_token
+			);
 		} catch (e) {
 			console.log(e);
 		}
