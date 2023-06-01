@@ -11,22 +11,21 @@ export default function injectSocketIO(server: any) {
 		}
 	});
 
-	io.on('connection', (socket) => {
-		console.log(socket.id);
+	// FIXME: Bug.
+	// Session broadcast does not work with member.
 
+	io.on('connection', (socket) => {
 		socket.on('disconnect', () => {});
 
 		// Join session room
 		socket.on('join_session_room', (data: SocketJoinSessionRoom) => {
 			console.log(data);
+
 			if (data?.session_uuid) {
-				// socket.join(data?.session_uuid);
-				socket
-					// .to(data?.session_uuid)
-					.emit(
-						'join_session_room_response',
-						`User ${data?.display_name} has joined session ${data?.session_name}.`
-					);
+				socket.emit(
+					'join_session_room_response',
+					`User ${data?.display_name} has joined session ${data?.session_name}.`
+				);
 			}
 
 			// Periodically broadcast the current player state to all connected clients

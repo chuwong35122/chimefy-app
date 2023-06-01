@@ -15,6 +15,7 @@
 
 	let isConnected = false;
 
+	// send data to the server to join room and prepare to send broadcast data
 	function onConnect() {
 		isConnected = socketConnection.connected;
 
@@ -22,10 +23,11 @@
 			session_uuid: $currentSession?.uuid,
 			user_id: $userStore?.id,
 			session_name: $currentSession?.name,
-			display_name: $userStore?.user_metadata?.display_name ?? ''
+			display_name: $userStore?.user_metadata?.name ?? ''
 		};
 
 		if (joinPayload.session_uuid && joinPayload.user_id) {
+			console.log(joinPayload)
 			socketConnection.emit('join_session_room', joinPayload);
 		}
 
@@ -47,19 +49,19 @@
 	}
 
 	onMount(() => {
+
 		isConnected = socketConnection.connected
 		socketConnection.on('connect', onConnect);
 
-		socketConnection.on('disconnect', onDisconnect);
+		// socketConnection.on('disconnect', onDisconnect);
 
 		socketConnection.on('join_session_room_response', (message: string) => {
 			console.log(message);
 		});
 
-		// socketConnection.on('player_info_broadcast_response', (message: string) => {
-		// 	console.log('cat');
-		// });
-
+		socketConnection.on('player_info_broadcast_response', (message: string) => {
+			console.log('cat');
+		});
 	});
 
 	onDestroy(() => {
@@ -71,13 +73,19 @@
 </script>
 
 <div>
+	<button on:click={() => {
+		socketConnection.emit('uwu')
+	}}>
+		Click me
+	</button>
 	{#if isConnected}
-		<Alert color="dark">
+	<div>I am an admin</div>
+		<!-- <Alert color="dark">
 			<span class="font-medium">Connected!</span> Wait for the admin to play music...
 		</Alert>
 	{:else}
 		<Alert color="red">
 			<span class="font-medium">Cannot Connect!</span>Try refreshing the page!
-		</Alert>
+		</Alert> -->
 	{/if}
 </div>
