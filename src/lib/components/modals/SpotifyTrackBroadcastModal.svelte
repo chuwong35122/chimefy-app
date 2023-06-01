@@ -12,10 +12,8 @@
 
 	async function onSessionBroadcast() {
 		if (!$currentSession?.id) return;
-		// todo: try set play twice
 		try {
 			await setActiveSpotifyPlayer($spotifyPlayerDeviceId, $spotifyAccessToken?.access_token);
-			// TODO: move this logic to socketIO
 			hasConfirmedBroadcast.set(true);
 			dispatch('broadcast');
 		} catch (e) {
