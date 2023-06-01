@@ -14,14 +14,11 @@
 	import { playTrack } from '$lib/spotify/player';
 	import SpotifyTrackBroadcastModal from '../modals/SpotifyTrackBroadcastModal.svelte';
 	import { toastValue } from '$lib/notification/toast';
-	import { ioClient } from '$lib/socket/client';
 	import VolumeController from './player/VolumeController.svelte';
 	import TrackPreview from './player/TrackPreview.svelte';
 	import ControlButtons from './player/ControlButtons.svelte';
 	import type { SocketJoinSessionRoom } from '$lib/interfaces/spotify/broadcast.interface';
 	import { userStore } from '$lib/supabase/user';
-
-	const socketConnection = ioClient.connect();
 
 	let broadcastModal = false;
 	let SpotifyPlayer: Spotify.Player;
@@ -43,12 +40,12 @@
 		}
 
 		try {
-			await playTrack(
-				$playingInfo,
-				$spotifyPlayerDeviceId,
-				$currentSessionQueue?.queues ?? [],
-				$spotifyAccessToken?.access_token
-			);
+			// await playTrack(
+			// 	$playingInfo,
+			// 	$spotifyPlayerDeviceId,
+			// 	$currentSessionQueue?.queues ?? [],
+			// 	$spotifyAccessToken?.access_token
+			// );
 		} catch (e) {
 			console.log(e);
 		}
