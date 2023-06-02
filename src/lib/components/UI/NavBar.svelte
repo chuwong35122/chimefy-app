@@ -10,12 +10,13 @@
 
 	async function signInWithSpotify() {
 		isLoading = true;
-		await supabase.auth.signInWithOAuth({
+		const {data} = await supabase.auth.signInWithOAuth({
 			provider: 'spotify',
 			options: {
 				scopes: SPOTIFY_AUTH_SCOPES.join(' ')
 			}
 		});
+		console.log(data)
 
 		isLoading = false;
 	}

@@ -11,6 +11,7 @@
 		const channel = supabase.channel(`session_player_listener_${$currentSession?.id}`);
 		channel.subscribe((status) => {
 			setInterval(() => {
+				console.log($playingInfo)
 				if (status === 'SUBSCRIBED') {
 					channel.send({
 						type: 'broadcast',

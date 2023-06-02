@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import TrackSearchTab from '$lib/components/music/TrackSearchTab.svelte';
 	import { currentSession, currentSessionRole, currentSessionQueue } from '$lib/session/session';
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
@@ -51,12 +51,13 @@
 	<SessionInfo {sessionId} />
 </div>
 
-{#if $currentSessionRole === 'admin'}
+{#if $currentSessionRole === 'admin' && $currentSession?.id}
 	<AdminBroadcaster />
 {/if}
-{#if $currentSessionRole === 'member'}
-	<MemberPlayerListener />
+{#if $currentSessionRole === 'member' && $currentSession?.id}
+	<MemberPlayerListener currentSessionId={$currentSession?.id} />
 {/if}
+
 {#if $userStore}
 	<div
 		class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px] bg-[rgba(255,255,255,0.05)] rounded-xl"

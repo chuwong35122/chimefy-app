@@ -16,16 +16,13 @@
 	import VolumeController from './player/VolumeController.svelte';
 	import TrackPreview from './player/TrackPreview.svelte';
 	import ControlButtons from './player/ControlButtons.svelte';
-	import { userStore } from '$lib/supabase/user';
+	import MemberPlayerController from './player/MemberPlayerController.svelte';
 
 	let broadcastModal = false;
 	let SpotifyPlayer: Spotify.Player;
-	let timer: NodeJS.Timer;
 
 	let volume = 50;
 	let debouncedVolume = 0;
-
-	function handleChangeSessionInfo() {}
 
 	// open broadcast modal, and play send track info
 	async function togglePlay() {
@@ -50,6 +47,8 @@
 	}
 
 	async function togglePause() {
+		if ($currentSessionRole !== 'admin') return;
+
 		try {
 			const _prevInfo = { ...$playingInfo };
 			playingInfo.set({ ..._prevInfo, is_playing: false });
@@ -61,8 +60,6 @@
 					access_token: $spotifyAccessToken?.access_token
 				})
 			});
-			handleChangeSessionInfo();
-			clearInterval(timer);
 		} catch (e) {
 			console.error(e);
 		}
@@ -106,7 +103,6 @@
 	<script src="https://sdk.scdn.co/spotify-player.js"></script>
 </svelte:head>
 
-<div>{JSON.stringify($playingInfo)}</div>
 <Modal bind:open={broadcastModal} size="xs" autoclose={false} class="modal-glass">
 	<SpotifyTrackBroadcastModal on:broadcast={togglePlay} />
 </Modal>
@@ -114,7 +110,14 @@
 	<div class="flex flex-row items-center justify-between">
 		<TrackPreview />
 		<div class="flex flex-col items-center">
-			<ControlButtons {togglePlay} {togglePause} />
+			{#if $currentSessionRole === 'admin'}
+				<ControlButtons {togglePlay} {togglePause} />
+			{/if}
+
+			{#if $currentSessionRole !== 'member'}
+				<MemberPlayerController />
+			{/if}
+			
 		</div>
 		<div class="flex flex-row">
 			<Icon
