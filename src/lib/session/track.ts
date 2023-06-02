@@ -37,20 +37,3 @@ export function convertPercentageToTrackMs(
 	if (!percentage || !durationMs) return 0;
 	return (percentage / 100) * durationMs;
 }
-
-// export function createBroadcastPayload(session: MusicSession, playingInfo: SessionPlayingInfo) {
-// 	const payload: SessionBroadcastRequest = {
-// 		sessionId: session?.uuid,
-// 		status: playingInfo?.status ?? 'playing',
-// 		currentDurationMs: playingInfo?.currentDurationMs ?? 0,
-// 		trackId: playingInfo?.trackId ?? session?.queues[0]?.trackId,
-// 		trackUri: playingInfo?.trackUri ?? session?.queues[0]?.trackUri,
-// 		trackName: playingInfo?.trackName ?? session?.queues[0]?.trackName,
-// 		artist: playingInfo?.artist ?? session?.queues[0]?.artist,
-// 		durationMs: playingInfo?.durationMs ?? session?.queues[0]?.durationMs,
-// 		trackImageUrl: playingInfo?.trackImageUrl ?? session?.queues[0]?.trackImageUrl,
-// 		addedSince: playingInfo?.addedSince ?? session?.queues[0]?.addedSince
-// 	};
-
-// 	return payload;
-// }
