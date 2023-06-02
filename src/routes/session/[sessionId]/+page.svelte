@@ -10,8 +10,6 @@
 	import { supabase } from '$lib/supabase/supabase';
 	import { userStore } from '$lib/supabase/user';
 	import type { MusicSessionQueue } from '$lib/interfaces/session/queue.interface';
-	import AdminBroadcaster from '$lib/components/music/player/AdminBroadcaster.svelte';
-	import MemberPlayerListener from '$lib/components/music/player/MemberPlayerListener.svelte';
 
 	// TODO: Store session password and check before entering
 	export let data: { session: MusicSession; queues: MusicSessionQueue };
@@ -50,13 +48,6 @@
 <div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
 	<SessionInfo {sessionId} />
 </div>
-
-{#if $currentSessionRole === 'admin' && $currentSession?.id}
-	<AdminBroadcaster />
-{/if}
-{#if $currentSessionRole === 'member' && $currentSession?.id}
-	<MemberPlayerListener currentSessionId={$currentSession?.id} />
-{/if}
 
 {#if $userStore}
 	<div

@@ -38,7 +38,3 @@ export interface MusicSessionInfo {
 }
 
 export type SessionBroadcastStatus = 'broadcasting' | 'waiting';
-export interface SessionPlayingInfo extends MusicQueue {
-	is_playing: boolean;
-	currentDurationMs: number;
-}

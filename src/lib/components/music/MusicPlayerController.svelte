@@ -2,70 +2,56 @@
 	import {
 		currentSessionRole,
 		currentSessionQueue,
+		currentSession,
 		playingInfo,
 		spotifyPlayerDeviceId,
-		hasConfirmedBroadcast
+		isPlayingStatus,
+		playingDurationMs
 	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { spotifyAccessToken, spotifyPlayerId } from '$lib/spotify/spotify';
-	import { Modal, Tooltip } from 'flowbite-svelte';
-	import { playTrack } from '$lib/spotify/player';
-	import SpotifyTrackBroadcastModal from '../modals/SpotifyTrackBroadcastModal.svelte';
-	import { toastValue } from '$lib/notification/toast';
+	import { Tooltip } from 'flowbite-svelte';
 	import VolumeController from './player/VolumeController.svelte';
 	import TrackPreview from './player/TrackPreview.svelte';
 	import ControlButtons from './player/ControlButtons.svelte';
-	import MemberPlayerController from './player/MemberPlayerController.svelte';
+	import { supabase } from '$lib/supabase/supabase';
+	import MemberPlayerListener from './player/MemberPlayerListener.svelte';
+	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 
-	let broadcastModal = false;
 	let SpotifyPlayer: Spotify.Player;
 
 	let volume = 50;
 	let debouncedVolume = 0;
 
+	const channel = supabase.channel(`session_player_listener_${$currentSession?.id}`, {
+		config: {
+			broadcast: {
+				self: true
+			}
+		}
+	})
+
 	// open broadcast modal, and play send track info
-	async function togglePlay() {
-		broadcastModal = false;
+	async function onBroadcastSignal(playing: boolean) {
+		channel.send({
+      type: 'broadcast',
+      event: 'playerStart',
+      payload: { isPlaying: playing },
+    })
+	}
 
-		if ($currentSessionRole !== 'admin') return;
-		if (!$hasConfirmedBroadcast && !broadcastModal) {
-			broadcastModal = true;
-			return;
-		}
+	async function onPlayerStateChange() {
+		if($isPlayingStatus === false) return;
 
-		try {
-			await playTrack(
-				$playingInfo,
-				$spotifyPlayerDeviceId,
-				$currentSessionQueue?.queues ?? [],
-				$spotifyAccessToken?.access_token
-			);
-		} catch (e) {
-			console.log(e);
+		if($playingDurationMs < $playingInfo?.duration_ms) {
+
+		}else{
+			// admin delete topmost queue
 		}
 	}
 
-	async function togglePause() {
-		if ($currentSessionRole !== 'admin') return;
 
-		try {
-			const _prevInfo = { ...$playingInfo };
-			playingInfo.set({ ..._prevInfo, is_playing: false });
-
-			await fetch('/api/spotify/playback/pause', {
-				method: 'POST',
-				body: JSON.stringify({
-					device_id: $spotifyPlayerDeviceId,
-					access_token: $spotifyAccessToken?.access_token
-				})
-			});
-		} catch (e) {
-			console.error(e);
-		}
-	}
-
-	// request for current playing music
 	// TODO: handle error if spotify player cannot be connected!
 	onMount(async () => {
 		window.onSpotifyWebPlaybackSDKReady = async () => {
@@ -78,20 +64,18 @@
 			});
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
 				spotifyPlayerDeviceId.set(device_id);
-				toastValue.set({ message: 'Spotify player is ready!! 🎵', type: 'info' });
+				console.log('Spotify player is ready!! 🎵');
 				spotifyPlayerId.set(device_id);
 			});
 			SpotifyPlayer.on('initialization_error', (err) => {
 				console.log(err.message);
 			});
 
-			SpotifyPlayer.on('player_state_changed', (val) => {
-				// console.log(val);
-			});
-
 			// Put the connect() at the bottom most of player.on()
 			await SpotifyPlayer?.connect();
 		};
+
+		channel.subscribe();
 	});
 
 	onDestroy(() => {
@@ -103,22 +87,20 @@
 	<script src="https://sdk.scdn.co/spotify-player.js"></script>
 </svelte:head>
 
-<Modal bind:open={broadcastModal} size="xs" autoclose={false} class="modal-glass">
-	<SpotifyTrackBroadcastModal on:broadcast={togglePlay} />
-</Modal>
+
 <div class="relative w-full p-2 rounded-xl bg-dark-500 hover:bg-white/10 duration-200">
 	<div class="flex flex-row items-center justify-between">
 		<TrackPreview />
 		<div class="flex flex-col items-center">
 			{#if $currentSessionRole === 'admin'}
-				<ControlButtons {togglePlay} {togglePause} />
+				<ControlButtons {onBroadcastSignal} />
 			{/if}
 
-			{#if $currentSessionRole !== 'member'}
-				<MemberPlayerController />
+			{#if $currentSession?.id}
+				<MemberPlayerListener {channel} {SpotifyPlayer} />
 			{/if}
-			
 		</div>
+		<div class='text-xs'>{millisecondToMinuteSeconds($playingDurationMs)}</div>
 		<div class="flex flex-row">
 			<Icon
 				id="connected-player"

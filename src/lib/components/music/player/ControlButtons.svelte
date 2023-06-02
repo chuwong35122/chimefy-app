@@ -1,9 +1,16 @@
 <script lang="ts">
-	import { currentSessionRole, playingInfo } from '$lib/session/session';
+	import { currentSessionRole, isPlayingStatus } from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 
-	export let togglePlay: () => void;
-	export let togglePause: () => void;
+	export let onBroadcastSignal: (playing: boolean) => void;
+
+	function togglePlay() {
+		onBroadcastSignal(true)
+	}
+
+	function togglePause() {
+		onBroadcastSignal(false)
+	}
 </script>
 
 <div>
@@ -15,8 +22,8 @@
 					class="w-10 h-10 hover:scale-110 duration-100"
 				/>
 			</button>
-			<button on:click={$playingInfo?.is_playing ? togglePause : togglePlay}>
-				{#if $playingInfo && $playingInfo?.is_playing}
+			<button on:click={$isPlayingStatus ? togglePause : togglePlay}>
+				{#if $isPlayingStatus}
 					<Icon
 						icon="material-symbols:pause-circle-rounded"
 						class="w-10 h-10 hover:scale-110 duration-100"
