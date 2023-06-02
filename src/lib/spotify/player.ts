@@ -32,7 +32,6 @@ export async function playTrack(
 		position_ms: info?.currentDurationMs ?? 0,
 		access_token: access_token
 	};
-	console.log(payload);
 	await fetch('/api/spotify/playback/play', {
 		method: 'POST',
 		body: JSON.stringify(payload)
