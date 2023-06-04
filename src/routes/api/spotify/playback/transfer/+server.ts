@@ -1,7 +1,6 @@
 import type { RequestHandler } from './$types';
 import { PUBLIC_SPOTIFY_BASE_URL } from '$env/static/public';
 import { getBearerToken } from '$lib/spotify/spotify';
-import { json } from '@sveltejs/kit';
 
 // Transfer playback state to other device
 export const POST: RequestHandler = async ({ fetch, request }) => {
@@ -23,8 +22,5 @@ export const POST: RequestHandler = async ({ fetch, request }) => {
 		body: JSON.stringify(payload)
 	});
 
-	console.log('transfering');
-	const response = await res.json();
-	console.log(response);
-	return json(response);
+	return new Response(JSON.stringify({ status: res.status, statusText: res.statusText }));
 };
