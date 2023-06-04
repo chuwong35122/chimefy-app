@@ -10,15 +10,16 @@
 
 	async function signInWithSpotify() {
 		isLoading = true;
-		const {data} = await supabase.auth.signInWithOAuth({
+		const { data } = await supabase.auth.signInWithOAuth({
 			provider: 'spotify',
 			options: {
 				scopes: SPOTIFY_AUTH_SCOPES.join(' ')
 			}
 		});
-		console.log(data)
 
-		isLoading = false;
+		setTimeout(() => {
+			isLoading = false;
+		}, 1500);
 	}
 
 	async function handleLogout() {
@@ -32,7 +33,7 @@
 	<a href="/" class="w-12 h-12 grid place-items-center">
 		<div class="flex items-center">
 			<img src="/logo/chimefy/logo_dark.svg" alt="Chimefy Logo" class="w-8 h-8" />
-			<div class="ml-4 text-lg font-semibold">Chimefy</div>
+			<div class="ml-4 text-lg font-semibold hidden md:block">Chimefy</div>
 		</div>
 	</a>
 	<div class={`w-56 md:w-96 flex flex-row items-center justify-between`}>
