@@ -21,6 +21,7 @@
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
 	import { sliceQueue } from '$lib/session/queue';
+	import { toastValue } from '$lib/notification/toast';
 
 	let SpotifyPlayer: Spotify.Player;
 
@@ -40,6 +41,12 @@
 
 	// open broadcast modal, and play send track info
 	async function onBroadcastSignal(playing: boolean) {
+		const queues = $currentSessionQueue?.queues;
+		if (queues && queues.length === 0) {
+			toastValue.set({ message: 'Please add some tracks before playing!', type: 'warn' });
+			return;
+		}
+
 		clearTimeout(broadcastTimer);
 
 		broadcastTimer = setInterval(() => {
@@ -60,6 +67,13 @@
 	async function onForwardTrack() {
 		const queues = $currentSessionQueue?.queues;
 		const queueId = $currentSessionQueue?.id;
+
+		if (queues && queues.length < 2) {
+			toastValue.set({ message: 'Please add some tracks!', type: 'warn' });
+			return;
+		}
+		toastValue.set({ message: 'Skipping track...', type: 'info' });
+
 		if ($currentSessionRole === 'admin' && queues && queueId) {
 			await sliceQueue(queues, $playingInfo?.track_id, queueId);
 		}
@@ -79,6 +93,19 @@
 	}
 
 	async function onBackwardTrack() {
+		const queues = $currentSessionQueue?.queues;
+		if (queues && queues.length === 0) {
+			toastValue.set({ message: 'Please add some tracks!', type: 'warn' });
+			return;
+		}
+
+		if (!$isPlayingStatus) {
+			toastValue.set({ message: 'Please play before going backward...', type: 'info' });
+			return;
+		}
+
+		toastValue.set({ message: 'Going back...', type: 'info' });
+
 		playingDurationMs.set(0);
 		const payload: TrackBroadcastPayload = {
 			isPlaying: $isPlayingStatus,
