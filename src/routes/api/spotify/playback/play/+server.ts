@@ -10,8 +10,6 @@ export const POST: RequestHandler = async ({ fetch, request }) => {
 	const { access_token, device_id, uris, position_ms } = _req;
 	// console.log(getBearerToken(access_token));
 
-	let status = 202;
-	try {
 		const res = await fetch(`${PUBLIC_SPOTIFY_BASE_URL}/me/player/play?device_id=${device_id}`, {
 			headers: {
 				'Content-Type': 'application/json',
@@ -24,12 +22,5 @@ export const POST: RequestHandler = async ({ fetch, request }) => {
 			})
 		});
 
-		status = res.status;
-		return new Response(JSON.stringify({ ok: true }));
-	} catch (e) {
-		if (status === 202) {
-			return new Response(JSON.stringify({ ok: true }));
-		}
-		return new Response(JSON.stringify({ ok: false }));
-	}
+		return new Response(JSON.stringify({ status: res.status, statusText: res.statusText }));
 };
