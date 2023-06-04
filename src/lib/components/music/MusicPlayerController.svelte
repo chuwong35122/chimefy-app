@@ -6,7 +6,8 @@
 		playingInfo,
 		spotifyPlayerDeviceId,
 		isPlayingStatus,
-		playingDurationMs
+		playingDurationMs,
+		playingTrackId
 	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import { onDestroy, onMount } from 'svelte';
@@ -18,11 +19,15 @@
 	import { supabase } from '$lib/supabase/supabase';
 	import MemberPlayerListener from './player/MemberPlayerListener.svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
+	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
 
 	let SpotifyPlayer: Spotify.Player;
 
 	let volume = 50;
 	let debouncedVolume = 0;
+
+	let broadcastTimer: NodeJS.Timer;
+	let trackDurationTimer: NodeJS.Timer;
 
 	const channel = supabase.channel(`session_player_listener_${$currentSession?.id}`, {
 		config: {
@@ -30,27 +35,35 @@
 				self: true
 			}
 		}
-	})
+	});
 
 	// open broadcast modal, and play send track info
 	async function onBroadcastSignal(playing: boolean) {
-		channel.send({
-      type: 'broadcast',
-      event: 'playerStart',
-      payload: { isPlaying: playing },
-    })
+		clearTimeout(broadcastTimer);
+
+		broadcastTimer = setInterval(() => {
+			const payload: TrackBroadcastPayload = {
+				isPlaying: playing,
+				playingTrackId: $playingTrackId,
+				currentDurationMs: $playingDurationMs
+			};
+
+			channel.send({
+				type: 'broadcast',
+				event: 'playerStart',
+				payload
+			});
+		}, 1000);
 	}
 
 	async function onPlayerStateChange() {
-		if($isPlayingStatus === false) return;
+		if ($isPlayingStatus === false) return;
 
-		if($playingDurationMs < $playingInfo?.duration_ms) {
-
-		}else{
+		if ($playingDurationMs < $playingInfo?.duration_ms) {
+		} else {
 			// admin delete topmost queue
 		}
 	}
-
 
 	// TODO: handle error if spotify player cannot be connected!
 	onMount(async () => {
@@ -76,17 +89,23 @@
 		};
 
 		channel.subscribe();
+
+		trackDurationTimer = setInterval(() => {
+			if($isPlayingStatus === false) return;
+
+			playingDurationMs.update((prev) => prev + 1000);
+		}, 1000)
 	});
 
 	onDestroy(() => {
 		SpotifyPlayer?.disconnect();
+		clearTimeout(trackDurationTimer)
 	});
 </script>
 
 <svelte:head>
 	<script src="https://sdk.scdn.co/spotify-player.js"></script>
 </svelte:head>
-
 
 <div class="relative w-full p-2 rounded-xl bg-dark-500 hover:bg-white/10 duration-200">
 	<div class="flex flex-row items-center justify-between">
@@ -97,10 +116,10 @@
 			{/if}
 
 			{#if $currentSession?.id}
-				<MemberPlayerListener {channel} {SpotifyPlayer} />
+				<MemberPlayerListener {channel} />
 			{/if}
 		</div>
-		<div class='text-xs'>{millisecondToMinuteSeconds($playingDurationMs)}</div>
+		<div class="text-xs">{millisecondToMinuteSeconds($playingDurationMs)}</div>
 		<div class="flex flex-row">
 			<Icon
 				id="connected-player"
