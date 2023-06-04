@@ -13,7 +13,6 @@
 	export let data;
 	$: ({ supabase, session } = data);
 
-	let now = new Date();
 	let timer: NodeJS.Timer;
 
 	let isSpotifyPremiumModalOpen = false;
