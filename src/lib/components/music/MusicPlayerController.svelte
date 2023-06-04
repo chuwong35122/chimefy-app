@@ -20,6 +20,7 @@
 	import MemberPlayerListener from './player/MemberPlayerListener.svelte';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
+	import { sliceQueue } from '$lib/session/queue';
 
 	let SpotifyPlayer: Spotify.Player;
 
@@ -56,13 +57,40 @@
 		}, 1000);
 	}
 
-	async function onPlayerStateChange() {
-		if ($isPlayingStatus === false) return;
-
-		if ($playingDurationMs < $playingInfo?.duration_ms) {
-		} else {
-			// admin delete topmost queue
+	async function onForwardTrack() {
+		const queues = $currentSessionQueue?.queues;
+		const queueId = $currentSessionQueue?.id;
+		if ($currentSessionRole === 'admin' && queues && queueId) {
+			await sliceQueue(queues, $playingInfo?.track_id, queueId);
 		}
+
+		playingDurationMs.set(0);
+		const payload: TrackBroadcastPayload = {
+			isPlaying: $isPlayingStatus,
+			playingTrackId: $playingTrackId,
+			currentDurationMs: $playingDurationMs
+		};
+
+		channel.send({
+			type: 'broadcast',
+			event: 'playerForward',
+			payload
+		});
+	}
+
+	async function onBackwardTrack() {
+		playingDurationMs.set(0);
+		const payload: TrackBroadcastPayload = {
+			isPlaying: $isPlayingStatus,
+			playingTrackId: $playingTrackId,
+			currentDurationMs: $playingDurationMs
+		};
+
+		channel.send({
+			type: 'broadcast',
+			event: 'playerBackward',
+			payload
+		});
 	}
 
 	// TODO: handle error if spotify player cannot be connected!
@@ -91,15 +119,15 @@
 		channel.subscribe();
 
 		trackDurationTimer = setInterval(() => {
-			if($isPlayingStatus === false) return;
+			if ($isPlayingStatus === false) return;
 
 			playingDurationMs.update((prev) => prev + 1000);
-		}, 1000)
+		}, 1000);
 	});
 
 	onDestroy(() => {
 		SpotifyPlayer?.disconnect();
-		clearTimeout(trackDurationTimer)
+		clearTimeout(trackDurationTimer);
 	});
 </script>
 
@@ -112,7 +140,7 @@
 		<TrackPreview />
 		<div class="flex flex-col items-center">
 			{#if $currentSessionRole === 'admin'}
-				<ControlButtons {onBroadcastSignal} />
+				<ControlButtons {onBroadcastSignal} {onForwardTrack} {onBackwardTrack} />
 			{/if}
 
 			{#if $currentSession?.id}
@@ -132,4 +160,5 @@
 			>Connected to {SpotifyPlayer?._options?.name}</Tooltip
 		>
 	</div>
+	<div>{$spotifyPlayerDeviceId}</div>
 </div>
