@@ -13,11 +13,33 @@
 	import { sliceQueue } from '$lib/session/queue';
 	import { playTrack, pauseTrack, setActiveSpotifyPlayer } from '$lib/spotify/player';
 	import { spotifyAccessToken, spotifyPlayerId } from '$lib/spotify/spotify';
+	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
 
 	export let channel: RealtimeChannel;
-	export let SpotifyPlayer: Spotify.Player;
 
-	let hasSetActivePlayer = false;
+	let timer: NodeJS.Timer;
+
+	// Update track playing duration once ID changes
+	playingTrackId.subscribe(async (id) => {
+		clearTimeout(timer);
+
+		if(!id) return
+
+		await playSingleTrack()
+		timer = setTimeout(() => {
+			console.log($isPlayingStatus)
+			if($isPlayingStatus === true) {
+				playingDurationMs.update((prev) => prev + 1000);
+			}
+			console.log($playingDurationMs);
+		}, 1000);
+	});
+
+	isPlayingStatus.subscribe(async () => {
+		if ($isPlayingStatus === false) {
+			await pauseTrack($spotifyPlayerId, $spotifyAccessToken?.access_token);
+		}
+	})
 
 	// Play the topmost track and remove it from the database
 	async function playSingleTrack() {
@@ -34,6 +56,7 @@
 		playingInfo.set({
 			..._queue
 		});
+		playingTrackId.set(_queue.track_id);
 
 		// if ($currentSessionRole === 'admin' && $playingTrackId !== _queue.track_id) {
 		// 	await sliceQueue(
@@ -52,20 +75,10 @@
 
 	onMount(() => {
 		channel.on('broadcast', { event: 'playerStart' }, async ({ payload }) => {
-			if (payload?.isPlaying !== undefined) {
-				isPlayingStatus.set(payload.isPlaying);
-
-				if (payload.isPlaying) {
-					if (!hasSetActivePlayer) {
-						await setActiveSpotifyPlayer($spotifyPlayerDeviceId, $spotifyAccessToken?.access_token);
-						hasSetActivePlayer = true;
-					}
-
-					await playSingleTrack();
-				} else {
-					await pauseTrack($spotifyPlayerDeviceId, $spotifyAccessToken?.access_token);
-				}
-			}
+			const _payload = payload as TrackBroadcastPayload;
+			isPlayingStatus.set(_payload?.isPlaying)
+			playingTrackId.set(_payload?.playingTrackId)
+			playingDurationMs.set(_payload?.currentDurationMs)
 		});
 
 		channel.on('broadcast', { event: 'playerPlayed' }, ({ payload }) => {
