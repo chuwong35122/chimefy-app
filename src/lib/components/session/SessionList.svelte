@@ -26,7 +26,7 @@
 		{:else if $sessionSearchResult.results.length > 0}
 			<!-- Session Item -->
 
-			<Popover title="Waiting..." triggeredBy='#waiting-popover'>
+			<Popover title="Waiting..." triggeredBy="#waiting-popover">
 				<p class="text-sm">Waiting for a queue to be added...</p>
 			</Popover>
 
@@ -43,7 +43,6 @@
 						on:mouseup={() => handleSessionNavigate(session)}
 						class="h-20 flex flex-row items-center ml-4 w-full p-2 pl-4 rounded-xl hover:bg-dark-300/20 duration-150 my-2 relative hover:cursor-pointer overflow-hidden"
 					>
-
 						{#if session?.session_queue && session?.session_queue[0] && session?.session_queue[0]?.queues && session?.session_queue[0]?.queues[0]?.track_image_url}
 							<img
 								id={`track-img-${i}`}
@@ -52,7 +51,10 @@
 								class="w-16 h-16 mr-4 rounded-md"
 							/>
 						{:else}
-							<div id='waiting-popover' class="w-16 h-16 grid place-items-center bg-white/10 rounded-md">
+							<div
+								id="waiting-popover"
+								class="w-16 h-16 grid place-items-center bg-white/10 rounded-md"
+							>
 								<Icon icon="material-symbols:hourglass-empty-rounded" class="w-8 h-8" />
 							</div>
 						{/if}

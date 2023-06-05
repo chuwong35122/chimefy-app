@@ -66,34 +66,34 @@
 
 <Tooltip triggeredBy="[id=filter-refresh-btn]" placement="top">Reset Filters!</Tooltip>
 <Tooltip triggeredBy="[id=filter-search-btn]" placement="top">Search!</Tooltip>
-	<form class="w-full flex gap-2">
-		<Search
-			bind:value={input.sessionName}
-			size="md"
-			class="flex gap-2 items-center"
-			placeholder="Search Session Name"
-			defaultClass="w-full focus:border-primary-500 !rounded-full"
-		/>
-		<button id="filter-search-btn" on:click={query} class="hover:scale-110 duration-150">
-			<Icon icon="material-symbols:manage-search-rounded" class="w-8 h-8 text-white" />
-		</button>
+<form class="w-full flex gap-2">
+	<Search
+		bind:value={input.sessionName}
+		size="md"
+		class="flex gap-2 items-center"
+		placeholder="Search Session Name"
+		defaultClass="w-full focus:border-primary-500 !rounded-full"
+	/>
+	<button id="filter-search-btn" on:click={query} class="hover:scale-110 duration-150">
+		<Icon icon="material-symbols:manage-search-rounded" class="w-8 h-8 text-white" />
+	</button>
+	<button
+		id="filter-refresh-btn"
+		type="button"
+		on:click={resetFilter}
+		class="rounded-lg hover:scale-105 duration-150"
+	>
+		<Icon icon="material-symbols:refresh-rounded" class="w-8 h-8 text-white" />
+	</button>
+</form>
+<!-- Chips -->
+<div class="flex flex-row items-center my-4 w-full flex-wrap gap-2 justify-center">
+	{#each SESSION_MUSIC_TYPES as type}
 		<button
-			id="filter-refresh-btn"
-			type="button"
-			on:click={resetFilter}
-			class="rounded-lg hover:scale-105 duration-150"
+			on:click={() => handleSelectMusicType(type)}
+			class={`px-2 py-1 rounded-full ${
+				type === input.musicType ? 'bg-white/50' : 'bg-white/20'
+			} duration-200`}>{type}</button
 		>
-			<Icon icon="material-symbols:refresh-rounded" class="w-8 h-8 text-white" />
-		</button>
-	</form>
-	<!-- Chips -->
-	<div class="flex flex-row items-center my-4 w-full flex-wrap gap-2 justify-center">
-		{#each SESSION_MUSIC_TYPES as type}
-			<button
-				on:click={() => handleSelectMusicType(type)}
-				class={`px-2 py-1 rounded-full ${
-					type === input.musicType ? 'bg-white/50' : 'bg-white/20'
-				} duration-200`}>{type}</button
-			>
-		{/each}
+	{/each}
 </div>
