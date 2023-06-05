@@ -5,6 +5,7 @@
 	import { supabase } from '$lib/supabase/supabase';
 	import { logout, userStore } from '$lib/supabase/user';
 	import NavLink from './NavLink.svelte';
+	import { onMount } from 'svelte';
 
 	let isLoading = false;
 
@@ -27,6 +28,11 @@
 		await logout();
 		isLoading = false;
 	}
+
+	
+	onMount(() => {
+		
+	});
 </script>
 
 <div class="w-full px-4 py-4 flex flex-row items-center justify-between">

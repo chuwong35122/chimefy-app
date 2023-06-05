@@ -12,7 +12,7 @@
 		spotifyUserProfile,
 		spotifyAccessToken,
 		refreshSpotifyToken,
-		hasRefreshTokenRefreshed
+		hasRefreshTokenRefreshed,
 	} from '$lib/spotify/spotify';
 	import type { PrivateUser } from 'spotify-types';
 
