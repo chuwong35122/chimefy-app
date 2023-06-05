@@ -10,4 +10,5 @@ export async function sliceQueue(
 	const filtered = _queues.filter((q) => q.track_id !== trackTargetId);
 
 	await supabase.from('session_queue').update({ queues: filtered }).eq('id', queueId);
+	return filtered;
 }
