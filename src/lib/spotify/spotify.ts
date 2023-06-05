@@ -1,15 +1,18 @@
-import type { PrivateUser } from 'spotify-types';
+import type { PrivateUser, AccessToken } from 'spotify-types';
 import { writable } from 'svelte/store';
 
 export const spotifyAccessToken = writable<{
 	access_token: string;
 	refresh_token: string;
+	since: Date | null;
 }>({
 	access_token: '',
-	refresh_token: ''
+	refresh_token: '',
+	since: null
 });
 export const spotifyPlayerId = writable('');
 export const spotifyUserProfile = writable<PrivateUser | null>(null);
+export const hasRefreshTokenRefreshed = writable(false);
 
 export const SPOTIFY_AUTH_SCOPES = [
 	'user-read-playback-state',
@@ -40,6 +43,18 @@ export function setTokenStore(
 ) {
 	spotifyAccessToken.set({
 		access_token: access_token ?? '',
-		refresh_token: refresh_token ?? ''
+		refresh_token: refresh_token ?? '',
+		since: new Date()
 	});
+}
+
+export async function refreshSpotifyToken(refresh_token: string) {
+	const res = await fetch('/api/spotify/auth/refresh', {
+		method: 'POST',
+		body: JSON.stringify({
+			refresh_token
+		})
+	});
+
+	return (await res.json()) as AccessToken;
 }
