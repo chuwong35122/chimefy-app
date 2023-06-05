@@ -17,9 +17,9 @@
 			}
 		});
 
-		setTimeout(() => {
-			isLoading = false;
-		}, 1500);
+		if(data) {
+			isLoading = false
+		}
 	}
 
 	async function handleLogout() {
