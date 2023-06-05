@@ -4,7 +4,6 @@
 		currentSessionQueue,
 		currentSession,
 		playingInfo,
-		spotifyPlayerDeviceId,
 		isPlayingStatus,
 		playingDurationMs,
 		playingTrackId
@@ -130,11 +129,12 @@
 				},
 				volume: 0.5
 			});
+
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
-				spotifyPlayerDeviceId.set(device_id);
 				console.log('Spotify player is ready!! 🎵');
 				spotifyPlayerId.set(device_id);
 			});
+
 			SpotifyPlayer.on('initialization_error', (err) => {
 				console.log(err.message);
 			});
@@ -151,7 +151,7 @@
 			playingDurationMs.update((prev) => prev + 1000);
 		}, 1000);
 	});
-
+	
 	onDestroy(() => {
 		SpotifyPlayer?.disconnect();
 		clearTimeout(trackDurationTimer);
@@ -171,7 +171,7 @@
 			{/if}
 
 			{#if $currentSession?.id}
-				<MemberPlayerListener {channel} />
+				<MemberPlayerListener {channel} {onBroadcastSignal} />
 			{/if}
 		</div>
 		<div class="text-xs">{millisecondToMinuteSeconds($playingDurationMs)}</div>
@@ -187,5 +187,4 @@
 			>Connected to {SpotifyPlayer?._options?.name}</Tooltip
 		>
 	</div>
-	<div>{$spotifyPlayerDeviceId}</div>
 </div>
