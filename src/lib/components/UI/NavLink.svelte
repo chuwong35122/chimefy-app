@@ -23,7 +23,12 @@
 		</p>
 	</a>
 {:else}
-	<button disabled class={`flex flex-row items-center p-2 px-3 text-dark-400 ${!isActive ? 'cursor-not-allowed' : null}`}>
+	<button
+		disabled
+		class={`flex flex-row items-center p-2 px-3 text-dark-400 ${
+			!isActive ? 'cursor-not-allowed' : null
+		}`}
+	>
 		<Icon {icon} width={24} height={24} class="mb-1" />
 		<p class="text-lg font-semibold h-full ml-2 hidden md:block">
 			{routeName}

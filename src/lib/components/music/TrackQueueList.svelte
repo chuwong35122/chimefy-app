@@ -35,7 +35,9 @@
 <div class="w-full grid place-items-center overflow-x-hidden px-2">
 	{#each queues as queue, i}
 		<div
-			class={`mb-1 flex flex-row items-center w-full relative cursor-pointer h-20 hover:bg-black duration-200 rounded-md ${queue?.track_uri === $playingInfo?.track_uri ? 'bg-white/10' : null}`}
+			class={`mb-1 flex flex-row items-center w-full relative cursor-pointer h-20 hover:bg-black duration-200 rounded-md ${
+				queue?.track_uri === $playingInfo?.track_uri ? 'bg-white/10' : null
+			}`}
 		>
 			<p class="mx-2">{i + 1}</p>
 			<div class="rounded-2xl p-2 overflow-hidden font-normal flex flex-row items-center w-full">
@@ -57,15 +59,15 @@
 						{millisecondToMinuteSeconds(queue.duration_ms)}
 					</p>
 				</div>
-			{#if queue?.track_uri !== $playingInfo?.track_uri}
-			<button
-			on:click={() => removeQueue(i)}
-			id="delete-btn"
-			class="absolute z-20 p-2 top-4 right-0 active:scale-125 duration-150"
-		>
-			<Icon icon="mdi:trash" class="w-6 h-6 text-dark-200 hover:scale-110 duration-200" />
-		</button>
-			{/if}
+				{#if queue?.track_uri !== $playingInfo?.track_uri}
+					<button
+						on:click={() => removeQueue(i)}
+						id="delete-btn"
+						class="absolute z-20 p-2 top-4 right-0 active:scale-125 duration-150"
+					>
+						<Icon icon="mdi:trash" class="w-6 h-6 text-dark-200 hover:scale-110 duration-200" />
+					</button>
+				{/if}
 			</div>
 		</div>
 	{/each}

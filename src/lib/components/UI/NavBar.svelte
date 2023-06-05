@@ -17,8 +17,8 @@
 			}
 		});
 
-		if(data) {
-			isLoading = false
+		if (data) {
+			isLoading = false;
 		}
 	}
 

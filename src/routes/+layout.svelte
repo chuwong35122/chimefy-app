@@ -42,7 +42,7 @@
 		const now = new Date();
 
 		if (Math.abs(since.getTime() - now.getTime()) < 10_0000 && refresh_token) {
-			console.log('Token refreshed!')
+			console.log('Token refreshed!');
 			await handleRefreshSession();
 		}
 	});
@@ -89,7 +89,7 @@
 
 		const token = await refreshSpotifyToken($spotifyAccessToken.refresh_token);
 		setTokenStore(token.access_token, '');
-		hasRefreshTokenRefreshed.set(true)
+		hasRefreshTokenRefreshed.set(true);
 	}
 </script>
 

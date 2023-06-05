@@ -7,11 +7,11 @@
 	export let onBackwardTrack: () => void;
 
 	function togglePlay() {
-		onBroadcastSignal(true)
+		onBroadcastSignal(true);
 	}
 
 	function togglePause() {
-		onBroadcastSignal(false)
+		onBroadcastSignal(false);
 	}
 </script>
 
