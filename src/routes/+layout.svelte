@@ -41,7 +41,7 @@
 
 		const now = new Date();
 
-		if (Math.abs(since.getTime() - now.getTime()) < 10_0000 && refresh_token) {
+		if (Math.abs(since.getTime() - now.getTime()) >= (3590 * 1000) && refresh_token) {
 			console.log('Token refreshed!');
 			await handleRefreshSession();
 		}
