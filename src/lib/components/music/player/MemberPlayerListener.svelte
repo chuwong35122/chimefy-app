@@ -10,12 +10,14 @@
 	} from '$lib/session/session';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { sliceQueue } from '$lib/session/queue';
-	import { playTrack, pauseTrack, setActiveSpotifyPlayer } from '$lib/spotify/player';
+	import { playTrack, pauseTrack } from '$lib/spotify/player';
 	import { spotifyAccessToken, spotifyPlayerId } from '$lib/spotify/spotify';
 	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
 	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
+	import { toastValue } from '$lib/notification/toast';
 
 	export let channel: RealtimeChannel;
+	export let onBroadcastSignal: (playing: boolean) => void;
 
 	let timer: NodeJS.Timer;
 
@@ -24,22 +26,32 @@
 		const queues = $currentSessionQueue?.queues;
 
 		if ($currentSessionRole === 'admin' && queueId && queues) {
-			await sliceQueue(queues, $playingInfo?.track_id, queueId);
+			const sliced = await sliceQueue(queues, $playingInfo?.track_id, queueId);
+
+			if (sliced[0]) {
+				await playSingleTrack(sliced[0]);
+			}
 		}
 	}
 
 	// Update track playing duration once ID changes
 	playingTrackId.subscribe(async (id) => {
 		clearTimeout(timer);
-
-		// if (status === false || !$currentSessionQueue?.queues || !$currentSessionQueue?.queues?.length)
-
 		if (!id) return;
 
-		// await playSingleTrack();
-		timer = setTimeout(async () => {
-			if ($playingDurationMs + 3000 >= $playingInfo?.duration_ms) {
+		timer = setInterval(async () => {
+			const queues = $currentSessionQueue?.queues;
+			if (queues && queues.length === 0) {
+				onBroadcastSignal(false);
+				toastValue.set({message: 'No queue left', type: 'info'})
+				return;
+			}
+
+			if ($playingDurationMs >= $playingInfo?.duration_ms) {
+				playingDurationMs.set(0)
+				// check if the queue ended
 				await playNextTrack();
+				toastValue.set({message: 'Going next track', type: 'info'})
 			}
 		}, 1000);
 	});
@@ -52,10 +64,11 @@
 
 	// Play the topmost track and remove it from the database
 	async function playSingleTrack(queue: MusicQueue) {
+		if(!queue) return;
+
 		await playTrack(
 			queue,
 			$spotifyPlayerId,
-			// 180_000,
 			$playingDurationMs,
 			$spotifyAccessToken?.access_token
 		);
@@ -80,16 +93,12 @@
 			playingDurationMs.set(_payload?.currentDurationMs);
 		});
 
-		channel.on('broadcast', { event: 'playerPlayed' }, ({ payload }) => {
-			console.log(payload);
-		});
-
 		channel.on('broadcast', { event: 'playerBackward' }, async ({ payload }) => {
 			const _payload = payload as TrackBroadcastPayload;
 
 			if (!$currentSessionQueue?.queues || $currentSessionQueue?.queues?.length < 2) return;
 
-			await playSingleTrack($currentSessionQueue?.queues[1]);
+			await playSingleTrack($currentSessionQueue?.queues[0]);
 			isPlayingStatus.set(_payload?.isPlaying);
 			playingTrackId.set(_payload?.playingTrackId);
 			playingDurationMs.set(0);
