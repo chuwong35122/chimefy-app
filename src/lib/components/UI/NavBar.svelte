@@ -73,7 +73,7 @@
 							/>
 						</div>
 						<div class="bg-white/20 rounded-full flex flex-row items-center p-1 absolute left-0 h-12">
-							<p class="font-semibold ml-16">{$userStore?.user_metadata?.name}</p>
+							<p class="font-semibold ml-[50px]">{$userStore?.user_metadata?.name}</p>
 							<Icon
 								icon="ion:chevron-down-outline"
 								class="w-6 h-6 ml-2 text-dark-200 group-hover/profile:text-white group-hover/profile:scale-105 duration-150"
