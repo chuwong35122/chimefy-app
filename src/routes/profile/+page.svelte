@@ -9,7 +9,9 @@
 	async function handleLogout() {
 		loggedout = true;
 		await logout();
-		loggedout = false;
+    setTimeout(() => {
+      loggedout = false;
+    }, 1500)
 	}
 </script>
 
@@ -58,7 +60,7 @@
     on:click={handleLogout}
     class="text-lg bg-white rounded-full p-2 w-56 text-black flex flex-row items-center justify-center hover:scale-105 duration-150 mt-8"
   >
-    <Icon icon="mdi:logout" class="w-6 h-6 mr-2" />
+    <Icon icon="ion:exit" class="w-6 h-6 mr-2" />
     <p>Logout</p>
   </button>
 
