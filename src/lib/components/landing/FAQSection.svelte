@@ -5,7 +5,7 @@
 
 <div class="w-full mt-20">
 	<div class="w-full grid place-items-center mb-2">
-		<p class="text-3xl font-bold">FAQ</p>
+		<p class="text-3xl font-bold">FAQs</p>
 	</div>
 	<Accordion defaultClass="w-[440px] md:w-[800px]">
 		<!-- 1 -->
