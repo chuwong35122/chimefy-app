@@ -43,10 +43,10 @@
   </div>
 	<div class="relative">
 		<div bind:this={front1} class="front1-style">
-			<Icon icon="fa-brands:spotify" class="w-[160px] h-[160px] text-primary" />
+			<Icon icon="fa-brands:spotify" class="w-[90px] h-[90px] md:w-[160px] md:h-[160px] text-primary" />
 		</div>
 		<div bind:this={back1} class="back1-style">
-			<Icon icon="fa-brands:spotify" class="w-[160px] h-[160px] text-black" />
+			<Icon icon="fa-brands:spotify" class="w-[90px] h-[90px] md:w-[160px] md:h-[160px] text-black" />
 		</div>
 	</div>
 </div>
@@ -61,10 +61,10 @@
   </div>
 	<div class="relative">
     <div bind:this={front2} class="front2-style">
-      <Icon icon="ion:enter" class="w-[160px] h-[160px] text-primary" />
+      <Icon icon="ion:enter" class="w-[90px] h-[90px] md:w-[160px] md:h-[160px] text-primary" />
     </div> 
     <div bind:this={back2} class="back2-style">
-      <Icon icon="ion:enter" class="w-[160px] h-[160px] text-black" />
+      <Icon icon="ion:enter" class="w-[90px] h-[90px] md:w-[160px] md:h-[160px] text-black" />
     </div> 
   </div>
 </div>
@@ -79,10 +79,10 @@
   </div>
 	<div class="relative">
 		<div bind:this={front3} class="front1-style">
-			<Icon icon="ant-design:control-filled" class="w-[160px] h-[160px] text-primary" />
+			<Icon icon="ant-design:control-filled" class="w-[90px] h-[90px] md:w-[160px] md:h-[160px] text-primary" />
 		</div>
 		<div bind:this={back3} class="back1-style">
-			<Icon icon="ant-design:control-filled" class="w-[160px] h-[160px] text-black" />
+			<Icon icon="ant-design:control-filled" class="w-[90px] h-[90px] md:w-[160px] md:h-[160px] text-black" />
 		</div>
 	</div>
 </div>
