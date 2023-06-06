@@ -31,7 +31,7 @@
 
 		<div class="my-2" />
 		<p class="text-sm">Hello there,</p>
-		<p class="text-3xl font-bold">{$userStore?.user_metadata?.name}</p>
+		<p class="text-3xl font-bold">{$userStore?.user_metadata?.name ?? ''}</p>
 		<p class="text-dark-200">What would you like to view?</p>
 
 		<div class="my-4" />
@@ -43,7 +43,7 @@
 				<Icon icon="mdi:email" class="w-6 h-6 mr-2" />
 				<p class="font-semibold text-lg">Email</p>
 			</div>
-			<p>{$userStore?.email}</p>
+			<p>{$userStore?.email ?? ''}</p>
 		</div>
 
 		<div
