@@ -6,6 +6,7 @@
 	import { logout, userStore } from '$lib/supabase/user';
 	import NavLink from './NavLink.svelte';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	let isLoading = false;
 
@@ -29,10 +30,7 @@
 		isLoading = false;
 	}
 
-	
-	onMount(() => {
-		
-	});
+	onMount(() => {});
 </script>
 
 <div class="w-full px-4 py-4 flex flex-row items-center justify-between">
@@ -60,29 +58,30 @@
 
 	<div>
 		{#if $userStore?.id}
-			<div class="w-12 h-12">
+			<div class="w-52 relative z-50">
 				{#if $userStore?.user_metadata?.avatar_url}
-					<div
-						class="relative cursor-pointer bg-dark-300/60 w-12 h-12 rounded-full p-1 hover:bg-dark-300/30 duration-200"
-					>
-						<img
-							id="profile-img"
-							src={$userStore?.user_metadata?.avatar_url}
-							width="300"
-							height="300"
-							alt="Spotify Profile"
-							class="rounded-full"
-							draggable="false"
-						/>
-						<div class="absolute bottom-0 right-2" />
+					<div class="flex flex-row items-center group/profile cursor-pointer">
+						<div
+							class="relative z-10 w-12 rounded-full p-1 group-hover/profile:text-white bg-white/20 group-hover/profile:scale-105 group-hover/profile:bg-white/30 duration-150"
+						>
+							<img
+								id="profile-img"
+								src={$userStore?.user_metadata?.avatar_url}
+								alt="Spotify Profile"
+								draggable="false"
+								class="rounded-full w-[40px] h-[40px]"
+							/>
+						</div>
+						<div class="bg-white/20 rounded-full flex flex-row items-center p-1 absolute left-0 h-12">
+							<p class="font-semibold ml-16">{$userStore?.user_metadata?.name}</p>
+							<Icon
+								icon="ion:chevron-down-outline"
+								class="w-6 h-6 ml-2 text-dark-200 group-hover/profile:text-white group-hover/profile:scale-105 duration-150"
+							/>
+						</div>
 					</div>
 					<Dropdown>
-						<div slot="header" class="px-4 py-2">
-							<span class="block text-sm text-gray-900 dark:text-white">
-								{$userStore?.user_metadata?.name}
-							</span>
-						</div>
-						<DropdownItem>Profile</DropdownItem>
+						<DropdownItem on:click={() => goto('/profile')} class="hover:mouse-pointer">Profile</DropdownItem>
 						<DropdownItem>Settings</DropdownItem>
 						<DropdownItem on:click={handleLogout}>Logout</DropdownItem>
 					</Dropdown>
