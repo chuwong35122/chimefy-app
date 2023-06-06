@@ -12,7 +12,7 @@
 		spotifyUserProfile,
 		spotifyAccessToken,
 		refreshSpotifyToken,
-		hasRefreshTokenRefreshed,
+		hasRefreshTokenRefreshed
 	} from '$lib/spotify/spotify';
 	import type { PrivateUser } from 'spotify-types';
 
@@ -41,7 +41,7 @@
 
 		const now = new Date();
 
-		if (Math.abs(since.getTime() - now.getTime()) >= (3590 * 1000) && refresh_token) {
+		if (Math.abs(since.getTime() - now.getTime()) >= 3590 * 1000 && refresh_token) {
 			console.log('Token refreshed!');
 			await handleRefreshSession();
 		}

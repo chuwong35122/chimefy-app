@@ -43,15 +43,15 @@
 			const queues = $currentSessionQueue?.queues;
 			if (queues && queues.length === 0) {
 				onBroadcastSignal(false);
-				toastValue.set({message: 'No queue left', type: 'info'})
+				toastValue.set({ message: 'No queue left', type: 'info' });
 				return;
 			}
 
 			if ($playingDurationMs >= $playingInfo?.duration_ms) {
-				playingDurationMs.set(0)
+				playingDurationMs.set(0);
 				// check if the queue ended
 				await playNextTrack();
-				toastValue.set({message: 'Going next track', type: 'info'})
+				toastValue.set({ message: 'Going next track', type: 'info' });
 			}
 		}, 1000);
 	});
@@ -64,14 +64,9 @@
 
 	// Play the topmost track and remove it from the database
 	async function playSingleTrack(queue: MusicQueue) {
-		if(!queue) return;
+		if (!queue) return;
 
-		await playTrack(
-			queue,
-			$spotifyPlayerId,
-			$playingDurationMs,
-			$spotifyAccessToken?.access_token
-		);
+		await playTrack(queue, $spotifyPlayerId, $playingDurationMs, $spotifyAccessToken?.access_token);
 		playingInfo.set({
 			...queue
 		});

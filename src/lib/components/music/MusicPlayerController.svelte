@@ -151,7 +151,7 @@
 			playingDurationMs.update((prev) => prev + 1000);
 		}, 1000);
 	});
-	
+
 	onDestroy(() => {
 		SpotifyPlayer?.disconnect();
 		clearTimeout(trackDurationTimer);

@@ -72,7 +72,9 @@
 								class="rounded-full w-[40px] h-[40px]"
 							/>
 						</div>
-						<div class="bg-white/20 rounded-full flex flex-row items-center p-1 absolute left-0 h-12">
+						<div
+							class="bg-white/20 rounded-full flex flex-row items-center p-1 absolute left-0 h-12"
+						>
 							<p class="font-semibold ml-[50px]">{$userStore?.user_metadata?.name}</p>
 							<Icon
 								icon="ion:chevron-down-outline"
@@ -82,31 +84,29 @@
 					</div>
 					<Dropdown>
 						<DropdownItem on:click={() => goto('/profile')} class="hover:mouse-pointer">
-						<div class="flex flex-row items-center">
-							<Icon icon='mdi:account-plus' class='h-4 w-4 mr-2' />
-							<p class="text-sm font-medium">
-								Profile
-							</p>
-						</div>
+							<div class="flex flex-row items-center">
+								<Icon icon="mdi:account-plus" class="h-4 w-4 mr-2" />
+								<p class="text-sm font-medium">Profile</p>
+							</div>
 						</DropdownItem>
 						<DropdownItem class="hover:mouse-pointer">
 							<div class="flex flex-row items-center">
-								<Icon icon='mdi:cog' class='h-4 w-4 mr-2' />
-								<p class="text-sm font-medium">
-									Setting
-								</p>
-							</div>
-							</DropdownItem>
-						<DropdownItem defaultClass='bg-primary-200 hover:bg-primary-400 duration-150 py-2 px-4 text-black'>
-							<div class="flex flex-row items-center">
-								<Icon icon='mdi:gift' class='h-4 w-4 mr-2' />
-								<p class='text-sm font-medium'>Support Chimefy</p>
+								<Icon icon="mdi:cog" class="h-4 w-4 mr-2" />
+								<p class="text-sm font-medium">Setting</p>
 							</div>
 						</DropdownItem>
-						<DropdownItem on:click={handleLogout} defaultClass='py-2 px-4'>
+						<DropdownItem
+							defaultClass="bg-primary-200 hover:bg-primary-400 duration-150 py-2 px-4 text-black"
+						>
 							<div class="flex flex-row items-center">
-								<Icon icon='ion:exit' class='h-4 w-4 mr-2' />
-								<p class='text-sm font-medium'>Logout</p>
+								<Icon icon="mdi:gift" class="h-4 w-4 mr-2" />
+								<p class="text-sm font-medium">Support Chimefy</p>
+							</div>
+						</DropdownItem>
+						<DropdownItem on:click={handleLogout} defaultClass="py-2 px-4">
+							<div class="flex flex-row items-center">
+								<Icon icon="ion:exit" class="h-4 w-4 mr-2" />
+								<p class="text-sm font-medium">Logout</p>
 							</div>
 						</DropdownItem>
 					</Dropdown>
