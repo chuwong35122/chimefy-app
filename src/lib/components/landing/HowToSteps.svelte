@@ -69,7 +69,7 @@
   </div>
 </div>
 <!-- 3 -->
-<div class="w-full p-8 flex flex-col lg:flex-row justify-around bg-blue-600/70 h-[160px]">
+<div class="w-full p-8 flex flex-col lg:flex-row justify-around bg-blue-600/70 h-[200px]">
   <div class='relative z-50'>
     <p class="text-xl font-bold">Step 3.</p>
     <p class="text-4xl lg:text-5xl font-extrabold">Control them yourselves</p>
