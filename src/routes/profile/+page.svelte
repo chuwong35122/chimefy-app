@@ -9,9 +9,9 @@
 	async function handleLogout() {
 		loggedout = true;
 		await logout();
-    setTimeout(() => {
-      loggedout = false;
-    }, 1500)
+		setTimeout(() => {
+			loggedout = false;
+		}, 1500);
 	}
 </script>
 
@@ -56,24 +56,22 @@
 			<p>{createdSinsce}</p>
 		</div>
 
-    <button
-    on:click={handleLogout}
-    class="text-lg bg-white rounded-full p-2 w-56 text-black flex flex-row items-center justify-center hover:scale-105 duration-150 mt-8"
-  >
-    <Icon icon="ion:exit" class="w-6 h-6 mr-2" />
-    <p>Logout</p>
-  </button>
+		<button
+			on:click={handleLogout}
+			class="text-lg bg-white rounded-full p-2 w-56 text-black flex flex-row items-center justify-center hover:scale-105 duration-150 mt-8"
+		>
+			<Icon icon="ion:exit" class="w-6 h-6 mr-2" />
+			<p>Logout</p>
+		</button>
 
-    <button
-    on:click={() => console.log('Support Chimefy')}
-    class="text-lg text-black bg-primary-500 rounded-full p-2 w-56 flex flex-row items-center justify-center hover:scale-105 duration-150 mt-4 shadow-md shadow-primary-600/50 ring-2 ring-white"
-  >
-    <Icon icon="mdi:gift" class="w-6 h-6 mr-2" />
-    <p>Support Chimefy!</p>
-  </button>
-
-
+		<button
+			on:click={() => console.log('Support Chimefy')}
+			class="text-lg text-black bg-primary-500 rounded-full p-2 w-56 flex flex-row items-center justify-center hover:scale-105 duration-150 mt-4 shadow-md shadow-primary-600/50 ring-2 ring-white"
+		>
+			<Icon icon="mdi:gift" class="w-6 h-6 mr-2" />
+			<p>Support Chimefy!</p>
+		</button>
 	</div>
 {:else}
-<div />
+	<div />
 {/if}
