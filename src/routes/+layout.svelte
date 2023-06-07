@@ -2,6 +2,7 @@
 	import '../styles/global.css';
 	import NavBar from '$lib/components/UI/NavBar.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
+	import moment from 'moment'
 	import { onDestroy, onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
 	import { Modal } from 'flowbite-svelte';
@@ -12,7 +13,7 @@
 		spotifyUserProfile,
 		spotifyAccessToken,
 		refreshSpotifyToken,
-		hasRefreshTokenRefreshed
+		hasRefreshedToken,
 	} from '$lib/spotify/spotify';
 	import type { PrivateUser } from 'spotify-types';
 
@@ -22,6 +23,7 @@
 	let timer: NodeJS.Timer;
 
 	let isSpotifyPremiumModalOpen = false;
+	let mustRelogin = false;
 
 	spotifyUserProfile.subscribe((user) => {
 		if (user && user?.product !== 'premium' && $spotifyAccessToken?.access_token) {
@@ -29,9 +31,9 @@
 		}
 	});
 
-	function handleLogout() {
+	async function handleLogout() {
 		isSpotifyPremiumModalOpen = false;
-		logout();
+		await logout();
 	}
 
 	// Refresh token once the token is about to expire (10 seconds left).
@@ -39,11 +41,18 @@
 		clearInterval(timer);
 		if (!access_token || !since) return;
 
-		const now = new Date();
+		const now = moment()
+		const sinceMs = moment(since).valueOf()
 
-		if (Math.abs(since.getTime() - now.getTime()) >= 3590 * 1000 && refresh_token) {
-			console.log('Token refreshed!');
-			await handleRefreshSession();
+		const remainingTokenTime =  3_600_000 - (sinceMs - now.valueOf())
+		
+		// Ask the user to re-login
+		if($hasRefreshedToken && remainingTokenTime <= 0) {
+
+			return
+		}else if($hasRefreshedToken && remainingTokenTime <= 0) {
+			console.log('Token refreshed!')
+			await handleRefreshSession()
 		}
 	});
 
@@ -89,10 +98,13 @@
 
 		const token = await refreshSpotifyToken($spotifyAccessToken.refresh_token);
 		setTokenStore(token.access_token, '');
-		hasRefreshTokenRefreshed.set(true);
+		hasRefreshedToken.set(true);
 	}
 </script>
 
+<Modal open={mustRelogin} permanent size='lg' class='modal-glass'>
+
+</Modal>
 <Modal open={isSpotifyPremiumModalOpen} permanent size="lg" class="modal-glass">
 	<SpotifyPremiumInfoModal on:logout={handleLogout} />
 </Modal>
