@@ -12,7 +12,7 @@ export const spotifyAccessToken = writable<{
 });
 export const spotifyPlayerId = writable('');
 export const spotifyUserProfile = writable<PrivateUser | null>(null);
-export const hasRefreshTokenRefreshed = writable(false);
+export const hasRefreshedToken = writable(false);
 
 export const SPOTIFY_AUTH_SCOPES = [
 	'user-read-playback-state',
