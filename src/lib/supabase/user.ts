@@ -9,6 +9,7 @@ import { SPOTIFY_AUTH_SCOPES } from '$lib/spotify/spotify';
 export const userStore = writable<User | null>(null);
 
 export async function reloginAfterTokenRefreshed(redirectTo: URL) {
+	console.log('Reloggin');
 	const { data } = await supabase.auth.signInWithOAuth({
 		provider: 'spotify',
 		options: {
