@@ -31,7 +31,7 @@
 				<img
 					src="/images/landing/friends-listening.png"
 					alt="Friends listening to music"
-					class="w-[550px] h-[550px] md:w-[720px] md:h-[720px] lg:w-[800px] lg:h-[800px] relative z-50"
+					class="w-[550px] h-[550px] md:w-[720px] md:h-[720px] lg:w-[800px] lg:h-[800px] relative z-20"
 				/>
 				<div
 					class="absolute z-10 right-0 top-[240px] bg-white/40 transform -skew-y-[20deg] skew-x-[10deg] rounded-lg w-[500px] h-[440px]  lg:w-[600px] lg:h-[500px]"
