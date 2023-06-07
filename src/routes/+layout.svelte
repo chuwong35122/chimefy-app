@@ -94,7 +94,6 @@
 
 	// Note: It seems like Spotify only allow refresh token to be used once.
 	// That means that if the user already refreshed the token, the user must login again.
-	// TODO: create a popup modal to inform about their session is about to expire.
 	async function handleRefreshSession() {
 		if (!$spotifyAccessToken.refresh_token) return;
 
