@@ -26,16 +26,20 @@
 		{:else if $sessionSearchResult.results.length > 0}
 			<!-- Session Item -->
 
-			<Popover title="Waiting..." triggeredBy="#waiting-popover">
-				<p class="text-sm">Waiting for a queue to be added...</p>
-			</Popover>
-
 			{#each $sessionSearchResult.results as session, i}
 				<div class="flex items-center">
-					<Popover title="Now Playing..." triggeredBy={`#track-img-${i}`}>
-						<p class="font-semibold text-sm">{session?.session_queue[0]?.queues[0]?.track_name}</p>
-						<p class="text-xs">{session?.session_queue[0]?.queues[0]?.artist}</p>
-					</Popover>
+					{#if session?.session_queue[0]?.queues?.length > 0}
+						<Popover title="Now Playing..." triggeredBy={`#track-img-${i}`}>
+							<p class="font-semibold text-sm">
+								{session?.session_queue[0]?.queues[0]?.track_name}
+							</p>
+							<p class="text-xs">{session?.session_queue[0]?.queues[0]?.artist}</p>
+						</Popover>
+					{:else}
+						<Popover title="Waiting..." triggeredBy="#waiting-popover">
+							<p class="text-sm">Waiting for a queue to be added...</p>
+						</Popover>
+					{/if}
 
 					<p>{i + 1}</p>
 
