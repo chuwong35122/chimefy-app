@@ -21,6 +21,7 @@
 			}
 		});
 
+		console.log(data)
 		if (data) {
 			isLoading = false;
 		}

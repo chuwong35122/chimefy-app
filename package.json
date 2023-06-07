@@ -50,6 +50,8 @@
 		"moment": "^2.29.4",
 		"querystring": "^0.2.1",
 		"sha1": "^1.1.1",
-		"yup": "^1.0.0"
+		"sveltekit-superforms": "^1.0.0-rc.3",
+		"yup": "^1.0.0",
+		"zod": "^3.21.4"
 	}
 }
