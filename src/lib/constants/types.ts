@@ -8,6 +8,8 @@ import RockImg from '$lib/assets/musicType/rock.svg';
 import SoulImg from '$lib/assets/musicType/soul.svg';
 import WorkingImg from '$lib/assets/musicType/working.svg';
 import PopImg from '$lib/assets/musicType/pop.svg';
+import FunkImg from '$lib/assets/musicType/funk.svg';
+import IndieImg from '$lib/assets/musicType/indie.svg';
 
 export const SESSION_MUSIC_TYPES = [
 	{
@@ -43,11 +45,19 @@ export const SESSION_MUSIC_TYPES = [
 		img: PopImg
 	},
 	{
-		name: 'Working',
+		name: 'Focus',
 		img: WorkingImg
 	},
 	{
 		name: 'Soul',
 		img: SoulImg
+	},
+	{
+		name: 'Funk',
+		img: FunkImg
+	},
+	{
+		name: 'Indie',
+		img: IndieImg
 	}
 ].sort((a, b) => a.name.localeCompare(b.name));
