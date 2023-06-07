@@ -7,15 +7,18 @@
 	import { invalidate } from '$app/navigation';
 	import { Modal } from 'flowbite-svelte';
 	import SpotifyPremiumInfoModal from '$lib/components/modals/SpotifyPremiumInfoModal.svelte';
-	import { logout, userStore } from '$lib/supabase/user';
+	import { logout, reloginAfterTokenRefreshed, userStore } from '$lib/supabase/user';
 	import {
 		setTokenStore,
 		spotifyUserProfile,
 		spotifyAccessToken,
 		refreshSpotifyToken,
 		hasRefreshedToken,
+		SPOTIFY_AUTH_SCOPES,
 	} from '$lib/spotify/spotify';
+	import UserMustReloginModal from '$lib/components/modals/UserMustReloginModal.svelte';
 	import type { PrivateUser } from 'spotify-types';
+	import {page} from '$app/stores'
 
 	export let data;
 	$: ({ supabase, session } = data);
@@ -23,7 +26,6 @@
 	let timer: NodeJS.Timer;
 
 	let isSpotifyPremiumModalOpen = false;
-	let mustRelogin = false;
 
 	spotifyUserProfile.subscribe((user) => {
 		if (user && user?.product !== 'premium' && $spotifyAccessToken?.access_token) {
@@ -48,7 +50,7 @@
 		
 		// Ask the user to re-login
 		if($hasRefreshedToken && remainingTokenTime <= 0) {
-
+			await reloginAfterTokenRefreshed($page?.url)
 			return
 		}else if($hasRefreshedToken && remainingTokenTime <= 0) {
 			console.log('Token refreshed!')
@@ -102,9 +104,6 @@
 	}
 </script>
 
-<Modal open={mustRelogin} permanent size='lg' class='modal-glass'>
-
-</Modal>
 <Modal open={isSpotifyPremiumModalOpen} permanent size="lg" class="modal-glass">
 	<SpotifyPremiumInfoModal on:logout={handleLogout} />
 </Modal>
