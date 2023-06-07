@@ -13,7 +13,7 @@ export const sessionSearchResult = writable<SessionSearchResult>({
 });
 
 export async function listSessions(): Promise<MusicSessionInfo[]> {
-	const { data } = await supabase
+	const { data, error } = await supabase
 		.from('session')
 		.select(
 			`
@@ -35,9 +35,8 @@ export async function listSessions(): Promise<MusicSessionInfo[]> {
 	return ((data as any) ?? []) as MusicSessionInfo[];
 }
 
-// TODO: must have current playing track & multiple listeners
 export async function searchSessionList(name: string, type: string): Promise<MusicSessionInfo[]> {
-	let query = supabase.from('session').select(
+	const query = supabase.from('session').select(
 		`
 			id, 
 			uuid, 
@@ -46,20 +45,22 @@ export async function searchSessionList(name: string, type: string): Promise<Mus
 			name,
 			is_private,
 			type,
-			session_queue( id, updated_since, queues ), 
+			session_queue( id, updated_since, queues ) 
 		`
 	);
 
 	if (name) {
-		query.textSearch('name', name);
+		query.textSearch('name', `'${name}'`);
 	}
 
 	if (type) {
 		query.filter('type', 'eq', type);
 	}
 
-	query.limit(36).filter('is_private', 'eq', false).order('created_at', { ascending: false });
-	const { data } = await query;
+	const { data, error } = await query
+		.limit(36)
+		.filter('is_private', 'eq', false)
+		.order('created_at', { ascending: false });
 
 	return ((data as any) ?? []) as MusicSessionInfo[];
 }
