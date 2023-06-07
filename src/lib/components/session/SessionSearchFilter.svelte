@@ -41,28 +41,27 @@
 	}
 
 	async function handleSelectMusicType(type: string) {
-	// 	const { musicType, sessionName } = input;
-	// 	if (type === musicType) {
-	// 		input.musicType = '';
-	// 	} else {
-	// 		input.musicType = type;
-	// 	}
+		const { musicType, sessionName } = input;
+		if (type === musicType) {
+			input.musicType = '';
+		} else {
+			input.musicType = type;
+		}
 
-	// 	const data = await searchSessionList(sessionName, musicType);
-	// 	sessionSearchResult.set({
-	// 		results: data,
-	// 		loading: false
-	// 	});
-	// }
-
-	// onMount(async () => {
-	// 	const data = await listSessions();
-	// 	sessionSearchResult.set({
-	// 		results: data,
-	// 		loading: false
-	// 	});
-	// });
+		const data = await searchSessionList(input.sessionName, input.musicType);
+		sessionSearchResult.set({
+			results: data,
+			loading: false
+		});
 	}
+
+	onMount(async () => {
+		const data = await listSessions();
+		sessionSearchResult.set({
+			results: data,
+			loading: false
+		});
+	});
 </script>
 
 <Tooltip triggeredBy="[id=filter-refresh-btn]" placement="top">Reset Filters!</Tooltip>
@@ -88,19 +87,18 @@
 	</button>
 </form>
 <!-- Chips -->
-<div class="grid grid-cols-5 gap-2 my-4 w-full flex-wrap justify-center">
+<div class="grid grid-cols-3 md:grid-cols-4 gap-2 my-4 w-full flex-wrap justify-center">
 	{#each SESSION_MUSIC_TYPES as type}
-	<div class='grid place-items-center bg-white/80 rounded-xl p-2'>
-		<div class="w-12 h-12 mb-2">
-			<img src={type.img} alt={type.name} />
+		<div
+			on:mousedown={() => handleSelectMusicType(type.name)}
+			class={`rounded-xl p-2 cursor-pointer hover:scale-105 duration-150 flex flex-row items-center justify-center ${
+				input.musicType === type.name ? 'ring-[3px] ring-white bg-white' : 'bg-white/[85%]'
+			}`}
+		>
+			<div class="w-6 h-6 mr-2">
+				<img src={type.img} alt={type.name} />
+			</div>
+			<div class="font-semibold text-black">{type.name}</div>
 		</div>
-		<div class='font-semibold text-black'>{type.name}</div>
-	</div>
-	<!-- on:click={() => handleSelectMusicType(type.name)} -->
-		<!-- <button
-			class={`px-2 py-1 rounded-full ${
-				type.name === input.musicType ? 'bg-white/50' : 'bg-white/20'
-			} duration-200`}>{type.name}</button
-		> -->
 	{/each}
 </div>
