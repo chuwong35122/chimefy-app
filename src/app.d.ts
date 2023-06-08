@@ -8,6 +8,7 @@ declare global {
 		interface Locals {
 			supabase: SupabaseClient;
 			getSession(): Promise<Session | null>;
+			pathName: string;
 		}
 		interface PageData {
 			session: Session | null;

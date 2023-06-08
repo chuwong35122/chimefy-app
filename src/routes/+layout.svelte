@@ -17,12 +17,12 @@
 	} from '$lib/spotify/spotify';
 	import type { PrivateUser } from 'spotify-types';
 	import { page } from '$app/stores';
+	import PageTransition from '$lib/components/transition/PageTransition.svelte';
 
 	export let data;
-	$: ({ supabase, session } = data);
+	$: ({ supabase, session, pathName } = data);
 
 	let timer: NodeJS.Timer;
-
 	let isSpotifyPremiumModalOpen = false;
 
 	spotifyUserProfile.subscribe((user) => {
@@ -107,7 +107,9 @@
 <div class="w-screen h-screen overflow-x-hidden bg-dark-900">
 	<NavBar />
 	<div class="w-full grid place-items-center pt-12">
-		<slot />
+		<PageTransition url={pathName}>
+			<slot />
+		</PageTransition>
 		<div class="w-80 md:w-[460px] absolute bottom-10 z-50">
 			<Toast />
 		</div>
