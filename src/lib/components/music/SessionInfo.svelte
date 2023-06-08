@@ -14,11 +14,13 @@
 </script>
 
 <Tooltip triggeredBy="[id=copy-id-btn]">Copy Session's ID</Tooltip>
-<Tooltip triggeredBy="[id='isPrivate-icon']"
-	>{$currentSession?.is_private
-		? 'This session is a private session'
-		: 'This session is a public session'}</Tooltip
->
+{#if $currentSession?.is_private}
+	<Tooltip triggeredBy="[id='isPrivate-icon']"
+		>{$currentSession?.is_private
+			? 'This session is a private session'
+			: 'This session is a public session'}</Tooltip
+	>
+{/if}
 <div class="w-full flex flex-row justify-between items-end">
 	<div>
 		<div class="flex flex-row items-center">
