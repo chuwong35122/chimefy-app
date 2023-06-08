@@ -5,7 +5,6 @@
 	import { supabase } from '$lib/supabase/supabase';
 	import { logout, userStore } from '$lib/supabase/user';
 	import NavLink from './NavLink.svelte';
-	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
 	let isLoading = false;

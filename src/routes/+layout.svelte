@@ -13,10 +13,8 @@
 		spotifyUserProfile,
 		spotifyAccessToken,
 		refreshSpotifyToken,
-		hasRefreshedToken,
-		SPOTIFY_AUTH_SCOPES
+		hasRefreshedToken
 	} from '$lib/spotify/spotify';
-	import UserMustReloginModal from '$lib/components/modals/UserMustReloginModal.svelte';
 	import type { PrivateUser } from 'spotify-types';
 	import { page } from '$app/stores';
 
