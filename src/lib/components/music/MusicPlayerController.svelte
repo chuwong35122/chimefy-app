@@ -17,7 +17,6 @@
 	import ControlButtons from './player/ControlButtons.svelte';
 	import { supabase } from '$lib/supabase/supabase';
 	import MemberPlayerListener from './player/MemberPlayerListener.svelte';
-	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
 	import { sliceQueue } from '$lib/session/queue';
 	import { toastValue } from '$lib/notification/toast';
@@ -164,7 +163,7 @@
 
 <div class="relative w-full p-2 rounded-xl bg-dark-500 hover:bg-white/10 duration-200">
 	<div class="flex flex-row items-center justify-between">
-			<TrackPreview />
+		<TrackPreview />
 		<div class="flex flex-col items-center">
 			{#if $currentSessionRole === 'admin'}
 				<ControlButtons {onBroadcastSignal} {onForwardTrack} {onBackwardTrack} />
