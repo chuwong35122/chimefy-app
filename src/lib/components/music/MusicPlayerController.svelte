@@ -164,7 +164,7 @@
 
 <div class="relative w-full p-2 rounded-xl bg-dark-500 hover:bg-white/10 duration-200">
 	<div class="flex flex-row items-center justify-between">
-		<TrackPreview />
+			<TrackPreview />
 		<div class="flex flex-col items-center">
 			{#if $currentSessionRole === 'admin'}
 				<ControlButtons {onBroadcastSignal} {onForwardTrack} {onBackwardTrack} />
@@ -174,7 +174,6 @@
 				<MemberPlayerListener {channel} {onBroadcastSignal} />
 			{/if}
 		</div>
-		<div class="text-xs">{millisecondToMinuteSeconds($playingDurationMs)}</div>
 		<div class="flex flex-row">
 			<Icon
 				id="connected-player"
