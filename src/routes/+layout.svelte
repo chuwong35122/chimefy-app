@@ -2,7 +2,7 @@
 	import '../styles/global.css';
 	import NavBar from '$lib/components/UI/NavBar.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
-	import moment from 'moment'
+	import moment from 'moment';
 	import { onDestroy, onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
 	import { Modal } from 'flowbite-svelte';
@@ -14,11 +14,11 @@
 		spotifyAccessToken,
 		refreshSpotifyToken,
 		hasRefreshedToken,
-		SPOTIFY_AUTH_SCOPES,
+		SPOTIFY_AUTH_SCOPES
 	} from '$lib/spotify/spotify';
 	import UserMustReloginModal from '$lib/components/modals/UserMustReloginModal.svelte';
 	import type { PrivateUser } from 'spotify-types';
-	import {page} from '$app/stores'
+	import { page } from '$app/stores';
 
 	export let data;
 	$: ({ supabase, session } = data);
@@ -43,18 +43,18 @@
 		clearInterval(timer);
 		if (!access_token || !since) return;
 
-		const now = moment()
-		const sinceMs = moment(since).valueOf()
+		const now = moment();
+		const sinceMs = moment(since).valueOf();
 
-		const remainingTokenTime =  3_600_000 - (sinceMs - now.valueOf())
-		
+		const remainingTokenTime = 3_600_000 - (sinceMs - now.valueOf());
+
 		// Ask the user to re-login
-		if($hasRefreshedToken && remainingTokenTime <= 0) {
-			await reloginAfterTokenRefreshed($page?.url)
-			return
-		}else if($hasRefreshedToken && remainingTokenTime <= 0) {
-			console.log('Token refreshed!')
-			await handleRefreshSession()
+		if ($hasRefreshedToken && remainingTokenTime <= 0) {
+			await reloginAfterTokenRefreshed($page?.url);
+			return;
+		} else if ($hasRefreshedToken && remainingTokenTime <= 0) {
+			console.log('Token refreshed!');
+			await handleRefreshSession();
 		}
 	});
 
