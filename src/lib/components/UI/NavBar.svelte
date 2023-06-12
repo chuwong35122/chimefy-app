@@ -20,9 +20,9 @@
 			}
 		});
 
-		console.log(data);
-		if (data) {
+		if(data?.url) {
 			isLoading = false;
+			goto(data.url)
 		}
 	}
 

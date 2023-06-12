@@ -82,8 +82,6 @@
 				spotifyUserProfile.set(profile);
 			}
 		});
-
-		supabase.auth.startAutoRefresh();
 	});
 
 	onDestroy(() => {
