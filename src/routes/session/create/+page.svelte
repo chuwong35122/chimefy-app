@@ -1,19 +1,9 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import type { CreateMusicSession } from '$lib/interfaces/session/session.interface';
 	import Icon from '@iconify/svelte';
-	import { Label, Input, Button, Toggle, ButtonGroup, Select, Toast } from 'flowbite-svelte';
-	import type { ValidationError } from 'yup';
+	import { Label, Input, Button, Toggle, ButtonGroup, Select } from 'flowbite-svelte';
 	import PrimaryButtonWrapper from '$lib/components/buttons/PrimaryButtonWrapper.svelte';
-	import sha1 from 'sha1';
 	import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
-	import { supabase } from '$lib/supabase/supabase';
-	import { userStore } from '$lib/supabase/user';
-	import type { PostgrestError } from '@supabase/supabase-js';
-	import { toastValue } from '$lib/notification/toast';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
-	import type { SuperValidated } from 'sveltekit-superforms/index';
-	import type { CreateSessionSchema } from '$lib/schema/session.schema';
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import ErrorMessage from '$lib/components/forms/ErrorMessage.svelte';
@@ -27,63 +17,6 @@
 		name: type.name,
 		value: type.name
 	}));
-
-	// 	const { form, enhance, constraints, validate } = superForm(input, {
-	// 	validators: CreateSessionSchema,
-	// 	validationMethod: 'submit-only',
-	// 	defaultValidator: 'keep'
-	// })
-
-	async function onCreateSession() {
-		if (!$userStore?.id) return;
-
-		// const form = await superForm(CreateSessionSchema)
-		// try {
-		// 	// await superValidate(superValidate)
-		// 	// await CreateSessionSchema.validate(input, { strict: true });
-		// } catch (e) {
-		// 	const err = e as ValidationError;
-		// 	errors = err.message;
-		// 	return;
-		// }
-
-		// try {
-		// 	const payload: CreateMusicSession = {
-		// 		...input,
-		// 		name: input.name,
-		// 		password: input.password ? sha1(input.password) : null,
-		// 		is_private: input.is_private,
-		// 		type: input.type,
-		// 		created_by: $userStore?.id,
-		// 		queues: null
-		// 	};
-
-		// 	const { data } = await supabase.from('session').insert(payload).select();
-
-		// 	if (data && data[0] && data[0]?.id && data[0]?.uuid != null) {
-		// 		const queueResponse = await supabase
-		// 			.from('session_queue')
-		// 			.insert({
-		// 				queues: [],
-		// 				session_id: data[0]?.id,
-		// 				session_uuid: data[0]?.uuid
-		// 			})
-		// 			.select();
-
-		// 		const _queueId = (queueResponse?.data as any)[0].id;
-		// 		await supabase.from('session').update({ queues: _queueId }).eq('id', data[0]?.id);
-		// 		await supabase
-		// 			.from('session_member')
-		// 			.insert({ members: [], session_uuid: data[0]?.uuid, session_id: data[0]?.id })
-		// 			.select();
-		// 		goto(`/session/${data[0].uuid}`);
-		// 	}
-		// } catch (e) {
-		// 	console.log(e);
-		// 	const err = e as PostgrestError;
-		// 	toastValue.set({ message: err.message, type: 'error' });
-		// }
-	}
 </script>
 
 <div class="w-full">
@@ -140,7 +73,7 @@
 			</ButtonGroup>
 		</Label>
 	{/if}
-	{#if $errors?.name}
+	{#if $errors?.name && $errors.name[0]}
 		<ErrorMessage message={$errors?.name[0]} />
 	{/if}
 	{#if $errors?.type}
@@ -149,7 +82,7 @@
 	{#if $errors?.password}
 		<ErrorMessage message={$errors?.password[0]} />
 	{/if}
-	<button on:click={onCreateSession}>
+	<button>
 		<PrimaryButtonWrapper>Create Session!</PrimaryButtonWrapper>
 	</button>
 </form>
