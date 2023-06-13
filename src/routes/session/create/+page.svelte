@@ -21,6 +21,11 @@
 	}));
 </script>
 
+<svelte:head>
+	<title>Create a Session</title>
+</svelte:head>
+
+
 <div class="p-10 bg-white/5 rounded-2xl duration-150 hover:bg-white/10 w-[500px]">
 	<form class="flex flex-col space-y-6" method="POST">
 		<h3 class="text-4xl font-semibold text-white p-0">Create Your Session</h3>
