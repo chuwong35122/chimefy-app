@@ -26,9 +26,6 @@
 
 	let SpotifyPlayer: Spotify.Player;
 
-	let volume = 50;
-	let debouncedVolume = 0;
-
 	let broadcastTimer: NodeJS.Timer;
 	let trackDurationTimer: NodeJS.Timer;
 
@@ -182,7 +179,7 @@
 				icon="material-symbols:speaker-group"
 				class="text-dark-200 mt-1 mr-1"
 			/>
-			<VolumeController {volume} {debouncedVolume} {SpotifyPlayer} />
+			<VolumeController {SpotifyPlayer} />
 		</div>
 		<Tooltip triggeredBy="[id=connected-player]" placement="bottom"
 			>Connected to {SpotifyPlayer?._options?.name}</Tooltip
@@ -190,7 +187,7 @@
 	</div>
 </div>
 
-{#if PUBLIC_NODE_ENV}
+{#if PUBLIC_NODE_ENV === 'development'}
 	<div class="flex flex-row items-center justify-between">
 		<DebugBgWrapper debuggerTitle="Player Debugger">
 			<p>Spotify Player Ready: {$playerReady}</p>

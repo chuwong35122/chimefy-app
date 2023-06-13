@@ -1,18 +1,23 @@
 <script lang="ts">
+	import { PUBLIC_NODE_ENV } from '$env/static/public';
+	import DebugBgWrapper from '$lib/components/UI/DebugBgWrapper.svelte';
+	import { toastValue } from '$lib/notification/toast';
 	import Icon from '@iconify/svelte';
 
-	export let volume = 50;
-	export let debouncedVolume = 0;
 	export let SpotifyPlayer: Spotify.Player;
 
-	let debounceVolumeTimer: NodeJS.Timer;
+	let volume = 50;
+	let debouncedVolume = 0;
 
 	async function debounceSetVolume() {
-		clearTimeout(debounceVolumeTimer);
-		debounceVolumeTimer = setTimeout(async () => {
-			debouncedVolume = volume / 100;
+		try {
+			debouncedVolume = volume/100
 			await SpotifyPlayer.setVolume(debouncedVolume);
-		}, 300);
+		} catch (e) {
+			console.log(e);
+		} finally {
+			toastValue.set({ message: 'Volume set ✅', type: 'info' });
+		}
 	}
 </script>
 
@@ -34,3 +39,9 @@
 		/>
 	</div>
 </div>
+{#if PUBLIC_NODE_ENV === 'development'}
+	<DebugBgWrapper>
+		<p>Volume: {volume}</p>
+		<p>Debounced Volume: {debouncedVolume}</p>
+	</DebugBgWrapper>
+{/if}
