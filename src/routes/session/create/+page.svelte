@@ -9,6 +9,8 @@
 	import SecondaryButtonWrapper from '$lib/components/buttons/SecondaryButtonWrapper.svelte';
 	import { goto } from '$app/navigation';
 	import { fly } from 'svelte/transition';
+	import {PUBLIC_NODE_ENV} from '$env/static/public'
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 
 	export let data: PageData;
 	const { form, errors } = superForm(data.form);
@@ -27,6 +29,9 @@
 
 
 <div class="p-10 bg-white/5 rounded-2xl duration-150 hover:bg-white/10 w-[500px]">
+	{#if PUBLIC_NODE_ENV === "development"}
+		<SuperDebug data={$form} />
+	{/if}
 	<form class="flex flex-col space-y-6" method="POST">
 		<h3 class="text-4xl font-semibold text-white p-0">Create Your Session</h3>
 		<Label class="space-y-2">
