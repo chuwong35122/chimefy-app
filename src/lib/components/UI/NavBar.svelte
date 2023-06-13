@@ -34,13 +34,13 @@
 </script>
 
 <div class="w-full px-4 py-4 flex flex-row items-center justify-between">
-	<a href="/" class="w-12 h-12 grid place-items-center">
+	<a href="/" class="h-12 grid place-items-center md:w-[200px]">
 		<div class="flex items-center">
 			<img src="/logo/chimefy/logo_dark.svg" alt="Chimefy Logo" class="w-8 h-8" />
 			<div class="ml-4 text-lg font-semibold hidden md:block">Chimefy</div>
 		</div>
 	</a>
-	<div class={`w-56 md:w-96 flex flex-row items-center justify-between`}>
+	<div class={`flex flex-row items-center justify-between`}>
 		<NavLink
 			icon="material-symbols:meeting-room-rounded"
 			route="/session"
@@ -58,8 +58,9 @@
 
 	<div>
 		{#if $userStore?.id}
-			<div class="w-52 relative z-50">
-				{#if $userStore?.user_metadata?.avatar_url}
+			<div class="relative z-50">
+				<div class="block md:hidden">
+					{#if $userStore?.user_metadata?.avatar_url}
 					<div class="flex flex-row items-center group/profile cursor-pointer">
 						<div
 							class="relative z-10 w-12 rounded-full p-1 group-hover/profile:text-white bg-white/20 group-hover/profile:scale-105 group-hover/profile:bg-white/30 duration-150"
@@ -72,45 +73,64 @@
 								class="rounded-full w-[40px] h-[40px]"
 							/>
 						</div>
-						<div
-							class="bg-white/20 rounded-full flex flex-row items-center p-1 absolute left-0 h-12"
-						>
-							<p class="font-semibold ml-[50px]">{$userStore?.user_metadata?.name}</p>
-							<Icon
-								icon="ion:chevron-down-outline"
-								class="w-6 h-6 ml-2 text-dark-200 group-hover/profile:text-white group-hover/profile:scale-105 duration-150"
-							/>
 						</div>
+					{/if}
+				</div>
+				<!-- Large Profile -->
+			<div class="hidden md:block md:w-[200px]">
+				{#if $userStore?.user_metadata?.avatar_url}
+				<div class="flex flex-row items-center group/profile cursor-pointer">
+					<div
+						class="relative z-10 rounded-full p-1 group-hover/profile:text-white bg-white/20 group-hover/profile:scale-105 group-hover/profile:bg-white/30 duration-150"
+					>
+						<img
+							id="profile-img"
+							src={$userStore?.user_metadata?.avatar_url}
+							alt="Spotify Profile"
+							draggable="false"
+							class="rounded-full w-[40px] h-[40px]"
+						/>
 					</div>
-					<Dropdown>
-						<DropdownItem on:click={() => goto('/profile')} class="hover:mouse-pointer">
-							<div class="flex flex-row items-center">
-								<Icon icon="mdi:account-plus" class="h-4 w-4 mr-2" />
-								<p class="text-sm font-medium">Profile</p>
-							</div>
-						</DropdownItem>
-						<DropdownItem class="hover:mouse-pointer">
-							<div class="flex flex-row items-center">
-								<Icon icon="mdi:cog" class="h-4 w-4 mr-2" />
-								<p class="text-sm font-medium">Setting</p>
-							</div>
-						</DropdownItem>
-						<DropdownItem
-							defaultClass="bg-primary-200 hover:bg-primary-400 duration-150 py-2 px-4 text-black"
-						>
-							<div class="flex flex-row items-center">
-								<Icon icon="mdi:gift" class="h-4 w-4 mr-2" />
-								<p class="text-sm font-medium">Support Chimefy</p>
-							</div>
-						</DropdownItem>
-						<DropdownItem on:click={handleLogout} defaultClass="py-2 px-4">
-							<div class="flex flex-row items-center">
-								<Icon icon="ion:exit" class="h-4 w-4 mr-2" />
-								<p class="text-sm font-medium">Logout</p>
-							</div>
-						</DropdownItem>
-					</Dropdown>
-				{/if}
+					<div
+						class="bg-white/20 rounded-full flex flex-row items-center p-1 absolute left-0 h-12"
+					>
+						<p class="font-semibold ml-[50px]">{$userStore?.user_metadata?.name}</p>
+						<Icon
+							icon="ion:chevron-down-outline"
+							class="w-6 h-6 ml-2 text-dark-200 group-hover/profile:text-white group-hover/profile:scale-105 duration-150"
+						/>
+					</div>
+				</div>
+				<Dropdown>
+					<DropdownItem on:click={() => goto('/profile')} class="hover:mouse-pointer">
+						<div class="flex flex-row items-center">
+							<Icon icon="mdi:account-plus" class="h-4 w-4 mr-2" />
+							<p class="text-sm font-medium">Profile</p>
+						</div>
+					</DropdownItem>
+					<DropdownItem class="hover:mouse-pointer">
+						<div class="flex flex-row items-center">
+							<Icon icon="mdi:cog" class="h-4 w-4 mr-2" />
+							<p class="text-sm font-medium">Setting</p>
+						</div>
+					</DropdownItem>
+					<DropdownItem
+						defaultClass="bg-primary-200 hover:bg-primary-400 duration-150 py-2 px-4 text-black"
+					>
+						<div class="flex flex-row items-center">
+							<Icon icon="mdi:gift" class="h-4 w-4 mr-2" />
+							<p class="text-sm font-medium">Support Chimefy</p>
+						</div>
+					</DropdownItem>
+					<DropdownItem on:click={handleLogout} defaultClass="py-2 px-4">
+						<div class="flex flex-row items-center">
+							<Icon icon="ion:exit" class="h-4 w-4 mr-2" />
+							<p class="text-sm font-medium">Logout</p>
+						</div>
+					</DropdownItem>
+				</Dropdown>
+			{/if}
+			</div>
 			</div>
 		{:else if isLoading}
 			<div class="grid place-items-center">
