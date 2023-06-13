@@ -11,7 +11,7 @@
 {#if isActive}
 	<a
 		href={route}
-		class={`flex flex-row items-center p-2 px-3 duration-200 hover:text-white ${
+		class={`flex flex-row items-center p-2 px-3 mx-2 duration-200 hover:text-white ${
 			$page.route.id === route
 				? 'text-white bg-[rgba(255,255,255,0.08)] rounded-lg'
 				: 'text-gray-400'
