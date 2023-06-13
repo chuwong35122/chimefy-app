@@ -20,6 +20,9 @@
 	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
 	import { sliceQueue } from '$lib/session/queue';
 	import { toastValue } from '$lib/notification/toast';
+	import { PUBLIC_NODE_ENV } from '$env/static/public';
+	import DebugBgWrapper from '../UI/DebugBgWrapper.svelte';
+	import { playerInitErrorMessage, playerReady } from '$lib/debug/debugger';
 
 	let SpotifyPlayer: Spotify.Player;
 
@@ -118,7 +121,7 @@
 		});
 	}
 
-	// TODO: handle error if spotify player cannot be connected!
+
 	onMount(async () => {
 		window.onSpotifyWebPlaybackSDKReady = async () => {
 			SpotifyPlayer = new Spotify.Player({
@@ -130,12 +133,12 @@
 			});
 
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
-				console.log('Spotify player is ready!! 🎵');
+				playerReady.set(true);
 				spotifyPlayerId.set(device_id);
 			});
 
 			SpotifyPlayer.on('initialization_error', (err) => {
-				console.log(err.message);
+				playerInitErrorMessage.set(err?.message);
 			});
 
 			// Put the connect() at the bottom most of player.on()
@@ -186,3 +189,19 @@
 		>
 	</div>
 </div>
+
+{#if PUBLIC_NODE_ENV}
+	<div class="flex flex-row items-center justify-between">
+		<DebugBgWrapper debuggerTitle="Player Debugger">
+			<p>Spotify Player Ready: {$playerReady}</p>
+			<p>Player Init Message: {$playerInitErrorMessage || '-'}</p>
+			<p>Role: {$currentSessionRole}</p>
+			<p>Spotify Player Id: {$spotifyPlayerId}</p>
+			<p>Player Options: {JSON.stringify(SpotifyPlayer?._options)}</p>
+		</DebugBgWrapper>
+		<DebugBgWrapper debuggerTitle="Controller Debugger">
+			<p>Playing duration: {$playingDurationMs} ms</p>
+			<p>Player status: {$isPlayingStatus}</p>
+		</DebugBgWrapper>
+	</div>
+{/if}
