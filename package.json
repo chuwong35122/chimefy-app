@@ -51,7 +51,6 @@
 		"querystring": "^0.2.1",
 		"sha1": "^1.1.1",
 		"sveltekit-superforms": "^1.0.0",
-		"yup": "^1.0.0",
 		"zod": "^3.21.4"
 	}
 }

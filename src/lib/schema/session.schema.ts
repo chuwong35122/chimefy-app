@@ -8,7 +8,11 @@ export const CreateSessionSchema = z
 		type: z.string({
 			required_error: 'Music type is required!'
 		}),
-		password: z.string(),
+		password: z
+			.string()
+			.min(6, 'Password is too short!')
+			.max(40, 'Password is too long!')
+			.optional(),
 		name: z
 			.string({
 				required_error: 'Session name is required!'
@@ -23,19 +27,5 @@ export const CreateSessionSchema = z
 				path: ['password'],
 				message: 'Password is required!'
 			});
-
-			if (password.length < 6) {
-				ctx.addIssue({
-					code: 'custom',
-					path: ['password'],
-					message: 'Password is too short!'
-				});
-			} else if (password.length > 40) {
-				ctx.addIssue({
-					code: 'custom',
-					path: ['password'],
-					message: 'Password is too long!'
-				});
-			}
 		}
 	});

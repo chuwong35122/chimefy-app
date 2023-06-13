@@ -1,4 +1,4 @@
-import type { MusicQueue, MusicSessionQueue } from './queue.interface';
+import type { MusicSessionQueue } from './queue.interface';
 
 export type MusicSessionRole = 'admin' | 'member';
 
