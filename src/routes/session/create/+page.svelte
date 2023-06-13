@@ -4,32 +4,35 @@
 	import Icon from '@iconify/svelte';
 	import { Label, Input, Button, Toggle, ButtonGroup, Select, Toast } from 'flowbite-svelte';
 	import type { ValidationError } from 'yup';
-	import PrimaryButtonWrapper from '../buttons/PrimaryButtonWrapper.svelte';
+	import PrimaryButtonWrapper from '$lib/components/buttons/PrimaryButtonWrapper.svelte';
 	import sha1 from 'sha1';
 	import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
 	import { supabase } from '$lib/supabase/supabase';
 	import { userStore } from '$lib/supabase/user';
 	import type { PostgrestError } from '@supabase/supabase-js';
 	import { toastValue } from '$lib/notification/toast';
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import type { SuperValidated } from 'sveltekit-superforms/index';
-	import type {CreateSessionSchema} from '$lib/schema/session.schema'
+	import type { CreateSessionSchema } from '$lib/schema/session.schema';
+	import type { PageData } from './$types';
+	import { superForm } from 'sveltekit-superforms/client';
+	import ErrorMessage from '$lib/components/forms/ErrorMessage.svelte';
 
-	
+	export let data: PageData;
+	const { form, errors } = superForm(data.form);
+
 	let showPassword = false;
-	export let form: any;
-	export let errors: any;	
-	
+
 	const musicSessionTypes = SESSION_MUSIC_TYPES.map((type) => ({
 		name: type.name,
 		value: type.name
 	}));
 
-// 	const { form, enhance, constraints, validate } = superForm(input, {
-// 	validators: CreateSessionSchema,
-// 	validationMethod: 'submit-only',
-// 	defaultValidator: 'keep'
-// })
+	// 	const { form, enhance, constraints, validate } = superForm(input, {
+	// 	validators: CreateSessionSchema,
+	// 	validationMethod: 'submit-only',
+	// 	defaultValidator: 'keep'
+	// })
 
 	async function onCreateSession() {
 		if (!$userStore?.id) return;
@@ -83,10 +86,11 @@
 	}
 </script>
 
-<form class="flex flex-col space-y-6" method='POST'>
-<SuperDebug data={$form} />
-
-	<h3 class="text-xl font-medium text-white p-0">Create Your Session</h3>
+<div class="w-full">
+	<SuperDebug data={$form} />
+</div>
+<form class="flex flex-col space-y-6" method="POST">
+	<h3 class="text-4xl font-semibold text-white p-0">Create Your Session</h3>
 	<Label class="space-y-2">
 		<span class="text-white">Your session name</span>
 		<Input
@@ -136,29 +140,15 @@
 			</ButtonGroup>
 		</Label>
 	{/if}
-	{#if $errors}
-		<div>{JSON.stringify($errors)}</div>
+	{#if $errors?.name}
+		<ErrorMessage message={$errors?.name[0]} />
 	{/if}
-	<!-- {#if errors}
-		<Toast color="red" divClass="p-2 w-full">
-			<svelte:fragment slot="icon">
-				<svg
-					aria-hidden="true"
-					class="w-5 h-5"
-					fill="currentColor"
-					viewBox="0 0 20 20"
-					xmlns="http://www.w3.org/2000/svg"
-					><path
-						fill-rule="evenodd"
-						d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-						clip-rule="evenodd"
-					/></svg
-				>
-				<span class="sr-only">Error icon</span>
-			</svelte:fragment>
-			{errors}
-		</Toast>
-	{/if} -->
+	{#if $errors?.type}
+		<ErrorMessage message={$errors?.type[0]} />
+	{/if}
+	{#if $errors?.password}
+		<ErrorMessage message={$errors?.password[0]} />
+	{/if}
 	<button on:click={onCreateSession}>
 		<PrimaryButtonWrapper>Create Session!</PrimaryButtonWrapper>
 	</button>
