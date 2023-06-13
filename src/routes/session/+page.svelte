@@ -1,25 +1,13 @@
 <script lang="ts">
-	import { Button, ButtonGroup, Input, InputAddon, Modal, Tooltip } from 'flowbite-svelte';
+	import { Button, ButtonGroup, Input, InputAddon, Tooltip } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
-	import CreateSessionModal from '$lib/components/modals/CreateSessionModal.svelte';
 	import { goto } from '$app/navigation';
-	import { userStore } from '$lib/supabase/user';
 	import { toastValue } from '$lib/notification/toast';
 	import SessionList from '$lib/components/session/SessionList.svelte';
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
 	import { supabase } from '$lib/supabase/supabase';
 
-	let openCreateSessionModal = false;
 	let input = '';
-
-	function handleOpenCreateModal() {
-		if (!$userStore?.id) {
-			toastValue.set({ message: 'Please Login', type: 'info' });
-			return;
-		}
-
-		openCreateSessionModal = true;
-	}
 
 	async function enterSession() {
 		try {
@@ -38,15 +26,6 @@
 <svelte:head>
 	<title>Join a Session</title>
 </svelte:head>
-
-<Modal
-	bind:open={openCreateSessionModal}
-	size="xs"
-	autoclose={false}
-	class="w-full z-10 modal-glass"
->
-	<CreateSessionModal />
-</Modal>
 
 <div class="rounded-2xl grid place-items-center mt-20">
 	<h1 class="text-4xl font-semibold">Join a Session</h1>
@@ -78,7 +57,7 @@
 	<div class="h-6" />
 	<div class="w-full grid place-items-center">
 		<button
-			on:click={handleOpenCreateModal}
+			on:click={() => goto('/session/create')}
 			class="text-sm text-dark-200 font-light hover:text-white duration-200 underline underline-offset-2"
 			>Create new music session</button
 		>

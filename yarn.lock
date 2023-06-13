@@ -2221,10 +2221,10 @@ svelte@^3.54.0:
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.55.1.tgz#6f93b153e5248039906ce5fe196efdb9e05dfce8"
   integrity sha512-S+87/P0Ve67HxKkEV23iCdAh/SX1xiSfjF1HOglno/YTbSTW7RniICMCofWGdJJbdjw3S+0PfFb1JtGfTXE0oQ==
 
-sveltekit-superforms@^1.0.0-rc.3:
-  version "1.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/sveltekit-superforms/-/sveltekit-superforms-1.0.0-rc.3.tgz#33564c6dc83d9230e3afa70af9e442fb7fd60cf0"
-  integrity sha512-QffCIbcwyqWqFA08N/rLTN6SJXvyfI07oPXpOas65FiQ4chYviQcDbtvW9WFiphhqBmvn9/+n9ka+RtazdRxfA==
+sveltekit-superforms@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/sveltekit-superforms/-/sveltekit-superforms-1.0.0.tgz#03bcdd4889bbcf623d888e4367afb89b8921d668"
+  integrity sha512-FihTu/szUCF1fpmqBQUo3tYdAMaNNt7HWaRcLWCIbubG29bpPAEoucWJ8IQpjloE4sGpof1MtgvZpK7k78Bkxg==
 
 tailwindcss@^3.2.7:
   version "3.2.7"
