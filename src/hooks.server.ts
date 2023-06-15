@@ -2,7 +2,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 import * as Sentry from '@sentry/sveltekit';
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
-import type { Handle } from '@sveltejs/kit';
+import type { Handle, HandleServerError } from '@sveltejs/kit';
 
 export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
 	event.locals.supabase = createSupabaseServerClient({
@@ -40,4 +40,16 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 	});
 });
 
-export const handleError = Sentry.handleErrorWithSentry();
+
+const serverErrorHandler: HandleServerError = async ({ error, event }) => {
+	const errorPayload = {
+		message: 'Error occurred on the server',
+		error,
+		event
+	};
+	Sentry.captureException(errorPayload);
+
+	return errorPayload;
+};
+
+export const handleError = Sentry.handleErrorWithSentry(serverErrorHandler);

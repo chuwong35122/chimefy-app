@@ -18,6 +18,7 @@
 	import type { PrivateUser } from 'spotify-types';
 	import { page } from '$app/stores';
 	import PageTransition from '$lib/components/transition/PageTransition.svelte';
+	import * as Sentry from '@sentry/svelte';
 
 	export let data;
 	$: ({ supabase, session, pathName } = data);
