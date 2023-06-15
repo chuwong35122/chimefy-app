@@ -113,10 +113,10 @@
 
 			if (!$currentSessionQueue?.queues || $currentSessionQueue?.queues?.length < 2) return;
 
-			await playSingleTrack($currentSessionQueue?.queues[0]);
 			isPlayingStatus.set(_payload?.isPlaying);
 			playingTrackId.set(_payload?.playingTrackId);
 			playingDurationMs.set(0);
+			await playSingleTrack($currentSessionQueue?.queues[0]);
 
 			if (PUBLIC_NODE_ENV === 'development') {
 				console.log('playerBackward', _payload);
@@ -128,10 +128,10 @@
 
 			if (!$currentSessionQueue?.queues || $currentSessionQueue?.queues?.length < 2) return;
 
-			await playSingleTrack($currentSessionQueue?.queues[1]);
 			isPlayingStatus.set(_payload?.isPlaying);
 			playingTrackId.set(_payload?.playingTrackId);
 			playingDurationMs.set(0);
+			await playSingleTrack($currentSessionQueue?.queues[1]);
 
 			if (PUBLIC_NODE_ENV === 'development') {
 				console.log('playerForward', _payload);
