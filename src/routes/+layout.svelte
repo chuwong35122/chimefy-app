@@ -104,7 +104,7 @@
 </Modal>
 <div class="w-screen h-screen overflow-x-hidden bg-dark-900">
 	<NavBar />
-	<div class="w-full grid place-items-center pt-12">
+	<div class="w-full grid place-items-center">
 		<PageTransition url={pathName}>
 			<slot />
 		</PageTransition>
