@@ -20,13 +20,11 @@ Sentry.init({
 
 const clientErrorHandler: HandleClientError = ({ error, event }) => {
 	const errorPayload = {
-		message: 'Error occurred on the server',
 		error,
 		event
 	};
-	Sentry.captureException(errorPayload);
 
-	return errorPayload;
+	Sentry.captureException(errorPayload);
 };
 
 // If you have a custom error handler, pass it to `handleErrorWithSentry`

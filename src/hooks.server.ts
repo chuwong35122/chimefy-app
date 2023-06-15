@@ -40,16 +40,13 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 	});
 });
 
-
 const serverErrorHandler: HandleServerError = async ({ error, event }) => {
 	const errorPayload = {
-		message: 'Error occurred on the server',
 		error,
 		event
 	};
-	Sentry.captureException(errorPayload);
 
-	return errorPayload;
+	Sentry.captureException(errorPayload);
 };
 
 export const handleError = Sentry.handleErrorWithSentry(serverErrorHandler);
