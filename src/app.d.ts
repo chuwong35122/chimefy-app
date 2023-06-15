@@ -14,6 +14,10 @@ declare global {
 			session: Session | null;
 		}
 		// interface Platform {}
+
+		interface Error {
+			message: string;
+		}
 	}
 }
 
