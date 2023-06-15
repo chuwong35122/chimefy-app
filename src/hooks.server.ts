@@ -1,6 +1,6 @@
 import { sequence } from '@sveltejs/kit/hooks';
 import * as Sentry from '@sentry/sveltekit';
-import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
+import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, PUBLIC_NODE_ENV } from '$env/static/public';
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import type { Handle, HandleServerError } from '@sveltejs/kit';
 
@@ -46,7 +46,9 @@ const serverErrorHandler: HandleServerError = async ({ error, event }) => {
 		event
 	};
 
-	Sentry.captureException(errorPayload);
+	if (PUBLIC_NODE_ENV === 'production') {
+		Sentry.captureException(errorPayload);
+	}
 };
 
 export const handleError = Sentry.handleErrorWithSentry(serverErrorHandler);
