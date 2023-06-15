@@ -15,6 +15,7 @@
 	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
 	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
 	import { toastValue } from '$lib/notification/toast';
+	import { PUBLIC_NODE_ENV } from '$env/static/public';
 
 	export let channel: RealtimeChannel;
 	export let onBroadcastSignal: (playing: boolean) => void;
@@ -30,6 +31,10 @@
 
 			if (sliced[0]) {
 				await playSingleTrack(sliced[0]);
+
+				if (PUBLIC_NODE_ENV === 'development') {
+					console.log('Playing + Slice', sliced);
+				}
 			}
 		}
 	}
@@ -56,15 +61,13 @@
 		}, 1000);
 	});
 
-	isPlayingStatus.subscribe(async () => {
-		if ($isPlayingStatus === false) {
-			await pauseTrack($spotifyPlayerId, $spotifyAccessToken?.access_token);
-		}
-	});
-
 	// Play the topmost track and remove it from the database
 	async function playSingleTrack(queue: MusicQueue) {
 		if (!queue) return;
+
+		if (PUBLIC_NODE_ENV === 'development') {
+			console.log('Playing', queue);
+		}
 
 		await playTrack(queue, $spotifyPlayerId, $playingDurationMs, $spotifyAccessToken?.access_token);
 		playingInfo.set({
@@ -74,10 +77,20 @@
 	}
 
 	isPlayingStatus.subscribe(async (status) => {
-		if (status === false || !$currentSessionQueue?.queues || !$currentSessionQueue?.queues?.length)
+		console.log({status})
+		if (!$currentSessionQueue?.queues || !$currentSessionQueue?.queues?.length) {
 			return;
+		}
 
-		await playSingleTrack($currentSessionQueue?.queues[0]);
+		if (PUBLIC_NODE_ENV === 'development') {
+			console.log('isPlayingStatus', status);
+		}
+
+		if (status) {
+			await playSingleTrack($currentSessionQueue?.queues[0]);
+		} else {
+			await pauseTrack($spotifyPlayerId, $spotifyAccessToken?.access_token);
+		}
 	});
 
 	onMount(() => {
@@ -86,6 +99,13 @@
 			isPlayingStatus.set(_payload?.isPlaying);
 			playingTrackId.set(_payload?.playingTrackId);
 			playingDurationMs.set(_payload?.currentDurationMs);
+
+			if (PUBLIC_NODE_ENV === 'development') {
+				const rnd = Math.random();
+				if (rnd < 0.2) {
+					console.log('playerStart', _payload);
+				}
+			}
 		});
 
 		channel.on('broadcast', { event: 'playerBackward' }, async ({ payload }) => {
@@ -97,6 +117,10 @@
 			isPlayingStatus.set(_payload?.isPlaying);
 			playingTrackId.set(_payload?.playingTrackId);
 			playingDurationMs.set(0);
+
+			if (PUBLIC_NODE_ENV === 'development') {
+				console.log('playerBackward', _payload);
+			}
 		});
 
 		channel.on('broadcast', { event: 'playerForward' }, async ({ payload }) => {
@@ -108,6 +132,10 @@
 			isPlayingStatus.set(_payload?.isPlaying);
 			playingTrackId.set(_payload?.playingTrackId);
 			playingDurationMs.set(0);
+
+			if (PUBLIC_NODE_ENV === 'development') {
+				console.log('playerForward', _payload);
+			}
 		});
 	});
 </script>
