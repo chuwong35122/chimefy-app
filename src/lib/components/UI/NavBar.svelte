@@ -39,7 +39,7 @@
 	}
 </script>
 
-<div class="w-full px-4 flex flex-row items-center justify-between">
+<div class="w-full px-4 mt-1 flex flex-row items-center justify-between">
 	<a href="/" class="grid place-items-center">
 		<div class="flex items-center">
 			<img src="/logo/chimefy/logo_dark.svg" alt="Chimefy Logo" class="w-8 h-8 " />
@@ -51,12 +51,6 @@
 			icon="material-symbols:meeting-room-rounded"
 			route="/session"
 			routeName="Session"
-			isActive={$userStore?.id != null}
-		/>
-		<NavLink
-			icon="material-symbols:radio"
-			route="/radio"
-			routeName="Radio"
 			isActive={$userStore?.id != null}
 		/>
 		<NavLink icon="mdi:email" route="/contact" routeName="Contact" />
@@ -98,7 +92,7 @@
 								/>
 							</div>
 							<div
-								class="bg-white/20 rounded-full flex flex-row items-center p-1 absolute left-0"
+								class="bg-white/20 h-10 rounded-full flex flex-row items-center p-1 absolute left-0"
 							>
 								<p class="font-semibold ml-[50px]">{$userStore?.user_metadata?.name}</p>
 								<Icon
