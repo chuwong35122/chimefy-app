@@ -6,11 +6,13 @@
 	import { logout, userStore } from '$lib/supabase/user';
 	import NavLink from './NavLink.svelte';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import {PUBLIC_SITE_URL} from '$env/static/public'
 
 	let isLoading = false;
 
-	async function signInWithSpotify() {
-		isLoading = true;
+	let url = PUBLIC_SITE_URL
+	onMount(async () => {
 		const { data } = await supabase.auth.signInWithOAuth({
 			provider: 'spotify',
 			options: {
@@ -21,10 +23,25 @@
 		});
 
 		if(data?.url) {
-			isLoading = false;
-			goto(data.url)
+			url = data.url
 		}
-	}
+	})
+	// async function signInWithSpotify() {
+	// 	isLoading = true;
+	// 	const { data } = await supabase.auth.signInWithOAuth({
+	// 		provider: 'spotify',
+	// 		options: {
+	// 			scopes: SPOTIFY_AUTH_SCOPES.join(' '),
+	// 			skipBrowserRedirect: true,
+	// 			redirectTo: '/'
+	// 		}
+	// 	});
+
+	// 	if(data?.url) {
+	// 		isLoading = false;
+	// 		goto(data.url)
+	// 	}
+	// }
 
 	async function handleLogout() {
 		isLoading = true;
@@ -33,7 +50,7 @@
 	}
 </script>
 
-<div class="w-full px-4 py-4 flex flex-row items-center justify-between">
+<div class="w-full px-4 py-2 flex flex-row items-center justify-between">
 	<a href="/" class="h-12 grid place-items-center md:w-[200px]">
 		<div class="flex items-center">
 			<img src="/logo/chimefy/logo_dark.svg" alt="Chimefy Logo" class="w-8 h-8" />
@@ -137,7 +154,20 @@
 				<Spinner color="green" />
 			</div>
 		{:else}
-			<button on:click={signInWithSpotify} class="p-2 px-3 hover:scale-105 duration-200">
+		<a href={url} class="p-2 px-3 hover:scale-105 duration-200">
+			<div class="flex flex-row items-center">
+				<Icon icon="logos:spotify-icon" width={24} height={24} />
+				<p
+					class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white hidden md:block"
+				>
+					Login to Spotify
+				</p>
+				<p class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white md:hidden">
+					Login
+				</p>
+			</div>
+		</a>
+			<!-- <button on:click={signInWithSpotify} class="p-2 px-3 hover:scale-105 duration-200">
 				<div class="flex flex-row items-center">
 					<Icon icon="logos:spotify-icon" width={24} height={24} />
 					<p
@@ -149,7 +179,7 @@
 						Login
 					</p>
 				</div>
-			</button>
+			</button> -->
 		{/if}
 	</div>
 </div>
