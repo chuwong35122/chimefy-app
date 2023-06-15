@@ -18,7 +18,7 @@
 	import type { PrivateUser } from 'spotify-types';
 	import { page } from '$app/stores';
 	import PageTransition from '$lib/components/transition/PageTransition.svelte';
-	import * as Sentry from '@sentry/svelte';
+	import { PUBLIC_NODE_ENV } from '$env/static/public';
 
 	export let data;
 	$: ({ supabase, session, pathName } = data);
@@ -59,6 +59,10 @@
 
 	onMount(() => {
 		supabase.auth.onAuthStateChange(async (_, _session) => {
+			if (PUBLIC_NODE_ENV === 'development') {
+				console.log(_session);
+			}
+
 			if (!_session) {
 				await logout();
 				return;
@@ -80,6 +84,9 @@
 				});
 
 				const profile = (await profileRes.json()) as PrivateUser;
+				if (PUBLIC_NODE_ENV === 'development') {
+					console.log(profile);
+				}
 				spotifyUserProfile.set(profile);
 			}
 		});
