@@ -80,7 +80,7 @@
 		const payload: TrackBroadcastPayload = {
 			isPlaying: $isPlayingStatus,
 			playingTrackId: $playingTrackId,
-			currentDurationMs: $playingDurationMs
+			currentDurationMs: 0
 		};
 
 		channel.send({
