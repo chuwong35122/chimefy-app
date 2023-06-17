@@ -1,11 +1,21 @@
 <script lang="ts">
 	import FaqSection from '$lib/components/landing/FAQSection.svelte';
+	import Icon from '@iconify/svelte';
 	import HowToSteps from '../lib/components/landing/HowToSteps.svelte';
 
 	let mousePos = { x: 0, y: 0 };
 	function handleMouseMove(e: MouseEvent) {
 		mousePos.x = e.pageX;
 		mousePos.y = e.pageY;
+	}
+
+	let bgPattern: HTMLDivElement;
+
+	$: if (bgPattern?.style) {
+		const xPos = (mousePos.x * -1) / 30;
+		const yPos = (mousePos.y * -1) / 30;
+
+		bgPattern.style.transform = `translateX(${xPos}px) translateY(${yPos}px)`;
 	}
 </script>
 
@@ -14,33 +24,26 @@
 </svelte:head>
 
 <div on:mousemove={handleMouseMove} class="w-full">
-	<section>
-		<div class="w-full h-[600px] p-8 relative overflow-hidden">
-			<div>
-				<h1 class="text-6xl font-extrabold ml-2">Welcome to Chimefy</h1>
-			</div>
-			<h2 class="ml-4">
-				A place to sync <a
-					target="_blank"
-					rel="noreferrer"
-					href="https://www.spotify.com/"
-					class="text-primary underline underline-offset-1">Spotify music</a
-				> with your friends!
-			</h2>
-			<div class="absolute bottom-0 right-0">
-				<img
-					src="/images/landing/friends-listening.png"
-					alt="Friends listening to music"
-					class="w-[550px] h-[550px] md:w-[720px] md:h-[720px] lg:w-[800px] lg:h-[800px] relative z-20"
-				/>
-				<div
-					class="absolute z-10 right-0 top-[240px] bg-white/40 transform -skew-y-[20deg] skew-x-[10deg] rounded-lg w-[500px] h-[440px]  lg:w-[600px] lg:h-[500px]"
-				/>
+	<section class=h-[80vh]>
+		<div class="grid place-content-center h-[600px] relative overflow-hidden">
+			<div class="flex flex-col items-center w-full h-full z-50 relative">
+				<h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold ml-2">Welcome to <span class="text-primary">Chimefy</span></h1>
+				<h2 class="ml-4 text-lg md:text-xl mt-4">
+					A place where you can sync <a
+						target="_blank"
+						rel="noreferrer"
+						href="https://www.spotify.com/"
+						class="text-primary underline underline-offset-1">Spotify music</a
+					> with your friends!
+				</h2>
 			</div>
 		</div>
 	</section>
 	<section class="w-full">
-		<HowToSteps mousePosX={mousePos.x} mousePosY={mousePos.y} />
+		<div class="grid place-items-center">
+			<h3 class='text-3xl font-bold text-white'>How to use?</h3>
+		</div>
+		<HowToSteps />
 	</section>
 </div>
 <section class="p-8">
