@@ -1,29 +1,13 @@
 <script lang="ts">
 	import FaqSection from '$lib/components/landing/FAQSection.svelte';
-	import Icon from '@iconify/svelte';
 	import HowToSteps from '../lib/components/landing/HowToSteps.svelte';
-
-	let mousePos = { x: 0, y: 0 };
-	function handleMouseMove(e: MouseEvent) {
-		mousePos.x = e.pageX;
-		mousePos.y = e.pageY;
-	}
-
-	let bgPattern: HTMLDivElement;
-
-	$: if (bgPattern?.style) {
-		const xPos = (mousePos.x * -1) / 30;
-		const yPos = (mousePos.y * -1) / 30;
-
-		bgPattern.style.transform = `translateX(${xPos}px) translateY(${yPos}px)`;
-	}
 </script>
 
 <svelte:head>
 	<title>Welcome to Chimefy</title>
 </svelte:head>
 
-<div on:mousemove={handleMouseMove} class="w-full">
+<div class="w-full">
 	<section class=h-[80vh]>
 		<div class="grid place-content-center h-[600px] relative overflow-hidden">
 			<div class="flex flex-col items-center w-full h-full z-50 relative">
