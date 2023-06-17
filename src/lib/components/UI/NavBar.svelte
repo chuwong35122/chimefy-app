@@ -92,7 +92,7 @@
 								/>
 							</div>
 							<div
-								class="bg-white/20 h-10 rounded-full flex flex-row items-center p-1 absolute left-0"
+								class="bg-white/20 h-12 rounded-full flex flex-row items-center p-1 absolute left-0 group-hover/profile:scale-y-105"
 							>
 								<p class="font-semibold ml-[50px]">{$userStore?.user_metadata?.name}</p>
 								<Icon
