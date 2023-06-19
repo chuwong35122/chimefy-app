@@ -163,7 +163,7 @@
 
 	<div class="flex flex-row items-center my-4">
 		<a href="/contact/report-bug" target="_blank" rel="noopener noreferrer" class="underline"
-			>Found a bug? Report it here</a
+			>Report bugs?</a
 		>
 	</div>
 </div>
