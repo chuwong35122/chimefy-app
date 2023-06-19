@@ -46,7 +46,7 @@
 <div class="border-b-[1px] border-dark-400 w-full" />
 <!-- 3 -->
 <section class="relative overflow-hidden">
-	<div class="w-full h-[340px] p-8 flex flex-row justify-around items-center">
+	<div class="w-full h-[540px] p-8 flex flex-row justify-around items-center">
 		<div class="relative z-50">
 			<p class="text-xl font-bold text-amber-400">Step 3.</p>
 			<p class="text-4xl lg:text-5xl font-extrabold text-blue-600 text-shadow">
@@ -61,7 +61,7 @@
 				src="/images/landing/control-fingertip.png"
 				alt="Control music by yourself"
 				draggable="false"
-				class="w-[640px] h-[120px] z-10 absolute right-0 top-[200px] md:right-[100px] opacity-80 object-contain"
+				class="w-[540px] h-[460px] z-10 absolute right-0 top-[40px] skew-y-[8deg] skew-x-[-6deg] lg:right-[260px] opacity-80 object-contain"
 			/>
 		</div>
 	</div>
