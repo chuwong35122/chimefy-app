@@ -37,29 +37,29 @@ export const actions = {
 			queues: null
 		};
 
-			const { data } = await event.locals.supabase.from('session').insert(payload).select();
+		const { data } = await event.locals.supabase.from('session').insert(payload).select();
 
-			if (data && data[0] && data[0]?.id && data[0]?.uuid != null) {
-				const queueResponse = await event.locals.supabase
-					.from('session_queue')
-					.insert({
-						queues: [],
-						session_id: data[0]?.id,
-						session_uuid: data[0]?.uuid
-					})
-					.select();
+		if (data && data[0] && data[0]?.id && data[0]?.uuid != null) {
+			const queueResponse = await event.locals.supabase
+				.from('session_queue')
+				.insert({
+					queues: [],
+					session_id: data[0]?.id,
+					session_uuid: data[0]?.uuid
+				})
+				.select();
 
-				const _queueId = (queueResponse?.data as any)[0].id;
-				await event.locals.supabase
-					.from('session')
-					.update({ queues: _queueId })
-					.eq('id', data[0]?.id);
-				await event.locals.supabase
-					.from('session_member')
-					.insert({ members: [], session_uuid: data[0]?.uuid, session_id: data[0]?.id })
-					.select();
+			const _queueId = (queueResponse?.data as any)[0].id;
+			await event.locals.supabase
+				.from('session')
+				.update({ queues: _queueId })
+				.eq('id', data[0]?.id);
+			await event.locals.supabase
+				.from('session_member')
+				.insert({ members: [], session_uuid: data[0]?.uuid, session_id: data[0]?.id })
+				.select();
 
-				throw redirect(302, `/session/${data[0].uuid}`);
-			}
+			throw redirect(302, `/session/${data[0].uuid}`);
+		}
 	}
 };

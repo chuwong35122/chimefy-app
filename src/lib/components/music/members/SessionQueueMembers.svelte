@@ -74,7 +74,7 @@
 
 	onDestroy(async () => {
 		await channel.unsubscribe();
-		channelSubscriptionDestroyed.set(true)
+		channelSubscriptionDestroyed.set(true);
 	});
 </script>
 

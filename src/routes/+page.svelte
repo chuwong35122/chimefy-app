@@ -8,10 +8,12 @@
 </svelte:head>
 
 <div class="w-full">
-	<section class=h-[80vh]>
+	<section class="h-[80vh]">
 		<div class="grid place-content-center h-[600px] relative overflow-hidden">
 			<div class="flex flex-col items-center w-full h-full z-50 relative">
-				<h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold ml-2">Welcome to <span class="text-primary">Chimefy</span></h1>
+				<h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold ml-2">
+					Welcome to <span class="text-primary">Chimefy</span>
+				</h1>
 				<h2 class="ml-4 text-lg md:text-xl mt-4">
 					A place where you can sync <a
 						target="_blank"
@@ -25,7 +27,7 @@
 	</section>
 	<section class="w-full">
 		<div class="grid place-items-center">
-			<h3 class='text-3xl font-bold text-white'>How to use?</h3>
+			<h3 class="text-3xl font-bold text-white">How to use?</h3>
 		</div>
 		<HowToSteps />
 	</section>

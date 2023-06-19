@@ -9,8 +9,8 @@
 	import SecondaryButtonWrapper from '$lib/components/buttons/SecondaryButtonWrapper.svelte';
 	import { goto } from '$app/navigation';
 	import { fly } from 'svelte/transition';
-	import {PUBLIC_NODE_ENV} from '$env/static/public'
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
+	import { PUBLIC_NODE_ENV } from '$env/static/public';
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
 	export let data: PageData;
 	const { form, errors } = superForm(data.form);
@@ -27,9 +27,8 @@
 	<title>Create a Session</title>
 </svelte:head>
 
-
 <div class="p-10 bg-white/5 rounded-2xl duration-150 hover:bg-white/10 w-[500px]">
-	{#if PUBLIC_NODE_ENV === "development"}
+	{#if PUBLIC_NODE_ENV === 'development'}
 		<SuperDebug data={$form} />
 	{/if}
 	<form class="flex flex-col space-y-6" method="POST">
@@ -60,32 +59,32 @@
 			>Set this session private?</Toggle
 		>
 		{#if $form.is_private}
-    <div transition:fly={{y: 20, duration: 200}}>
-			<Label  class="space-y-2">
-				<label for="password" class="text-white">Set Session Password</label>
-				<ButtonGroup class="mb-2 w-full">
-					<Input
-						name="password"
-						required
-						bind:value={$form.password}
-						placeholder="Password"
-						color="green"
-						type={showPassword ? 'text' : 'password'}
-						defaultClass="placeholder:text-dark-300 w-full"
-					/>
-					<Button size="xs" on:click={() => (showPassword = !showPassword)}>
-						<Icon
-							icon={showPassword
-								? 'material-symbols:visibility'
-								: 'material-symbols:visibility-off'}
-							width={20}
-							height={20}
-							class="text-black"
+			<div transition:fly={{ y: 20, duration: 200 }}>
+				<Label class="space-y-2">
+					<label for="password" class="text-white">Set Session Password</label>
+					<ButtonGroup class="mb-2 w-full">
+						<Input
+							name="password"
+							required
+							bind:value={$form.password}
+							placeholder="Password"
+							color="green"
+							type={showPassword ? 'text' : 'password'}
+							defaultClass="placeholder:text-dark-300 w-full"
 						/>
-					</Button>
-				</ButtonGroup>
-			</Label>
-    </div>
+						<Button size="xs" on:click={() => (showPassword = !showPassword)}>
+							<Icon
+								icon={showPassword
+									? 'material-symbols:visibility'
+									: 'material-symbols:visibility-off'}
+								width={20}
+								height={20}
+								class="text-black"
+							/>
+						</Button>
+					</ButtonGroup>
+				</Label>
+			</div>
 		{/if}
 		{#if $errors?.name && $errors.name[0]}
 			<ErrorMessage message={$errors?.name[0]} />
@@ -100,7 +99,7 @@
 			<PrimaryButtonWrapper>Create Session!</PrimaryButtonWrapper>
 		</button>
 	</form>
-  <button on:click={() => goto('/session')} class="w-full my-4">
-    <SecondaryButtonWrapper>Go Back</SecondaryButtonWrapper>
-  </button>
+	<button on:click={() => goto('/session')} class="w-full my-4">
+		<SecondaryButtonWrapper>Go Back</SecondaryButtonWrapper>
+	</button>
 </div>

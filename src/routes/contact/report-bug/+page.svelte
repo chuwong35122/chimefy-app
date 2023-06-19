@@ -1,6 +1,3 @@
-<script lang="ts">
-</script>
-
 <svelte:head>
 	<title>Report bug 🐞</title>
 </svelte:head>
@@ -24,11 +21,12 @@
 			<h3 class="text-xl font-semibold mt-4">Instruction for reporting a bug</h3>
 			<p>1. <strong>Email's subject</strong> - Chimefy Bug Report: [Its brief behaviour]</p>
 			<p>
-				2. <strong>Your system details</strong> - In the email details state what's your OS (Windows, MacOS, Linux) and Web browser?
-				Please also provide the version.
+				2. <strong>Your system details</strong> - In the email details state what's your OS (Windows,
+				MacOS, Linux) and Web browser? Please also provide the version.
 			</p>
 			<p>
-				3. <strong>Who are you?</strong> - Please tell whether you are Spotify Premius user or not, Session member or admin, etc.
+				3. <strong>Who are you?</strong> - Please tell whether you are Spotify Premius user or not, Session
+				member or admin, etc.
 			</p>
 			<p>
 				4. <strong>How to reproduce thae bug?</strong> - Providing full detailed description on how to

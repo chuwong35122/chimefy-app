@@ -118,7 +118,6 @@
 		});
 	}
 
-
 	onMount(async () => {
 		window.onSpotifyWebPlaybackSDKReady = async () => {
 			SpotifyPlayer = new Spotify.Player({

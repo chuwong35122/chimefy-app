@@ -11,7 +11,7 @@
 
 	async function debounceSetVolume() {
 		try {
-			debouncedVolume = volume/100
+			debouncedVolume = volume / 100;
 			await SpotifyPlayer.setVolume(debouncedVolume);
 		} catch (e) {
 			console.log(e);

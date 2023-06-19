@@ -28,7 +28,7 @@
 	<title>Join a Session</title>
 </svelte:head>
 
-<div in:fly={{x: -1000, duration: 400}} class="rounded-2xl grid place-items-center mt-20">
+<div in:fly={{ x: -1000, duration: 400 }} class="rounded-2xl grid place-items-center mt-20">
 	<h1 class="text-4xl font-semibold">Join a Session</h1>
 	<div class="my-4" />
 

@@ -10,8 +10,7 @@
 	import { SendContactSchema } from '$lib/schema/contact.schema';
 	import emailjs from '@emailjs/browser';
 	import { toastValue } from '$lib/notification/toast';
-	import { fade, fly } from 'svelte/transition';
-	import Error from '../+error.svelte';
+	import { fade } from 'svelte/transition';
 	import {
 		PUBLIC_SERVICE_ID,
 		PUBLIC_TEMPLATE_ID,
@@ -34,7 +33,12 @@
 		await validate('subject', { update: true });
 		await validate('detail', { update: true });
 
-		if($errors?.email != undefined || $errors?.name != undefined || $errors?.subject != undefined || $errors?.detail != undefined) {
+		if (
+			$errors?.email != undefined ||
+			$errors?.name != undefined ||
+			$errors?.subject != undefined ||
+			$errors?.detail != undefined
+		) {
 			isLoading = false;
 			return;
 		}
@@ -58,7 +62,7 @@
 					message: 'Email has been sent!',
 					type: 'info'
 				});
-				goto('/')
+				goto('/');
 			}
 		} catch (e) {
 			hasErr = true;
