@@ -40,6 +40,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@emailjs/browser": "^3.11.0",
 		"@popperjs/core": "^2.11.6",
 		"@sentry/sveltekit": "^7.55.2",
 		"@supabase/auth-helpers-sveltekit": "^0.9.4",
