@@ -59,25 +59,8 @@
 	<div>
 		{#if $userStore?.id}
 			<div class="relative z-50">
-				<div class="block md:hidden">
-					{#if $userStore?.user_metadata?.avatar_url}
-						<div class="flex flex-row items-center group/profile cursor-pointer">
-							<div
-								class="relative z-10 w-12 rounded-full p-1 group-hover/profile:text-white bg-white/20 group-hover/profile:scale-105 group-hover/profile:bg-white/30 duration-150"
-							>
-								<img
-									id="profile-img"
-									src={$userStore?.user_metadata?.avatar_url}
-									alt="Spotify Profile"
-									draggable="false"
-									class="rounded-full w-[40px] h-[40px]"
-								/>
-							</div>
-						</div>
-					{/if}
-				</div>
 				<!-- Large Profile -->
-				<div class="hidden md:block md:w-[200px]">
+				<div class="md:w-[200px]">
 					{#if $userStore?.user_metadata?.avatar_url}
 						<div class="flex flex-row items-center group/profile cursor-pointer">
 							<div
@@ -92,7 +75,7 @@
 								/>
 							</div>
 							<div
-								class="bg-white/20 h-12 rounded-full flex flex-row items-center p-1 absolute left-0 group-hover/profile:scale-y-105"
+								class="bg-white/20 h-12 rounded-full hidden md:flex flex-row items-center p-1 absolute left-0 group-hover/profile:scale-y-105"
 							>
 								<p class="font-semibold ml-[50px]">{$userStore?.user_metadata?.name}</p>
 								<Icon
@@ -140,7 +123,6 @@
 			<!-- Login to Spotify -->
 			<div class="hover:scale-105 duration-150">
 				<a href={url} class="px-3">
-					<!-- <div>{url}</div> -->
 					<div class="flex flex-row items-center">
 						<Icon icon="logos:spotify-icon" width={24} height={24} />
 						<p
