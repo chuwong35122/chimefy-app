@@ -3,7 +3,6 @@ import { CreateSessionSchema } from '$lib/schema/session.schema';
 import { fail, redirect } from '@sveltejs/kit';
 import type { CreateMusicSession } from '$lib/interfaces/session/session.interface.js';
 import sha1 from 'sha1';
-import type { PostgrestError } from '@supabase/supabase-js';
 
 export const load = async (event) => {
 	const form = await superValidate(event, CreateSessionSchema);
