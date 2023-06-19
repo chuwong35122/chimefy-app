@@ -77,7 +77,7 @@
 	}
 
 	isPlayingStatus.subscribe(async (status) => {
-		console.log({status})
+		console.log({ status });
 		if (!$currentSessionQueue?.queues || !$currentSessionQueue?.queues?.length) {
 			return;
 		}

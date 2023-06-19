@@ -1,15 +1,14 @@
 <script>
 	import { page } from '$app/stores';
 	import PrimaryButtonWrapper from '../lib/components/buttons/PrimaryButtonWrapper.svelte';
-import { base } from '$app/paths'
+	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 
-let previousPage = base || '/';
+	let previousPage = base || '/';
 
-function goBack() {
-  goto(previousPage)
-}
-
+	function goBack() {
+		goto(previousPage);
+	}
 </script>
 
 <div class="mt-60 w-screen grid place-items-center">
@@ -18,7 +17,7 @@ function goBack() {
 		<p class="text-3xl">{$page?.error?.message}</p>
 		<div class="mt-4 grid place-items-center">
 			<p>Sorry, something just went wrong...</p>
-			<button on:click={goBack} class='mt-4'>
+			<button on:click={goBack} class="mt-4">
 				<PrimaryButtonWrapper>Go Back</PrimaryButtonWrapper>
 			</button>
 		</div>
