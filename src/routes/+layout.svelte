@@ -58,11 +58,7 @@
 	});
 
 	onMount(() => {
-		supabase.auth.onAuthStateChange(async (_, _session) => {
-			if (PUBLIC_NODE_ENV === 'development') {
-				console.log(_session);
-			}
-
+		const { data: authData } = supabase.auth.onAuthStateChange(async (_, _session) => {
 			if (!_session) {
 				await logout();
 				return;
@@ -90,6 +86,8 @@
 				spotifyUserProfile.set(profile);
 			}
 		});
+
+		return () => authData.subscription.unsubscribe();
 	});
 
 	onDestroy(() => {
