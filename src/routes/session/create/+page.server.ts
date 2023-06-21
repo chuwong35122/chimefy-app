@@ -5,20 +5,18 @@ import type { CreateMusicSession } from '$lib/interfaces/session/session.interfa
 import sha1 from 'sha1';
 
 export const load = async (event) => {
-	const form = await superValidate(event, CreateSessionSchema);
+	const form = await superValidate(CreateSessionSchema);
 
 	return { form };
 };
 
 export const actions = {
 	default: async (event) => {
-		const form = await superValidate(event, CreateSessionSchema);
+		const form = await superValidate(event.request, CreateSessionSchema);
 		const session = await event.locals.getSession();
 
 		if (!form.valid) {
-			return fail(400, {
-				form
-			});
+			return fail(400, { form });
 		}
 
 		if (!session || !session?.user) {
@@ -61,5 +59,7 @@ export const actions = {
 
 			throw redirect(302, `/session/${data[0].uuid}`);
 		}
+
+		return { form };
 	}
 };

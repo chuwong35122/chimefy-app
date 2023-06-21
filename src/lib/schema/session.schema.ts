@@ -1,3 +1,4 @@
+import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
 import { z } from 'zod';
 
 export const CreateSessionSchema = z
@@ -5,9 +6,11 @@ export const CreateSessionSchema = z
 		is_private: z.boolean({
 			required_error: "Session's privacvy is required!"
 		}),
-		type: z.string({
-			required_error: 'Music type is required!'
-		}),
+		type: z
+			.string({
+				required_error: 'Music type is required!'
+			})
+			.refine((val) => SESSION_MUSIC_TYPES.map((music) => music.name).includes(val)),
 		password: z
 			.string()
 			.min(6, 'Password is too short!')

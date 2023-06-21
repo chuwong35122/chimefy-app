@@ -13,7 +13,7 @@
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
 	export let data: PageData;
-	const { form, errors } = superForm(data.form);
+	const { form, errors, delayed } = superForm(data.form);
 
 	let showPassword = false;
 
@@ -44,18 +44,26 @@
 				color="green"
 				defaultClass="placeholder:text-dark-300 w-full"
 			/>
+			{#if $errors?.name && $errors.name[0]}
+				<ErrorMessage message={$errors?.name[0]} showBorder={false} />
+			{/if}
 		</Label>
 		<Label>
 			<span class="text-white">Music Type</span>
 			<Select
+				name="type"
 				underline
 				bind:value={$form.type}
 				placeholder="Select music type"
 				items={musicSessionTypes}
-				class="!text-white"
+				class="!text-white mb-2"
 			/>
+			{#if $errors?.type}
+				<ErrorMessage message={$errors?.type[0]} showBorder={false} />
+			{/if}
 		</Label>
-		<Toggle color="green" bind:checked={$form.is_private} class="text-white"
+		<!-- Note: Ignore the value type error -->
+		<Toggle name="is_private" color="green" bind:checked={$form.is_private} bind:value={$form.is_private} class="text-white"
 			>Set this session private?</Toggle
 		>
 		{#if $form.is_private}
@@ -83,20 +91,14 @@
 							/>
 						</Button>
 					</ButtonGroup>
+					{#if $errors?.password}
+						<ErrorMessage message={$errors?.password[0]} showBorder={false} />
+					{/if}
 				</Label>
 			</div>
 		{/if}
-		{#if $errors?.name && $errors.name[0]}
-			<ErrorMessage message={$errors?.name[0]} />
-		{/if}
-		{#if $errors?.type}
-			<ErrorMessage message={$errors?.type[0]} />
-		{/if}
-		{#if $errors?.password}
-			<ErrorMessage message={$errors?.password[0]} />
-		{/if}
 		<button>
-			<PrimaryButtonWrapper>Create Session!</PrimaryButtonWrapper>
+			<PrimaryButtonWrapper isLoading={$delayed}>Create Session!</PrimaryButtonWrapper>
 		</button>
 	</form>
 	<button on:click={() => goto('/session')} class="w-full my-4">
