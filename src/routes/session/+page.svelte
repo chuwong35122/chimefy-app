@@ -1,14 +1,18 @@
 <script lang="ts">
-	import { Button, ButtonGroup, Input, InputAddon, Tooltip } from 'flowbite-svelte';
+	import { Button, ButtonGroup, Input, InputAddon, TabItem, Tabs, Tooltip } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import { goto } from '$app/navigation';
 	import { toastValue } from '$lib/notification/toast';
 	import SessionList from '$lib/components/session/SessionList.svelte';
-	import type { MusicSession } from '$lib/interfaces/session/session.interface';
+	import type { MusicSession, MusicSessionInfo } from '$lib/interfaces/session/session.interface';
 	import { supabase } from '$lib/supabase/supabase';
 	import { fly } from 'svelte/transition';
+	import { userStore } from '$lib/supabase/user';
+	import SessionItem from '$lib/components/session/SessionItem.svelte';
+	import { listUserSession } from '$lib/session/search';
 
 	let input = '';
+	let privateSessions: MusicSessionInfo[] = [];
 
 	async function enterSession() {
 		try {
@@ -22,6 +26,13 @@
 			toastValue.set({ message: 'Session not found', type: 'error' });
 		}
 	}
+
+	userStore.subscribe(async (user) => {
+		if (user?.id && privateSessions.length === 0) {
+			const session = await listUserSession(user?.id);
+			privateSessions = session;
+		}
+	})
 </script>
 
 <svelte:head>
@@ -63,7 +74,21 @@
 			>Create new music session</button
 		>
 	</div>
-</div>
-<div class="grid place-items-center mt-[400px] my-20">
-	<SessionList />
+
+	<div class="mt-20 w-[400px] md:w-[500px] lg:w-[600px]">
+		<Tabs style="underline" contentClass="bg-dark-900 p-0">
+			<TabItem open title="Public Sessions" activeClasses="text-primary">
+				<div class="grid place-items-center">
+					<SessionList />
+				</div>
+			</TabItem>
+			<TabItem title="My Sessions" activeClasses="text-primary">
+				<div class="w-full">
+					{#each privateSessions as pSession, i}
+						<SessionItem session={pSession} index={i} isPrivate={pSession?.is_private} />
+					{/each}
+				</div>
+			</TabItem>
+		</Tabs>
+	</div>
 </div>

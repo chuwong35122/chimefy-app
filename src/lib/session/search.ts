@@ -34,6 +34,32 @@ export async function listSessions(): Promise<MusicSessionInfo[]> {
 	return ((data as any) ?? []) as MusicSessionInfo[];
 }
 
+export async function listUserSession(id: string): Promise<MusicSessionInfo[]> {
+	if (!id) return [];
+
+	console.log('uwu');
+
+	const { data, error } = await supabase
+		.from('session')
+		.select(
+			`
+			id, 
+			uuid, 
+			created_at, 
+			name,
+			is_private, 
+			type, 
+			session_queue( id, updated_since, queues ), 
+			created_by
+		`
+		)
+		.eq('created_by', id)
+		.order('created_at', { ascending: false });
+	console.log(data);
+
+	return ((data as any) ?? []) as MusicSessionInfo[];
+}
+
 export async function searchSessionList(name: string, type: string): Promise<MusicSessionInfo[]> {
 	const query = supabase.from('session').select(
 		`
