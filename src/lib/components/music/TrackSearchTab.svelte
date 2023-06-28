@@ -39,6 +39,12 @@
 			loading = false
 		}, 500);
 	}
+
+	$: if(loading && !debouncedSearchTerms) {
+		setTimeout(() => {
+			loading = false
+		}, 1000)
+	}
 </script>
 
 <div class="mt-6 px-4 w-full grid place-items-center">
