@@ -11,7 +11,6 @@
 	import { userStore } from '$lib/supabase/user';
 	import type { MusicSessionQueue } from '$lib/interfaces/session/queue.interface';
 
-	// TODO: Store session password and check before entering
 	export let data: { session: MusicSession; queues: MusicSessionQueue };
 	let { session, queues } = data;
 

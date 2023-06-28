@@ -51,7 +51,6 @@
 		"flowbite-svelte": "^0.29.13",
 		"moment": "^2.29.4",
 		"querystring": "^0.2.1",
-		"sha1": "^1.1.1",
 		"sveltekit-superforms": "^1.0.0",
 		"zod": "^3.21.4"
 	}

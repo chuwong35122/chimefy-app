@@ -64,6 +64,8 @@
 				return;
 			}
 
+			console.log(authData)
+
 			if (_session?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');
 			}

@@ -7,7 +7,6 @@ export const currentSession = writable<MusicSession>();
 export const currentSessionQueue = writable<MusicSessionQueue | null>(null);
 export const currentSessionMember = writable<SessionMember[]>([]);
 
-export const currentSessionPassword = writable('');
 export const currentSessionRole = writable<MusicSessionRole>('member');
 
 export const playingInfo = writable<MusicQueue>();
