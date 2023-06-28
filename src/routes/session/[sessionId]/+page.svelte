@@ -55,7 +55,7 @@
 		<div class="flex flex-col lg:flex-row w-full">
 			<TrackSearchTab />
 			<div class="w-full">
-				<div class="w-full grid place-items-center my-2">
+				<div class="w-full grid place-items-center my-2 mt-8">
 					<p class="text-2xl font-semibold">Queues</p>
 				</div>
 				<div class="w-full h-[592px] overflow-y-auto">

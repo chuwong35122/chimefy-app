@@ -5,14 +5,15 @@
 	import { Tooltip } from 'flowbite-svelte';
 	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
 	import { supabase } from '$lib/supabase/supabase';
-	// TODO: Create scroll animation
+	import { fade, fly } from 'svelte/transition';
+
 	let imgRef: HTMLImageElement;
+	let queues: MusicQueue[] = [];
 
 	function handleImageError() {
 		imgRef.src = '/logo/disc.png';
 	}
 
-	let queues: MusicQueue[] = [];
 
 	currentSessionQueue.subscribe((val) => {
 		if (val && val?.queues) {
@@ -34,7 +35,7 @@
 <!-- Each Queues -->
 <div class="w-full grid place-items-center overflow-x-hidden px-2">
 	{#each queues as queue, i}
-		<div
+		<div in:fly={{duration: 200, x: 200}} out:fade={{duration: 200}}
 			class={`mb-1 flex flex-row items-center w-full relative cursor-pointer h-20 hover:bg-black duration-200 rounded-md ${
 				queue?.track_uri === $playingInfo?.track_uri ? 'bg-white/10' : null
 			}`}
