@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
-	import { Label, Input, Button, Toggle, ButtonGroup, Select } from 'flowbite-svelte';
+	import { Label, Input, Toggle, Select } from 'flowbite-svelte';
 	import PrimaryButtonWrapper from '$lib/components/buttons/PrimaryButtonWrapper.svelte';
 	import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
 	import type { PageData } from './$types';
@@ -8,14 +7,11 @@
 	import ErrorMessage from '$lib/components/forms/ErrorMessage.svelte';
 	import SecondaryButtonWrapper from '$lib/components/buttons/SecondaryButtonWrapper.svelte';
 	import { goto } from '$app/navigation';
-	import { fly } from 'svelte/transition';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 
 	export let data: PageData;
 	const { form, errors, delayed } = superForm(data.form);
-
-	let showPassword = false;
 
 	const musicSessionTypes = SESSION_MUSIC_TYPES.map((type) => ({
 		name: type.name,
@@ -66,37 +62,6 @@
 		<Toggle name="is_private" color="green" bind:checked={$form.is_private} bind:value={$form.is_private} class="text-white"
 			>Set this session private?</Toggle
 		>
-		{#if $form.is_private}
-			<div transition:fly={{ y: 20, duration: 200 }}>
-				<Label class="space-y-2">
-					<label for="password" class="text-white">Set Session Password</label>
-					<ButtonGroup class="mb-2 w-full">
-						<Input
-							name="password"
-							required
-							bind:value={$form.password}
-							placeholder="Password"
-							color="green"
-							type={showPassword ? 'text' : 'password'}
-							defaultClass="placeholder:text-dark-300 w-full"
-						/>
-						<Button size="xs" on:click={() => (showPassword = !showPassword)}>
-							<Icon
-								icon={showPassword
-									? 'material-symbols:visibility'
-									: 'material-symbols:visibility-off'}
-								width={20}
-								height={20}
-								class="text-black"
-							/>
-						</Button>
-					</ButtonGroup>
-					{#if $errors?.password}
-						<ErrorMessage message={$errors?.password[0]} showBorder={false} />
-					{/if}
-				</Label>
-			</div>
-		{/if}
 		<button>
 			<PrimaryButtonWrapper isLoading={$delayed}>Create Session!</PrimaryButtonWrapper>
 		</button>

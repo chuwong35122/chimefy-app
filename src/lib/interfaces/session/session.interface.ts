@@ -7,7 +7,6 @@ export interface CreateMusicSession {
 	created_at?: Date;
 	uuid?: string;
 	name: string;
-	password: string | null;
 	is_private: boolean;
 	type: string;
 	queues: number | null;
@@ -18,7 +17,6 @@ export interface MusicSession {
 	uuid?: string;
 	created_at?: Date;
 	name: string;
-	password: string;
 	is_private: boolean;
 	type: string;
 	members: number | null;
@@ -31,7 +29,6 @@ export interface MusicSessionInfo {
 	uuid?: string;
 	created_at?: Date;
 	name: string;
-	password: string;
 	is_private: boolean;
 	type: string;
 	session_queue: MusicSessionQueue[];
