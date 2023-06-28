@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Label, Input, Toggle, Select } from 'flowbite-svelte';
+	import { Label, Input, Toggle, Select, Tooltip } from 'flowbite-svelte';
 	import PrimaryButtonWrapper from '$lib/components/buttons/PrimaryButtonWrapper.svelte';
 	import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
 	import type { PageData } from './$types';
@@ -9,6 +9,7 @@
 	import { goto } from '$app/navigation';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+	import Icon from '@iconify/svelte';
 
 	export let data: PageData;
 	const { form, errors, delayed } = superForm(data.form);
@@ -27,6 +28,14 @@
 	{#if PUBLIC_NODE_ENV === 'development'}
 		<SuperDebug data={$form} />
 	{/if}
+
+	<Tooltip
+		triggeredBy="[id=private-info]"
+		placement='right'
+	>
+		Private session will not be shown on the search section.
+	</Tooltip>
+
 	<form class="flex flex-col space-y-6" method="POST">
 		<h3 class="text-4xl font-semibold text-white p-0">Create Your Session</h3>
 		<Label class="space-y-2">
@@ -59,9 +68,20 @@
 			{/if}
 		</Label>
 		<!-- Note: Ignore the value type error -->
-		<Toggle name="is_private" color="green" bind:checked={$form.is_private} bind:value={$form.is_private} class="text-white"
-			>Set this session private?</Toggle
-		>
+		<div class="flex flex-row items-center">
+			<Toggle
+				name="is_private"
+				color="green"
+				bind:checked={$form.is_private}
+				bind:value={$form.is_private}
+				class="text-white">Set this session private?</Toggle
+			>
+			<Icon
+				icon="material-symbols:info"
+				id="private-info"
+				class="text-gray-400 hover:text-gray-200 duration-150 ml-2"
+			/>
+		</div>
 		<button>
 			<PrimaryButtonWrapper isLoading={$delayed}>Create Session!</PrimaryButtonWrapper>
 		</button>
