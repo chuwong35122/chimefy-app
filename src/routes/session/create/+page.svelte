@@ -29,10 +29,7 @@
 		<SuperDebug data={$form} />
 	{/if}
 
-	<Tooltip
-		triggeredBy="[id=private-info]"
-		placement='right'
-	>
+	<Tooltip triggeredBy="[id=private-info]" placement="right">
 		Private session will not be shown on the search section.
 	</Tooltip>
 

@@ -14,7 +14,6 @@
 		imgRef.src = '/logo/disc.png';
 	}
 
-
 	currentSessionQueue.subscribe((val) => {
 		if (val && val?.queues) {
 			queues = val?.queues ?? [];
@@ -35,7 +34,9 @@
 <!-- Each Queues -->
 <div class="w-full grid place-items-center overflow-x-hidden px-2">
 	{#each queues as queue, i}
-		<div in:fly={{duration: 200, x: 200}} out:fade={{duration: 200}}
+		<div
+			in:fly={{ duration: 200, x: 200 }}
+			out:fade={{ duration: 200 }}
 			class={`mb-1 flex flex-row items-center w-full relative cursor-pointer h-20 hover:bg-black duration-200 rounded-md ${
 				queue?.track_uri === $playingInfo?.track_uri ? 'bg-white/10' : null
 			}`}

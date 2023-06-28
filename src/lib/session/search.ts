@@ -37,8 +37,6 @@ export async function listSessions(): Promise<MusicSessionInfo[]> {
 export async function listUserSession(id: string): Promise<MusicSessionInfo[]> {
 	if (!id) return [];
 
-	console.log('uwu');
-
 	const { data, error } = await supabase
 		.from('session')
 		.select(

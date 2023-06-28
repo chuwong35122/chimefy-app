@@ -16,10 +16,10 @@
 	let loading = false;
 
 	async function debounce() {
-		loading = true
+		loading = true;
 		if (!$spotifyAccessToken) {
 			trackSearchResults = [];
-			loading = false
+			loading = false;
 			return;
 		}
 
@@ -36,14 +36,14 @@
 				$spotifyAccessToken?.access_token
 			);
 			trackSearchResults = tracks;
-			loading = false
+			loading = false;
 		}, 500);
 	}
 
-	$: if(loading && !debouncedSearchTerms) {
+	$: if (loading && !debouncedSearchTerms) {
 		setTimeout(() => {
-			loading = false
-		}, 1000)
+			loading = false;
+		}, 1000);
 	}
 </script>
 
@@ -58,17 +58,15 @@
 	</form>
 	<div class="w-full h-[400px] lg:h-[560px] overflow-y-auto overflow-x-hidden">
 		{#if loading}
-		<div class="w-full h-full grid place-items-center">
-			<Spinner size='10' color='green' />
-		</div>
-		{:else}
-		{#if trackSearchResults.length > 0}
+			<div class="w-full h-full grid place-items-center">
+				<Spinner size="10" color="green" />
+			</div>
+		{:else if trackSearchResults.length > 0}
 			{#each trackSearchResults as track}
 				<MusicSearchResult {track} />
 			{/each}
 		{:else}
 			<div class="h-[100px]" />
-		{/if}
 		{/if}
 	</div>
 </div>

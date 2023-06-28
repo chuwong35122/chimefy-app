@@ -32,7 +32,7 @@
 			const session = await listUserSession(user?.id);
 			privateSessions = session;
 		}
-	})
+	});
 </script>
 
 <svelte:head>

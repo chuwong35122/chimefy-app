@@ -13,7 +13,7 @@
 	}
 </script>
 
-<Tooltip triggeredBy="[id=copy-id-btn]" placement='left'>Copy Session's ID</Tooltip>
+<Tooltip triggeredBy="[id=copy-id-btn]" placement="left">Copy Session's ID</Tooltip>
 {#if $currentSession?.is_private}
 	<Tooltip triggeredBy="[id='isPrivate-icon']"
 		>{$currentSession?.is_private
