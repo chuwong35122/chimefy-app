@@ -61,7 +61,7 @@
 				src="/images/landing/control-fingertip.png"
 				alt="Control music by yourself"
 				draggable="false"
-				class="w-[540px] h-[460px] z-10 absolute right-0 top-[40px] skew-y-[8deg] skew-x-[-6deg] lg:right-[260px] opacity-80 object-contain"
+				class="w-[640px] h-[560px] z-10 absolute right-0 top-[-100px] skew-y-[6deg] skew-x-[-6deg] lg:right-[260px] opacity-80 object-contain"
 			/>
 		</div>
 	</div>
