@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	import { fly, fade } from 'svelte/transition';
 	export let url = '';
 	const pageTransitionDuration = 250;
