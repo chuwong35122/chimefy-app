@@ -2,7 +2,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 import * as Sentry from '@sentry/sveltekit';
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, PUBLIC_NODE_ENV } from '$env/static/public';
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
-import type { Handle, HandleServerError } from '@sveltejs/kit';
+import { error, type Handle, type HandleServerError } from '@sveltejs/kit';
 
 export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
 	event.locals.supabase = createSupabaseServerClient({
@@ -24,12 +24,10 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 		return session;
 	};
 
-	if ((await event.locals.getSession()) == null) {
-		if (event.url.pathname.startsWith('/session')) {
-			return new Response('Redirect', {
-				status: 303,
-				headers: { Location: '/' }
-			});
+	if (event.url.pathname.startsWith('/session')) {
+		const session = await event.locals.getSession();
+		if (!session) {
+			throw error(303, '/');
 		}
 	}
 
