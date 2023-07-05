@@ -7,7 +7,8 @@
 	import NavLink from './NavLink.svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { PUBLIC_SITE_URL, PUBLIC_NODE_ENV } from '$env/static/public';
+	import { PUBLIC_SITE_URL } from '$env/static/public';
+	import { toastValue } from '$lib/notification/toast';
 
 	let url = PUBLIC_SITE_URL;
 	let isLoading = false;
@@ -24,13 +25,10 @@
 
 		if (data?.url) {
 			url = data.url;
-			if (PUBLIC_NODE_ENV === 'development') {
-				console.log(data.url);
-			}
 		}
 
 		if (error) {
-			console.log(error);
+			toastValue.set({ message: error.message, type: 'error' })
 		}
 	});
 </script>

@@ -47,7 +47,6 @@
 				})
 				.eq('session_id', $currentSession?.id);
 		} catch (err) {
-			console.log(err);
 			toastValue.set({ message: `Cannot add track`, type: 'error' });
 		}
 	}
