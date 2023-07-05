@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { toastValue } from '$lib/notification/toast';
 	import { Button, Modal, Tooltip } from 'flowbite-svelte';
-	import { currentSession } from '$lib/session/session';
+	import { currentSession, currentSessionRole } from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import Chip from '../UI/Chip.svelte';
 	import { supabase } from '$lib/supabase/supabase';
@@ -81,18 +81,20 @@
 		</div>
 	</div>
 	<div class="flex flex-row items-center">
-		<button
-			id="delete-id-btn"
-			on:click={handleOpenDeleteModal}
-			class="hover:scale-[1.1] duration-200 mr-4"
-		>
-			<Icon
-				icon="mdi:delete"
-				width={30}
-				height={30}
-				class="text-red-800 hover:text-red-700 duration-200"
-			/>
-		</button>
+		{#if $currentSessionRole === 'admin'}
+			<button
+				id="delete-id-btn"
+				on:click={handleOpenDeleteModal}
+				class="hover:scale-[1.1] duration-200 mr-4"
+			>
+				<Icon
+					icon="mdi:delete"
+					width={30}
+					height={30}
+					class="text-red-800 hover:text-red-700 duration-200"
+				/>
+			</button>
+		{/if}
 		<button id="copy-id-btn" on:click={onCopySessionId} class="hover:scale-[1.1] duration-200">
 			<Icon
 				icon="material-symbols:content-copy"

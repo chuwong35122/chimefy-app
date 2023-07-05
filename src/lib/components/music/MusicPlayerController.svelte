@@ -164,10 +164,7 @@
 	<div class="flex flex-row items-center justify-between">
 		<TrackPreview />
 		<div class="flex flex-col items-center">
-			{#if $currentSessionRole === 'admin'}
-				<ControlButtons {onBroadcastSignal} {onForwardTrack} {onBackwardTrack} />
-			{/if}
-
+			<ControlButtons {onBroadcastSignal} {onForwardTrack} {onBackwardTrack} />
 			{#if $currentSession?.id}
 				<MemberPlayerListener {channel} {onBroadcastSignal} />
 			{/if}
