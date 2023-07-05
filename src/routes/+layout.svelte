@@ -21,7 +21,7 @@
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
 
 	export let data;
-	let {supabase, session, pathName} = data;
+	let { supabase, session, pathName } = data;
 	$: ({ supabase, session, pathName } = data);
 
 	let timer: NodeJS.Timer;
@@ -59,7 +59,9 @@
 	});
 
 	onMount(() => {
-		const { data: {subscription} } = supabase.auth.onAuthStateChange(async (event, _session) => {
+		const {
+			data: { subscription }
+		} = supabase.auth.onAuthStateChange(async (event, _session) => {
 			if (!_session) {
 				await logout();
 				return;
@@ -92,7 +94,7 @@
 
 		return () => {
 			subscription.unsubscribe();
-		}
+		};
 	});
 
 	onDestroy(() => {
