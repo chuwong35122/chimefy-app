@@ -1,17 +1,6 @@
 <script lang="ts">
 	import FaqSection from '$lib/components/landing/FAQSection.svelte';
-	import { Alert } from 'flowbite-svelte';
 	import HowToSteps from '../lib/components/landing/HowToSteps.svelte';
-	import { fly } from 'svelte/transition';
-	import { userStore } from '$lib/supabase/user';
-	import { onMount } from 'svelte';
-	import { detect } from 'detect-browser';
-
-	let browserType: string | undefined;
-	onMount(() => {
-		const browser = detect();
-		browserType = browser?.name;
-	});
 </script>
 
 <svelte:head>
@@ -19,15 +8,6 @@
 </svelte:head>
 
 <div class="w-full">
-	{#if !$userStore?.id && browserType === 'chrome'}
-		<div in:fly={{ y: -100, duration: 1250 }} class="w-96 md:w-[600px] mx-auto mt-4">
-			<Alert color="yellow">
-				<span class="font-medium">Message from dev!</span> This app works best with Safari, Mozilla,
-				or Edge (not Chrome or Chromium). Chrome users may require
-				<span class="underline">several attempts</span> of clicking Login button.
-			</Alert>
-		</div>
-	{/if}
 	<section class="h-[80vh]">
 		<div class="grid place-content-center h-[600px] relative overflow-hidden">
 			<div class="flex flex-col items-center w-full h-full z-50 relative">
