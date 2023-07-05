@@ -1,4 +1,4 @@
-<script lang="ts">
+ <script lang="ts">
 	import { Dropdown, DropdownItem, Spinner } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import { SPOTIFY_AUTH_SCOPES } from '$lib/spotify/spotify';
@@ -9,6 +9,7 @@
 	import { onMount } from 'svelte';
 	import { PUBLIC_SITE_URL } from '$env/static/public';
 	import { toastValue } from '$lib/notification/toast';
+	import {PUBLIC_SUPPORT_URL} from '$env/static/public'
 
 	let url = PUBLIC_SITE_URL;
 	let isLoading = false;
@@ -96,7 +97,7 @@
 							>
 								<div class="flex flex-row items-center">
 									<Icon icon="mdi:gift" class="h-4 w-4 mr-2" />
-									<p class="text-sm font-medium">Support Chimefy</p>
+									<a target="_blank" rel="noopener noreferrer" href={PUBLIC_SUPPORT_URL} class="text-sm font-medium">Support Chimefy</a>
 								</div>
 							</DropdownItem>
 							<form method="POST" action="/signout">

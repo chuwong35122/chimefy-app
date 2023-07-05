@@ -2,6 +2,7 @@
 	import { userStore } from '$lib/supabase/user';
 	import Icon from '@iconify/svelte';
 	import moment from 'moment';
+	import {PUBLIC_SUPPORT_URL} from '$env/static/public'
 
 	let loggedout = false;
 	let createdSinsce = moment($userStore?.created_at).format('MMMM Do YYYY, h:mm:ss a');
@@ -42,7 +43,7 @@
 					class="text-lg text-black bg-primary-500 rounded-full p-1.5 w-full flex flex-row items-center justify-center hover:scale-105 duration-150 mt-4 shadow-md shadow-primary-600/50"
 				>
 					<Icon icon="mdi:gift" class="w-6 h-6 mr-2" />
-					<p>Support Chimefy!</p>
+					<a target="_blank" rel="noopener noreferrer" href={PUBLIC_SUPPORT_URL}>Support Chimefy!</a>
 				</button>
 			</div>
 		</div>
