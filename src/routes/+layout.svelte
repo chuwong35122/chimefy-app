@@ -48,7 +48,6 @@
 			await reloginAfterTokenRefreshed($page?.url);
 			return;
 		} else if ($hasRefreshedToken && remainingTokenTime <= 0) {
-			console.log('Token refreshed!');
 			await handleRefreshSession();
 		}
 	});
@@ -60,8 +59,6 @@
 			if (!_session) {
 				return;
 			}
-
-			console.log(`Welcome ${_session.user?.user_metadata?.full_name}!`);
 
 			if (_session?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');

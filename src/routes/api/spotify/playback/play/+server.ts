@@ -8,7 +8,6 @@ export const POST: RequestHandler = async ({ fetch, request }) => {
 	const req = request.clone();
 	const _req = await req.json();
 	const { access_token, device_id, uris, position_ms } = _req;
-	// console.log(getBearerToken(access_token));
 
 	const res = await fetch(`${PUBLIC_SPOTIFY_BASE_URL}/me/player/play?device_id=${device_id}`, {
 		headers: {
