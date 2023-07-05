@@ -3,7 +3,7 @@
 	import Icon from '@iconify/svelte';
 	import { SPOTIFY_AUTH_SCOPES } from '$lib/spotify/spotify';
 	import { supabase } from '$lib/supabase/supabase';
-	import { logout, userStore } from '$lib/supabase/user';
+	import {  userStore } from '$lib/supabase/user';
 	import NavLink from './NavLink.svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
@@ -33,10 +33,6 @@
 			console.log(error);
 		}
 	});
-
-	async function handleLogout() {
-		await logout();
-	}
 </script>
 
 <div class="w-full px-4 mt-1 flex flex-row items-center justify-between">
@@ -105,13 +101,15 @@
 									<p class="text-sm font-medium">Support Chimefy</p>
 								</div>
 							</DropdownItem>
-							<DropdownItem on:click={handleLogout} defaultClass="py-2 px-4">
-								<div class="flex flex-row items-center">
-									<Icon icon="ion:exit" class="h-4 w-4 mr-2" />
-									<p class="text-sm font-medium">Logout</p>
-								</div>
-							</DropdownItem>
-						</Dropdown>
+							<form method="POST" action="/signout">
+								<DropdownItem defaultClass="py-2 px-4">
+									<div class="flex flex-row items-center">
+										<Icon icon="ion:exit" class="h-4 w-4 mr-2" />
+										<p class="text-sm font-medium">Logout</p>
+									</div>
+								</DropdownItem>
+							</form>
+							</Dropdown>
 					{/if}
 				</div>
 			</div>
