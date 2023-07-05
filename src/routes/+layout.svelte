@@ -7,7 +7,7 @@
 	import { invalidate } from '$app/navigation';
 	import { Modal } from 'flowbite-svelte';
 	import SpotifyPremiumInfoModal from '$lib/components/modals/SpotifyPremiumInfoModal.svelte';
-	import { logout, reloginAfterTokenRefreshed, userStore } from '$lib/supabase/user';
+	import { reloginAfterTokenRefreshed, userStore } from '$lib/supabase/user';
 	import {
 		setTokenStore,
 		spotifyUserProfile,
@@ -33,11 +33,6 @@
 		}
 	});
 
-	async function handleLogout() {
-		isSpotifyPremiumModalOpen = false;
-		await logout();
-	}
-
 	// Refresh token once the token is about to expire (10 seconds left).
 	spotifyAccessToken.subscribe(async ({ access_token, refresh_token, since }) => {
 		clearInterval(timer);
@@ -61,9 +56,8 @@
 	onMount(() => {
 		const {
 			data: { subscription }
-		} = supabase.auth.onAuthStateChange(async (event, _session) => {
+		} = supabase.auth.onAuthStateChange(async (_, _session) => {
 			if (!_session) {
-				await logout();
 				return;
 			}
 
@@ -113,7 +107,7 @@
 </script>
 
 <Modal open={isSpotifyPremiumModalOpen} permanent size="lg" class="modal-glass">
-	<SpotifyPremiumInfoModal on:logout={handleLogout} />
+	<SpotifyPremiumInfoModal />
 </Modal>
 <div class="w-screen h-screen overflow-x-hidden bg-dark-900">
 	<NavBar />
