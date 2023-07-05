@@ -1,14 +1,8 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import SecondaryButtonWrapper from '$lib/components/buttons/SecondaryButtonWrapper.svelte';
 	import { spotifyUserProfile } from '$lib/spotify/spotify';
 	import { userStore } from '$lib/supabase/user';
 	import { Spinner } from 'flowbite-svelte';
-
-	const dispatcher = createEventDispatcher();
-	function handleLogout() {
-		dispatcher('logout');
-	}
 </script>
 
 {#if $userStore}
@@ -26,9 +20,11 @@
 		</p>
 		<div class="w-full h-4" />
 		<p class="text-sm">Please logout and login with a Premium Spotify account.</p>
-		<button on:click={handleLogout} class="w-full my-4">
-			<SecondaryButtonWrapper>Logout</SecondaryButtonWrapper>
-		</button>
+		<form method="POST" action="/signout">
+			<button class="w-full my-4">
+				<SecondaryButtonWrapper>Logout</SecondaryButtonWrapper>
+			</button>
+		</form>
 
 		<a
 			target="_blank"
