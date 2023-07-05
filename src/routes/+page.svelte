@@ -5,13 +5,13 @@
 	import { fly } from 'svelte/transition';
 	import { userStore } from '$lib/supabase/user';
 	import { onMount } from 'svelte';
-	import {detect} from 'detect-browser'
+	import { detect } from 'detect-browser';
 
 	let browserType: string | undefined;
 	onMount(() => {
 		const browser = detect();
-		browserType = browser?.name
-	})
+		browserType = browser?.name;
+	});
 </script>
 
 <svelte:head>
@@ -22,8 +22,9 @@
 	{#if !$userStore?.id && browserType === 'chrome'}
 		<div in:fly={{ y: -100, duration: 1250 }} class="w-96 md:w-[600px] mx-auto mt-4">
 			<Alert color="yellow">
-				<span class="font-medium">Message from dev!</span> This app works best with Safari, Mozilla, or Edge
-				(not Chrome or Chromium). Chrome users may require <span class='underline'>several attempts</span> of clicking Login button.
+				<span class="font-medium">Message from dev!</span> This app works best with Safari, Mozilla,
+				or Edge (not Chrome or Chromium). Chrome users may require
+				<span class="underline">several attempts</span> of clicking Login button.
 			</Alert>
 		</div>
 	{/if}
