@@ -36,6 +36,11 @@
 </script>
 
 <svelte:head>
+	<meta charset="UTF-8">
+  <meta name="description" content="Join a Session">
+  <meta name="keywords" content="chimefy, spotify, listen together, join session, create session, public session, private session">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<title>Join a Session</title>
 </svelte:head>
 
