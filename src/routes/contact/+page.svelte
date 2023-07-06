@@ -75,6 +75,11 @@
 </script>
 
 <svelte:head>
+	<meta charset="UTF-8">
+  <meta name="description" content="Contact Chimefy">
+  <meta name="keywords" content="chimefy, spotify, listen together, contact chimefy">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<title>Contact Chimefy</title>
 </svelte:head>
 
