@@ -86,12 +86,12 @@
 									<p class="text-sm font-medium">Profile</p>
 								</div>
 							</DropdownItem>
-							<DropdownItem class="hover:mouse-pointer">
+							<!-- <DropdownItem class="hover:mouse-pointer">
 								<div class="flex flex-row items-center">
 									<Icon icon="mdi:cog" class="h-4 w-4 mr-2" />
 									<p class="text-sm font-medium">Setting</p>
 								</div>
-							</DropdownItem>
+							</DropdownItem> -->
 							<DropdownItem
 								defaultClass="bg-primary-200 hover:bg-primary-400 duration-150 py-2 px-4 text-black"
 							>
