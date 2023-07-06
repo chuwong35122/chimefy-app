@@ -1,13 +1,32 @@
 <script lang="ts">
 	import FaqSection from '$lib/components/landing/FAQSection.svelte';
 	import HowToSteps from '$lib/components/landing/HowToSteps.svelte';
+	import seo from '$lib/constants/seo';
 </script>
 
 <svelte:head>
-	<meta charset="UTF-8">
-  <meta name="description" content="Listen to Spotify music together with friends">
-  <meta name="keywords" content="chimefy, spotify, listen together, sync spotify">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8" />
+	<meta name="description" content="Listen to Spotify music together with friends" />
+	<meta name="keywords" content="chimefy, spotify, listen together, sync spotify" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<!-- Open Graph Meta Tags -->
+	<meta property="og:title" content={seo.appTitle} />
+	<meta
+		property="og:description"
+		content={seo.appDescription}
+	/>
+	<meta property="og:image" content={seo.image} />
+	<meta property="og:url" content={seo.appUrl} />
+	<meta property="og:type" content="website" />
+
+	<!-- Twitter Meta Tags -->
+	<meta name="twitter:title" content={seo.appTitle} />
+	<meta name="twitter:description" content={seo.appDescription} />
+	<meta name="twitter:card" content={seo.twitterCard} />
+	<meta name="twitter:image" content={seo.image} />
+	<meta name="twitter:image:alt" content={seo.imageAlt} />
+
 	<title>Welcome to Chimefy</title>
 </svelte:head>
 
@@ -16,7 +35,7 @@
 		<div class="grid place-content-center h-[600px] relative overflow-hidden">
 			<div class="flex flex-col items-center w-full h-full z-50 relative">
 				<h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold ml-2">
-					Welcome to <span class="text-primary">Chimefy 
+					Welcome to <span class="text-primary">Chimefy </span>
 				</h1>
 				<h2 class="ml-4 text-lg md:text-xl mt-4">
 					A place where you can sync <a
