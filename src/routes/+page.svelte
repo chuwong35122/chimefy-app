@@ -1,6 +1,7 @@
 <script lang="ts">
 	import FaqSection from '$lib/components/landing/FAQSection.svelte';
 	import HowToSteps from '$lib/components/landing/HowToSteps.svelte';
+	import UseCase from '$lib/components/landing/UseCase.svelte';
 	import seo from '$lib/constants/seo';
 </script>
 
@@ -37,14 +38,7 @@
 				<h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold ml-2">
 					Welcome to <span class="text-primary">Chimefy </span>
 				</h1>
-				<h2 class="ml-4 text-lg md:text-xl mt-4">
-					A place where you can sync <a
-						target="_blank"
-						rel="noreferrer"
-						href="https://www.spotify.com/"
-						class="text-primary underline underline-offset-1">Spotify music</a
-					> with your friends!
-				</h2>
+				<UseCase />
 			</div>
 		</div>
 	</section>
