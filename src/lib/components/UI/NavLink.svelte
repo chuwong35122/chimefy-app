@@ -10,6 +10,8 @@
 
 {#if isActive}
 	<a
+		aria-disabled="false"
+    aria-label={`Go to ${routeName}`}
 		href={route}
 		class={`flex flex-row items-center p-2 px-3 mx-2 duration-200 hover:text-white ${
 			$page.route.id === route
@@ -25,6 +27,8 @@
 {:else}
 	<button
 		disabled
+		aria-disabled="true"
+    aria-label={`Go to ${routeName}`}
 		class={`flex flex-row items-center p-2 px-3 text-dark-400 ${
 			!isActive ? 'cursor-not-allowed' : null
 		}`}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
-import { onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 
 	let interval: NodeJS.Timeout;
@@ -28,6 +28,7 @@ import { onDestroy, onMount } from 'svelte';
 	<div in:fly={{ duration: 600, y: -40 }}>
 		<h2 class="ml-4 text-lg md:text-xl mt-4">
 			A place where you can sync <a
+				aria-label="Spotify music"
 				target="_blank"
 				rel="noreferrer"
 				href="https://www.spotify.com/"

@@ -13,6 +13,7 @@
 		<div class="my-2" />
 		<p>
 			Please report any weird behaviour via this <a
+				aria-label="Email Chimefy"
 				href="mailto: chuchuwiiii.dev@gmail.com"
 				class="underline text-blue-500">email</a
 			>.

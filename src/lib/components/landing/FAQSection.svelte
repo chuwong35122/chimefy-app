@@ -16,12 +16,14 @@
 			</span>
 			<p class="mb-2 text-dark-100">
 				All the queues added were saved in the database. Once played, using the <a
+					aria-label="Spotify API"
 					target="_blank"
 					rel="noopener noreferrer"
 					href="https://developer.spotify.com/documentation/web-api"
 					class="underline text-blue-500">Spotify API</a
 				>, the song is requested to be played using
 				<a
+					aria-label="Spotify Web SDK"
 					target="_blank"
 					rel="noopener noreferrer"
 					href="https://developer.spotify.com/documentation/web-playback-sdk"
@@ -53,6 +55,7 @@
 			</span>
 			<p class="mb-2 text-dark-100">
 				You can select and purchase your premium plan <a
+					aria-label="View Spotify Premium Plans"
 					target="_blank"
 					rel="noopener noreferrer"
 					href="https://support.spotify.com/category/plan-help/"
