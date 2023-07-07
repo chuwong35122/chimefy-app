@@ -35,7 +35,7 @@
 </script>
 
 <div class="w-full px-4 mt-1 flex flex-row items-center justify-between">
-	<a href="/" class="grid place-items-center">
+	<a href="/" aria-label='Chimefy Home' class="grid place-items-center">
 		<div class="flex items-center">
 			<img src="/logo/chimefy/logo_dark.svg" alt="Chimefy Logo" class="w-8 h-8 " />
 			<div class="ml-4 text-lg font-semibold hidden md:block">Chimefy</div>
@@ -97,7 +97,7 @@
 							>
 								<div class="flex flex-row items-center">
 									<Icon icon="mdi:gift" class="h-4 w-4 mr-2" />
-									<a target="_blank" rel="noopener noreferrer" href={PUBLIC_SUPPORT_URL} class="text-sm font-medium">Support Chimefy</a>
+									<a aria-label="Support Chimefy" target="_blank" rel="noopener noreferrer" href={PUBLIC_SUPPORT_URL} class="text-sm font-medium">Support Chimefy</a>
 								</div>
 							</DropdownItem>
 							<form method="POST" action="/signout">
@@ -119,7 +119,7 @@
 		{:else}
 			<!-- Login to Spotify -->
 			<div class="hover:scale-105 duration-150">
-				<a href={url} class="px-3">
+				<a href={url} aria-label="Login with Spotify" class="px-3">
 					<div class="flex flex-row items-center">
 						<Icon icon="logos:spotify-icon" width={24} height={24} />
 						<p

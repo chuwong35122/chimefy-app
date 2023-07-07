@@ -50,11 +50,10 @@
 				</form>
 				
 				<button
-					on:click={() => console.log('Support Chimefy')}
 					class="text-lg text-black bg-primary-500 rounded-full p-1.5 w-full flex flex-row items-center justify-center hover:scale-105 duration-150 mt-4 shadow-md shadow-primary-600/50"
 				>
 					<Icon icon="mdi:gift" class="w-6 h-6 mr-2" />
-					<a target="_blank" rel="noopener noreferrer" href={PUBLIC_SUPPORT_URL}>Support Chimefy!</a>
+					<a target="_blank" rel="noopener noreferrer" href={PUBLIC_SUPPORT_URL} aria-label="Support Chimefy">Support Chimefy!</a>
 				</button>
 			</div>
 		</div>

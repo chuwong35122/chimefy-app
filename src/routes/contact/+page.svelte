@@ -171,7 +171,7 @@
 	</div>
 
 	<div class="flex flex-row items-center my-4">
-		<a href="/contact/report-bug" target="_blank" rel="noopener noreferrer" class="underline"
+		<a href="/contact/report-bug" aria-label="Report bugs" target="_blank" rel="noopener noreferrer" class="underline"
 			>Report bugs?</a
 		>
 	</div>
