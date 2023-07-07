@@ -1,11 +1,17 @@
 <script lang="ts">
 	import { userStore } from '$lib/supabase/user';
 	import Icon from '@iconify/svelte';
-	import moment from 'moment';
 	import {PUBLIC_SUPPORT_URL} from '$env/static/public'
 
 	let loggedout = false;
-	let createdSinsce = moment($userStore?.created_at).format('MMMM Do YYYY, h:mm:ss a');
+	let createdSince = ''
+
+	userStore.subscribe(user => {
+		if(user) {
+			createdSince = new Date(user.created_at).toDateString()
+		}
+	})
+
 </script>
 
 <svelte:head>
@@ -32,7 +38,7 @@
 				<p class="text-xl">Hello there,</p>
 				<p class="text-3xl font-bold">{$userStore?.user_metadata?.name ?? ''}</p>
 				<p class="text-dark-200">Your email: {$userStore?.email ?? ''}</p>
-				<p class="text-dark-200">Join sinced: {createdSinsce}</p>
+				<p class="text-dark-200">Join sinced: {createdSince}</p>
 
 				<form method="POST" action="/signout">
 					<button
