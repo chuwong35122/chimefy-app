@@ -2,7 +2,6 @@
 	import '../styles/global.css';
 	import NavBar from '$lib/components/UI/NavBar.svelte';
 	import Toast from '$lib/components/notification/Toast.svelte';
-	import moment from 'moment';
 	import { onDestroy, onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
 	import { Modal } from 'flowbite-svelte';
@@ -38,10 +37,10 @@
 		clearInterval(timer);
 		if (!access_token || !since) return;
 
-		const now = moment();
-		const sinceMs = moment(since).valueOf();
+		const now = new Date().getTime();
+		const timeDiff = now - since.getTime();
 
-		const remainingTokenTime = 3_600_000 - (sinceMs - now.valueOf());
+		const remainingTokenTime = 3_600_000 - timeDiff;
 
 		// Ask the user to re-login
 		if ($hasRefreshedToken && remainingTokenTime <= 0) {
