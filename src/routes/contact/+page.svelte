@@ -97,7 +97,7 @@
 			class="h-full invisible md:visible w-0 md:w-[600px] overflow-hidden cover relative group/cover-img"
 		>
 			<img
-				src="/images/contact/paper-plane.png"
+				src="/images/contact/paper-plane.avif"
 				alt="Contact us"
 				class="h-full object-cover hover:scale-110 duration-[2000ms] transform-o"
 			/>

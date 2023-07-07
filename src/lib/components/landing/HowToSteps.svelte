@@ -10,7 +10,7 @@
 		</div>
 		<div>
 			<img
-				src="/images/landing/login-page.png"
+				src="/images/landing/login-page.avif"
 				alt="Spotify login page"
 				draggable="false"
 				class="w-[500px] h-[600px] skew-y-6 skew-x-[-8deg] z-10 absolute top-[100px] lg:top-[-30px] right-0 md:right-[200px] opacity-60"
@@ -35,7 +35,7 @@
 		</div>
 		<div>
 			<img
-				src="/images/landing/invite-anyone.png"
+				src="/images/landing/invite-anyone.avif"
 				alt="Invite anyone into session"
 				draggable="false"
 				class="w-[600px] h-[700px] skew-y-[-6deg] skew-x-[8deg] z-10 absolute top-[-100px] lg:top-[-100px] left-0 md:left-[200px] opacity-75"
@@ -58,7 +58,7 @@
 		</div>
 		<div>
 			<img
-				src="/images/landing/control-fingertip.png"
+				src="/images/landing/control-fingertip.avif"
 				alt="Control music by yourself"
 				draggable="false"
 				class="w-[640px] h-[560px] z-10 absolute right-0 top-[-100px] skew-y-[6deg] skew-x-[-6deg] lg:right-[260px] opacity-80 object-contain"
