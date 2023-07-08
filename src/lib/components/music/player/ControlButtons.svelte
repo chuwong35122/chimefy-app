@@ -22,6 +22,8 @@
 <div id="controller-section" class="flex flex-row items-center mb-2">
 	<button
 		disabled={$currentSessionRole === 'member'}
+		aria-disabled={$currentSessionRole === 'member'}
+		aria-label='Go to previous track'
 		on:click={onBackwardTrack}
 		class="disabled:text-dark-400"
 	>
@@ -33,6 +35,8 @@
 	<button
 		disabled={$currentSessionRole === 'member'}
 		on:click={$isPlayingStatus ? togglePause : togglePlay}
+		aria-disabled={$currentSessionRole === 'member'}
+		aria-label={$isPlayingStatus ? "Pause track" : "Play track"}
 		class="disabled:text-dark-400"
 	>
 		{#if $isPlayingStatus}
@@ -50,6 +54,8 @@
 	<button
 		disabled={$currentSessionRole === 'member'}
 		on:click={onForwardTrack}
+		aria-disabled={$currentSessionRole === 'member'}
+		aria-label='Go to next track'
 		class="disabled:text-dark-400"
 	>
 		<Icon

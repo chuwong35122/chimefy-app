@@ -39,9 +39,10 @@
 		<Button
 			on:click={handleDeleteSession}
 			color="red"
+			aria-label='Delete session'
 			class="mr-2 hover:scale-105 duration-150 w-40">Delete it!</Button
 		>
-		<Button color="alternative" class="hover:scale-105 duration-150 w-40">Nevermind</Button>
+		<Button color="alternative" aria-label="Cancel" class="hover:scale-105 duration-150 w-40">Nevermind</Button>
 	</div>
 </Modal>
 
@@ -84,6 +85,7 @@
 		{#if $currentSessionRole === 'admin'}
 			<button
 				id="delete-id-btn"
+				aria-label='Delete this session'
 				on:click={handleOpenDeleteModal}
 				class="hover:scale-[1.1] duration-200 mr-4"
 			>
@@ -95,7 +97,7 @@
 				/>
 			</button>
 		{/if}
-		<button id="copy-id-btn" on:click={onCopySessionId} class="hover:scale-[1.1] duration-200">
+		<button id="copy-id-btn" aria-label='Copy session ID' on:click={onCopySessionId} class="hover:scale-[1.1] duration-200">
 			<Icon
 				icon="material-symbols:content-copy"
 				width={30}

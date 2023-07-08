@@ -65,6 +65,7 @@
 					<button
 						on:click={() => removeQueue(i)}
 						id="delete-btn"
+						aria-label='Remove this queue'
 						class="absolute z-20 p-2 top-4 right-0 active:scale-125 duration-150"
 					>
 						<Icon icon="mdi:trash" class="w-6 h-6 text-dark-200 hover:scale-110 duration-200" />
