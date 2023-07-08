@@ -39,35 +39,37 @@
 		<Button
 			on:click={handleDeleteSession}
 			color="red"
-			aria-label='Delete session'
+			aria-label="Delete session"
 			class="mr-2 hover:scale-105 duration-150 w-40">Delete it!</Button
 		>
-		<Button color="alternative" aria-label="Cancel" class="hover:scale-105 duration-150 w-40">Nevermind</Button>
+		<Button color="alternative" aria-label="Cancel" class="hover:scale-105 duration-150 w-40"
+			>Nevermind</Button
+		>
 	</div>
 </Modal>
 
-<Tooltip triggeredBy="[id=delete-id-btn]" placement="left">Delete Session</Tooltip>
-<Tooltip triggeredBy="[id=copy-id-btn]" placement="right">Copy Session's ID</Tooltip>
-{#if $currentSession?.is_private}
-	<Tooltip triggeredBy="[id='isPrivate-icon']" placement="right"
-		>{$currentSession?.is_private
-			? 'This session is a private session'
-			: 'This session is a public session'}</Tooltip
-	>
-{/if}
+<Tooltip triggeredBy="#copy-id-btn" placement="right">Copy Session's ID</Tooltip>
 <div class="w-full flex flex-row justify-between items-end">
 	<div>
 		<div class="flex flex-row items-center">
 			<div id="isPrivate-icon" class="cursor-pointer">
 				{#if $currentSession?.is_private}
+					<Tooltip triggeredBy="[id=isPrivate-icon]" placement="top"
+						>This session is a private session</Tooltip
+					>
 					<Icon
 						icon="material-symbols:lock"
+						id="isPrivate-icon"
 						width="20"
 						height="20"
 						class="text-dark-300 hover:text-dark-300 duration-200"
 					/>
 				{:else}
+					<Tooltip triggeredBy="[id=isPublic-icon]" placement="top"
+						>This session is a public session</Tooltip
+					>
 					<Icon
+						id="isPublic-icon"
 						icon="material-symbols:lock-open-rounded"
 						width="20"
 						height="20"
@@ -83,9 +85,10 @@
 	</div>
 	<div class="flex flex-row items-center">
 		{#if $currentSessionRole === 'admin'}
+			<Tooltip triggeredBy="#delete-id-btn" placement="left">Delete Session</Tooltip>
 			<button
 				id="delete-id-btn"
-				aria-label='Delete this session'
+				aria-label="Delete this session"
 				on:click={handleOpenDeleteModal}
 				class="hover:scale-[1.1] duration-200 mr-4"
 			>
@@ -97,7 +100,12 @@
 				/>
 			</button>
 		{/if}
-		<button id="copy-id-btn" aria-label='Copy session ID' on:click={onCopySessionId} class="hover:scale-[1.1] duration-200">
+		<button
+			id="copy-id-btn"
+			aria-label="Copy session ID"
+			on:click={onCopySessionId}
+			class="hover:scale-[1.1] duration-200"
+		>
 			<Icon
 				icon="material-symbols:content-copy"
 				width={30}
