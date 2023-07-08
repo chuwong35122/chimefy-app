@@ -14,6 +14,11 @@ const seo = {
 		description: 'Create or join a session to listen together!',
 		url: PUBLIC_SITE_URL + '/session'
 	},
+	createSession: {
+		title: 'Create a Chimefy session',
+		description: 'Create a session to listen together!',
+		url: PUBLIC_SITE_URL + '/session/create'
+	},
 	sessionInvite: {
 		// title, url, image alt is dynamic
 		description: 'Your friend has invited you to join Chimefy session. Login and listen together!',

@@ -10,6 +10,7 @@
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import Icon from '@iconify/svelte';
+	import seo from '$lib/constants/seo';
 
 	export let data: PageData;
 	const { form, errors, delayed } = superForm(data.form);
@@ -21,6 +22,31 @@
 </script>
 
 <svelte:head>
+	<meta charset="UTF-8" />
+	<meta name="description" content="Create a Session" />
+	<meta
+		name="keywords"
+		content="chimefy, spotify, listen together, join session, create session, public session, private session"
+	/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<!-- Open Graph Meta Tags -->
+	<meta property="og:title" content={seo.createSession.title} />
+	<meta
+		property="og:description"
+		content="Create your own session with unlimited number of members and sync all your Spotify music in real-time"
+	/>
+	<meta property="og:image" content={seo.image} />
+	<meta property="og:url" content={seo.createSession.url} />
+	<meta property="og:type" content="website" />
+
+	<!-- Twitter Meta Tags -->
+	<meta name="twitter:title" content={seo.createSession.title} />
+	<meta name="twitter:description" content={seo.session.description} />
+	<meta name="twitter:card" content={seo.twitterCard} />
+	<meta name="twitter:image" content={seo.image} />
+	<meta name="twitter:image:alt" content={seo.imageAlt} />
+
 	<title>Create a Session</title>
 </svelte:head>
 
@@ -79,11 +105,11 @@
 				class="text-gray-400 hover:text-gray-200 duration-150 ml-2"
 			/>
 		</div>
-		<button>
+		<button aria-label="Create session">
 			<PrimaryButtonWrapper isLoading={$delayed}>Create Session!</PrimaryButtonWrapper>
 		</button>
 	</form>
-	<button on:click={() => goto('/session')} class="w-full my-4">
+	<button on:click={() => goto('/session')} aria-label='Go back' class="w-full my-4">
 		<SecondaryButtonWrapper>Go Back</SecondaryButtonWrapper>
 	</button>
 </div>
