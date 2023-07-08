@@ -84,6 +84,7 @@
 			<Button
 				type="submit"
 				color="dark"
+				aria-label="Enter Session"
 				id="search-btn"
 				btnClass="border-white bg-[rgba(255,255,255,0.05)] px-4 border-2 border-l-0 rounded-r-full hover:text-primary-500 duration-200"
 			>
@@ -103,12 +104,12 @@
 
 	<div class="mt-20 w-[400px] md:w-[500px] lg:w-[600px]">
 		<Tabs style="underline" contentClass="bg-dark-900 p-0">
-			<TabItem open title="Public Sessions" activeClasses="text-primary">
+			<TabItem open title="Public Sessions" activeClasses="text-primary" inactiveClasses='text-white/70 p-2'>
 				<div class="grid place-items-center">
 					<SessionList />
 				</div>
 			</TabItem>
-			<TabItem title="My Sessions" activeClasses="text-primary">
+			<TabItem title="My Sessions" activeClasses="text-primary" inactiveClasses='text-white/70 p-2'>
 				<div class="w-full">
 					{#each privateSessions as pSession, i}
 						<SessionItem session={pSession} index={i} isPrivate={pSession?.is_private} />
