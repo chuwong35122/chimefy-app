@@ -12,7 +12,7 @@
 	import type { MusicSessionQueue } from '$lib/interfaces/session/queue.interface';
 	import seo from '$lib/constants/seo';
 
-	export let data: { session: MusicSession; queues: MusicSessionQueue, url: string };
+	export let data: { session: MusicSession; queues: MusicSessionQueue; url: string };
 	let { session, queues, url } = data;
 
 	let sessionId: string;
@@ -42,22 +42,27 @@
 </script>
 
 <svelte:head>
-		<!-- Open Graph Meta Tags -->
-		<meta property="og:title" content={`Join ${session?.name}`} />
-		<meta
-			property="og:description"
-			content={seo.appDescription}
-		/>
-		<meta property="og:image" content={seo.sessionInvite.image} />
-		<meta property="og:url" content={url} />
-		<meta property="og:type" content="website" />
-	
-		<!-- Twitter Meta Tags -->
-		<meta name="twitter:title" content={`You have been invited to Chimefy: ${session?.name}`} />
-		<meta name="twitter:description" content={seo.sessionInvite.description} />
-		<meta name="twitter:card" content={seo.twitterCard} />
-		<meta name="twitter:image" content={seo.sessionInvite.image} />
-		<meta name="twitter:image:alt" content={`Join ${session?.name}`} />
+	<meta charset="UTF-8" />
+	<meta name="description" content="Listen together" />
+	<meta
+		name="keywords"
+		content="chimefy, spotify, listen together, join session, public session, private session"
+	/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<!-- Open Graph Meta Tags -->
+	<meta property="og:title" content={`Join ${session?.name}`} />
+	<meta property="og:description" content={seo.appDescription} />
+	<meta property="og:image" content={seo.sessionInvite.image} />
+	<meta property="og:url" content={url} />
+	<meta property="og:type" content="website" />
+
+	<!-- Twitter Meta Tags -->
+	<meta name="twitter:title" content={`You have been invited to Chimefy: ${session?.name}`} />
+	<meta name="twitter:description" content={seo.sessionInvite.description} />
+	<meta name="twitter:card" content={seo.twitterCard} />
+	<meta name="twitter:image" content={seo.sessionInvite.image} />
+	<meta name="twitter:image:alt" content={`Join ${session?.name}`} />
 
 	<title>{$currentSession?.name ? `Listening to ${$currentSession?.name}` : 'Loading...'}</title>
 </svelte:head>

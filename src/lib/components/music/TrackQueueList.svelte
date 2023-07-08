@@ -34,6 +34,7 @@
 <!-- Each Queues -->
 <div class="w-full grid place-items-center overflow-x-hidden px-2">
 	{#each queues as queue, i}
+	<Tooltip triggeredBy={`[id=delete-btn-${i+1}]`} placement="right">Remove Queue</Tooltip>
 		<div
 			in:fly={{ duration: 200, x: 200 }}
 			out:fade={{ duration: 200 }}
@@ -64,8 +65,8 @@
 				{#if queue?.track_uri !== $playingInfo?.track_uri}
 					<button
 						on:click={() => removeQueue(i)}
-						id="delete-btn"
-						aria-label='Remove this queue'
+						id={`delete-btn-${i+1}`}
+						aria-label="Remove this queue"
 						class="absolute z-20 p-2 top-4 right-0 active:scale-125 duration-150"
 					>
 						<Icon icon="mdi:trash" class="w-6 h-6 text-dark-200 hover:scale-110 duration-200" />
@@ -74,6 +75,5 @@
 			</div>
 		</div>
 	{/each}
-	<Tooltip triggeredBy="[id=delete-btn]" placement="right">Remove Queue</Tooltip>
 </div>
 <!-- Each Queues -->
