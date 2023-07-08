@@ -28,7 +28,7 @@
 	<div in:fly={{ duration: 600, y: -40 }}>
 		<h2 class="ml-4 text-lg md:text-xl mt-4">
 			A place where you can sync <a
-				aria-label="Spotify music"
+			aria-label="Spotify music"
 				target="_blank"
 				rel="noreferrer"
 				href="https://www.spotify.com/"
@@ -38,8 +38,8 @@
 	</div>
 {:else if timeMs >= INTERVAL && timeMs <= INTERVAL * 2}
 	<div in:fly={{ duration: 600, y: -40 }}>
+		<h2 class="ml-4 text-lg md:text-xl mt-4">It's Simple! Just create a session or join one</h2>
 	</div>
-  <h2 class="ml-4 text-lg md:text-xl mt-4">It's Simple! Just create a session or join one</h2>
 {:else if timeMs >= INTERVAL * 2 && timeMs <= INTERVAL * 3}
 	<div in:fly={{ duration: 600, y: -40 }}>
 		<h2 class="ml-4 text-lg md:text-xl mt-4">Add musics that fit the mood</h2>
