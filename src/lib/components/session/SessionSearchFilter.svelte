@@ -74,11 +74,12 @@
 		placeholder="Search Session Name"
 		defaultClass="w-full focus:border-primary-500 !rounded-full"
 	/>
-	<button id="filter-search-btn" on:click={query} class="hover:scale-110 duration-150">
+	<button id="filter-search-btn" on:click={query} aria-label="Search" class="hover:scale-110 duration-150">
 		<Icon icon="material-symbols:manage-search-rounded" class="w-8 h-8 text-white" />
 	</button>
 	<button
 		id="filter-refresh-btn"
+		aria-label="Reset Filters"
 		type="button"
 		on:click={resetFilter}
 		class="rounded-lg hover:scale-105 duration-150"
