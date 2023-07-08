@@ -96,7 +96,7 @@
 			}`}
 		>
 			<div class="w-6 h-6 mr-2">
-				<img src={type.img} alt={type.name} />
+				<img src={type.img} alt={type.name} class='object-contain' />
 			</div>
 			<div class="font-semibold text-black">{type.name}</div>
 		</div>
