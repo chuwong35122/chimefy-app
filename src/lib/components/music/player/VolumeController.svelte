@@ -7,12 +7,10 @@
 	export let SpotifyPlayer: Spotify.Player;
 
 	let volume = 50;
-	let debouncedVolume = 0;
 
-	async function debounceSetVolume() {
+	async function setSpotifyPlayerVolume() {
 		try {
-			debouncedVolume = volume / 100;
-			await SpotifyPlayer.setVolume(debouncedVolume);
+			await SpotifyPlayer.setVolume(volume/100);
 		} catch (e) {
 			console.log(e);
 		} finally {
@@ -32,7 +30,7 @@
 	<div class="flex flex-col items-center justify-around">
 		<input
 			bind:value={volume}
-			on:keyup={debounceSetVolume}
+			on:mouseup={setSpotifyPlayerVolume}
 			type="range"
 			id="volume-sider"
 			class="accent-white w-16 md:w-24"
@@ -42,6 +40,5 @@
 {#if PUBLIC_NODE_ENV === 'development'}
 	<DebugBgWrapper>
 		<p>Volume: {volume}</p>
-		<p>Debounced Volume: {debouncedVolume}</p>
 	</DebugBgWrapper>
 {/if}
