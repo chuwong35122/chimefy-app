@@ -11,9 +11,12 @@
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import Icon from '@iconify/svelte';
 	import seo from '$lib/constants/seo';
+	import { applyAction, enhance } from '$app/forms';
 
 	export let data: PageData;
-	const { form, errors, delayed } = superForm(data.form);
+	const { form, errors } = superForm(data.form);
+
+	let loading = false;
 
 	const musicSessionTypes = SESSION_MUSIC_TYPES.map((type) => ({
 		name: type.name,
@@ -59,7 +62,21 @@
 		Private session will not be shown on the search section.
 	</Tooltip>
 
-	<form class="flex flex-col space-y-6" method="POST">
+	<form
+		class="flex flex-col space-y-6"
+		method="POST"
+		use:enhance={() => {
+			loading = true;
+
+			return async ({ result, update }) => {
+				await applyAction(result);
+				await update();
+				if (result) {
+					loading = false;
+				}
+			};
+		}}
+	>
 		<h3 class="text-4xl font-semibold text-white p-0">Create Your Session</h3>
 		<Label class="space-y-2">
 			<span class="text-white">Your session name</span>
@@ -92,12 +109,8 @@
 		</Label>
 		<!-- Note: Ignore the value type error -->
 		<div class="flex flex-row items-center">
-			<Toggle
-				name="is_private"
-				color="green"
-				bind:checked={$form.is_private}
-				bind:value={$form.is_private}
-				class="text-white">Set this session private?</Toggle
+			<Toggle name="is_private" color="green" bind:checked={$form.is_private} class="text-white"
+				>Set this session private?</Toggle
 			>
 			<Icon
 				icon="material-symbols:info"
@@ -105,11 +118,11 @@
 				class="text-gray-400 hover:text-gray-200 duration-150 ml-2"
 			/>
 		</div>
-		<button aria-label="Create session">
-			<PrimaryButtonWrapper isLoading={$delayed}>Create Session!</PrimaryButtonWrapper>
+		<button aria-label="Create session" disabled={loading}>
+			<PrimaryButtonWrapper isLoading={loading}>Create Session!</PrimaryButtonWrapper>
 		</button>
 	</form>
-	<button on:click={() => goto('/session')} aria-label='Go back' class="w-full my-4">
+	<button on:click={() => goto('/session')} aria-label="Go back" class="w-full my-4">
 		<SecondaryButtonWrapper>Go Back</SecondaryButtonWrapper>
 	</button>
 </div>
