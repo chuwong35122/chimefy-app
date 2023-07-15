@@ -22,7 +22,7 @@
 <!-- 2 -->
 <section class="relative overflow-hidden">
 	<div class="w-full h-[600px] p-8 flex flex-col lg:flex-row-reverse justify-around items-center">
-		<div class="relative z-50">
+		<div class="relative z-20">
 			<p class="text-xl font-bold text-amber-400">Step 2.</p>
 			<p class="text-4xl lg:text-5xl font-extrabold text-blue-600 text-shadow">
 				Create & Join Session
