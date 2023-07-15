@@ -12,7 +12,7 @@ input:focus {
 }
 
 .modal-glass {
-	background-color: rgba(8, 8, 8, 0.4);
+	background-color: rgba(8, 8, 8, 0.8);
 	backdrop-filter: blur(5px);
 	border: 1px solid rgba(255, 255, 255, 0.1);
 	@apply rounded-2xl;
