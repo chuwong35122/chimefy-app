@@ -4,13 +4,16 @@
 	import { userStore } from '$lib/supabase/user';
 	import { onDestroy, onMount } from 'svelte';
 	import SessionMemberAvatar from './SessionMemberAvatar.svelte';
-	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { supabase } from '$lib/supabase/supabase';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
-	import { memberChannelSubscription, channelSubscriptionDestroyed } from '$lib/debug/debugger';
-	import DebugBgWrapper from '$lib/components/UI/DebugBgWrapper.svelte';
 
-	let channel: RealtimeChannel;
+	const channel = supabase.channel(`session_member_listener_${$currentSession?.id}`, {
+		config: {
+			presence: {
+				key: 'members'
+			}
+		}
+	});
 
 	let participants: SessionMember[] = [];
 	let self: SessionMember;
@@ -32,14 +35,6 @@
 	});
 
 	onMount(async () => {
-		channel = supabase.channel(`session_member_listener_${$currentSession?.id}`, {
-			config: {
-				presence: {
-					key: 'members'
-				}
-			}
-		});
-
 		channel.on('presence', { event: 'sync' }, () => {
 			const { members } = channel.presenceState();
 			if (members && members.length > 0) {
@@ -63,7 +58,7 @@
 
 		channel.subscribe(async (status) => {
 			if (PUBLIC_NODE_ENV === 'development') {
-				memberChannelSubscription.set(status);
+				console.log('Member channel status', status);
 			}
 
 			if (status === 'SUBSCRIBED') {
@@ -74,18 +69,14 @@
 
 	onDestroy(async () => {
 		await channel.unsubscribe();
-		channelSubscriptionDestroyed.set(true);
+		if (PUBLIC_NODE_ENV === 'development') {
+			console.log('Member channel destroyed');
+		}
 	});
 </script>
 
 <div class="mt-20">
 	<h2 class="text-3xl font-bold">Session Members</h2>
-	{#if PUBLIC_NODE_ENV === 'development'}
-		<DebugBgWrapper>
-			<p>Session Member Subscription: {$memberChannelSubscription}</p>
-			<p>Channel Subscription Destroyed: {$channelSubscriptionDestroyed}</p>
-		</DebugBgWrapper>
-	{/if}
 	<div
 		class="w-full p-4 rounded-xl grid grid-cols-3 lg:grid-cols-4 gap-2 lg:gap-4 max-h-96 overflow-y-auto"
 	>
