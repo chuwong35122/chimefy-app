@@ -22,7 +22,6 @@
 	import { toastValue } from '$lib/notification/toast';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import DebugBgWrapper from '../UI/DebugBgWrapper.svelte';
-	import { playerInitErrorMessage, playerReady } from '$lib/debug/debugger';
 
 	let SpotifyPlayer: Spotify.Player;
 
@@ -86,7 +85,7 @@
 			isPlaying: $isPlayingStatus,
 			playingTrackId: $playingTrackId,
 			currentDurationMs: $playingDurationMs
-		};
+		};	
 
 		channel.send({
 			type: 'broadcast',
@@ -106,12 +105,16 @@
 			});
 
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
-				playerReady.set(true);
+				if(PUBLIC_NODE_ENV === 'development') {
+					console.log('Ready with Device ID', device_id);
+				}
 				spotifyPlayerId.set(device_id);
 			});
 
 			SpotifyPlayer.on('initialization_error', (err) => {
-				playerInitErrorMessage.set(err?.message);
+				if(PUBLIC_NODE_ENV === 'development') {
+					console.error(err);
+				}
 			});
 
 			// Put the connect() at the bottom most of player.on()
@@ -163,8 +166,6 @@
 {#if PUBLIC_NODE_ENV === 'development'}
 	<div class="flex flex-row items-center justify-between">
 		<DebugBgWrapper debuggerTitle="Player Debugger">
-			<p>Spotify Player Ready: {$playerReady}</p>
-			<p>Player Init Message: {$playerInitErrorMessage || '-'}</p>
 			<p>Role: {$currentSessionRole}</p>
 			<p>Spotify Player Id: {$spotifyPlayerId}</p>
 			<p>Player Options: {JSON.stringify(SpotifyPlayer?._options)}</p>
