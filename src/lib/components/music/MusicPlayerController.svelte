@@ -26,7 +26,6 @@
 
 	let SpotifyPlayer: Spotify.Player;
 
-	let broadcastTimer: NodeJS.Timer;
 	let trackDurationTimer: NodeJS.Timer;
 
 	const channel = supabase.channel(`session_player_listener_${$currentSession?.id}`, {
@@ -37,31 +36,7 @@
 		}
 	});
 
-	// open broadcast modal, and play send track info
-	async function onBroadcastSignal(playing: boolean) {
-		const queues = $currentSessionQueue?.queues;
-		if (queues && queues.length === 0) {
-			toastValue.set({ message: 'Please add some tracks before playing!', type: 'warn' });
-			return;
-		}
-
-		clearTimeout(broadcastTimer);
-
-		broadcastTimer = setInterval(() => {
-			const payload: TrackBroadcastPayload = {
-				isPlaying: playing,
-				playingTrackId: $playingTrackId,
-				currentDurationMs: $playingDurationMs
-			};
-
-			channel.send({
-				type: 'broadcast',
-				event: 'playerStart',
-				payload
-			});
-		}, 1000);
-	}
-
+	// Check for queues. If there are, trigger real-time channel broadcast to go forward.
 	async function onForwardTrack() {
 		const queues = $currentSessionQueue?.queues;
 		const queueId = $currentSessionQueue?.id;
@@ -70,9 +45,10 @@
 			toastValue.set({ message: 'Please add some tracks!', type: 'warn' });
 			return;
 		}
+
 		toastValue.set({ message: 'Skipping track...', type: 'info' });
 
-		if ($currentSessionRole === 'admin' && queues && queueId) {
+		if ($currentSessionRole === 'admin' && queues && queues.length > 0 && queueId) {
 			await sliceQueue(queues, $playingInfo?.track_id, queueId);
 		}
 
@@ -90,6 +66,7 @@
 		});
 	}
 
+	// Check for queues. If there are, trigger real-time channel broadcast to go back.
 	async function onBackwardTrack() {
 		const queues = $currentSessionQueue?.queues;
 		if (queues && queues.length === 0) {
@@ -164,9 +141,9 @@
 	<div class="flex flex-row items-center justify-between">
 		<TrackPreview />
 		<div class="flex flex-col items-center">
-			<ControlButtons {onBroadcastSignal} {onForwardTrack} {onBackwardTrack} />
+			<ControlButtons {onForwardTrack} {onBackwardTrack} {channel} />
 			{#if $currentSession?.id}
-				<MemberPlayerListener {channel} {onBroadcastSignal} />
+				<MemberPlayerListener {channel} />
 			{/if}
 		</div>
 		<div class="flex flex-row">

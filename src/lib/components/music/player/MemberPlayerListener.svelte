@@ -9,35 +9,16 @@
 		playingDurationMs
 	} from '$lib/session/session';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
-	import { sliceQueue } from '$lib/session/queue';
-	import { playTrack, pauseTrack } from '$lib/spotify/player';
+	import { playNextTrack, playSingleTrack } from '$lib/session/queue';
+	import { pauseTrack } from '$lib/spotify/player';
 	import { spotifyAccessToken, spotifyPlayerId } from '$lib/spotify/spotify';
 	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
-	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
 	import { toastValue } from '$lib/notification/toast';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
 
 	export let channel: RealtimeChannel;
-	export let onBroadcastSignal: (playing: boolean) => void;
 
 	let timer: NodeJS.Timer;
-
-	async function playNextTrack() {
-		const queueId = $currentSessionQueue?.id;
-		const queues = $currentSessionQueue?.queues;
-
-		if ($currentSessionRole === 'admin' && queueId && queues) {
-			const sliced = await sliceQueue(queues, $playingInfo?.track_id, queueId);
-
-			if (sliced[0]) {
-				await playSingleTrack(sliced[0]);
-
-				if (PUBLIC_NODE_ENV === 'development') {
-					console.log('Playing + Slice', sliced);
-				}
-			}
-		}
-	}
 
 	// Update track playing duration once ID changes
 	playingTrackId.subscribe(async (id) => {
@@ -47,34 +28,23 @@
 		timer = setInterval(async () => {
 			const queues = $currentSessionQueue?.queues;
 			if (queues && queues.length === 0) {
-				onBroadcastSignal(false);
 				toastValue.set({ message: 'No queue left', type: 'info' });
 				return;
 			}
 
+			// check if the queue ended
 			if ($playingDurationMs >= $playingInfo?.duration_ms) {
-				playingDurationMs.set(0);
-				// check if the queue ended
-				await playNextTrack();
+				await playNextTrack(
+					$currentSessionQueue,
+					$currentSessionRole,
+					$playingInfo,
+					$spotifyPlayerId,
+					$spotifyAccessToken?.access_token
+				);
 				toastValue.set({ message: 'Going next track', type: 'info' });
 			}
 		}, 1000);
 	});
-
-	// Play the topmost track and remove it from the database
-	async function playSingleTrack(queue: MusicQueue) {
-		if (!queue) return;
-
-		if (PUBLIC_NODE_ENV === 'development') {
-			console.log('Playing', queue);
-		}
-
-		await playTrack(queue, $spotifyPlayerId, $playingDurationMs, $spotifyAccessToken?.access_token);
-		playingInfo.set({
-			...queue
-		});
-		playingTrackId.set(queue.track_id);
-	}
 
 	isPlayingStatus.subscribe(async (status) => {
 		if (!$currentSessionQueue?.queues || !$currentSessionQueue?.queues?.length) {
@@ -86,7 +56,11 @@
 		}
 
 		if (status) {
-			await playSingleTrack($currentSessionQueue?.queues[0]);
+			await playSingleTrack(
+				$currentSessionQueue?.queues[0],
+				$spotifyPlayerId,
+				$spotifyAccessToken?.access_token
+			);
 		} else {
 			await pauseTrack($spotifyPlayerId, $spotifyAccessToken?.access_token);
 		}
@@ -115,7 +89,11 @@
 			isPlayingStatus.set(_payload?.isPlaying);
 			playingTrackId.set(_payload?.playingTrackId);
 			playingDurationMs.set(0);
-			await playSingleTrack($currentSessionQueue?.queues[0]);
+			await playSingleTrack(
+				$currentSessionQueue?.queues[0],
+				$spotifyPlayerId,
+				$spotifyAccessToken?.access_token
+			);
 
 			if (PUBLIC_NODE_ENV === 'development') {
 				console.log('playerBackward', _payload);
@@ -130,7 +108,11 @@
 			isPlayingStatus.set(_payload?.isPlaying);
 			playingTrackId.set(_payload?.playingTrackId);
 			playingDurationMs.set(0);
-			await playSingleTrack($currentSessionQueue?.queues[1]);
+			await playSingleTrack(
+				$currentSessionQueue?.queues[1],
+				$spotifyPlayerId,
+				$spotifyAccessToken?.access_token
+			);
 
 			if (PUBLIC_NODE_ENV === 'development') {
 				console.log('playerForward', _payload);
