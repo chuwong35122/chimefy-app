@@ -30,7 +30,7 @@
 	}
 </script>
 
-<Modal bind:open={showDeleteModel} size="xs" autoclose class="!bg-black">
+<Modal bind:open={showDeleteModel} size="xs" autoclose class="modal-glass">
 	<div class="text-center">
 		<div class="w-full grid place-items-center">
 			<Icon icon="fluent-emoji:thinking-face" class="w-20 h-20" />
