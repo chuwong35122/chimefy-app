@@ -25,7 +25,6 @@
 				<SecondaryButtonWrapper>Logout</SecondaryButtonWrapper>
 			</button>
 		</form>
-
 		<a
 			target="_blank"
 			rel="noreferrer"
