@@ -20,7 +20,7 @@
 		</p>
 		<div class="w-full h-4" />
 		<p class="text-sm">Please logout and login with a Premium Spotify account.</p>
-		<form method="POST" action="/signout">
+		<form method="POST" action="/signout?/signout">
 			<button class="w-full my-4">
 				<SecondaryButtonWrapper>Logout</SecondaryButtonWrapper>
 			</button>
