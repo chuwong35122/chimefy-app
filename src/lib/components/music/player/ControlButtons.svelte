@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
-	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
 	import { toastValue } from '$lib/notification/toast';
 	import { sliceQueue } from '$lib/session/queue';
 	import {
@@ -17,9 +16,8 @@
 
 	export let channel: RealtimeChannel;
 
-
-		// Check for queues. If there are, trigger real-time channel broadcast to go forward.
-		async function onForwardTrack() {
+	// Check for queues. If there are, trigger real-time channel broadcast to go forward.
+	async function onForwardTrack() {
 		const queues = $currentSessionQueue?.queues;
 		const queueId = $currentSessionQueue?.id;
 
@@ -38,14 +36,13 @@
 				playingTrackId: sliced[0]?.track_id,
 				currentDurationMs: 0
 			};
-	
+
 			channel.send({
 				type: 'broadcast',
 				event: 'playerForward',
 				payload
 			});
 		}
-
 	}
 
 	// Check for queues. If there are, trigger real-time channel broadcast to go back.
@@ -94,9 +91,9 @@
 			toastValue.set({ message: 'Please add some tracks before playing!', type: 'warn' });
 			return;
 		}
-		
-		if(queues && queues[0]) {
-			playingTrackId.set(queues[0]?.track_id)
+
+		if (queues && queues[0]) {
+			playingTrackId.set(queues[0]?.track_id);
 		}
 
 		clearTimeout(broadcastTimer);

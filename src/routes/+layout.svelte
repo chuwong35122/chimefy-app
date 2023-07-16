@@ -68,8 +68,8 @@
 	page.subscribe((page) => {
 		if (page?.route?.id !== '/session/[sessionId]') {
 			onSessionDestroyed();
-			if(PUBLIC_NODE_ENV === 'developnent') {
-				console.log("On session destroyed has been called...")
+			if (PUBLIC_NODE_ENV === 'developnent') {
+				console.log('On session destroyed has been called...');
 			}
 		}
 	});
