@@ -40,7 +40,7 @@
 				<p class="text-dark-200">Your email: {$userStore?.email ?? ''}</p>
 				<p class="text-dark-200">Join sinced: {createdSince}</p>
 
-				<form method="POST" action="/signout">
+				<form method="POST" action="/signout?/signout">
 					<button
 						class="text-lg bg-white rounded-full p-1.5 w-full text-black flex flex-row items-center justify-center hover:scale-105 duration-150 mt-8"
 					>
