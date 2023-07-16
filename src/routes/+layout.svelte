@@ -15,6 +15,8 @@
 	} from '$lib/spotify/spotify';
 	import PageTransition from '$lib/components/transition/PageTransition.svelte';
 	import AuthExpireListener from '$lib/components/auth/AuthExpireListener.svelte';
+	import { page } from '$app/stores';
+	import { onSessionDestroyed } from '$lib/session/session';
 
 	export let data;
 	let { supabase, session, pathName } = data;
@@ -60,6 +62,12 @@
 
 	onDestroy(() => {
 		clearInterval(timer);
+	});
+
+	page.subscribe((page) => {
+		if (page?.route?.id !== '/session/[sessionId]') {
+			onSessionDestroyed();
+		}
 	});
 </script>
 

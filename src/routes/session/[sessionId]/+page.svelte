@@ -45,13 +45,6 @@
 			)
 			.subscribe();
 	});
-
-	// onDestroy(() => {
-	// 	// if(PUBLIC_NODE_ENV === 'development') {
-	// 	// 	console.log("Lifecycle: Destroying session")
-	// 	// }
-	// 	// onSessionDestroyed();
-	// });
 </script>
 
 <svelte:head>
