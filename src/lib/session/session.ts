@@ -14,3 +14,14 @@ export const playingInfo = writable<MusicQueue | null>(null);
 export const playingTrackId = writable('');
 export const isPlayingStatus = writable(false);
 export const playingDurationMs = writable(0);
+
+export function onSessionDestroyed() {
+	currentSession.set(null);
+	currentSessionQueue.set(null);
+	currentSessionMember.set([]);
+	currentSessionRole.set('member');
+	playingInfo.set(null);
+	playingTrackId.set('');
+	isPlayingStatus.set(false);
+	playingDurationMs.set(0);
+}

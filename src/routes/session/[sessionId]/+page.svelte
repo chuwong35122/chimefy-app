@@ -6,7 +6,7 @@
 		currentSession,
 		currentSessionRole,
 		currentSessionQueue,
-		playingInfo
+		onSessionDestroyed
 	} from '$lib/session/session';
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
 	import MusicPlayerController from '$lib/components/music/MusicPlayerController.svelte';
@@ -46,8 +46,7 @@
 	});
 
 	onDestroy(() => {
-		playingInfo.set(null);
-		currentSession.set(null);
+		onSessionDestroyed();
 	});
 </script>
 
