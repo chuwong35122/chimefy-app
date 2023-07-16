@@ -47,7 +47,7 @@
 
 		toastValue.set({ message: 'Skipping track...', type: 'info' });
 
-		if ($currentSessionRole === 'admin' && queues && queues.length > 0 && queueId) {
+		if ($currentSessionRole === 'admin' && queues && queues.length > 0 && queueId && $playingInfo) {
 			await sliceQueue(queues, $playingInfo?.track_id, queueId);
 		}
 

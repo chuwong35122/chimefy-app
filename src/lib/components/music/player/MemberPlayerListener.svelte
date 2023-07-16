@@ -33,7 +33,7 @@
 			}
 
 			// check if the queue ended
-			if ($playingDurationMs >= $playingInfo?.duration_ms) {
+			if ($playingInfo && $playingDurationMs >= $playingInfo?.duration_ms) {
 				await playNextTrack(
 					$currentSessionQueue,
 					$currentSessionRole,
