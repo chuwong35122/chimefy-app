@@ -13,10 +13,7 @@
 
 	<!-- Open Graph Meta Tags -->
 	<meta property="og:title" content={seo.appTitle} />
-	<meta
-		property="og:description"
-		content={seo.appDescription}
-	/>
+	<meta property="og:description" content={seo.appDescription} />
 	<meta property="og:image" content={seo.image} />
 	<meta property="og:url" content={seo.appUrl} />
 	<meta property="og:type" content="website" />

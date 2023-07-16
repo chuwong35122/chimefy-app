@@ -74,7 +74,12 @@
 		placeholder="Search Session Name"
 		defaultClass="w-full focus:border-primary-500 !rounded-full"
 	/>
-	<button id="filter-search-btn" on:click={query} aria-label="Search" class="hover:scale-110 duration-150">
+	<button
+		id="filter-search-btn"
+		on:click={query}
+		aria-label="Search"
+		class="hover:scale-110 duration-150"
+	>
 		<Icon icon="material-symbols:manage-search-rounded" class="w-8 h-8 text-white" />
 	</button>
 	<button
@@ -97,7 +102,7 @@
 			}`}
 		>
 			<div class="w-6 h-6 mr-2">
-				<img src={type.img} alt={type.name} class='object-contain' />
+				<img src={type.img} alt={type.name} class="object-contain" />
 			</div>
 			<div class="font-semibold text-black">{type.name}</div>
 		</div>

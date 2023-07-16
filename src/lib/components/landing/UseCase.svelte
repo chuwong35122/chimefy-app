@@ -22,13 +22,13 @@
 </script>
 
 {#if PUBLIC_NODE_ENV === 'development'}
-<div class='text-sm'>{timeMs}</div>
+	<div class="text-sm">{timeMs}</div>
 {/if}
 {#if timeMs >= 0 && timeMs <= INTERVAL}
 	<div in:fly={{ duration: 600, y: -40 }}>
 		<h2 class="ml-4 text-lg md:text-xl mt-4">
 			A place where you can sync <a
-			aria-label="Spotify music"
+				aria-label="Spotify music"
 				target="_blank"
 				rel="noreferrer"
 				href="https://www.spotify.com/"

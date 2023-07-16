@@ -1,8 +1,13 @@
 <script lang="ts">
 	import type { MusicSession } from '$lib/interfaces/session/session.interface';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import TrackSearchTab from '$lib/components/music/TrackSearchTab.svelte';
-	import { currentSession, currentSessionRole, currentSessionQueue } from '$lib/session/session';
+	import {
+		currentSession,
+		currentSessionRole,
+		currentSessionQueue,
+		playingInfo
+	} from '$lib/session/session';
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
 	import MusicPlayerController from '$lib/components/music/MusicPlayerController.svelte';
 	import SessionQueueMembers from '$lib/components/music/members/SessionQueueMembers.svelte';
@@ -38,6 +43,11 @@
 				}
 			)
 			.subscribe();
+	});
+
+	onDestroy(() => {
+		playingInfo.set(null);
+		currentSession.set(null);
 	});
 </script>
 

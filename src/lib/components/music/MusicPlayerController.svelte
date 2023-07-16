@@ -85,7 +85,7 @@
 			isPlaying: $isPlayingStatus,
 			playingTrackId: $playingTrackId,
 			currentDurationMs: $playingDurationMs
-		};	
+		};
 
 		channel.send({
 			type: 'broadcast',
@@ -105,14 +105,14 @@
 			});
 
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
-				if(PUBLIC_NODE_ENV === 'development') {
+				if (PUBLIC_NODE_ENV === 'development') {
 					console.log('Ready with Device ID', device_id);
 				}
 				spotifyPlayerId.set(device_id);
 			});
 
 			SpotifyPlayer.on('initialization_error', (err) => {
-				if(PUBLIC_NODE_ENV === 'development') {
+				if (PUBLIC_NODE_ENV === 'development') {
 					console.error(err);
 				}
 			});

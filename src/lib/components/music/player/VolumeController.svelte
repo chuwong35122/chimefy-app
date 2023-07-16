@@ -10,7 +10,7 @@
 
 	async function setSpotifyPlayerVolume() {
 		try {
-			await SpotifyPlayer.setVolume(volume/100);
+			await SpotifyPlayer.setVolume(volume / 100);
 		} catch (e) {
 			console.log(e);
 		} finally {

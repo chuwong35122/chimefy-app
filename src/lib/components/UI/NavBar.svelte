@@ -1,15 +1,15 @@
- <script lang="ts">
+<script lang="ts">
 	import { Dropdown, DropdownItem, Spinner } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import { SPOTIFY_AUTH_SCOPES } from '$lib/spotify/spotify';
 	import { supabase } from '$lib/supabase/supabase';
-	import {  userStore } from '$lib/supabase/user';
+	import { userStore } from '$lib/supabase/user';
 	import NavLink from './NavLink.svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { PUBLIC_SITE_URL } from '$env/static/public';
 	import { toastValue } from '$lib/notification/toast';
-	import {PUBLIC_SUPPORT_URL} from '$env/static/public'
+	import { PUBLIC_SUPPORT_URL } from '$env/static/public';
 
 	let url = PUBLIC_SITE_URL;
 	let isLoading = false;
@@ -29,13 +29,13 @@
 		}
 
 		if (error) {
-			toastValue.set({ message: error.message, type: 'error' })
+			toastValue.set({ message: error.message, type: 'error' });
 		}
 	});
 </script>
 
 <div class="w-full px-4 mt-1 flex flex-row items-center justify-between">
-	<a href="/" aria-label='Chimefy Home' class="grid place-items-center">
+	<a href="/" aria-label="Chimefy Home" class="grid place-items-center">
 		<div class="flex items-center">
 			<img src="/logo/chimefy/logo_dark.svg" alt="Chimefy Logo" class="w-8 h-8 " />
 			<div class="ml-4 text-lg font-semibold hidden md:block">Chimefy</div>
@@ -97,7 +97,13 @@
 							>
 								<div class="flex flex-row items-center">
 									<Icon icon="mdi:gift" class="h-4 w-4 mr-2" />
-									<a aria-label="Support Chimefy" target="_blank" rel="noopener noreferrer" href={PUBLIC_SUPPORT_URL} class="text-sm font-medium">Support Chimefy</a>
+									<a
+										aria-label="Support Chimefy"
+										target="_blank"
+										rel="noopener noreferrer"
+										href={PUBLIC_SUPPORT_URL}
+										class="text-sm font-medium">Support Chimefy</a
+									>
 								</div>
 							</DropdownItem>
 							<form method="POST" action="/signout?/signout">
@@ -108,7 +114,7 @@
 									</div>
 								</DropdownItem>
 							</form>
-							</Dropdown>
+						</Dropdown>
 					{/if}
 				</div>
 			</div>

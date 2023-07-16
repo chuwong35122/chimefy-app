@@ -10,7 +10,7 @@
 	import { userStore } from '$lib/supabase/user';
 	import SessionItem from '$lib/components/session/SessionItem.svelte';
 	import { listUserSession } from '$lib/session/search';
-	import seo from '$lib/constants/seo'
+	import seo from '$lib/constants/seo';
 
 	let input = '';
 	let privateSessions: MusicSessionInfo[] = [];
@@ -104,12 +104,17 @@
 
 	<div class="mt-20 w-[400px] md:w-[500px] lg:w-[600px]">
 		<Tabs style="underline" contentClass="bg-dark-900 p-0">
-			<TabItem open title="Public Sessions" activeClasses="text-primary" inactiveClasses='text-white/70 p-2'>
+			<TabItem
+				open
+				title="Public Sessions"
+				activeClasses="text-primary"
+				inactiveClasses="text-white/70 p-2"
+			>
 				<div class="grid place-items-center">
 					<SessionList />
 				</div>
 			</TabItem>
-			<TabItem title="My Sessions" activeClasses="text-primary" inactiveClasses='text-white/70 p-2'>
+			<TabItem title="My Sessions" activeClasses="text-primary" inactiveClasses="text-white/70 p-2">
 				<div class="w-full">
 					{#each privateSessions as pSession, i}
 						<SessionItem session={pSession} index={i} isPrivate={pSession?.is_private} />
