@@ -17,6 +17,7 @@
 	import AuthExpireListener from '$lib/components/auth/AuthExpireListener.svelte';
 	import { page } from '$app/stores';
 	import { onSessionDestroyed } from '$lib/session/session';
+	import { PUBLIC_NODE_ENV } from '$env/static/public';
 
 	export let data;
 	let { supabase, session, pathName } = data;
@@ -67,6 +68,9 @@
 	page.subscribe((page) => {
 		if (page?.route?.id !== '/session/[sessionId]') {
 			onSessionDestroyed();
+			if(PUBLIC_NODE_ENV === 'developnent') {
+				console.log("On session destroyed has been called...")
+			}
 		}
 	});
 </script>
