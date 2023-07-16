@@ -18,6 +18,8 @@
 
 	export let channel: RealtimeChannel;
 
+	// let timer: NodeJS.Timer;
+
 	// Update track playing duration once ID changes (when music is being skipped, or a song ended)
 	playingDurationMs.subscribe(async (durationMs) => {
 		const trackId = $playingTrackId;
@@ -35,19 +37,13 @@
 		)
 			return;
 
-		// No more queue
-		if (sessionQueue?.queues?.length == 0) {
-			toastValue.set({ message: 'Queue ended', type: 'info' });
-			return;
-		}
-
 		// Check if the current track has ended, play next track if so (using admin's broadcasting)
 		if (durationMs >= info?.duration_ms) {
 			if ($currentSessionRole === 'admin') {
 				const sliced = await sliceQueue(sessionQueue.queues, trackId, sessionQueue?.id);
 				const payload: TrackBroadcastPayload = {
 					isPlaying: $isPlayingStatus,
-					playingTrackId: sliced[0]?.track_id,
+					playingTrackId: sliced[0].track_id,
 					currentDurationMs: 0
 				};
 				channel.send({ type: 'broadcast', event: 'playerForward', payload });
