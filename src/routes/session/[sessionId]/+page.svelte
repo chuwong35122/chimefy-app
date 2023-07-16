@@ -16,6 +16,7 @@
 	import { userStore } from '$lib/supabase/user';
 	import type { MusicSessionQueue } from '$lib/interfaces/session/queue.interface';
 	import seo from '$lib/constants/seo';
+	import { PUBLIC_NODE_ENV } from '$env/static/public';
 
 	export let data: { session: MusicSession; queues: MusicSessionQueue; url: string };
 	let { session, queues, url } = data;
@@ -45,9 +46,12 @@
 			.subscribe();
 	});
 
-	onDestroy(() => {
-		onSessionDestroyed();
-	});
+	// onDestroy(() => {
+	// 	// if(PUBLIC_NODE_ENV === 'development') {
+	// 	// 	console.log("Lifecycle: Destroying session")
+	// 	// }
+	// 	// onSessionDestroyed();
+	// });
 </script>
 
 <svelte:head>

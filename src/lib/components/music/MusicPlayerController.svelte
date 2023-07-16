@@ -1,12 +1,9 @@
 <script lang="ts">
 	import {
 		currentSessionRole,
-		currentSessionQueue,
 		currentSession,
-		playingInfo,
 		isPlayingStatus,
-		playingDurationMs,
-		playingTrackId
+		playingDurationMs
 	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import { onDestroy, onMount } from 'svelte';
@@ -17,9 +14,6 @@
 	import ControlButtons from './player/ControlButtons.svelte';
 	import { supabase } from '$lib/supabase/supabase';
 	import MemberPlayerListener from './player/MemberPlayerListener.svelte';
-	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
-	import { sliceQueue } from '$lib/session/queue';
-	import { toastValue } from '$lib/notification/toast';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import DebugBgWrapper from '../UI/DebugBgWrapper.svelte';
 
@@ -34,65 +28,6 @@
 			}
 		}
 	});
-
-	// Check for queues. If there are, trigger real-time channel broadcast to go forward.
-	async function onForwardTrack() {
-		const queues = $currentSessionQueue?.queues;
-		const queueId = $currentSessionQueue?.id;
-
-		if (queues && queues.length < 2) {
-			toastValue.set({ message: 'Please add some tracks!', type: 'warn' });
-			return;
-		}
-
-		toastValue.set({ message: 'Skipping track...', type: 'info' });
-
-		if ($currentSessionRole === 'admin' && queues && queues.length > 0 && queueId && $playingInfo) {
-			await sliceQueue(queues, $playingInfo?.track_id, queueId);
-		}
-
-		playingDurationMs.set(0);
-		const payload: TrackBroadcastPayload = {
-			isPlaying: $isPlayingStatus,
-			playingTrackId: $playingTrackId,
-			currentDurationMs: 0
-		};
-
-		channel.send({
-			type: 'broadcast',
-			event: 'playerForward',
-			payload
-		});
-	}
-
-	// Check for queues. If there are, trigger real-time channel broadcast to go back.
-	async function onBackwardTrack() {
-		const queues = $currentSessionQueue?.queues;
-		if (queues && queues.length === 0) {
-			toastValue.set({ message: 'Please add some tracks!', type: 'warn' });
-			return;
-		}
-
-		if (!$isPlayingStatus) {
-			toastValue.set({ message: 'Please play before going backward...', type: 'info' });
-			return;
-		}
-
-		toastValue.set({ message: 'Going back...', type: 'info' });
-
-		playingDurationMs.set(0);
-		const payload: TrackBroadcastPayload = {
-			isPlaying: $isPlayingStatus,
-			playingTrackId: $playingTrackId,
-			currentDurationMs: $playingDurationMs
-		};
-
-		channel.send({
-			type: 'broadcast',
-			event: 'playerBackward',
-			payload
-		});
-	}
 
 	onMount(async () => {
 		window.onSpotifyWebPlaybackSDKReady = async () => {
@@ -144,7 +79,7 @@
 	<div class="flex flex-row items-center justify-between">
 		<TrackPreview />
 		<div class="flex flex-col items-center">
-			<ControlButtons {onForwardTrack} {onBackwardTrack} {channel} />
+			<ControlButtons {channel} />
 			{#if $currentSession?.id}
 				<MemberPlayerListener {channel} />
 			{/if}

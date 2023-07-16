@@ -1,21 +1,80 @@
 <script lang="ts">
 	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
 	import { toastValue } from '$lib/notification/toast';
+	import { sliceQueue } from '$lib/session/queue';
 	import {
 		currentSessionQueue,
 		currentSessionRole,
 		isPlayingStatus,
 		playingDurationMs,
+		playingInfo,
 		playingTrackId
 	} from '$lib/session/session';
 	import Icon from '@iconify/svelte';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { Tooltip } from 'flowbite-svelte';
 
-	export let onForwardTrack: () => void;
-	export let onBackwardTrack: () => void;
-
 	export let channel: RealtimeChannel;
+
+
+		// Check for queues. If there are, trigger real-time channel broadcast to go forward.
+		async function onForwardTrack() {
+		const queues = $currentSessionQueue?.queues;
+		const queueId = $currentSessionQueue?.id;
+
+		if (queues && queues.length < 2) {
+			toastValue.set({ message: 'Please add some tracks!', type: 'warn' });
+			return;
+		}
+
+		toastValue.set({ message: 'Skipping track...', type: 'info' });
+
+		if ($currentSessionRole === 'admin' && queues && queues.length > 0 && queueId && $playingInfo) {
+			await sliceQueue(queues, $playingInfo?.track_id, queueId);
+		}
+
+		playingDurationMs.set(0);
+		const payload: TrackBroadcastPayload = {
+			isPlaying: $isPlayingStatus,
+			playingTrackId: $playingTrackId,
+			currentDurationMs: 0
+		};
+
+		channel.send({
+			type: 'broadcast',
+			event: 'playerForward',
+			payload
+		});
+	}
+
+	// Check for queues. If there are, trigger real-time channel broadcast to go back.
+	async function onBackwardTrack() {
+		const queues = $currentSessionQueue?.queues;
+		if (queues && queues.length === 0) {
+			toastValue.set({ message: 'Please add some tracks!', type: 'warn' });
+			return;
+		}
+
+		if (!$isPlayingStatus) {
+			toastValue.set({ message: 'Please play before going backward...', type: 'info' });
+			return;
+		}
+
+		toastValue.set({ message: 'Going back...', type: 'info' });
+
+		playingDurationMs.set(0);
+		const payload: TrackBroadcastPayload = {
+			isPlaying: $isPlayingStatus,
+			playingTrackId: $playingTrackId,
+			currentDurationMs: $playingDurationMs
+		};
+
+		channel.send({
+			type: 'broadcast',
+			event: 'playerBackward',
+			payload
+		});
+	}
 
 	let broadcastTimer: NodeJS.Timer;
 
@@ -33,6 +92,10 @@
 		if (queues && queues.length === 0) {
 			toastValue.set({ message: 'Please add some tracks before playing!', type: 'warn' });
 			return;
+		}
+		
+		if(queues && queues[0]) {
+			playingTrackId.set(queues[0]?.track_id)
 		}
 
 		clearTimeout(broadcastTimer);
