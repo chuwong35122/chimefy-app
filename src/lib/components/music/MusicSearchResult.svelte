@@ -61,9 +61,9 @@
 			class="bg-[rgba(255,255,255,0.3)] grid place-items-center mr-4 relative rounded-lg overflow-hidden"
 		>
 			<div
-				class="absolute invisible group/track group-hover/track:visible text-primary-600 bg-[rgba(0,0,0,0.3)] rounded-full hover:scale-110"
+				class="absolute invisible group/track group-hover/track:visible text-white bg-[rgba(0,0,0,0.6)] rounded-full hover:scale-110"
 			>
-				<Icon icon="material-symbols:play-circle" width="40" height="40" />
+				<Icon icon="ic:round-add" width="40" height="40" />
 			</div>
 			<img
 				bind:this={imgRef}
