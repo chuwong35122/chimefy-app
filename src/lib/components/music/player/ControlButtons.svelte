@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
+	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
 	import { toastValue } from '$lib/notification/toast';
 	import { sliceQueue } from '$lib/session/queue';
 	import {
@@ -28,23 +29,23 @@
 		}
 
 		toastValue.set({ message: 'Skipping track...', type: 'info' });
+		playingDurationMs.set(0);
 
 		if ($currentSessionRole === 'admin' && queues && queues.length > 0 && queueId && $playingInfo) {
-			await sliceQueue(queues, $playingInfo?.track_id, queueId);
+			const sliced = await sliceQueue(queues, $playingInfo?.track_id, queueId);
+			const payload: TrackBroadcastPayload = {
+				isPlaying: $isPlayingStatus,
+				playingTrackId: sliced[0]?.track_id,
+				currentDurationMs: 0
+			};
+	
+			channel.send({
+				type: 'broadcast',
+				event: 'playerForward',
+				payload
+			});
 		}
 
-		playingDurationMs.set(0);
-		const payload: TrackBroadcastPayload = {
-			isPlaying: $isPlayingStatus,
-			playingTrackId: $playingTrackId,
-			currentDurationMs: 0
-		};
-
-		channel.send({
-			type: 'broadcast',
-			event: 'playerForward',
-			payload
-		});
 	}
 
 	// Check for queues. If there are, trigger real-time channel broadcast to go back.
