@@ -1,3 +1,4 @@
+import { PUBLIC_NODE_ENV } from '$env/static/public';
 import type { PrivateUser, AccessToken } from 'spotify-types';
 import { writable } from 'svelte/store';
 
@@ -57,4 +58,18 @@ export async function refreshSpotifyToken(refresh_token: string) {
 	});
 
 	return (await res.json()) as AccessToken;
+}
+
+export async function getSpotifyProfile(accessToken: string | null | undefined) {
+	if (!accessToken) return null;
+
+	const profileRes = await fetch('/api/spotify/profile', {
+		method: 'POST',
+		body: JSON.stringify({
+			access_token: accessToken
+		})
+	});
+
+	const profile = (await profileRes.json()) as PrivateUser;
+	return profile;
 }

@@ -6,18 +6,15 @@
 	import { invalidate } from '$app/navigation';
 	import { Modal } from 'flowbite-svelte';
 	import SpotifyPremiumInfoModal from '$lib/components/modals/SpotifyPremiumInfoModal.svelte';
-	import { reloginAfterTokenRefreshed, userStore } from '$lib/supabase/user';
+	import { userStore } from '$lib/supabase/user';
 	import {
 		setTokenStore,
 		spotifyUserProfile,
 		spotifyAccessToken,
-		refreshSpotifyToken,
-		hasRefreshedToken
+		getSpotifyProfile
 	} from '$lib/spotify/spotify';
-	import type { PrivateUser } from 'spotify-types';
-	import { page } from '$app/stores';
 	import PageTransition from '$lib/components/transition/PageTransition.svelte';
-	import { PUBLIC_NODE_ENV } from '$env/static/public';
+	import AuthExpireListener from '$lib/components/auth/AuthExpireListener.svelte';
 
 	export let data;
 	let { supabase, session, pathName } = data;
@@ -26,31 +23,15 @@
 	let timer: NodeJS.Timer;
 	let isSpotifyPremiumModalOpen = false;
 
+	// Check if user has Spotify premium
 	spotifyUserProfile.subscribe((user) => {
 		if (user && user?.product !== 'premium' && $spotifyAccessToken?.access_token) {
 			isSpotifyPremiumModalOpen = true;
 		}
 	});
 
-	// Refresh token once the token is about to expire (10 seconds left).
-	spotifyAccessToken.subscribe(async ({ access_token, refresh_token, since }) => {
-		clearInterval(timer);
-		if (!access_token || !since) return;
-
-		const now = new Date().getTime();
-		const timeDiff = now - since.getTime();
-
-		const remainingTokenTime = 3_600_000 - timeDiff;
-
-		// Ask the user to re-login
-		if ($hasRefreshedToken && remainingTokenTime <= 0) {
-			await reloginAfterTokenRefreshed($page?.url);
-			return;
-		} else if ($hasRefreshedToken && remainingTokenTime <= 0) {
-			await handleRefreshSession();
-		}
-	});
-
+	// Listen to Supabase's auth state
+	// Retrieve Spotify profile if it does not exist
 	onMount(() => {
 		const {
 			data: { subscription }
@@ -67,17 +48,7 @@
 			setTokenStore(_session?.provider_token, _session?.provider_refresh_token);
 
 			if (!$spotifyUserProfile) {
-				const profileRes = await fetch('/api/spotify/profile', {
-					method: 'POST',
-					body: JSON.stringify({
-						access_token: data?.session?.provider_token
-					})
-				});
-
-				const profile = (await profileRes.json()) as PrivateUser;
-				if (PUBLIC_NODE_ENV === 'development') {
-					console.log(profile);
-				}
+				const profile = await getSpotifyProfile(data?.session?.provider_token);
 				spotifyUserProfile.set(profile);
 			}
 		});
@@ -90,19 +61,10 @@
 	onDestroy(() => {
 		clearInterval(timer);
 	});
-
-	// Note: It seems like Spotify only allow refresh token to be used once.
-	// That means that if the user already refreshed the token, the user must login again.
-	async function handleRefreshSession() {
-		if (!$spotifyAccessToken.refresh_token) return;
-
-		const token = await refreshSpotifyToken($spotifyAccessToken.refresh_token);
-		setTokenStore(token.access_token, '');
-		hasRefreshedToken.set(true);
-	}
 </script>
 
-<Modal open={isSpotifyPremiumModalOpen} permanent size="lg" class="modal-glass">
+<AuthExpireListener />
+<Modal open={isSpotifyPremiumModalOpen} permanent size="lg" class="modal-glass z-50 relative">
 	<SpotifyPremiumInfoModal />
 </Modal>
 <div class="w-screen h-screen overflow-x-hidden bg-dark-900">

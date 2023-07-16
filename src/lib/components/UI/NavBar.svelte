@@ -100,7 +100,7 @@
 									<a aria-label="Support Chimefy" target="_blank" rel="noopener noreferrer" href={PUBLIC_SUPPORT_URL} class="text-sm font-medium">Support Chimefy</a>
 								</div>
 							</DropdownItem>
-							<form method="POST" action="/signout">
+							<form method="POST" action="/signout?/signout">
 								<DropdownItem defaultClass="py-2 px-4">
 									<div class="flex flex-row items-center">
 										<Icon icon="ion:exit" class="h-4 w-4 mr-2" />
