@@ -1,14 +1,8 @@
 import { PUBLIC_NODE_ENV } from '$env/static/public';
-import type { MusicQueue, MusicSessionQueue } from '$lib/interfaces/session/queue.interface';
-import type { MusicSessionRole } from '$lib/interfaces/session/session.interface';
-import { playTrack } from '$lib/spotify/player';
-import { supabase } from '$lib/supabase/supabase';
-import {
-	isPlayingStatus,
-	playingDurationMs,
-	playingInfo,
-	playingTrackId
-} from '../../stores/session';
+import type { MusicQueue } from '$interfaces/session/queue.interface';
+import { playTrack } from '$spotify/player';
+import { supabase } from '$supabase/supabase';
+import { isPlayingStatus, playingDurationMs, playingInfo, playingTrackId } from '$stores/session';
 
 /**
  * Update queue from session by removing the track from its target ID.
