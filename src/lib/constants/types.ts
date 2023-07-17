@@ -1,15 +1,15 @@
-import HiphopImg from '$lib/assets/musicType/hiphop.svg';
-import ChillImg from '$lib/assets/musicType/chill.svg';
-import AnimeImg from '$lib/assets/musicType/anime.svg';
-import ClassicalImg from '$lib/assets/musicType/classical.svg';
-import CountryImg from '$lib/assets/musicType/country.svg';
-import LofiImg from '$lib/assets/musicType/lofi.svg';
-import RockImg from '$lib/assets/musicType/rock.svg';
-import SoulImg from '$lib/assets/musicType/soul.svg';
-import WorkingImg from '$lib/assets/musicType/working.svg';
-import PopImg from '$lib/assets/musicType/pop.svg';
-import FunkImg from '$lib/assets/musicType/funk.svg';
-import IndieImg from '$lib/assets/musicType/indie.svg';
+import HiphopImg from '$assets/musicType/hiphop.svg';
+import ChillImg from '$assets/musicType/chill.svg';
+import AnimeImg from '$assets/musicType/anime.svg';
+import ClassicalImg from '$assets/musicType/classical.svg';
+import CountryImg from '$assets/musicType/country.svg';
+import LofiImg from '$assets/musicType/lofi.svg';
+import RockImg from '$assets/musicType/rock.svg';
+import SoulImg from '$assets/musicType/soul.svg';
+import WorkingImg from '$assets/musicType/working.svg';
+import PopImg from '$assets/musicType/pop.svg';
+import FunkImg from '$assets/musicType/funk.svg';
+import IndieImg from '$assets/musicType/indie.svg';
 
 export const SESSION_MUSIC_TYPES = [
 	{
