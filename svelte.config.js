@@ -21,6 +21,7 @@ const config = {
 			$spotify: 'src/lib/spotify',
 			$supabase: 'src/lib/supabase',
 			$stores: 'src/lib/stores',
+			$assets: 'src/lib/assets',
 			$styles: 'src/styles'
 		}
 	},
