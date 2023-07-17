@@ -1,6 +1,5 @@
 <script lang="ts">
 	import {
-		currentSessionRole,
 		currentSession,
 		isPlayingStatus,
 		playingDurationMs
@@ -14,8 +13,8 @@
 	import { supabase } from '$lib/supabase/supabase';
 	import MemberPlayerListener from '../listeners/MemberPlayerListener.svelte';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
-	import DebugBgWrapper from '../UI/DebugBgWrapper.svelte';
 	import { spotifyPlayerId, spotifyAccessToken } from '$stores/spotify/user';
+	import DebugText from '$components/debugger/DebugText.svelte';
 
 	let SpotifyPlayer: Spotify.Player;
 
@@ -98,16 +97,7 @@
 	</div>
 </div>
 
-{#if PUBLIC_NODE_ENV === 'development'}
-	<div class="flex flex-row items-center justify-between">
-		<DebugBgWrapper debuggerTitle="Player Debugger">
-			<p>Role: {$currentSessionRole}</p>
-			<p>Spotify Player Id: {$spotifyPlayerId}</p>
-			<p>Player Options: {JSON.stringify(SpotifyPlayer?._options)}</p>
-		</DebugBgWrapper>
-		<DebugBgWrapper debuggerTitle="Controller Debugger">
-			<p>Playing duration: {$playingDurationMs} ms</p>
-			<p>Player status: {$isPlayingStatus}</p>
-		</DebugBgWrapper>
-	</div>
-{/if}
+<DebugText text={`Spotify player ID: ${$spotifyPlayerId}`} />
+<DebugText text={`Spotify player options: ${JSON.stringify(SpotifyPlayer?._options)}`} />
+<DebugText text={`Player duration: ${$playingDurationMs} ms`} />
+<DebugText text={`Player status: ${$isPlayingStatus ? 'Playing' : 'Pause'}`} />
