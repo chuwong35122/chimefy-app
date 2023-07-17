@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import { onDestroy, onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 
@@ -21,9 +20,6 @@
 	});
 </script>
 
-{#if PUBLIC_NODE_ENV === 'development'}
-	<div class="text-sm">{timeMs}</div>
-{/if}
 {#if timeMs >= 0 && timeMs <= INTERVAL}
 	<div in:fly={{ duration: 600, y: -40 }}>
 		<h2 class="ml-4 text-lg md:text-xl mt-4">
