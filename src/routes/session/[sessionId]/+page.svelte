@@ -1,22 +1,16 @@
 <script lang="ts">
-	import type { MusicSession } from '$lib/interfaces/session/session.interface';
-	import { onDestroy, onMount } from 'svelte';
-	import TrackSearchTab from '$lib/components/music/TrackSearchTab.svelte';
-	import {
-		currentSession,
-		currentSessionRole,
-		currentSessionQueue,
-		onSessionDestroyed
-	} from '$stores/session';
-	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
-	import MusicPlayerController from '$lib/components/music/MusicPlayerController.svelte';
-	import SessionQueueMembers from '$lib/components/music/members/SessionQueueMembers.svelte';
-	import SessionInfo from '$lib/components/music/SessionInfo.svelte';
-	import { supabase } from '$lib/supabase/supabase';
+	import type { MusicSession } from '$interfaces/session/session.interface';
+	import { onMount } from 'svelte';
+	import TrackSearchTab from '$components/music/TrackSearchTab.svelte';
+	import { currentSession, currentSessionRole, currentSessionQueue } from '$stores/session';
+	import TrackQueueList from '$components/music/TrackQueueList.svelte';
+	import MusicPlayerController from '$components/music/MusicPlayerController.svelte';
+	import SessionQueueMembers from '$components/music/members/SessionQueueMembers.svelte';
+	import SessionInfo from '$components/music/SessionInfo.svelte';
+	import { supabase } from '$supabase/supabase';
 	import { userStore } from '$stores/auth/user';
-	import type { MusicSessionQueue } from '$lib/interfaces/session/queue.interface';
-	import seo from '$lib/constants/seo';
-	import { PUBLIC_NODE_ENV } from '$env/static/public';
+	import type { MusicSessionQueue } from '$interfaces/session/queue.interface';
+	import seo from '$constants/seo';
 
 	export let data: { session: MusicSession; queues: MusicSessionQueue; url: string };
 	let { session, queues, url } = data;

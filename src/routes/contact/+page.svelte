@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { Alert, Input, Label, Textarea } from 'flowbite-svelte';
-	import PrimaryButtonWrapper from '$lib/components/buttons/PrimaryButtonWrapper.svelte';
+	import PrimaryButtonWrapper from '$components/buttons/PrimaryButtonWrapper.svelte';
 	import Icon from '@iconify/svelte';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 	import type { PageData } from './$types';
-	import ErrorMessage from '$lib/components/forms/ErrorMessage.svelte';
-	import { SendContactSchema } from '$lib/schemas/contact.schema';
+	import ErrorMessage from '$components/forms/ErrorMessage.svelte';
+	import { SendContactSchema } from '$schemas/contact.schema';
 	import emailjs from '@emailjs/browser';
 	import { toastValue } from '$stores/notification/toast';
 	import { fade } from 'svelte/transition';
