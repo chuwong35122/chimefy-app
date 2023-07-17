@@ -23,7 +23,7 @@
 			joined_since: new Date(),
 			display_name: user?.user_metadata?.name ?? 'Anonymous',
 			member_user_id: user?.id ?? '',
-			is_admin: $currentSessionRole === 'admin',
+			is_admin: $currentSession?.created_by === user?.id,
 			profile_img: user?.user_metadata?.avatar_url
 		};
 	});
