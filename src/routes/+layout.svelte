@@ -7,10 +7,7 @@
 	import { Modal } from 'flowbite-svelte';
 	import SpotifyPremiumInfoModal from '$components/modals/SpotifyPremiumInfoModal.svelte';
 	import { userStore } from '$stores/auth/user';
-	import {
-		setTokenStore,
-		getSpotifyProfile
-	} from '$spotify/user';
+	import { setTokenStore, getSpotifyProfile } from '$spotify/user';
 	import PageTransition from '$components/transition/PageTransition.svelte';
 	import AuthExpireListener from '$components/listeners/AuthExpireListener.svelte';
 	import { page } from '$app/stores';

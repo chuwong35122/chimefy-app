@@ -1,8 +1,5 @@
 <script lang="ts">
-	import {
-		refreshSpotifyToken,
-		setTokenStore
-	} from '$spotify/user';
+	import { refreshSpotifyToken, setTokenStore } from '$spotify/user';
 	import { onDestroy } from 'svelte';
 	import ReauthenticatePromptModal from '$components/modals/ReauthenticatePromptModal.svelte';
 	import { Modal } from 'flowbite-svelte';
