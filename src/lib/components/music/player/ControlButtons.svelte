@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
-	import { toastValue } from '$lib/notification/toast';
-	import { sliceQueue } from '$lib/session/queue';
+	import { toastValue } from '$stores/notification/toast';
+	import { sliceQueue } from '$utils/session/queue';
 	import {
 		currentSessionQueue,
 		currentSessionRole,
@@ -9,7 +9,7 @@
 		playingDurationMs,
 		playingInfo,
 		playingTrackId
-	} from '$lib/session/session';
+	} from '$utils/session/session';
 	import Icon from '@iconify/svelte';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { Tooltip } from 'flowbite-svelte';

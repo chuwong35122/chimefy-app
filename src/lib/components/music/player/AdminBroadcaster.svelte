@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentSession, currentSessionRole, playingInfo } from '$lib/session/session';
+	import { currentSession, currentSessionRole, playingInfo } from '$utils/session/session';
 	import { supabase } from '$lib/supabase/supabase';
 	import { onDestroy, onMount } from 'svelte';
 

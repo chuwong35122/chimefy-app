@@ -9,7 +9,7 @@
 	import ErrorMessage from '$lib/components/forms/ErrorMessage.svelte';
 	import { SendContactSchema } from '$lib/schemas/contact.schema';
 	import emailjs from '@emailjs/browser';
-	import { toastValue } from '$lib/notification/toast';
+	import { toastValue } from '$stores/notification/toast';
 	import { fade } from 'svelte/transition';
 	import {
 		PUBLIC_SERVICE_ID,

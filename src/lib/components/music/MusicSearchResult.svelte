@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { currentSession, currentSessionQueue, currentSessionRole } from '$lib/session/session';
+	import { currentSession, currentSessionQueue, currentSessionRole } from '$utils/session/session';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import Icon from '@iconify/svelte';
 	import type { Track } from 'spotify-types';
-	import { toastValue } from '$lib/notification/toast';
+	import { toastValue } from '$stores/notification/toast';
 	import { joinArtists } from '$lib/utils/track';
-	import { userStore } from '$lib/supabase/user';
+	import { userStore } from '$stores/auth/user';
 	import { supabase } from '$lib/supabase/supabase';
 	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
 

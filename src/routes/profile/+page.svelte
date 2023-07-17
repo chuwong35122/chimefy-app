@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { userStore } from '$lib/supabase/user';
+	import { userStore } from '$stores/auth/user';
 	import Icon from '@iconify/svelte';
 	import { PUBLIC_SUPPORT_URL } from '$env/static/public';
 

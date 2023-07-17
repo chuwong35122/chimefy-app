@@ -2,15 +2,15 @@
 	import { Button, ButtonGroup, Input, InputAddon, TabItem, Tabs, Tooltip } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import { goto } from '$app/navigation';
-	import { toastValue } from '$lib/notification/toast';
-	import SessionList from '$lib/components/session/SessionList.svelte';
-	import type { MusicSession, MusicSessionInfo } from '$lib/interfaces/session/session.interface';
-	import { supabase } from '$lib/supabase/supabase';
+	import { toastValue } from '$stores/notification/toast';
+	import SessionList from '$components/session/SessionList.svelte';
+	import type { MusicSession, MusicSessionInfo } from '$interfaces/session/session.interface';
+	import { supabase } from '$supabase/supabase';
 	import { fly } from 'svelte/transition';
-	import { userStore } from '$lib/supabase/user';
-	import SessionItem from '$lib/components/session/SessionItem.svelte';
-	import { listUserSession } from '$lib/session/search';
-	import seo from '$lib/constants/seo';
+	import { userStore } from '$stores/auth/user';
+	import SessionItem from '$components/session/SessionItem.svelte';
+	import { listUserSession } from '$utils/session/search';
+	import seo from '$constants/seo';
 
 	let input = '';
 	let privateSessions: MusicSessionInfo[] = [];

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Toast } from 'flowbite-svelte';
 	import { fly } from 'svelte/transition';
-	import { toastValue, type ToastType } from '$lib/notification/toast';
+	import { toastValue, type ToastType } from '$stores/notification/toast';
 	import Icon from '@iconify/svelte';
 
 	const COUNTER_COUNTDOWN = 5;

@@ -4,10 +4,9 @@
 		currentSession,
 		isPlayingStatus,
 		playingDurationMs
-	} from '$lib/session/session';
+	} from '$utils/session/session';
 	import Icon from '@iconify/svelte';
 	import { onDestroy, onMount } from 'svelte';
-	import { spotifyAccessToken, spotifyPlayerId } from '$lib/spotify/spotify';
 	import { Tooltip } from 'flowbite-svelte';
 	import VolumeController from './player/VolumeController.svelte';
 	import TrackPreview from './player/TrackPreview.svelte';
@@ -16,6 +15,7 @@
 	import MemberPlayerListener from './player/MemberPlayerListener.svelte';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import DebugBgWrapper from '../UI/DebugBgWrapper.svelte';
+	import { spotifyPlayerId, spotifyAccessToken } from '$stores/spotify/user';
 
 	let SpotifyPlayer: Spotify.Player;
 

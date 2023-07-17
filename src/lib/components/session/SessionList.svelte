@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import { Spinner } from 'flowbite-svelte';
 	import SessionSearchFilter from './SessionSearchFilter.svelte';
-	import { sessionSearchResult } from '$lib/session/search';
+	import { sessionSearchResult } from '$utils/session/search';
 	import SessionItem from './SessionItem.svelte';
 </script>
 

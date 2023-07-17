@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { playingInfo } from '$lib/session/session';
+	import { playingInfo } from '$utils/session/session';
 </script>
 
 <div class="h-20">

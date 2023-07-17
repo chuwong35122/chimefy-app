@@ -7,13 +7,13 @@
 		currentSessionRole,
 		currentSessionQueue,
 		onSessionDestroyed
-	} from '$lib/session/session';
+	} from '$utils/session/session';
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
 	import MusicPlayerController from '$lib/components/music/MusicPlayerController.svelte';
 	import SessionQueueMembers from '$lib/components/music/members/SessionQueueMembers.svelte';
 	import SessionInfo from '$lib/components/music/SessionInfo.svelte';
 	import { supabase } from '$lib/supabase/supabase';
-	import { userStore } from '$lib/supabase/user';
+	import { userStore } from '$stores/auth/user';
 	import type { MusicSessionQueue } from '$lib/interfaces/session/queue.interface';
 	import seo from '$lib/constants/seo';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
