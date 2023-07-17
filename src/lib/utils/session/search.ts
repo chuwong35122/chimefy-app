@@ -1,16 +1,5 @@
 import type { MusicSessionInfo } from '$lib/interfaces/session/session.interface';
 import { supabase } from '$lib/supabase/supabase';
-import { writable } from 'svelte/store';
-
-export interface SessionSearchResult {
-	results: MusicSessionInfo[];
-	loading: boolean;
-}
-
-export const sessionSearchResult = writable<SessionSearchResult>({
-	results: [],
-	loading: false
-});
 
 export async function listSessions(): Promise<MusicSessionInfo[]> {
 	const { data, error } = await supabase

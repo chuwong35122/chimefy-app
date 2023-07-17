@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentSession, currentSessionQueue, currentSessionRole } from '$utils/session/session';
+	import { currentSession, currentSessionQueue, currentSessionRole } from '$stores/session';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import Icon from '@iconify/svelte';
 	import type { Track } from 'spotify-types';

@@ -3,7 +3,12 @@ import type { MusicQueue, MusicSessionQueue } from '$lib/interfaces/session/queu
 import type { MusicSessionRole } from '$lib/interfaces/session/session.interface';
 import { playTrack } from '$lib/spotify/player';
 import { supabase } from '$lib/supabase/supabase';
-import { isPlayingStatus, playingDurationMs, playingInfo, playingTrackId } from './session';
+import {
+	isPlayingStatus,
+	playingDurationMs,
+	playingInfo,
+	playingTrackId
+} from '../../stores/session';
 
 /**
  * Update queue from session by removing the track from its target ID.

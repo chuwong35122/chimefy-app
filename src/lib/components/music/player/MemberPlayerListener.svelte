@@ -7,7 +7,7 @@
 		currentSessionQueue,
 		playingTrackId,
 		playingDurationMs
-	} from '$utils/session/session';
+	} from '$stores/session';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { playSingleTrack, sliceQueue } from '$utils/session/queue';
 	import { pauseTrack } from '$lib/spotify/player';

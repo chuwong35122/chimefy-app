@@ -14,7 +14,7 @@
 	import PageTransition from '$components/transition/PageTransition.svelte';
 	import AuthExpireListener from '$components/listeners/AuthExpireListener.svelte';
 	import { page } from '$app/stores';
-	import { onSessionDestroyed } from '$utils/session/session';
+	import { onSessionDestroyed } from '$stores/session';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import { spotifyAccessToken, spotifyUserProfile } from '$stores/spotify/user';
 
