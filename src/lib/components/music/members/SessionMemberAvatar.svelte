@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SessionMember } from '$lib/interfaces/session/member.interface';
+	import type { SessionMember } from '$interfaces/session/member.interface';
 	import Icon from '@iconify/svelte';
 
 	export let member: SessionMember;

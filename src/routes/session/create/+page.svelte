@@ -1,16 +1,16 @@
 <script lang="ts">
 	import { Label, Input, Toggle, Select, Tooltip } from 'flowbite-svelte';
-	import PrimaryButtonWrapper from '$lib/components/buttons/PrimaryButtonWrapper.svelte';
-	import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
+	import PrimaryButtonWrapper from '$components/buttons/PrimaryButtonWrapper.svelte';
+	import { SESSION_MUSIC_TYPES } from '$constants/types';
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
-	import ErrorMessage from '$lib/components/forms/ErrorMessage.svelte';
-	import SecondaryButtonWrapper from '$lib/components/buttons/SecondaryButtonWrapper.svelte';
+	import ErrorMessage from '$components/forms/ErrorMessage.svelte';
+	import SecondaryButtonWrapper from '$components/buttons/SecondaryButtonWrapper.svelte';
 	import { goto } from '$app/navigation';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import Icon from '@iconify/svelte';
-	import seo from '$lib/constants/seo';
+	import seo from '$constants/seo';
 	import { applyAction, enhance } from '$app/forms';
 
 	export let data: PageData;

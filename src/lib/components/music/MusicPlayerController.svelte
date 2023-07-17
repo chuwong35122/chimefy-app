@@ -12,7 +12,7 @@
 	import TrackPreview from './player/TrackPreview.svelte';
 	import ControlButtons from './player/ControlButtons.svelte';
 	import { supabase } from '$lib/supabase/supabase';
-	import MemberPlayerListener from './player/MemberPlayerListener.svelte';
+	import MemberPlayerListener from '../listeners/MemberPlayerListener.svelte';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import DebugBgWrapper from '../UI/DebugBgWrapper.svelte';
 	import { spotifyPlayerId, spotifyAccessToken } from '$stores/spotify/user';

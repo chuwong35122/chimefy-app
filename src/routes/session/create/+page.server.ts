@@ -3,7 +3,7 @@ import { CreateSessionSchema } from '$lib/schemas/session.schema';
 import { fail, redirect } from '@sveltejs/kit';
 import type { CreateMusicSession } from '$lib/interfaces/session/session.interface.js';
 
-export const load = async (event) => {
+export const load = async () => {
 	const form = await superValidate(CreateSessionSchema);
 
 	return { form };
