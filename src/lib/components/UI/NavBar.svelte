@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Dropdown, DropdownItem, Spinner } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
-	import { SPOTIFY_AUTH_SCOPES } from '$lib/spotify/spotify';
+	import { SPOTIFY_AUTH_SCOPES } from '$spotify/user';
 	import { supabase } from '$lib/supabase/supabase';
 	import { userStore } from '$stores/auth/user';
 	import NavLink from './NavLink.svelte';

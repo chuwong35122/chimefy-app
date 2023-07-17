@@ -10,7 +10,7 @@
 	import {
 		setTokenStore,
 		getSpotifyProfile
-	} from '$spotify/spotify';
+	} from '$spotify/user';
 	import PageTransition from '$components/transition/PageTransition.svelte';
 	import AuthExpireListener from '$components/listeners/AuthExpireListener.svelte';
 	import { page } from '$app/stores';

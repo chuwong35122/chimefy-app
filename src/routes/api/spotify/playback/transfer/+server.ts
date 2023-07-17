@@ -1,6 +1,6 @@
 import type { RequestHandler } from './$types';
 import { PUBLIC_SPOTIFY_BASE_URL } from '$env/static/public';
-import { getBearerToken } from '$lib/spotify/spotify';
+import { getBearerToken } from '$spotify/user';
 
 // Transfer playback state to other device
 export const POST: RequestHandler = async ({ fetch, request }) => {
