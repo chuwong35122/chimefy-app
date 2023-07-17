@@ -1,8 +1,8 @@
-import type { MusicSessionInfo } from '$lib/interfaces/session/session.interface';
-import { supabase } from '$lib/supabase/supabase';
+import type { MusicSessionInfo } from '$interfaces/session/session.interface';
+import { supabase } from '$supabase/supabase';
 
 export async function listSessions(): Promise<MusicSessionInfo[]> {
-	const { data, error } = await supabase
+	const { data } = await supabase
 		.from('session')
 		.select(
 			`
@@ -26,7 +26,7 @@ export async function listSessions(): Promise<MusicSessionInfo[]> {
 export async function listUserSession(id: string): Promise<MusicSessionInfo[]> {
 	if (!id) return [];
 
-	const { data, error } = await supabase
+	const { data } = await supabase
 		.from('session')
 		.select(
 			`
@@ -68,7 +68,7 @@ export async function searchSessionList(name: string, type: string): Promise<Mus
 		query.filter('type', 'eq', type);
 	}
 
-	const { data, error } = await query
+	const { data } = await query
 		.limit(36)
 		.filter('is_private', 'eq', false)
 		.order('created_at', { ascending: false });

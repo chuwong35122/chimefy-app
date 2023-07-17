@@ -1,5 +1,5 @@
 import { PUBLIC_SPOTIFY_BASE_URL } from '$env/static/public';
-import type { SearchType } from '$lib/interfaces/spotify/track.interface';
+import type { SearchType } from '$interfaces/spotify/track.interface';
 import { getBearerToken } from '$spotify/user';
 import qs from 'querystring';
 import type { Track } from 'spotify-types';
