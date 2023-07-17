@@ -1,8 +1,8 @@
 <script lang="ts">
-	import FaqSection from '$lib/components/landing/FAQSection.svelte';
-	import HowToSteps from '$lib/components/landing/HowToSteps.svelte';
-	import UseCase from '$lib/components/landing/UseCase.svelte';
-	import seo from '$lib/constants/seo';
+	import FaqSection from '$components/landing/FAQSection.svelte';
+	import HowToSteps from '$components/landing/HowToSteps.svelte';
+	import UseCase from '$components/landing/UseCase.svelte';
+	import seo from '$constants/seo';
 </script>
 
 <svelte:head>

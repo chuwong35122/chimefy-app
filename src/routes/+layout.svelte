@@ -1,20 +1,20 @@
 <script lang="ts">
 	import '../styles/global.css';
-	import NavBar from '$lib/components/UI/NavBar.svelte';
-	import Toast from '$lib/components/notification/Toast.svelte';
+	import NavBar from '$components/UI/NavBar.svelte';
+	import Toast from '$components/UI/Toast.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
 	import { Modal } from 'flowbite-svelte';
-	import SpotifyPremiumInfoModal from '$lib/components/modals/SpotifyPremiumInfoModal.svelte';
+	import SpotifyPremiumInfoModal from '$components/modals/SpotifyPremiumInfoModal.svelte';
 	import { userStore } from '$lib/supabase/user';
 	import {
 		setTokenStore,
 		spotifyUserProfile,
 		spotifyAccessToken,
 		getSpotifyProfile
-	} from '$lib/spotify/spotify';
-	import PageTransition from '$lib/components/transition/PageTransition.svelte';
-	import AuthExpireListener from '$lib/components/auth/AuthExpireListener.svelte';
+	} from '$spotify/spotify';
+	import PageTransition from '$components/transition/PageTransition.svelte';
+	import AuthExpireListener from '$components/listeners/AuthExpireListener.svelte';
 	import { page } from '$app/stores';
 	import { onSessionDestroyed } from '$lib/session/session';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';

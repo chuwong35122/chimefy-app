@@ -1,5 +1,5 @@
 import { superValidate } from 'sveltekit-superforms/server';
-import { CreateSessionSchema } from '$lib/schema/session.schema';
+import { CreateSessionSchema } from '$lib/schemas/session.schema';
 import { fail, redirect } from '@sveltejs/kit';
 import type { CreateMusicSession } from '$lib/interfaces/session/session.interface.js';
 
