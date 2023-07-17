@@ -1,6 +1,9 @@
 <script lang="ts">
+	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import type { SessionMember } from '$interfaces/session/member.interface';
 	import Icon from '@iconify/svelte';
+	import {currentSessionRole} from '$stores/session'
+	import DebugText from '$components/debugger/DebugText.svelte';
 
 	export let member: SessionMember;
 </script>
@@ -29,6 +32,6 @@
 	/>
 	<p class="mt-2 text-sm lg:text-md">
 		{member?.display_name}
-		<!-- {detectSelf(member) ? '(me)' : ''} -->
 	</p>
+	<DebugText text={$currentSessionRole} />
 </div>

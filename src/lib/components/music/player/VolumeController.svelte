@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { PUBLIC_NODE_ENV } from '$env/static/public';
-	import DebugBgWrapper from '$lib/components/UI/DebugBgWrapper.svelte';
 	import { toastValue } from '$stores/notification/toast';
 	import Icon from '@iconify/svelte';
 
@@ -37,8 +35,3 @@
 		/>
 	</div>
 </div>
-{#if PUBLIC_NODE_ENV === 'development'}
-	<DebugBgWrapper>
-		<p>Volume: {volume}</p>
-	</DebugBgWrapper>
-{/if}
