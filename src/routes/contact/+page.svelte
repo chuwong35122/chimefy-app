@@ -7,7 +7,7 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import type { PageData } from './$types';
 	import ErrorMessage from '$lib/components/forms/ErrorMessage.svelte';
-	import { SendContactSchema } from '$lib/schema/contact.schema';
+	import { SendContactSchema } from '$lib/schemas/contact.schema';
 	import emailjs from '@emailjs/browser';
 	import { toastValue } from '$lib/notification/toast';
 	import { fade } from 'svelte/transition';

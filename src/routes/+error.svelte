@@ -1,6 +1,6 @@
 <script>
 	import { page } from '$app/stores';
-	import PrimaryButtonWrapper from '../lib/components/buttons/PrimaryButtonWrapper.svelte';
+	import PrimaryButtonWrapper from '$components/buttons/PrimaryButtonWrapper.svelte';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 
