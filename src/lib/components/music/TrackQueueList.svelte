@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentSessionQueue, currentSession, playingInfo } from '$utils/session/session';
+	import { currentSessionQueue, currentSession, playingInfo } from '$stores/session';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import Icon from '@iconify/svelte';
 	import { Tooltip } from 'flowbite-svelte';

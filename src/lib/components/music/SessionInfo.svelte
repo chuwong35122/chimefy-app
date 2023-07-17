@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { toastValue } from '$stores/notification/toast';
 	import { Button, Modal, Tooltip } from 'flowbite-svelte';
-	import { currentSession, currentSessionRole } from '$utils/session/session';
+	import { currentSession, currentSessionRole } from '$stores/session';
 	import Icon from '@iconify/svelte';
 	import Chip from '../UI/Chip.svelte';
 	import { supabase } from '$lib/supabase/supabase';

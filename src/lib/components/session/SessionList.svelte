@@ -2,8 +2,8 @@
 	import Icon from '@iconify/svelte';
 	import { Spinner } from 'flowbite-svelte';
 	import SessionSearchFilter from './SessionSearchFilter.svelte';
-	import { sessionSearchResult } from '$utils/session/search';
 	import SessionItem from './SessionItem.svelte';
+	import { sessionSearchResult } from '$stores/session';
 </script>
 
 <div class="w-full pt-4">

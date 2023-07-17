@@ -9,7 +9,7 @@
 		playingDurationMs,
 		playingInfo,
 		playingTrackId
-	} from '$utils/session/session';
+	} from '$stores/session';
 	import Icon from '@iconify/svelte';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { Tooltip } from 'flowbite-svelte';

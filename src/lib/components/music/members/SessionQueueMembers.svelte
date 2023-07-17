@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SessionMember } from '$lib/interfaces/session/member.interface';
-	import { currentSession, currentSessionMember, currentSessionRole } from '$utils/session/session';
+	import { currentSession, currentSessionMember, currentSessionRole } from '$stores/session';
 	import { userStore } from '$stores/auth/user';
 	import { onDestroy, onMount } from 'svelte';
 	import SessionMemberAvatar from './SessionMemberAvatar.svelte';

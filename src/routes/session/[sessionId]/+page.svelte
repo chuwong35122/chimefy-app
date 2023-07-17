@@ -7,7 +7,7 @@
 		currentSessionRole,
 		currentSessionQueue,
 		onSessionDestroyed
-	} from '$utils/session/session';
+	} from '$stores/session';
 	import TrackQueueList from '$lib/components/music/TrackQueueList.svelte';
 	import MusicPlayerController from '$lib/components/music/MusicPlayerController.svelte';
 	import SessionQueueMembers from '$lib/components/music/members/SessionQueueMembers.svelte';

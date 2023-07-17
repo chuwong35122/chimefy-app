@@ -4,7 +4,7 @@
 		currentSession,
 		isPlayingStatus,
 		playingDurationMs
-	} from '$utils/session/session';
+	} from '$stores/session';
 	import Icon from '@iconify/svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { Tooltip } from 'flowbite-svelte';
