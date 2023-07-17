@@ -4,7 +4,7 @@
 		setTokenStore
 	} from '$spotify/user';
 	import { onDestroy } from 'svelte';
-	import ReauthenticatePromptModal from '../modals/ReauthenticatePromptModal.svelte';
+	import ReauthenticatePromptModal from '$components/modals/ReauthenticatePromptModal.svelte';
 	import { Modal } from 'flowbite-svelte';
 	import { hasRefreshedToken, spotifyAccessToken } from '$stores/spotify/user';
 
