@@ -2,7 +2,7 @@
 	import {
 		refreshSpotifyToken,
 		setTokenStore
-	} from '$lib/spotify/spotify';
+	} from '$spotify/user';
 	import { onDestroy } from 'svelte';
 	import ReauthenticatePromptModal from '../modals/ReauthenticatePromptModal.svelte';
 	import { Modal } from 'flowbite-svelte';
