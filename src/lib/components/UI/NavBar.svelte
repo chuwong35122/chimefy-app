@@ -3,12 +3,12 @@
 	import Icon from '@iconify/svelte';
 	import { SPOTIFY_AUTH_SCOPES } from '$lib/spotify/spotify';
 	import { supabase } from '$lib/supabase/supabase';
-	import { userStore } from '$lib/supabase/user';
+	import { userStore } from '$stores/auth/user';
 	import NavLink from './NavLink.svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { PUBLIC_SITE_URL } from '$env/static/public';
-	import { toastValue } from '$lib/notification/toast';
+	import { toastValue } from '$stores/notification/toast';
 	import { PUBLIC_SUPPORT_URL } from '$env/static/public';
 
 	let url = PUBLIC_SITE_URL;

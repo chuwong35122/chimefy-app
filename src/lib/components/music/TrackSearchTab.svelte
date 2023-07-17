@@ -3,8 +3,8 @@
 	import { Search, Spinner } from 'flowbite-svelte';
 	import MusicSearchResult from './MusicSearchResult.svelte';
 	import type { Track } from 'spotify-types';
-	import { searchTrack } from '$lib/session/track';
-	import { spotifyAccessToken } from '$lib/spotify/spotify';
+	import { searchTrack } from '$utils/session/track';
+	import { spotifyAccessToken } from '$stores/spotify/user';
 
 	let timer: NodeJS.Timer;
 	let searchTerms = '';

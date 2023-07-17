@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import DebugBgWrapper from '$lib/components/UI/DebugBgWrapper.svelte';
-	import { toastValue } from '$lib/notification/toast';
+	import { toastValue } from '$stores/notification/toast';
 	import Icon from '@iconify/svelte';
 
 	export let SpotifyPlayer: Spotify.Player;

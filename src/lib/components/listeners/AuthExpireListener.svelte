@@ -1,13 +1,12 @@
 <script lang="ts">
 	import {
-		spotifyAccessToken,
-		hasRefreshedToken,
 		refreshSpotifyToken,
 		setTokenStore
 	} from '$lib/spotify/spotify';
 	import { onDestroy } from 'svelte';
 	import ReauthenticatePromptModal from '../modals/ReauthenticatePromptModal.svelte';
 	import { Modal } from 'flowbite-svelte';
+	import { hasRefreshedToken, spotifyAccessToken } from '$stores/spotify/user';
 
 	let timer: NodeJS.Timer;
 	const TIMER_INTERVAL = 500;

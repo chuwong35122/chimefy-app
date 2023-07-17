@@ -7,14 +7,14 @@
 		currentSessionQueue,
 		playingTrackId,
 		playingDurationMs
-	} from '$lib/session/session';
+	} from '$utils/session/session';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
-	import { playSingleTrack, sliceQueue } from '$lib/session/queue';
+	import { playSingleTrack, sliceQueue } from '$utils/session/queue';
 	import { pauseTrack } from '$lib/spotify/player';
-	import { spotifyAccessToken, spotifyPlayerId } from '$lib/spotify/spotify';
 	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
-	import { toastValue } from '$lib/notification/toast';
+	import { toastValue } from '$stores/notification/toast';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
+	import { spotifyAccessToken, spotifyPlayerId } from '$stores/spotify/user';
 
 	export let channel: RealtimeChannel;
 

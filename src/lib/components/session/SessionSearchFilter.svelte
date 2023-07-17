@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import { Search, Tooltip } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
-	import { searchSessionList, listSessions, sessionSearchResult } from '$lib/session/search';
+	import { searchSessionList, listSessions, sessionSearchResult } from '$utils/session/search';
 	import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
 	import type { MusicSessionInfo } from '$lib/interfaces/session/session.interface';
 

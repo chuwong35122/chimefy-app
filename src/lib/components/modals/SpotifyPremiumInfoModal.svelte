@@ -1,8 +1,8 @@
 <script lang="ts">
 	import SecondaryButtonWrapper from '$lib/components/buttons/SecondaryButtonWrapper.svelte';
-	import { spotifyUserProfile } from '$lib/spotify/spotify';
-	import { userStore } from '$lib/supabase/user';
+	import { userStore } from '$stores/auth/user';
 	import { Spinner } from 'flowbite-svelte';
+	import {spotifyUserProfile} from '$stores/spotify/user';
 </script>
 
 {#if $userStore}

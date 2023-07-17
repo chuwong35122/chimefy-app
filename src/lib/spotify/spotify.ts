@@ -1,19 +1,5 @@
-import { PUBLIC_NODE_ENV } from '$env/static/public';
+import { spotifyAccessToken } from '$stores/spotify/user';
 import type { PrivateUser, AccessToken } from 'spotify-types';
-import { writable } from 'svelte/store';
-
-export const spotifyAccessToken = writable<{
-	access_token: string;
-	refresh_token: string;
-	since: Date | null;
-}>({
-	access_token: '',
-	refresh_token: '',
-	since: null
-});
-export const spotifyPlayerId = writable('');
-export const spotifyUserProfile = writable<PrivateUser | null>(null);
-export const hasRefreshedToken = writable(false);
 
 export const SPOTIFY_AUTH_SCOPES = [
 	'user-read-playback-state',

@@ -6,18 +6,17 @@
 	import { invalidate } from '$app/navigation';
 	import { Modal } from 'flowbite-svelte';
 	import SpotifyPremiumInfoModal from '$components/modals/SpotifyPremiumInfoModal.svelte';
-	import { userStore } from '$lib/supabase/user';
+	import { userStore } from '$stores/auth/user';
 	import {
 		setTokenStore,
-		spotifyUserProfile,
-		spotifyAccessToken,
 		getSpotifyProfile
 	} from '$spotify/spotify';
 	import PageTransition from '$components/transition/PageTransition.svelte';
 	import AuthExpireListener from '$components/listeners/AuthExpireListener.svelte';
 	import { page } from '$app/stores';
-	import { onSessionDestroyed } from '$lib/session/session';
+	import { onSessionDestroyed } from '$utils/session/session';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
+	import { spotifyAccessToken, spotifyUserProfile } from '$stores/spotify/user';
 
 	export let data;
 	let { supabase, session, pathName } = data;
