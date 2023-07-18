@@ -7,10 +7,11 @@
 
 	let timer: NodeJS.Timer;
 	const TIMER_INTERVAL = 500;
-
 	let remainingTokenTime = 0;
 
 	let showReauthenticateModal = false;
+
+	let signoutForm: HTMLFormElement;
 
 	function closeModal() {
 		showReauthenticateModal = false;
@@ -19,7 +20,13 @@
 
 	// Create a countdown timer to the moment token expires
 	spotifyAccessToken.subscribe(async ({ access_token, since }) => {
-		if (!access_token || !since) return;
+		if (!access_token) {
+			if (signoutForm) {
+				signoutForm.submit();
+			}
+		}
+
+		if (!since) return;
 
 		timer = setInterval(async () => {
 			const now = new Date().getTime();
@@ -46,6 +53,7 @@
 	});
 </script>
 
+<form bind:this={signoutForm} action="/signout?/signout" method="POST" id="signout-form" />
 <Modal bind:open={showReauthenticateModal} permanent class="modal-glass z-50 relative">
 	<ReauthenticatePromptModal on:finishReauthenticate={closeModal} />
 </Modal>
