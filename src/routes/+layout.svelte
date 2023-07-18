@@ -34,7 +34,7 @@
 	onMount(() => {
 		const {
 			data: { subscription }
-		} = supabase.auth.onAuthStateChange(async (_, _session) => {
+		} = supabase.auth.onAuthStateChange(async (e, _session) => {
 			if (!_session) {
 				return;
 			}
@@ -46,6 +46,7 @@
 			userStore.set(_session.user);
 			setTokenStore(_session?.provider_token, _session?.provider_refresh_token);
 
+			// Will be false if Spotify access token expired, handle it in AuthExpireListener
 			if (!$spotifyUserProfile) {
 				const profile = await getSpotifyProfile(data?.session?.provider_token);
 				spotifyUserProfile.set(profile);
