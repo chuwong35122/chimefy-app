@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type { SessionMember } from '$interfaces/session/member.interface';
-	import { currentSession, currentSessionMember, currentSessionRole } from '$stores/session';
+	import { currentSession, currentSessionMember } from '$stores/session';
 	import { userStore } from '$stores/auth/user';
 	import { onDestroy, onMount } from 'svelte';
 	import SessionMemberAvatar from './SessionMemberAvatar.svelte';
 	import { supabase } from '$lib/supabase/supabase';
-	import { PUBLIC_NODE_ENV } from '$env/static/public';
+	import {devModeStore} from '$stores/navigation/mode';
 
 	const channel = supabase.channel(`session_member_listener_${$currentSession?.id}`, {
 		config: {
@@ -57,7 +57,7 @@
 		});
 
 		channel.subscribe(async (status) => {
-			if (PUBLIC_NODE_ENV === 'development') {
+			if ($devModeStore) {
 				console.log('Member channel status', status);
 			}
 
@@ -69,7 +69,7 @@
 
 	onDestroy(async () => {
 		await channel.unsubscribe();
-		if (PUBLIC_NODE_ENV === 'development') {
+		if ($devModeStore) {
 			console.log('Member channel destroyed');
 		}
 	});

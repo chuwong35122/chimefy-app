@@ -2,7 +2,6 @@
 	import { Alert, Input, Label, Textarea } from 'flowbite-svelte';
 	import PrimaryButtonWrapper from '$components/buttons/PrimaryButtonWrapper.svelte';
 	import Icon from '@iconify/svelte';
-	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 	import type { PageData } from './$types';
@@ -17,6 +16,7 @@
 		PUBLIC_EMAILJS_PUBLIC_KEY
 	} from '$env/static/public';
 	import { goto } from '$app/navigation';
+	import { devModeStore } from '$stores/navigation/mode';
 
 	export let data: PageData;
 	const { form, errors, validate } = superForm(data.form, {
@@ -83,7 +83,7 @@
 	<title>Contact Chimefy</title>
 </svelte:head>
 
-{#if PUBLIC_NODE_ENV === 'development'}
+{#if $devModeStore}
 	<SuperDebug data={$form} />
 {/if}
 

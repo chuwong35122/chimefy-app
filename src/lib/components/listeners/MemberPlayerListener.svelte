@@ -13,8 +13,8 @@
 	import { pauseTrack } from '$spotify/player';
 	import type { TrackBroadcastPayload } from '$interfaces/session/broadcast.interface';
 	import { toastValue } from '$stores/notification/toast';
-	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import { spotifyAccessToken, spotifyPlayerId } from '$stores/spotify/user';
+	import {devModeStore} from '$stores/navigation/mode';
 
 	export let channel: RealtimeChannel;
 
@@ -56,7 +56,7 @@
 			return;
 		}
 
-		if (PUBLIC_NODE_ENV === 'development') {
+		if ($devModeStore) {
 			console.log('isPlayingStatus', status);
 		}
 
@@ -84,7 +84,7 @@
 			playingTrackId.set(_payload?.playingTrackId);
 			isPlayingStatus.set(_payload?.isPlaying);
 
-			if (PUBLIC_NODE_ENV === 'development') {
+			if ($devModeStore) {
 				const rnd = Math.random();
 				if (rnd < 0.2) {
 					console.log('playerStart', _payload);
@@ -105,7 +105,7 @@
 				$spotifyAccessToken?.access_token
 			);
 
-			if (PUBLIC_NODE_ENV === 'development') {
+			if ($devModeStore) {
 				console.log('playerBackward', _payload);
 			}
 		});
@@ -123,7 +123,7 @@
 				$spotifyAccessToken?.access_token
 			);
 
-			if (PUBLIC_NODE_ENV === 'development') {
+			if ($devModeStore) {
 				console.log('playerForward', _payload);
 			}
 		});

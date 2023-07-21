@@ -12,8 +12,8 @@
 	import AuthExpireListener from '$components/listeners/AuthExpireListener.svelte';
 	import { page } from '$app/stores';
 	import { onSessionDestroyed } from '$stores/session';
-	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import { spotifyAccessToken, spotifyUserProfile } from '$stores/spotify/user';
+	import {devModeStore} from '$stores/navigation/mode';
 
 	export let data;
 	let { supabase, session, pathName } = data;
@@ -65,7 +65,7 @@
 	page.subscribe((page) => {
 		if (page?.route?.id !== '/session/[sessionId]') {
 			onSessionDestroyed();
-			if (PUBLIC_NODE_ENV === 'developnent') {
+			if ($devModeStore) {
 				console.log('On session destroyed has been called...');
 			}
 		}
