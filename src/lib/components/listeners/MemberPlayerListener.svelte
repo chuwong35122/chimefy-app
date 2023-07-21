@@ -10,15 +10,13 @@
 	} from '$stores/session';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { playSingleTrack, sliceQueue } from '$utils/session/queue';
-	import { pauseTrack } from '$lib/spotify/player';
-	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
+	import { pauseTrack } from '$spotify/player';
+	import type { TrackBroadcastPayload } from '$interfaces/session/broadcast.interface';
 	import { toastValue } from '$stores/notification/toast';
 	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import { spotifyAccessToken, spotifyPlayerId } from '$stores/spotify/user';
 
 	export let channel: RealtimeChannel;
-
-	// let timer: NodeJS.Timer;
 
 	// Update track playing duration once ID changes (when music is being skipped, or a song ended)
 	playingDurationMs.subscribe(async (durationMs) => {
@@ -62,10 +60,11 @@
 			console.log('isPlayingStatus', status);
 		}
 
-		if (status) {
+		if ($currentSessionQueue && status) {
 			await playSingleTrack(
 				$currentSessionQueue?.queues[0],
 				$spotifyPlayerId,
+				$playingDurationMs,
 				$spotifyAccessToken?.access_token
 			);
 		} else {
@@ -73,12 +72,17 @@
 		}
 	});
 
+	/**
+	 * Listen for player event when the admin plays/pause a track
+	 * Note: Must not play track here since it will always fire play request to Spotify
+	 * (must handle with subscriber as above)
+	 * */ 
 	onMount(() => {
 		channel.on('broadcast', { event: 'playerStart' }, async ({ payload }) => {
 			const _payload = payload as TrackBroadcastPayload;
-			isPlayingStatus.set(_payload?.isPlaying);
-			playingTrackId.set(_payload?.playingTrackId);
 			playingDurationMs.set(_payload?.currentDurationMs);
+			playingTrackId.set(_payload?.playingTrackId);
+			isPlayingStatus.set(_payload?.isPlaying);
 
 			if (PUBLIC_NODE_ENV === 'development') {
 				const rnd = Math.random();
@@ -88,6 +92,7 @@
 			}
 		});
 
+		// Listen for player event when the admin press backward
 		channel.on('broadcast', { event: 'playerBackward' }, async ({ payload }) => {
 			const _payload = payload as TrackBroadcastPayload;
 
@@ -96,6 +101,7 @@
 			await playSingleTrack(
 				$currentSessionQueue?.queues[0],
 				$spotifyPlayerId,
+				0,
 				$spotifyAccessToken?.access_token
 			);
 
@@ -104,6 +110,7 @@
 			}
 		});
 
+		// Listen for player event when the admin skip a track
 		channel.on('broadcast', { event: 'playerForward' }, async ({ payload }) => {
 			const _payload = payload as TrackBroadcastPayload;
 
@@ -112,6 +119,7 @@
 			await playSingleTrack(
 				$currentSessionQueue?.queues[1],
 				$spotifyPlayerId,
+				0,
 				$spotifyAccessToken?.access_token
 			);
 
