@@ -1,4 +1,3 @@
-import { PUBLIC_NODE_ENV } from '$env/static/public';
 import type { MusicQueue } from '$interfaces/session/queue.interface';
 import { playTrack } from '$spotify/player';
 import { supabase } from '$supabase/supabase';
@@ -43,10 +42,6 @@ export async function playSingleTrack(
 	accessToken: string
 ) {
 	if (!queue) return;
-
-	if (PUBLIC_NODE_ENV === 'development') {
-		console.log('Playing', queue);
-	}
 
 	isPlayingStatus.set(true);
 	playingTrackId.set(queue.track_id);

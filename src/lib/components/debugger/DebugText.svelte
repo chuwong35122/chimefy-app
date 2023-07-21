@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { PUBLIC_NODE_ENV } from '$env/static/public';
+	import { devModeStore } from '$stores/navigation/mode';
 
 	export let text = '';
 </script>
 
-{#if PUBLIC_NODE_ENV === 'development'}
+{#if $devModeStore}
 	<p class="text-white text-sm italic">
 		[{text}]
 	</p>

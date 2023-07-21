@@ -7,11 +7,11 @@
 	import ErrorMessage from '$components/forms/ErrorMessage.svelte';
 	import SecondaryButtonWrapper from '$components/buttons/SecondaryButtonWrapper.svelte';
 	import { goto } from '$app/navigation';
-	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import Icon from '@iconify/svelte';
 	import seo from '$constants/seo';
 	import { applyAction, enhance } from '$app/forms';
+	import {devModeStore} from '$stores/navigation/mode';
 
 	export let data: PageData;
 	const { form, errors } = superForm(data.form);
@@ -54,7 +54,7 @@
 </svelte:head>
 
 <div class="p-10 bg-white/5 rounded-2xl duration-150 hover:bg-white/10 w-[500px]">
-	{#if PUBLIC_NODE_ENV === 'development'}
+	{#if $devModeStore}
 		<SuperDebug data={$form} />
 	{/if}
 

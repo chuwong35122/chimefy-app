@@ -8,9 +8,9 @@
 	import ControlButtons from './player/ControlButtons.svelte';
 	import { supabase } from '$lib/supabase/supabase';
 	import MemberPlayerListener from '../listeners/MemberPlayerListener.svelte';
-	import { PUBLIC_NODE_ENV } from '$env/static/public';
 	import { spotifyPlayerId, spotifyAccessToken } from '$stores/spotify/user';
 	import DebugText from '$components/debugger/DebugText.svelte';
+	import {devModeStore} from '$stores/navigation/mode';
 
 	let SpotifyPlayer: Spotify.Player;
 
@@ -35,14 +35,14 @@
 			});
 
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
-				if (PUBLIC_NODE_ENV === 'development') {
+				if ($devModeStore) {
 					console.log('Ready with Device ID', device_id);
 				}
 				spotifyPlayerId.set(device_id);
 			});
 
 			SpotifyPlayer.on('initialization_error', (err) => {
-				if (PUBLIC_NODE_ENV === 'development') {
+				if ($devModeStore) {
 					console.error(err);
 				}
 			});
