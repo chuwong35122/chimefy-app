@@ -1,9 +1,5 @@
 <script lang="ts">
-	import {
-		currentSession,
-		isPlayingStatus,
-		playingDurationMs
-	} from '$stores/session';
+	import { currentSession, isPlayingStatus, playingDurationMs } from '$stores/session';
 	import Icon from '@iconify/svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { Tooltip } from 'flowbite-svelte';

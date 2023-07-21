@@ -33,9 +33,15 @@ export async function sliceQueue(
  * Play the topmost track and remove it from the database.
  * @param queue
  * @param playerId
+ * @param from starting position
  * @param accessToken
  */
-export async function playSingleTrack(queue: MusicQueue, playerId: string, accessToken: string) {
+export async function playSingleTrack(
+	queue: MusicQueue,
+	playerId: string,
+	from: number,
+	accessToken: string
+) {
 	if (!queue) return;
 
 	if (PUBLIC_NODE_ENV === 'development') {
@@ -44,7 +50,7 @@ export async function playSingleTrack(queue: MusicQueue, playerId: string, acces
 
 	isPlayingStatus.set(true);
 	playingTrackId.set(queue.track_id);
-	playingDurationMs.set(0);
+	playingDurationMs.set(from);
 	playingInfo.set({ ...queue });
-	await playTrack(queue, playerId, 0, accessToken);
+	await playTrack(queue, playerId, from, accessToken);
 }
