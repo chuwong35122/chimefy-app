@@ -14,7 +14,7 @@
 	import type { TrackBroadcastPayload } from '$interfaces/session/broadcast.interface';
 	import { toastValue } from '$stores/notification/toast';
 	import { spotifyAccessToken, spotifyPlayerId } from '$stores/spotify/user';
-	import {devModeStore} from '$stores/navigation/mode';
+	import { devModeStore } from '$stores/navigation/mode';
 
 	export let channel: RealtimeChannel;
 
@@ -76,7 +76,7 @@
 	 * Listen for player event when the admin plays/pause a track
 	 * Note: Must not play track here since it will always fire play request to Spotify
 	 * (must handle with subscriber as above)
-	 * */ 
+	 * */
 	onMount(() => {
 		channel.on('broadcast', { event: 'playerStart' }, async ({ payload }) => {
 			const _payload = payload as TrackBroadcastPayload;
