@@ -3,6 +3,7 @@
 	import { toastValue } from '$stores/notification/toast';
 	import { sliceQueue } from '$utils/session/queue';
 	import {
+		currentSession,
 		currentSessionQueue,
 		currentSessionRole,
 		isPlayingStatus,
@@ -18,6 +19,11 @@
 
 	// Check for queues. If there are, trigger real-time channel broadcast to go forward.
 	async function onForwardTrack() {
+		if ($currentSessionRole === 'member' && !$currentSession?.allow_member_queue) {
+			toastValue.set({ message: 'Admin does not allow members to skip track.', type: 'info' });
+			return;
+		}
+
 		const queues = $currentSessionQueue?.queues;
 		const queueId = $currentSessionQueue?.id;
 
@@ -29,7 +35,7 @@
 		toastValue.set({ message: 'Skipping track...', type: 'info' });
 		playingDurationMs.set(0);
 
-		if ($currentSessionRole === 'admin' && queues && queues.length > 0 && queueId && $playingInfo) {
+		if (queues && queues.length > 0 && queueId && $playingInfo) {
 			const sliced = await sliceQueue(queues, $playingInfo?.track_id, queueId);
 			const payload: TrackBroadcastPayload = {
 				isPlaying: $isPlayingStatus,
@@ -47,6 +53,14 @@
 
 	// Check for queues. If there are, trigger real-time channel broadcast to go back.
 	async function onBackwardTrack() {
+		if ($currentSessionRole === 'member' && !$currentSession?.allow_member_queue) {
+			toastValue.set({
+				message: 'Admin does not allow members to go to replay track.',
+				type: 'info'
+			});
+			return;
+		}
+
 		const queues = $currentSessionQueue?.queues;
 		if (queues && queues.length === 0) {
 			toastValue.set({ message: 'Please add some tracks!', type: 'warn' });
@@ -114,13 +128,36 @@
 	}
 </script>
 
-{#if $currentSessionRole === 'member'}
-	<Tooltip triggeredBy="#controller-section">Only admin controls the player</Tooltip>
-{/if}
+<Tooltip triggeredBy="#back-button">
+	{#if $currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
+		Admin does not allow going back
+	{:else}
+		Go back
+	{/if}
+</Tooltip>
+
+<Tooltip triggeredBy="#skip-button">
+	{#if $currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
+		Admin does not allow skipping track
+	{:else}
+		Skip track
+	{/if}
+</Tooltip>
+
+<Tooltip triggeredBy="#play-pause-button">
+	{#if $currentSessionRole === 'member'}
+		Only admin can play/pause
+	{:else}
+		Play/Pause
+	{/if}
+</Tooltip>
+
+<div>{JSON.stringify($currentSession)}</div>
 <div id="controller-section" class="flex flex-row items-center mb-2">
 	<button
-		disabled={$currentSessionRole === 'member'}
-		aria-disabled={$currentSessionRole === 'member'}
+		id="back-button"
+		disabled={$currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
+		aria-disabled={$currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
 		aria-label="Go to previous track"
 		on:click={onBackwardTrack}
 		class="disabled:text-dark-400"
@@ -131,6 +168,7 @@
 		/>
 	</button>
 	<button
+		id="play-pause-button"
 		disabled={$currentSessionRole === 'member'}
 		on:click={$isPlayingStatus ? togglePause : togglePlay}
 		aria-disabled={$currentSessionRole === 'member'}
@@ -150,9 +188,10 @@
 		{/if}
 	</button>
 	<button
-		disabled={$currentSessionRole === 'member'}
+		id="skip-button"
+		disabled={$currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
 		on:click={onForwardTrack}
-		aria-disabled={$currentSessionRole === 'member'}
+		aria-disabled={$currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
 		aria-label="Go to next track"
 		class="disabled:text-dark-400"
 	>

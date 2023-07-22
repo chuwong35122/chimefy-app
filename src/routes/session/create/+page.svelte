@@ -11,7 +11,7 @@
 	import Icon from '@iconify/svelte';
 	import seo from '$constants/seo';
 	import { applyAction, enhance } from '$app/forms';
-	import {devModeStore} from '$stores/navigation/mode';
+	import { devModeStore } from '$stores/navigation/mode';
 
 	export let data: PageData;
 	const { form, errors } = superForm(data.form);
@@ -61,6 +61,9 @@
 	<Tooltip triggeredBy="[id=private-info]" placement="right">
 		Private session will not be shown on the search section.
 	</Tooltip>
+	<Tooltip triggeredBy="[id=allow-queue-info]" placement="right">
+		Do you want to allow your members to add track(s) to the queue?
+	</Tooltip>
 
 	<form
 		class="flex flex-col space-y-6"
@@ -87,7 +90,6 @@
 				placeholder="Session Name"
 				required
 				color="green"
-				defaultClass="placeholder:text-dark-300 w-full"
 			/>
 			{#if $errors?.name && $errors.name[0]}
 				<ErrorMessage message={$errors?.name[0]} showBorder={false} />
@@ -107,7 +109,6 @@
 				<ErrorMessage message={$errors?.type[0]} showBorder={false} />
 			{/if}
 		</Label>
-		<!-- Note: Ignore the value type error -->
 		<div class="flex flex-row items-center">
 			<Toggle name="is_private" color="green" bind:checked={$form.is_private} class="text-white"
 				>Set this session private?</Toggle
@@ -115,6 +116,19 @@
 			<Icon
 				icon="material-symbols:info"
 				id="private-info"
+				class="text-gray-400 hover:text-gray-200 duration-150 ml-2"
+			/>
+		</div>
+		<div class="flex flex-row items-center">
+			<Toggle
+				name="is_private"
+				color="green"
+				bind:checked={$form.allow_member_queue}
+				class="text-white">Allow member to set queue?</Toggle
+			>
+			<Icon
+				icon="material-symbols:info"
+				id="allow-queue-info"
 				class="text-gray-400 hover:text-gray-200 duration-150 ml-2"
 			/>
 		</div>

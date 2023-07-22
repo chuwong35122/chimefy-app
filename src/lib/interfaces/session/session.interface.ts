@@ -11,6 +11,7 @@ export interface CreateMusicSession {
 	type: string;
 	queues: number | null;
 	created_by: string;
+	allow_member_queue: boolean;
 }
 export interface MusicSession {
 	id?: number;
@@ -22,6 +23,7 @@ export interface MusicSession {
 	members: number | null;
 	created_by: number | null;
 	queue: number | null;
+	allow_member_queue: boolean;
 }
 
 export interface MusicSessionInfo {
