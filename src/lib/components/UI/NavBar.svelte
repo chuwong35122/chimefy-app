@@ -15,8 +15,8 @@
 	let url = PUBLIC_SITE_URL;
 	let isLoading = false;
 
-	let devModeOn = false
-	$:	devModeStore.set(devModeOn)
+	let devModeOn = false;
+	$: devModeStore.set(devModeOn);
 
 	onMount(async () => {
 		const { data, error } = await supabase.auth.signInWithOAuth({
