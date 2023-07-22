@@ -16,4 +16,10 @@ export const CreateSessionSchema = z.object({
 		})
 		.min(6, 'Session name is too short!')
 		.max(50, 'Session name is too long!')
+		.nonempty('Session name is required!'),
+	allow_member_queue: z
+		.boolean({
+			required_error: "Member's queue allowance is required!"
+		})
+		.default(true)
 });

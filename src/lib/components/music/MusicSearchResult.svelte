@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { currentSession, currentSessionQueue, currentSessionRole } from '$stores/session';
-	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
+	import { millisecondToMinuteSeconds } from '$utils/common/time';
 	import Icon from '@iconify/svelte';
 	import type { Track } from 'spotify-types';
 	import { toastValue } from '$stores/notification/toast';
-	import { joinArtists } from '$lib/utils/track';
+	import { joinArtists } from '$utils/track';
 	import { userStore } from '$stores/auth/user';
-	import { supabase } from '$lib/supabase/supabase';
-	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
+	import { supabase } from '$supabase/supabase';
+	import type { MusicQueue } from '$interfaces/session/queue.interface';
 
 	export let track: Track;
 	let imgRef: HTMLImageElement;
@@ -22,8 +22,11 @@
 
 		if (!userId || !sessionId) return;
 
-		if ($currentSessionRole === 'member') {
-			toastValue.set({ message: "Only session's admin add music to the queue", type: 'info' });
+		if ($currentSessionRole === 'member' && !$currentSession?.allow_member_queue) {
+			toastValue.set({
+				message: "Session's admin does not allow member to queue tracks.",
+				type: 'info'
+			});
 			return;
 		}
 
