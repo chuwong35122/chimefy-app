@@ -2,7 +2,8 @@
 	import {
 		currentSession,
 		isPlayingStatus,
-		playingDurationMs
+		playingDurationMs,
+		currentSessionQueue
 	} from '$stores/session';
 	import Icon from '@iconify/svelte';
 	import { onDestroy, onMount } from 'svelte';
@@ -101,4 +102,5 @@
 <DebugText text={`Spotify player ID: ${$spotifyPlayerId}`} />
 <DebugText text={`Spotify player options: ${JSON.stringify(SpotifyPlayer?._options)}`} />
 <DebugText text={`Player duration: ${$playingDurationMs} ms`} />
+<DebugText text={`Track total duration: ${$currentSessionQueue?.queues[0]?.duration_ms} ms`} />
 <DebugText text={`Player status: ${$isPlayingStatus ? 'Playing' : 'Pause'}`} />

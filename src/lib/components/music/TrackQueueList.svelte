@@ -56,7 +56,7 @@
 				/>
 				<div class="text-ellipsis w-[80%]">
 					<p class="text-sm font-medium">{queue.track_name}</p>
-					<DebugText>{queue.track_id}</DebugText>
+					<DebugText text={queue?.track_id} />
 					<p class="leading-tight text-dark-100 text-xs">
 						{queue?.artist}
 					</p>
