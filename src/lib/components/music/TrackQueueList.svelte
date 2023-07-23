@@ -6,6 +6,7 @@
 	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
 	import { supabase } from '$lib/supabase/supabase';
 	import { fade, fly } from 'svelte/transition';
+	import DebugText from '$components/debugger/DebugText.svelte';
 
 	let imgRef: HTMLImageElement;
 	let queues: MusicQueue[] = [];
@@ -55,6 +56,7 @@
 				/>
 				<div class="text-ellipsis w-[80%]">
 					<p class="text-sm font-medium">{queue.track_name}</p>
+					<DebugText>{queue.track_id}</DebugText>
 					<p class="leading-tight text-dark-100 text-xs">
 						{queue?.artist}
 					</p>
