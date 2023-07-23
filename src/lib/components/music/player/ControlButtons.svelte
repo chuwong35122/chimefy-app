@@ -51,7 +51,7 @@
 	}
 
 	// Check for queues. If there are, trigger real-time channel broadcast to go back.
-	async function onBackwardTrack() {
+	async function onRestartTrack() {
 		if ($currentSessionRole === 'member' && !$currentSession?.allow_member_queue) {
 			toastValue.set({
 				message: 'Admin does not allow members to go to replay track.',
@@ -157,7 +157,7 @@
 		disabled={$currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
 		aria-disabled={$currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
 		aria-label="Go to previous track"
-		on:click={onBackwardTrack}
+		on:click={onRestartTrack}
 		class="disabled:text-dark-400"
 	>
 		<Icon
