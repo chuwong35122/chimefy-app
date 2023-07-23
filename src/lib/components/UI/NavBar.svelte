@@ -14,11 +14,17 @@
 
 	let url = PUBLIC_SITE_URL;
 	let isLoading = false;
-
 	let devModeOn = false;
-	$: devModeStore.set(devModeOn);
+
+	function handleChangeDevMode() {
+		console.log(devModeOn)
+		devModeStore.set(isLoading)
+		localStorage.setItem('dev_mode', devModeOn ? 'true' : 'false');
+	}
 
 	onMount(async () => {
+		devModeOn = localStorage.getItem('dev_mode') === 'true';
+
 		const { data, error } = await supabase.auth.signInWithOAuth({
 			provider: 'spotify',
 			options: {
@@ -95,7 +101,7 @@
 									<Icon icon="ic:outline-code" class="w-6 h-6" />
 									<p class="text-sm font-medium mx-1.5 w-[100px]">Dev Mode</p>
 									<div class="scale-[0.8]">
-										<Toggle bind:checked={devModeOn} color="green" class="!mx-[-4px]" />
+										<Toggle bind:checked={devModeOn} on:change={handleChangeDevMode} color="green" class="!mx-[-4px]" />
 									</div>
 								</div>
 							</DropdownItem>
