@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import {
 		currentSessionRole,
 		isPlayingStatus,
@@ -129,4 +129,8 @@
 			}
 		});
 	});
+
+	onDestroy(() => {
+		channel.unsubscribe()
+	})
 </script>

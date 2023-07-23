@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { MusicSession } from '$interfaces/session/session.interface';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import TrackSearchTab from '$components/music/TrackSearchTab.svelte';
 	import { currentSession, currentSessionRole, currentSessionQueue } from '$stores/session';
 	import TrackQueueList from '$components/music/TrackQueueList.svelte';
@@ -11,12 +11,14 @@
 	import { userStore } from '$stores/auth/user';
 	import type { MusicSessionQueue } from '$interfaces/session/queue.interface';
 	import seo from '$constants/seo';
+	import type { RealtimeChannel } from '@supabase/supabase-js';
 
 	export let data: { session: MusicSession; queues: MusicSessionQueue; url: string };
 	let { session, queues, url } = data;
 
 	let sessionId: string;
 	let playerVolume = 50
+	let channel : RealtimeChannel
 
 	$: if ($userStore?.id && $currentSession?.created_by) {
 		currentSessionRole.set(
@@ -34,7 +36,7 @@
 			playerVolume = Number(storedVolume)
 		}
 
-		supabase
+		channel = supabase
 			.channel(`session_queue_listener_${sessionId}`)
 			.on(
 				'postgres_changes',
@@ -45,6 +47,10 @@
 			)
 			.subscribe();
 	});
+
+	onDestroy(() => {
+		channel.unsubscribe();
+	})
 </script>
 
 <svelte:head>
@@ -70,7 +76,7 @@
 	<meta name="twitter:image" content={seo.sessionInvite.image} />
 	<meta name="twitter:image:alt" content={`Join ${session?.name}`} />
 
-	<title>{$currentSession?.name ? `Listening to ${$currentSession?.name}` : 'Loading...'}</title>
+	<title>{session?.name ? `Listening to ${session?.name}` : 'Loading...'}</title>
 </svelte:head>
 
 <div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
