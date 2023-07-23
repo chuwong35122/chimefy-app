@@ -10,7 +10,7 @@
 	import { setTokenStore, getSpotifyProfile } from '$spotify/user';
 	import PageTransition from '$components/transition/PageTransition.svelte';
 	import AuthExpireListener from '$components/listeners/AuthExpireListener.svelte';
-	import { page } from '$app/stores';
+	import { navigating, page } from '$app/stores';
 	import { onSessionDestroyed } from '$stores/session';
 	import { spotifyAccessToken, spotifyUserProfile } from '$stores/spotify/user';
 	import { devModeStore } from '$stores/navigation/mode';
@@ -80,7 +80,17 @@
 	<NavBar />
 	<div class="w-full grid place-items-center">
 		<PageTransition url={pathName}>
-			<slot />
+			<!-- /**
+			*	 This if statement prevents the following bug.
+			*  FIXME: There's a bug in /session/[sessionId]
+			*  Once the player has been played and navigate to any other route,
+			*  the page is rendered twice, having the content of the sessionId page
+			*  on top of the current page
+			* *
+			/ -->
+			{#if !$navigating}
+				<slot />
+			{/if}
 		</PageTransition>
 		<div class="w-80 md:w-[460px] absolute bottom-10 z-50">
 			<Toast />
