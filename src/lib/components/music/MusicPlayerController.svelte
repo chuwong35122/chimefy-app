@@ -1,5 +1,9 @@
 <script lang="ts">
-	import { currentSession, isPlayingStatus, playingDurationMs } from '$stores/session';
+	import {
+		currentSession,
+		isPlayingStatus,
+		playingDurationMs
+	} from '$stores/session';
 	import Icon from '@iconify/svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { Tooltip } from 'flowbite-svelte';
@@ -12,11 +16,12 @@
 	import DebugText from '$components/debugger/DebugText.svelte';
 	import { devModeStore } from '$stores/navigation/mode';
 
-	let SpotifyPlayer: Spotify.Player;
+	export let sessionId = 0;
 
+	let SpotifyPlayer: Spotify.Player;
 	let trackDurationTimer: NodeJS.Timer;
 
-	const channel = supabase.channel(`session_player_listener_${$currentSession?.id}`, {
+	const channel = supabase.channel(`session_player_listener_${sessionId}`, {
 		config: {
 			broadcast: {
 				self: true
