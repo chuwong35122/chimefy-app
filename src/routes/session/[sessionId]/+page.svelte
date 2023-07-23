@@ -5,7 +5,7 @@
 	import { currentSession, currentSessionRole, currentSessionQueue } from '$stores/session';
 	import TrackQueueList from '$components/music/TrackQueueList.svelte';
 	import MusicPlayerController from '$components/music/MusicPlayerController.svelte';
-	import SessionQueueMembers from '$components/music/members/SessionQueueMembers.svelte';
+	import SessionMembers from '$components/music/members/SessionMembers.svelte';
 	import SessionInfo from '$components/music/SessionInfo.svelte';
 	import { supabase } from '$supabase/supabase';
 	import { userStore } from '$stores/auth/user';
@@ -87,8 +87,10 @@
 			</div>
 		</div>
 	</div>
+	{#if $currentSession && $currentSession?.id}
 	<div class="w-[400px] md:w-[640px] lg:w-[1000px] h-24 mt-6">
-		<MusicPlayerController />
-		<SessionQueueMembers />
+		<MusicPlayerController sessionId={$currentSession?.id} />
+		<SessionMembers sessionId={$currentSession?.id} />
 	</div>
+	{/if}
 {/if}

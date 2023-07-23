@@ -7,7 +7,8 @@
 	import { supabase } from '$lib/supabase/supabase';
 	import { devModeStore } from '$stores/navigation/mode';
 
-	const channel = supabase.channel(`session_member_listener_${$currentSession?.id}`, {
+	export let sessionId = 0
+	const channel = supabase.channel(`session_member_listener_${sessionId}`, {
 		config: {
 			presence: {
 				key: 'members'
