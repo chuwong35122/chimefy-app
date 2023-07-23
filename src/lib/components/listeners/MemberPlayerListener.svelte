@@ -115,16 +115,14 @@
 			const sessionQueue = $currentSessionQueue;
 			if (!sessionQueue?.queues || sessionQueue?.queues?.length < 2 || !sessionQueue?.id) return;
 
-			const sliced = await sliceQueue(sessionQueue?.queues, sessionQueue?.queues[0]?.track_id, sessionQueue?.id);
+			const sliced = await sliceQueue(
+				sessionQueue?.queues,
+				sessionQueue?.queues[0]?.track_id,
+				sessionQueue?.id
+			);
 			const _payload = payload as TrackBroadcastPayload;
 
-				await playSingleTrack(
-					sliced[0],
-					$spotifyPlayerId,
-					0,
-					$spotifyAccessToken?.access_token
-				);
-			
+			await playSingleTrack(sliced[0], $spotifyPlayerId, 0, $spotifyAccessToken?.access_token);
 
 			if ($devModeStore) {
 				console.log('playerForward', _payload);

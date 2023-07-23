@@ -88,9 +88,9 @@
 		</div>
 	</div>
 	{#if $currentSession && $currentSession?.id}
-	<div class="w-[400px] md:w-[640px] lg:w-[1000px] h-24 mt-6">
-		<MusicPlayerController sessionId={$currentSession?.id} />
-		<SessionMembers sessionId={$currentSession?.id} />
-	</div>
+		<div class="w-[400px] md:w-[640px] lg:w-[1000px] h-24 mt-6">
+			<MusicPlayerController sessionId={$currentSession?.id} />
+			<SessionMembers sessionId={$currentSession?.id} />
+		</div>
 	{/if}
 {/if}
