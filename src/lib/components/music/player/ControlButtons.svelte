@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
 	import { toastValue } from '$stores/notification/toast';
-	import { sliceQueue } from '$utils/session/queue';
 	import {
 		currentSession,
 		currentSessionQueue,
@@ -39,7 +38,7 @@
 			const payload: TrackBroadcastPayload = {
 				isPlaying: $isPlayingStatus,
 				playingTrackId: queues[1]?.track_id,
-				currentDurationMs: 0,
+				currentDurationMs: 0
 			};
 
 			channel.send({
@@ -77,7 +76,7 @@
 		const payload: TrackBroadcastPayload = {
 			isPlaying: $isPlayingStatus,
 			playingTrackId: $playingTrackId,
-			currentDurationMs: $playingDurationMs,
+			currentDurationMs: $playingDurationMs
 		};
 
 		channel.send({
@@ -111,11 +110,11 @@
 
 		clearTimeout(broadcastTimer);
 
-		broadcastTimer = setInterval(() => {		
+		broadcastTimer = setInterval(() => {
 			const payload: TrackBroadcastPayload = {
 				isPlaying: playing,
 				playingTrackId: $playingTrackId,
-				currentDurationMs: $playingDurationMs,
+				currentDurationMs: $playingDurationMs
 			};
 
 			channel.send({
