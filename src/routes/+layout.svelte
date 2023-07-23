@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '../styles/global.css';
+	import '$styles/global.css';
 	import NavBar from '$components/UI/NavBar.svelte';
 	import Toast from '$components/UI/Toast.svelte';
 	import { onDestroy, onMount } from 'svelte';
