@@ -16,6 +16,7 @@
 	let { session, queues, url } = data;
 
 	let sessionId: string;
+	let playerVolume = 50
 
 	$: if ($userStore?.id && $currentSession?.created_by) {
 		currentSessionRole.set(
@@ -27,6 +28,11 @@
 		currentSession.set(session as MusicSession);
 		sessionId = session?.uuid ?? '';
 		currentSessionQueue.set(queues as MusicSessionQueue);
+
+		const storedVolume = localStorage.getItem('player_volume')
+		if(storedVolume) {
+			playerVolume = Number(storedVolume)
+		}
 
 		supabase
 			.channel(`session_queue_listener_${sessionId}`)
@@ -89,7 +95,7 @@
 	</div>
 	{#if $currentSession && $currentSession?.id}
 		<div class="w-[400px] md:w-[640px] lg:w-[1000px] h-24 mt-6">
-			<MusicPlayerController sessionId={$currentSession?.id} />
+			<MusicPlayerController sessionId={$currentSession?.id} volume={playerVolume} />
 			<SessionMembers sessionId={$currentSession?.id} />
 		</div>
 	{/if}

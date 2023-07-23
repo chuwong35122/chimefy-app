@@ -4,11 +4,12 @@
 
 	export let SpotifyPlayer: Spotify.Player;
 
-	let volume = 50;
+	export let volume = 50;
 
 	async function setSpotifyPlayerVolume() {
 		try {
 			await SpotifyPlayer.setVolume(volume / 100);
+			localStorage.setItem('player_volume', String(volume))
 		} catch (e) {
 			console.log(e);
 		} finally {

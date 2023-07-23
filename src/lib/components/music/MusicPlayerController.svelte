@@ -18,6 +18,7 @@
 	import { devModeStore } from '$stores/navigation/mode';
 
 	export let sessionId = 0;
+	export let volume = 50;
 
 	let SpotifyPlayer: Spotify.Player;
 	let trackDurationTimer: NodeJS.Timer;
@@ -37,7 +38,7 @@
 				getOAuthToken: (cb) => {
 					cb($spotifyAccessToken?.access_token);
 				},
-				volume: 0.5
+				volume: volume/100
 			});
 
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
@@ -91,7 +92,7 @@
 				icon="material-symbols:speaker-group"
 				class="text-dark-200 mt-1 mr-1"
 			/>
-			<VolumeController {SpotifyPlayer} />
+			<VolumeController {SpotifyPlayer} {volume} />
 		</div>
 		<Tooltip triggeredBy="[id=connected-player]" placement="bottom"
 			>Connected to {SpotifyPlayer?._options?.name}</Tooltip
