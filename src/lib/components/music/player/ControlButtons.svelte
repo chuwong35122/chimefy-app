@@ -18,7 +18,7 @@
 	export let channel: RealtimeChannel;
 
 	// Check for queues. If there are, trigger real-time channel broadcast to go forward.
-	async function onForwardTrack() {
+	async function onSkipTrack() {
 		if ($currentSessionRole === 'member' && !$currentSession?.allow_member_queue) {
 			toastValue.set({ message: 'Admin does not allow members to skip track.', type: 'info' });
 			return;
@@ -188,7 +188,7 @@
 	<button
 		id="skip-button"
 		disabled={$currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
-		on:click={onForwardTrack}
+		on:click={onSkipTrack}
 		aria-disabled={$currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
 		aria-label="Go to next track"
 		class="disabled:text-dark-400"
