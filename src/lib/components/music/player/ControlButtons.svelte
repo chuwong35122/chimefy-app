@@ -36,11 +36,10 @@
 		playingDurationMs.set(0);
 
 		if (queues && queues.length > 0 && queueId && $playingInfo) {
-			const sliced = await sliceQueue(queues, $playingInfo?.track_id, queueId);
 			const payload: TrackBroadcastPayload = {
 				isPlaying: $isPlayingStatus,
-				playingTrackId: sliced[0]?.track_id,
-				currentDurationMs: 0
+				playingTrackId: queues[1]?.track_id,
+				currentDurationMs: 0,
 			};
 
 			channel.send({
@@ -78,7 +77,7 @@
 		const payload: TrackBroadcastPayload = {
 			isPlaying: $isPlayingStatus,
 			playingTrackId: $playingTrackId,
-			currentDurationMs: $playingDurationMs
+			currentDurationMs: $playingDurationMs,
 		};
 
 		channel.send({
@@ -112,11 +111,11 @@
 
 		clearTimeout(broadcastTimer);
 
-		broadcastTimer = setInterval(() => {
+		broadcastTimer = setInterval(() => {		
 			const payload: TrackBroadcastPayload = {
 				isPlaying: playing,
 				playingTrackId: $playingTrackId,
-				currentDurationMs: $playingDurationMs
+				currentDurationMs: $playingDurationMs,
 			};
 
 			channel.send({
@@ -152,7 +151,6 @@
 	{/if}
 </Tooltip>
 
-<div>{JSON.stringify($currentSession)}</div>
 <div id="controller-section" class="flex flex-row items-center mb-2">
 	<button
 		id="back-button"

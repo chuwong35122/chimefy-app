@@ -7,7 +7,7 @@ import { isPlayingStatus, playingDurationMs, playingInfo, playingTrackId } from 
  * Update queue from session by removing the track from its target ID.
  * This function is used with forward track function.
  * @param queues
- * @param trackTargetId
+ * @param trackTargetId track to be sliced away
  * @param queueId database queue ID
  * @returns queues with the topmost track removed
  */
@@ -30,10 +30,10 @@ export async function sliceQueue(
 
 /**
  * Play the topmost track and remove it from the database.
- * @param queue
- * @param playerId
+ * @param queue current queue
+ * @param playerId Spotify's player ID
  * @param from starting position
- * @param accessToken
+ * @param accessToken Spotify's access token
  */
 export async function playSingleTrack(
 	queue: MusicQueue,

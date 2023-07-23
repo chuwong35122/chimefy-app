@@ -24,8 +24,8 @@
 		const sessionQueue = $currentSessionQueue;
 		const info = $playingInfo;
 
-		// Do nothing if current playing duration does not exceed the track duration
 		if (
+			// Do nothing if current playing duration does not exceed the track duration
 			!trackId ||
 			!sessionQueue ||
 			!sessionQueue?.id ||
@@ -35,13 +35,13 @@
 		)
 			return;
 
-		// Check if the current track has ended, play next track if so (using admin's broadcasting)
 		if (durationMs >= info?.duration_ms) {
+			// Check if the current track has ended, play next track if so (using admin's broadcasting)
 			if ($currentSessionRole === 'admin') {
-				const sliced = await sliceQueue(sessionQueue.queues, trackId, sessionQueue?.id);
+				// const sliced = await sliceQueue(sessionQueue.queues, trackId, sessionQueue?.id);
 				const payload: TrackBroadcastPayload = {
 					isPlaying: $isPlayingStatus,
-					playingTrackId: sliced[0].track_id,
+					playingTrackId: sessionQueue.queues[1].track_id,
 					currentDurationMs: 0
 				};
 				channel.send({ type: 'broadcast', event: 'playerForward', payload });
@@ -112,16 +112,19 @@
 
 		// Listen for player event when the admin skip a track
 		channel.on('broadcast', { event: 'playerForward' }, async ({ payload }) => {
+			const sessionQueue = $currentSessionQueue;
+			if (!sessionQueue?.queues || sessionQueue?.queues?.length < 2 || !sessionQueue?.id) return;
+
+			const sliced = await sliceQueue(sessionQueue?.queues, sessionQueue?.queues[0]?.track_id, sessionQueue?.id);
 			const _payload = payload as TrackBroadcastPayload;
 
-			if (!$currentSessionQueue?.queues || $currentSessionQueue?.queues?.length < 2) return;
-
-			await playSingleTrack(
-				$currentSessionQueue?.queues[1],
-				$spotifyPlayerId,
-				0,
-				$spotifyAccessToken?.access_token
-			);
+				await playSingleTrack(
+					sliced[0],
+					$spotifyPlayerId,
+					0,
+					$spotifyAccessToken?.access_token
+				);
+			
 
 			if ($devModeStore) {
 				console.log('playerForward', _payload);

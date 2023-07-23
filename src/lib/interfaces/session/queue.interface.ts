@@ -10,6 +10,7 @@ export interface MusicQueue {
 	track_image_url?: string;
 	added_by: MusicSessionMember;
 }
+
 export interface MusicSessionQueue {
 	id?: string;
 	updated_since?: Date;
