@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Label, Input, Toggle, Select, Tooltip, Checkbox } from 'flowbite-svelte';
+	import { Label, Input, Select, Tooltip } from 'flowbite-svelte';
 	import PrimaryButtonWrapper from '$components/buttons/PrimaryButtonWrapper.svelte';
 	import { SESSION_MUSIC_TYPES } from '$constants/types';
 	import type { PageData } from './$types';
@@ -18,7 +18,6 @@
 			loading = true;
 		},
 		onResult: ({ result }) => {
-			console.log(result.data.form.data);
 			if (result) {
 				loading = false;
 			}
@@ -106,6 +105,7 @@
 		</Label>
 		<div class="flex flex-row items-center">
 			<Label class='text-white'>
+				<!-- Do not use flowbite's component as it does not bind value -->
 			<input type='checkbox' color='green' id='is_private' name='is_private' bind:checked={$form.is_private} class='text-primary rounded-sm' />
 			Set this session private? </Label>
 			<Icon
