@@ -25,12 +25,12 @@ export const actions = {
 		}
 
 		const payload: CreateMusicSession = {
-			...form.data,
 			name: form.data.name,
 			is_private: form.data.is_private,
 			type: form.data.type,
+			queues: null,
 			created_by: session?.user?.id,
-			queues: null
+			allow_member_queue: form.data.allow_member_queue
 		};
 
 		const { data } = await event.locals.supabase.from('session').insert(payload).select();
@@ -44,7 +44,6 @@ export const actions = {
 					session_uuid: data[0]?.uuid
 				})
 				.select();
-
 			const _queueId = (queueResponse?.data as any)[0].id;
 			await event.locals.supabase
 				.from('session')
@@ -54,7 +53,6 @@ export const actions = {
 				.from('session_member')
 				.insert({ members: [], session_uuid: data[0]?.uuid, session_id: data[0]?.id })
 				.select();
-
 			throw redirect(302, `/session/${data[0].uuid}`);
 		}
 

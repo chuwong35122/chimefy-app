@@ -50,7 +50,7 @@
 		"flowbite": "^1.6.3",
 		"flowbite-svelte": "^0.29.13",
 		"querystring": "^0.2.1",
-		"sveltekit-superforms": "^1.0.0",
+		"sveltekit-superforms": "^1.5.0",
 		"zod": "^3.21.4"
 	}
 }

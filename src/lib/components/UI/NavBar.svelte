@@ -30,7 +30,7 @@
 			options: {
 				scopes: SPOTIFY_AUTH_SCOPES.join(' '),
 				skipBrowserRedirect: true,
-				redirectTo: '/'
+				redirectTo: PUBLIC_SITE_URL
 			}
 		});
 
