@@ -2626,10 +2626,10 @@ svelte@^3.54.0:
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.55.1.tgz#6f93b153e5248039906ce5fe196efdb9e05dfce8"
   integrity sha512-S+87/P0Ve67HxKkEV23iCdAh/SX1xiSfjF1HOglno/YTbSTW7RniICMCofWGdJJbdjw3S+0PfFb1JtGfTXE0oQ==
 
-sveltekit-superforms@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/sveltekit-superforms/-/sveltekit-superforms-1.0.0.tgz#03bcdd4889bbcf623d888e4367afb89b8921d668"
-  integrity sha512-FihTu/szUCF1fpmqBQUo3tYdAMaNNt7HWaRcLWCIbubG29bpPAEoucWJ8IQpjloE4sGpof1MtgvZpK7k78Bkxg==
+sveltekit-superforms@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/sveltekit-superforms/-/sveltekit-superforms-1.5.0.tgz#b9b7a4039e8a084da3ad787f95bb490c85a773ac"
+  integrity sha512-c/2v6zN9rtIAsOfsd6rBV7Kf0lB2+/o6sAFaOuMrYPlTBro5lpbz3iN/3nM5D3EuLE2Xt/iDdZYpkQdH8rq4nQ==
 
 tailwindcss@^3.2.7:
   version "3.2.7"

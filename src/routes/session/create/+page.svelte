@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Label, Input, Toggle, Select, Tooltip } from 'flowbite-svelte';
+	import { Label, Input, Toggle, Select, Tooltip, Checkbox } from 'flowbite-svelte';
 	import PrimaryButtonWrapper from '$components/buttons/PrimaryButtonWrapper.svelte';
 	import { SESSION_MUSIC_TYPES } from '$constants/types';
 	import type { PageData } from './$types';
@@ -10,11 +10,20 @@
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import Icon from '@iconify/svelte';
 	import seo from '$constants/seo';
-	import { applyAction, enhance } from '$app/forms';
-	import { devModeStore } from '$stores/navigation/mode';
 
 	export let data: PageData;
-	const { form, errors } = superForm(data.form);
+	const { form, errors, enhance } = superForm(data.form, {
+		defaultValidator: 'keep',
+		onSubmit: () => {
+			loading = true;
+		},
+		onResult: ({ result }) => {
+			console.log(result.data.form.data);
+			if (result) {
+				loading = false;
+			}
+		}
+	});
 
 	let loading = false;
 
@@ -53,10 +62,11 @@
 	<title>Create a Session</title>
 </svelte:head>
 
-<div class="p-10 bg-white/5 rounded-2xl duration-150 hover:bg-white/10 w-[500px]">
-	{#if $devModeStore}
-		<SuperDebug data={$form} />
-	{/if}
+<div class="mt-20 p-10 bg-white/5 rounded-2xl duration-150 hover:bg-white/10 w-[500px]">
+	<!-- {#if $devModeStore} -->
+	<SuperDebug data={$form} />
+	<div>{JSON.stringify($form)}</div>
+	<!-- {/if} -->
 
 	<Tooltip triggeredBy="[id=private-info]" placement="right">
 		Private session will not be shown on the search section.
@@ -65,21 +75,7 @@
 		Do you want to allow your members to add track(s) to the queue?
 	</Tooltip>
 
-	<form
-		class="flex flex-col space-y-6"
-		method="POST"
-		use:enhance={() => {
-			loading = true;
-
-			return async ({ result, update }) => {
-				await applyAction(result);
-				await update();
-				if (result) {
-					loading = false;
-				}
-			};
-		}}
-	>
+	<form class="flex flex-col space-y-6" method="POST" use:enhance>
 		<h3 class="text-4xl font-semibold text-white p-0">Create Your Session</h3>
 		<Label class="space-y-2">
 			<span class="text-white">Your session name</span>
@@ -88,7 +84,6 @@
 				name="name"
 				type="text"
 				placeholder="Session Name"
-				required
 				color="green"
 			/>
 			{#if $errors?.name && $errors.name[0]}
@@ -110,9 +105,9 @@
 			{/if}
 		</Label>
 		<div class="flex flex-row items-center">
-			<Toggle name="is_private" color="green" bind:checked={$form.is_private} class="text-white"
-				>Set this session private?</Toggle
-			>
+			<Label class='text-white'>
+			<input type='checkbox' color='green' id='is_private' name='is_private' bind:checked={$form.is_private} class='text-primary rounded-sm' />
+			Set this session private? </Label>
 			<Icon
 				icon="material-symbols:info"
 				id="private-info"
@@ -120,12 +115,9 @@
 			/>
 		</div>
 		<div class="flex flex-row items-center">
-			<Toggle
-				name="is_private"
-				color="green"
-				bind:checked={$form.allow_member_queue}
-				class="text-white">Allow member to set queue?</Toggle
-			>
+			<Label class='text-white'>
+				<input type='checkbox' color='green' id='allow_member_queue' name='allow_member_queue' bind:checked={$form.allow_member_queue} class='text-primary rounded-sm' />
+				Allow member to set queue?</Label>
 			<Icon
 				icon="material-symbols:info"
 				id="allow-queue-info"
