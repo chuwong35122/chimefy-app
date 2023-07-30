@@ -4,13 +4,6 @@
 	import { PUBLIC_SUPPORT_URL } from '$env/static/public';
 
 	let loggedout = false;
-	let createdSince = '';
-
-	userStore.subscribe((user) => {
-		if (user) {
-			createdSince = new Date(user.created_at).toDateString();
-		}
-	});
 </script>
 
 <svelte:head>
@@ -37,7 +30,6 @@
 				<p class="text-xl">Hello there,</p>
 				<p class="text-3xl font-bold">{$userStore?.user_metadata?.name ?? ''}</p>
 				<p class="text-dark-200">Your email: {$userStore?.email ?? ''}</p>
-				<p class="text-dark-200">Join sinced: {createdSince}</p>
 
 				<form method="POST" action="/signout?/signout">
 					<button
