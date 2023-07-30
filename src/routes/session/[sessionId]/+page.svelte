@@ -47,10 +47,6 @@
 			)
 			.subscribe();
 	});
-
-	onDestroy(() => {
-		channel.unsubscribe();
-	})
 </script>
 
 <svelte:head>
