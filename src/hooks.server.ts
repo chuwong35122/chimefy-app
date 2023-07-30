@@ -17,13 +17,15 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 		tracesSampleRate: 1
 	});
 
-	event.locals.getSession = async () => {
-		const {
-			data: { session }
-		} = await event.locals.supabase.auth.getSession();
+	try {
+		event.locals.getSession = async () => {
+			const {
+				data: { session }
+			} = await event.locals.supabase.auth.getSession();
 
-		return session;
-	};
+			return session;
+		};
+	} catch (e) {}
 
 	if (event.url.pathname.startsWith('/session')) {
 		const session = await event.locals.getSession();
