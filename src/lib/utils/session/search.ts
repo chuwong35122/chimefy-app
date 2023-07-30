@@ -42,7 +42,6 @@ export async function listUserSession(id: string): Promise<MusicSessionInfo[]> {
 		)
 		.eq('created_by', id)
 		.order('created_at', { ascending: false });
-	console.log(data);
 
 	return ((data as any) ?? []) as MusicSessionInfo[];
 }

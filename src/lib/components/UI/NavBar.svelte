@@ -17,7 +17,6 @@
 	let devModeOn = false;
 
 	function handleChangeDevMode() {
-		console.log(devModeOn)
 		devModeStore.set(isLoading)
 		localStorage.setItem('dev_mode', devModeOn ? 'true' : 'false');
 	}
