@@ -38,7 +38,6 @@
 		if (durationMs >= info?.duration_ms) {
 			// Check if the current track has ended, play next track if so (using admin's broadcasting)
 			if ($currentSessionRole === 'admin') {
-				// const sliced = await sliceQueue(sessionQueue.queues, trackId, sessionQueue?.id);
 				const payload: TrackBroadcastPayload = {
 					isPlaying: $isPlayingStatus,
 					playingTrackId: sessionQueue.queues[1].track_id,
