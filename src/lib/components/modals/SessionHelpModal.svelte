@@ -14,16 +14,16 @@
 			height="200"
 			class="object-contained mb-2"
 		/>
-	<div class="text-dark-200">
-		<div class="flex flex-row items-end">
-			<p class="mr-4">1. Go to your Spotify app</p>
-			<Icon icon="logos:spotify-icon" class="w-8 h-8" />
+		<div class="text-dark-200">
+			<div class="flex flex-row items-end">
+				<p class="mr-4">1. Go to your Spotify app</p>
+				<Icon icon="logos:spotify-icon" class="w-8 h-8" />
+			</div>
+			<p>2. Find connect to a device icon</p>
+			<p>
+				3. Select Chimefy Player. You should be able to hear music if it's not appearing properly.
+			</p>
 		</div>
-		<p>2. Find connect to a device icon</p>
-		<p>
-			3. Select Chimefy Player. You should be able to hear music if it's not appearing properly.
-		</p>
-	</div>
 	</div>
 	<div class="w-full border border-white/20 my-2" />
 	<div class="w-full grid place-items-center">
