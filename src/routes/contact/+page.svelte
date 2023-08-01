@@ -113,7 +113,7 @@
 				<!-- Header -->
 				<div class="w-full grid place-items-start">
 					<h2 class="text-black text-2xl font-bold">Feel free to contact the project owner!</h2>
-					<p class='text-black'>Give feedbacks or request for a new feature.</p>
+					<p class="text-black">Give feedbacks or request for a new feature.</p>
 				</div>
 				<!-- Name -->
 				<div>
@@ -173,7 +173,6 @@
 					</div>
 				</PrimaryButtonWrapper>
 			</button>
-
 		</div>
 		{#if hasErr}
 			<div in:fade>
