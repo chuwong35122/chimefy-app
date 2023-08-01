@@ -15,7 +15,7 @@
 	import MemberPlayerListener from '../listeners/MemberPlayerListener.svelte';
 	import { spotifyPlayerId, spotifyAccessToken } from '$stores/spotify/user';
 	import DebugText from '$components/debugger/DebugText.svelte';
-	import { devModeStore } from '$stores/navigation/mode';
+	import { devModeStore } from '$stores/settings';
 
 	export let sessionId = 0;
 	export let volume = 50;

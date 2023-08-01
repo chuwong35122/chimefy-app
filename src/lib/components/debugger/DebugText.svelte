@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { devModeStore } from '$stores/navigation/mode';
+	import { devModeStore } from '$stores/settings';
 
 	export let text = '';
 </script>

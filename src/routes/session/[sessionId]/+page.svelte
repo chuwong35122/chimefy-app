@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { MusicSession } from '$interfaces/session/session.interface';
-	import { onDestroy, onMount } from 'svelte';
+	import {  onMount } from 'svelte';
 	import TrackSearchTab from '$components/music/TrackSearchTab.svelte';
 	import { currentSession, currentSessionRole, currentSessionQueue } from '$stores/session';
 	import TrackQueueList from '$components/music/TrackQueueList.svelte';
@@ -74,6 +74,7 @@
 
 	<title>{session?.name ? `Listening to ${session?.name}` : 'Loading...'}</title>
 </svelte:head>
+
 
 <div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
 	<SessionInfo {sessionId} />

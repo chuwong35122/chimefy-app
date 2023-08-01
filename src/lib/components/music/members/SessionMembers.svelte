@@ -5,7 +5,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import SessionMemberAvatar from './SessionMemberAvatar.svelte';
 	import { supabase } from '$lib/supabase/supabase';
-	import { devModeStore } from '$stores/navigation/mode';
+	import { devModeStore } from '$stores/settings';
 
 	export let sessionId = 0;
 	const channel = supabase.channel(`session_member_listener_${sessionId}`, {

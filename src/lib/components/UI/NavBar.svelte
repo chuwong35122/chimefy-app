@@ -10,7 +10,7 @@
 	import { PUBLIC_SITE_URL } from '$env/static/public';
 	import { toastValue } from '$stores/notification/toast';
 	import { PUBLIC_SUPPORT_URL } from '$env/static/public';
-	import { devModeStore } from '$stores/navigation/mode';
+	import { devModeStore, tutorialStore } from '$stores/settings';
 
 	let url = PUBLIC_SITE_URL;
 	let isLoading = false;
@@ -24,14 +24,19 @@
 	}
 
 	function handleChangeTutorial() {
-		devModeStore.set(tutorialOn)
+		tutorialStore.set(tutorialOn)
 		localStorage.setItem('tutorial_on', tutorialOn ? 'true' : 'false');
+	}
+
+	$: {
+		tutorialOn = $tutorialStore
 	}
 
 	onMount(async () => {
 		devModeOn = localStorage.getItem('dev_mode') === 'true';
-		if (localStorage.getItem('tutorial_on') !== 'true') {
+		if (localStorage.getItem('tutorial_on') !== 'true') { // requires first time user to have it set as true
 			tutorialOn = true;
+			tutorialStore.set(true)
 			localStorage.setItem('tutorial_on', 'true');
 		}
 
