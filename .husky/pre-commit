@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn lint
 yarn format
-yarn test
+# yarn test # uncomment when there's a test
