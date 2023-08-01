@@ -108,7 +108,7 @@
 			</div>
 		</div>
 		<!----- Form ------>
-		<div class="bg-white p-8 w-full h-full flex flex-col space-between">
+		<div class="bg-white p-8 w-full h-full flex flex-col justify-between">
 			<div class="flex flex-col gap-2">
 				<!-- Header -->
 				<div class="w-full grid place-items-start">
