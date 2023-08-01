@@ -25,19 +25,18 @@
 
 	function handleChangeTutorial() {
 		tutorialStore.set(tutorialOn)
-		localStorage.setItem('tutorial_on', tutorialOn ? 'true' : 'false');
-	}
-
-	$: {
-		tutorialOn = $tutorialStore
+		localStorage.setItem('tutorial_on', tutorialOn ? 'true' : 'false');	
 	}
 
 	onMount(async () => {
 		devModeOn = localStorage.getItem('dev_mode') === 'true';
-		if (localStorage.getItem('tutorial_on') !== 'true') { // requires first time user to have it set as true
-			tutorialOn = true;
-			tutorialStore.set(true)
+
+		if(!localStorage.getItem('tutorial_on')) {  // requires first time user to have it set as true
 			localStorage.setItem('tutorial_on', 'true');
+		}else{
+			const _tutorialOn = localStorage.getItem('tutorial_on') === 'true';
+			tutorialOn = _tutorialOn
+			tutorialStore.set(_tutorialOn)
 		}
 
 		const { data, error } = await supabase.auth.signInWithOAuth({
