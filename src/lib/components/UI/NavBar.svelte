@@ -10,34 +10,20 @@
 	import { PUBLIC_SITE_URL } from '$env/static/public';
 	import { toastValue } from '$stores/notification/toast';
 	import { PUBLIC_SUPPORT_URL } from '$env/static/public';
-	import { devModeStore, tutorialStore } from '$stores/settings';
+	import { devModeStore } from '$stores/settings';
 
 	let url = PUBLIC_SITE_URL;
 	let isLoading = false;
 
 	let devModeOn = false;
-	let tutorialOn = false
 
 	function handleChangeDevMode() {
 		devModeStore.set(devModeOn)
 		localStorage.setItem('dev_mode', devModeOn ? 'true' : 'false');
 	}
 
-	function handleChangeTutorial() {
-		tutorialStore.set(tutorialOn)
-		localStorage.setItem('tutorial_on', tutorialOn ? 'true' : 'false');	
-	}
-
 	onMount(async () => {
 		devModeOn = localStorage.getItem('dev_mode') === 'true';
-
-		if(!localStorage.getItem('tutorial_on')) {  // requires first time user to have it set as true
-			localStorage.setItem('tutorial_on', 'true');
-		}else{
-			const _tutorialOn = localStorage.getItem('tutorial_on') === 'true';
-			tutorialOn = _tutorialOn
-			tutorialStore.set(_tutorialOn)
-		}
 
 		const { data, error } = await supabase.auth.signInWithOAuth({
 			provider: 'spotify',
@@ -116,15 +102,6 @@
 									<p class="text-sm font-medium mx-1.5 w-[100px]">Dev Mode</p>
 									<div class="scale-[0.8]">
 										<Toggle bind:checked={devModeOn} on:change={handleChangeDevMode} color="green" class="!mx-[-4px]" />
-									</div>
-								</div>
-							</DropdownItem>
-							<DropdownItem class="hover:mouse-pointer">
-								<div class="flex flex-row items-center">
-									<Icon icon="mdi:book" class="w-6 h-6" />
-									<p class="text-sm font-medium mx-1.5 w-[100px]">Tutorial</p>
-									<div class="scale-[0.8]">
-										<Toggle bind:checked={tutorialOn} on:change={handleChangeTutorial} color="green" class="!mx-[-4px]" />
 									</div>
 								</div>
 							</DropdownItem>

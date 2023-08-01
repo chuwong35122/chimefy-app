@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { MusicSession } from '$interfaces/session/session.interface';
-	import {  onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import TrackSearchTab from '$components/music/TrackSearchTab.svelte';
 	import { currentSession, currentSessionRole, currentSessionQueue } from '$stores/session';
 	import TrackQueueList from '$components/music/TrackQueueList.svelte';
@@ -12,13 +12,17 @@
 	import type { MusicSessionQueue } from '$interfaces/session/queue.interface';
 	import seo from '$constants/seo';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
+	import { Modal } from 'flowbite-svelte';
+	import SessionTutorialModal from '$components/modals/SessionTutorialModal.svelte';
 
 	export let data: { session: MusicSession; queues: MusicSessionQueue; url: string };
 	let { session, queues, url } = data;
 
+	let openTutorialModal = false;
+
 	let sessionId: string;
-	let playerVolume = 50
-	let channel : RealtimeChannel
+	let playerVolume = 50;
+	let channel: RealtimeChannel;
 
 	$: if ($userStore?.id && $currentSession?.created_by) {
 		currentSessionRole.set(
@@ -31,9 +35,9 @@
 		sessionId = session?.uuid ?? '';
 		currentSessionQueue.set(queues as MusicSessionQueue);
 
-		const storedVolume = localStorage.getItem('player_volume')
-		if(storedVolume) {
-			playerVolume = Number(storedVolume)
+		const storedVolume = localStorage.getItem('player_volume');
+		if (storedVolume) {
+			playerVolume = Number(storedVolume);
 		}
 
 		channel = supabase
@@ -75,31 +79,39 @@
 	<title>{session?.name ? `Listening to ${session?.name}` : 'Loading...'}</title>
 </svelte:head>
 
+<Modal open={openTutorialModal} size='lg' class="modal-glass">
+		<SessionTutorialModal />
+</Modal>
 
-<div class="p-4 w-[400px] md:w-[640px] lg:w-[1000px]">
-	<SessionInfo {sessionId} />
-</div>
-
-{#if $userStore}
-	<div
-		class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px] bg-[rgba(255,255,255,0.05)] rounded-xl"
-	>
-		<div class="flex flex-col lg:flex-row w-full">
-			<TrackSearchTab />
-			<div class="w-full">
-				<div class="w-full grid place-items-center my-2 mt-8">
-					<p class="text-2xl font-semibold">Queues</p>
-				</div>
-				<div class="w-full h-[592px] overflow-y-auto">
-					<TrackQueueList />
+<div class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px]">
+	<div class="mt-8">
+		<SessionInfo {sessionId} />
+	</div>
+	{#if $userStore}
+		<div class="bg-[rgba(255,255,255,0.05)] rounded-xl">
+			<div class="flex flex-col lg:flex-row w-full">
+				<TrackSearchTab />
+				<div class="w-full">
+					<div class="w-full grid place-items-center my-2 mt-8">
+						<p class="text-2xl font-semibold">Queues</p>
+					</div>
+					<div class="w-full h-[592px] overflow-y-auto">
+						<TrackQueueList />
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	{#if $currentSession && $currentSession?.id}
-		<div class="w-[400px] md:w-[640px] lg:w-[1000px] h-24 mt-6">
-			<MusicPlayerController sessionId={$currentSession?.id} volume={playerVolume} />
-			<SessionMembers sessionId={$currentSession?.id} />
+		<div class="w-full grid place-items-end my-2">
+			<button
+				on:click={() => (openTutorialModal = !openTutorialModal)}
+				class="text-xs underline text-dark-300 hover:text-dark-200 duration-150">Need help?</button
+			>
 		</div>
+		{#if $currentSession && $currentSession?.id}
+			<div class="h-24">
+				<!-- <MusicPlayerController sessionId={$currentSession?.id} volume={playerVolume} /> -->
+				<SessionMembers sessionId={$currentSession?.id} />
+			</div>
+		{/if}
 	{/if}
-{/if}
+</div>
