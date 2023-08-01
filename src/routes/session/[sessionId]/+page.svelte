@@ -109,7 +109,7 @@
 		</div>
 		{#if $currentSession && $currentSession?.id}
 			<div class="h-24">
-				<!-- <MusicPlayerController sessionId={$currentSession?.id} volume={playerVolume} /> -->
+				<MusicPlayerController sessionId={$currentSession?.id} volume={playerVolume} />
 				<SessionMembers sessionId={$currentSession?.id} />
 			</div>
 		{/if}
