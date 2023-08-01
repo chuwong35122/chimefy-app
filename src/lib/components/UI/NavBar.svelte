@@ -23,14 +23,17 @@
 		localStorage.setItem('dev_mode', devModeOn ? 'true' : 'false');
 	}
 
-	function handleChangeTutorialOn() {
+	function handleChangeTutorial() {
 		devModeStore.set(tutorialOn)
 		localStorage.setItem('tutorial_on', tutorialOn ? 'true' : 'false');
 	}
 
 	onMount(async () => {
 		devModeOn = localStorage.getItem('dev_mode') === 'true';
-		tutorialOn = localStorage.getItem('tutorial_on') === 'true';
+		if (localStorage.getItem('tutorial_on') !== 'true') {
+			tutorialOn = true;
+			localStorage.setItem('tutorial_on', 'true');
+		}
 
 		const { data, error } = await supabase.auth.signInWithOAuth({
 			provider: 'spotify',
@@ -117,7 +120,7 @@
 									<Icon icon="mdi:book" class="w-6 h-6" />
 									<p class="text-sm font-medium mx-1.5 w-[100px]">Tutorial</p>
 									<div class="scale-[0.8]">
-										<Toggle bind:checked={tutorialOn} on:change={handleChangeTutorialOn} color="green" class="!mx-[-4px]" />
+										<Toggle bind:checked={tutorialOn} on:change={handleChangeTutorial} color="green" class="!mx-[-4px]" />
 									</div>
 								</div>
 							</DropdownItem>
