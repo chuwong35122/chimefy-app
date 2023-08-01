@@ -87,12 +87,12 @@
 	<SuperDebug data={$form} />
 {/if}
 
-<div class="mt-20 w-[600px] flex flex-col items-center">
-	<h1 class="text-4xl font-bold mb-4">Contact</h1>
-
+<h1 class="text-2xl font-bold mt-8 mb-4">Contact</h1>
+<div class="w-full h-full grid place-items-center">
 	<div
-		class="flex flex-row items-center rounded-2xl w-[400px] md:w-[900px] h-[640px] overflow-hidden"
+		class="flex flex-row items-center rounded-2xl overflow-hidden w-[400px] md:w-[900px] h-[640px]"
 	>
+		<!------ Image ------>
 		<div
 			class="h-full invisible md:visible w-0 md:w-[600px] overflow-hidden cover relative group/cover-img"
 		>
@@ -107,48 +107,64 @@
 				Image by teravector
 			</div>
 		</div>
-		<div class="flex flex-col gap-2 text-black bg-white p-8 w-full h-full">
-			<div class="w-full grid place-items-start">
-				<h2 class="text-2xl font-bold">Feel free to contact the developer!</h2>
-				<p>Give feedbacks, request for a new feature, or just contact!</p>
+		<!----- Form ------>
+		<div class="bg-white p-8 w-full h-full flex flex-col space-between">
+			<div class="flex flex-col gap-2">
+				<!-- Header -->
+				<div class="w-full grid place-items-start">
+					<h2 class="text-black text-2xl font-bold">Feel free to contact the project owner!</h2>
+					<p class='text-black'>Give feedbacks or request for a new feature.</p>
+				</div>
+				<!-- Name -->
+				<div>
+					<Label>Name</Label>
+					<Input name="name" bind:value={$form.name} color="green" placeholder="Your name" />
+					{#if $errors?.name && $errors.name[0]}
+						<ErrorMessage message={$errors?.name[0]} />
+					{/if}
+				</div>
+				<!-- Email -->
+				<div>
+					<Label>Your Email</Label>
+					<Input
+						name="email"
+						type="email"
+						bind:value={$form.email}
+						color="green"
+						placeholder="What's your email?"
+					/>
+					{#if $errors?.email && $errors.email[0]}
+						<ErrorMessage message={$errors?.email[0]} />
+					{/if}
+				</div>
+				<!-- Subject -->
+				<div>
+					<Label>Subject</Label>
+					<Input
+						name="subject"
+						bind:value={$form.subject}
+						color="green"
+						placeholder="State your inquiry (Title)"
+					/>
+					{#if $errors?.subject && $errors.subject[0]}
+						<ErrorMessage message={$errors?.subject[0]} />
+					{/if}
+				</div>
+				<!-- Details -->
+				<div>
+					<Label>Details</Label>
+					<Textarea
+						name="detail"
+						bind:value={$form.detail}
+						placeholder="Details (Please state who you are and your inquiry)"
+						rows={5}
+						class="bg-green-50 !border-green-500 !ring-0"
+					/>
+					{#if $errors?.detail && $errors.detail[0]}
+						<ErrorMessage message={$errors?.detail[0]} />
+					{/if}
+				</div>
 			</div>
-			<Label>Name</Label>
-			<Input name="name" bind:value={$form.name} color="green" placeholder="Your name" />
-			{#if $errors?.name && $errors.name[0]}
-				<ErrorMessage message={$errors?.name[0]} showBorder={false} />
-			{/if}
-			<Label>Your Email</Label>
-			<Input
-				name="email"
-				type="email"
-				bind:value={$form.email}
-				color="green"
-				placeholder="What's your email?"
-			/>
-			{#if $errors?.email && $errors.email[0]}
-				<ErrorMessage message={$errors?.email[0]} showBorder={false} />
-			{/if}
-			<Label>Subject</Label>
-			<Input
-				name="subject"
-				bind:value={$form.subject}
-				color="green"
-				placeholder="State your inquiry (Title)"
-			/>
-			{#if $errors?.subject && $errors.subject[0]}
-				<ErrorMessage message={$errors?.subject[0]} showBorder={false} />
-			{/if}
-			<Label>Details</Label>
-			<Textarea
-				name="detail"
-				bind:value={$form.detail}
-				placeholder="Details (Please state who you are and your inquiry)"
-				rows={5}
-				class="bg-green-50 !border-green-500 !ring-0"
-			/>
-			{#if $errors?.detail && $errors.detail[0]}
-				<ErrorMessage message={$errors?.detail[0]} showBorder={false} />
-			{/if}
 			<button on:click|preventDefault={handleMail}>
 				<PrimaryButtonWrapper {isLoading}>
 					<div class="flex flex-row items-center justify-center">
@@ -158,16 +174,16 @@
 				</PrimaryButtonWrapper>
 			</button>
 
-			{#if hasErr}
-				<div in:fade>
-					<Alert color="yellow">
-						<Icon icon="mdi:alert-circle" class="w-6 h-6 mr-2" />
-						<span>Seems like the email cannot be sent due to some error... Try sending it by</span>
-						<a href="mailto: chuchuwiiii.dev@gmail.com" class="underline text-blue-500">yourself</a>
-					</Alert>
-				</div>
-			{/if}
 		</div>
+		{#if hasErr}
+			<div in:fade>
+				<Alert color="yellow">
+					<Icon icon="mdi:alert-circle" class="w-6 h-6 mr-2" />
+					<span>Email cannot be sent due to rate limit! Try sending it by</span>
+					<a href="mailto: chuchuwiiii.dev@gmail.com" class="underline text-blue-500">yourself</a>
+				</Alert>
+			</div>
+		{/if}
 	</div>
 
 	<div class="flex flex-row items-center my-4">
