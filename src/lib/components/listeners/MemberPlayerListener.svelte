@@ -131,6 +131,6 @@
 	});
 
 	onDestroy(() => {
-		channel.unsubscribe()
-	})
+		channel.unsubscribe();
+	});
 </script>

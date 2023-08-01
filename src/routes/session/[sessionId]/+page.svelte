@@ -79,8 +79,8 @@
 	<title>{session?.name ? `Listening to ${session?.name}` : 'Loading...'}</title>
 </svelte:head>
 
-<Modal open={openTutorialModal} size='lg' class="modal-glass">
-		<SessionTutorialModal />
+<Modal open={openTutorialModal} size="lg" class="modal-glass">
+	<SessionTutorialModal />
 </Modal>
 
 <div class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px]">

@@ -9,7 +9,7 @@
 	async function setSpotifyPlayerVolume() {
 		try {
 			await SpotifyPlayer.setVolume(volume / 100);
-			localStorage.setItem('player_volume', String(volume))
+			localStorage.setItem('player_volume', String(volume));
 		} catch (e) {
 			console.log(e);
 		} finally {

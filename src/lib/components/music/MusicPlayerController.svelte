@@ -38,7 +38,7 @@
 				getOAuthToken: (cb) => {
 					cb($spotifyAccessToken?.access_token);
 				},
-				volume: volume/100
+				volume: volume / 100
 			});
 
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
