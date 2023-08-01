@@ -13,7 +13,7 @@
 	import seo from '$constants/seo';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { Modal } from 'flowbite-svelte';
-	import SessionTutorialModal from '$components/modals/SessionTutorialModal.svelte';
+	import SessionHelpModal from '$components/modals/SessionHelpModal.svelte';
 
 	export let data: { session: MusicSession; queues: MusicSessionQueue; url: string };
 	let { session, queues, url } = data;
@@ -80,7 +80,7 @@
 </svelte:head>
 
 <Modal open={openTutorialModal} size="lg" class="modal-glass">
-	<SessionTutorialModal />
+	<SessionHelpModal />
 </Modal>
 
 <div class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px]">
