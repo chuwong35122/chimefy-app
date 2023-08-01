@@ -14,11 +14,11 @@ export const load: PageLoad = async ({ params, url }) => {
 			.from('session_queue')
 			.select()
 			.eq('session_uuid', params.sessionId);
-			return {
-				session: (data as any)[0],
-				queues: (queueRes.data as any)[0],
-				url: url.href
-			};
+		return {
+			session: (data as any)[0],
+			queues: (queueRes.data as any)[0],
+			url: url.href
+		};
 	} catch (e) {
 		throw error(404, {
 			message: 'Session not found'
