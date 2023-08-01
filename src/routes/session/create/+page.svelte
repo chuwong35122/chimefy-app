@@ -11,7 +11,7 @@
 	import Icon from '@iconify/svelte';
 	import seo from '$constants/seo';
 	import { applyAction, enhance } from '$app/forms';
-	import { devModeStore } from '$stores/navigation/mode';
+	import { devModeStore } from '$stores/settings';
 
 	export let data: PageData;
 	const { form, errors } = superForm(data.form);

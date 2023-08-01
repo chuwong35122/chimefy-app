@@ -14,7 +14,7 @@
 	import type { TrackBroadcastPayload } from '$interfaces/session/broadcast.interface';
 	import { toastValue } from '$stores/notification/toast';
 	import { spotifyAccessToken, spotifyPlayerId } from '$stores/spotify/user';
-	import { devModeStore } from '$stores/navigation/mode';
+	import { devModeStore } from '$stores/settings';
 
 	export let channel: RealtimeChannel;
 

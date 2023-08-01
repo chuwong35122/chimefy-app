@@ -13,7 +13,7 @@
 	import { navigating, page } from '$app/stores';
 	import { onSessionDestroyed } from '$stores/session';
 	import { spotifyAccessToken, spotifyUserProfile } from '$stores/spotify/user';
-	import { devModeStore } from '$stores/navigation/mode';
+	import { devModeStore } from '$stores/settings/index.js';
 
 	export let data;
 	let { supabase, session, pathName } = data;

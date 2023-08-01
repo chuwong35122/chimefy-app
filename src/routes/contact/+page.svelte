@@ -16,7 +16,7 @@
 		PUBLIC_EMAILJS_PUBLIC_KEY
 	} from '$env/static/public';
 	import { goto } from '$app/navigation';
-	import { devModeStore } from '$stores/navigation/mode';
+	import { devModeStore } from '$stores/settings';
 
 	export let data: PageData;
 	const { form, errors, validate } = superForm(data.form, {
