@@ -3,4 +3,4 @@
 
 # yarn lint # uncomment when there's a lint rule
 yarn format
-# yarn test # uncomment when there's a test
+yarn test
