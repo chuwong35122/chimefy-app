@@ -92,7 +92,7 @@
 				color="green"
 			/>
 			{#if $errors?.name && $errors.name[0]}
-				<ErrorMessage message={$errors?.name[0]} showBorder={false} />
+				<ErrorMessage message={$errors?.name[0]} />
 			{/if}
 		</Label>
 		<Label>
@@ -106,7 +106,7 @@
 				class="!text-white mb-2"
 			/>
 			{#if $errors?.type}
-				<ErrorMessage message={$errors?.type[0]} showBorder={false} />
+				<ErrorMessage message={$errors?.type[0]} />
 			{/if}
 		</Label>
 		<div class="flex flex-row items-center">
