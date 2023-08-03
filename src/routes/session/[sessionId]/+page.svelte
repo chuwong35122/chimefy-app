@@ -79,7 +79,7 @@
 	<title>{session?.name ? `Listening to ${session?.name}` : 'Loading...'}</title>
 </svelte:head>
 
-<Modal open={openTutorialModal} size="lg" class="modal-glass">
+<Modal bind:open={openTutorialModal} size="lg" class="modal-glass">
 	<SessionHelpModal />
 </Modal>
 
@@ -103,7 +103,7 @@
 		</div>
 		<div class="w-full grid place-items-end my-2">
 			<button
-				on:click={() => (openTutorialModal = !openTutorialModal)}
+				on:click={() => openTutorialModal = !openTutorialModal}
 				class="text-xs underline text-dark-300 hover:text-dark-200 duration-150">Need help?</button
 			>
 		</div>
