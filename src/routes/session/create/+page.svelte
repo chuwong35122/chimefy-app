@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Label, Input, Toggle, Select, Tooltip } from 'flowbite-svelte';
+	import { Label, Input, Select, Tooltip } from 'flowbite-svelte';
 	import PrimaryButtonWrapper from '$components/buttons/PrimaryButtonWrapper.svelte';
 	import { SESSION_MUSIC_TYPES } from '$constants/types';
 	import type { PageData } from './$types';
@@ -53,7 +53,7 @@
 	<title>Create a Session</title>
 </svelte:head>
 
-<div class="p-10 bg-white/5 rounded-2xl duration-150 hover:bg-white/10 w-[500px]">
+<div class="p-10 bg-white/5 rounded-2xl duration-150 hover:bg-white/10 w-[500px] mt-20">
 	{#if $devModeStore}
 		<SuperDebug data={$form} />
 	{/if}
@@ -80,7 +80,7 @@
 			};
 		}}
 	>
-		<h3 class="text-4xl font-semibold text-white p-0">Create Your Session</h3>
+		<h3 class="text-2xl font-semibold text-white p-0">Create Your Session</h3>
 		<Label class="space-y-2">
 			<span class="text-white">Your session name</span>
 			<Input
@@ -110,9 +110,14 @@
 			{/if}
 		</Label>
 		<div class="flex flex-row items-center">
-			<Toggle name="is_private" color="green" bind:checked={$form.is_private} class="text-white"
-				>Set this session private?</Toggle
-			>
+			<input
+				type="checkbox"
+				name="is_private"
+				color="green"
+				bind:value={$form.is_private}
+				class="text-primary mr-2 rounded-md"
+			/>
+			<p>Set this session private?</p>
 			<Icon
 				icon="material-symbols:info"
 				id="private-info"
@@ -120,12 +125,14 @@
 			/>
 		</div>
 		<div class="flex flex-row items-center">
-			<Toggle
+			<input
+				type="checkbox"
 				name="is_private"
 				color="green"
-				bind:checked={$form.allow_member_queue}
-				class="text-white">Allow member to set queue?</Toggle
-			>
+				bind:value={$form.allow_member_queue}
+				class="text-primary mr-2 rounded-md"
+			/>
+			<p>Allow member to set queue?</p>
 			<Icon
 				icon="material-symbols:info"
 				id="allow-queue-info"
