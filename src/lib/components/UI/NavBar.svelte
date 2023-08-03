@@ -92,8 +92,8 @@
 						<Dropdown>
 							<DropdownItem on:click={() => goto('/profile')} class="hover:mouse-pointer">
 								<div class="flex flex-row items-center">
-									<Icon icon="mdi:account-plus" class="h-4 w-4 mr-2" />
-									<p class="text-sm font-medium">Profile</p>
+									<Icon icon="material-symbols:person" class="h-4 w-4 mr-2" />
+									<p class="text-sm font-medium">View Profile</p>
 								</div>
 							</DropdownItem>
 							<DropdownItem class="hover:mouse-pointer">
