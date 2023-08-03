@@ -114,7 +114,7 @@
 				type="checkbox"
 				name="is_private"
 				color="green"
-				bind:value={$form.is_private}
+				bind:checked={$form.is_private}
 				class="text-primary mr-2 rounded-md"
 			/>
 			<p>Set this session private?</p>
@@ -129,7 +129,7 @@
 				type="checkbox"
 				name="is_private"
 				color="green"
-				bind:value={$form.allow_member_queue}
+				bind:checked={$form.allow_member_queue}
 				class="text-primary mr-2 rounded-md"
 			/>
 			<p>Allow member to set queue?</p>
