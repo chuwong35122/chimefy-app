@@ -53,7 +53,7 @@
 			on:keyup={debounce}
 			bind:value={searchTerms}
 			size="md"
-			class="!rounded-full !blur:border-gray-200 !border-gray-200 mb-2"
+			class="!rounded-full !blur:border-gray-200 !border-gray-200"
 		/>
 	</form>
 	<div class="w-full h-[400px] lg:h-[560px] overflow-y-auto overflow-x-hidden">
