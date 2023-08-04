@@ -66,17 +66,18 @@
 			>
 				<Icon icon="ic:round-add" width="40" height="40" />
 			</div>
-			<img
-				bind:this={imgRef}
-				src={track.album.images[0].url}
-				on:error={handleImageError}
-				alt={`${track.name} cover image`}
-				width="80"
-				height="80"
-				aria-label={`Track image of ${track.name}`}
-			/>
+			<div class="w-[80px] h-[80px]">
+				<img
+					bind:this={imgRef}
+					src={track.album.images[0].url}
+					on:error={handleImageError}
+					alt={`${track.name} cover image`}
+					aria-label={`Track image of ${track.name}`}
+					class="object-cover"
+				/>
+			</div>
 		</div>
-		<div class="overflow-hidden">
+		<div class="w-60 md:w-80 md:pr-4">
 			<p class="font-medium text-sm text-clip">{track.name}</p>
 			<p class="font-light text-xs text-dark-300">
 				{joinArtists(track)}
