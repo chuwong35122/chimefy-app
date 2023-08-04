@@ -41,7 +41,7 @@
 				id={`track-img-${index}`}
 				src={session?.session_queue[0].queues[0]?.track_image_url}
 				alt="Playing track cover"
-				class="w-16 h-16 mr-4 rounded-md"
+				class="w-16 h-16 mr-4"
 			/>
 		{:else}
 			<div id="waiting-popover" class="w-16 h-16 grid place-items-center bg-white/10 rounded-md">
