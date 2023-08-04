@@ -60,9 +60,7 @@
 	class="w-full p-1 my-1 hover:bg-gradient-to-r hover:from-[rgba(0,0,0,1)] to-[rgba(255,255,255,0.4)] duration-200 cursor-pointer group/track"
 >
 	<div class="flex flex-row items-center">
-		<div
-			class="bg-[rgba(255,255,255,0.3)] grid place-items-center mr-4 relative overflow-hidden"
-		>
+		<div class="bg-[rgba(255,255,255,0.3)] grid place-items-center mr-4 relative overflow-hidden">
 			<div
 				class="absolute invisible group/track group-hover/track:visible text-white bg-[rgba(0,0,0,0.6)] rounded-full hover:scale-110"
 			>
