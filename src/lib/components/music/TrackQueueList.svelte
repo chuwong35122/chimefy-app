@@ -44,7 +44,7 @@
 			}`}
 		>
 			<p class="mx-2">{i + 1}</p>
-			<div class="rounded-2xl p-2 overflow-hidden font-normal flex flex-row items-center w-full">
+			<div class="p-2 overflow-hidden font-normal flex flex-row items-center w-full">
 				<img
 					bind:this={imgRef}
 					src={queue?.track_image_url}
@@ -52,7 +52,7 @@
 					height="60"
 					alt={`${queue?.track_name} cover`}
 					on:error={handleImageError}
-					class="object-cover rounded-md mr-2"
+					class="object-cover mr-2"
 				/>
 				<div class="text-ellipsis w-[80%]">
 					<p class="text-sm font-medium">{queue.track_name}</p>

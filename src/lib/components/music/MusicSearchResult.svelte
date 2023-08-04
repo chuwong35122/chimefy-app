@@ -57,11 +57,11 @@
 
 <div
 	on:mousedown={handleAddQueue}
-	class="w-full p-1 my-1 hover:bg-gradient-to-r bg-black hover:from-[rgba(255,255,255,0.2)] to-[rgba(255,255,255,0.8)] duration-200 rounded-xl cursor-pointer group/track"
+	class="w-full p-1 my-1 hover:bg-gradient-to-r hover:from-[rgba(0,0,0,1)] to-[rgba(255,255,255,0.4)] duration-200 cursor-pointer group/track"
 >
 	<div class="flex flex-row items-center">
 		<div
-			class="bg-[rgba(255,255,255,0.3)] grid place-items-center mr-4 relative rounded-lg overflow-hidden"
+			class="bg-[rgba(255,255,255,0.3)] grid place-items-center mr-4 relative overflow-hidden"
 		>
 			<div
 				class="absolute invisible group/track group-hover/track:visible text-white bg-[rgba(0,0,0,0.6)] rounded-full hover:scale-110"

@@ -8,7 +8,7 @@
 			<img
 				src={$playingInfo?.track_image_url}
 				alt="Playing track cover"
-				class="w-20 h-20 mr-4 rounded-md"
+				class="w-20 h-20 mr-4"
 			/>
 			<div class="w-32 overflow-hidden invisible md:visible">
 				<p class="text-sm truncate w-28 font-medium">{$playingInfo?.track_name ?? ''}</p>
