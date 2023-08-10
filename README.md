@@ -1,38 +1,20 @@
-# create-svelte
+# Chimefy
+A Spotify extended application to sync music with other people...
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+You may visit this application here: https://chimefy.netlify.app/
 
-## Creating a project
+## Contributing to the project 🔨
+If you want to participate in improving this application, please view these documents:
+- [Introduction](https://chuchuwiiii.notion.site/Read-Me-38336e88c6d042edadc90b4c8830f3a9?pvs=4)
+- [How does the app work?](https://chuchuwiiii.notion.site/App-Flow-e86f523000814f0d99daa7f995ebb43b?pvs=4)
+- [The design guidelines](https://chuchuwiiii.notion.site/Designs-afc5bc0456124a03bfde2bf7c49c1047?pvs=4)
+- [How does session syncing work?](https://chuchuwiiii.notion.site/Session-Flow-Document-0b710b797e854d3b9c51280893f53a5d?pvs=4)
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Supporting Chimefy 😇
+You may support Chimefy by donating via this [link](https://chuchuwiii.gumroad.com/l/support-chimefy).
+Every donation regardless of the amount is greatly appreciated. 🙏
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## Todo
+- [ ] Set up dev Supabase environment.
+- [ ] Seamlessly reauthenticate user when Spotify token expires.
+- [X] Request for Spotify's extended quota (in progress).
