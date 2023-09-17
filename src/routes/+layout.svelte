@@ -9,14 +9,14 @@
 	import { userStore } from '$stores/auth/user';
 	import { setTokenStore, getSpotifyProfile } from '$spotify/user';
 	import AuthExpireListener from '$components/listeners/AuthExpireListener.svelte';
-	import { navigating, page } from '$app/stores';
+	import { page } from '$app/stores';
 	import { onSessionDestroyed } from '$stores/session';
 	import { spotifyAccessToken, spotifyUserProfile } from '$stores/spotify/user';
 	import { devModeStore } from '$stores/settings/index.js';
 
 	export let data;
-	let { supabase, session, pathName } = data;
-	$: ({ supabase, session, pathName } = data);
+	let { supabase, session } = data;
+	$: ({ supabase, session } = data);
 
 	let timer: NodeJS.Timer;
 	let isSpotifyPremiumModalOpen = false;
