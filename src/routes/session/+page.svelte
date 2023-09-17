@@ -96,7 +96,7 @@
 	<div class="h-6" />
 	<div class="w-full grid place-items-center">
 		<button
-			on:click={() => goto('/session/create')}
+			on:click={() => goto('/create')}
 			class="text-sm text-dark-200 font-light hover:text-white duration-200 underline underline-offset-2"
 			>Create new music session</button
 		>

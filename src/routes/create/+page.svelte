@@ -53,6 +53,7 @@
 	<title>Create a Session</title>
 </svelte:head>
 
+
 <div class="p-10 bg-white/5 rounded-2xl duration-150 hover:bg-white/10 w-[500px] mt-20">
 	{#if $devModeStore}
 		<SuperDebug data={$form} />
@@ -115,7 +116,7 @@
 				name="is_private"
 				color="green"
 				bind:checked={$form.is_private}
-				class="text-primary mr-2 rounded-md"
+				class="text-primary mr-2 rounded-sm"
 			/>
 			<p>Set this session private?</p>
 			<Icon
@@ -130,7 +131,7 @@
 				name="is_private"
 				color="green"
 				bind:checked={$form.allow_member_queue}
-				class="text-primary mr-2 rounded-md"
+				class="text-primary mr-2 rounded-sm"
 			/>
 			<p>Allow member to set queue?</p>
 			<Icon
