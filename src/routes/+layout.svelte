@@ -77,8 +77,8 @@
 </Modal>
 <div class="w-screen h-screen overflow-x-hidden bg-dark-900">
 	<NavBar />
-	<slot />
 	<div class="w-full grid place-items-center">
+		<slot />
 		<div class="w-80 md:w-[460px] absolute bottom-10 z-50">
 			<Toast />
 		</div>
