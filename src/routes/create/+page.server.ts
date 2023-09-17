@@ -33,6 +33,8 @@ export const actions = {
 			queues: null
 		};
 
+		console.log(payload);
+
 		const { data } = await event.locals.supabase.from('session').insert(payload).select();
 
 		if (data && data[0] && data[0]?.id && data[0]?.uuid != null) {
