@@ -11,7 +11,9 @@
 	import { toastValue } from '$stores/notification/toast';
 	import { PUBLIC_SUPPORT_URL } from '$env/static/public';
 	import { devModeStore } from '$stores/settings';
+	import type { Session } from '@supabase/supabase-js';
 
+	export let session: Session | null = null
 	let url = PUBLIC_SITE_URL;
 	let isLoading = false;
 
@@ -60,9 +62,8 @@
 		/>
 		<NavLink icon="mdi:email" route="/contact" routeName="Contact" />
 	</div>
-
 	<div>
-		{#if $userStore?.id}
+		{#if $userStore?.id && session}
 			<div class="relative z-50">
 				<!-- Large Profile -->
 				<div class="md:w-[200px]">

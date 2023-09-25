@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/sveltekit';
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 import { PUBLIC_NODE_ENV } from '$env/static/public';
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
-import { error, type Handle, type HandleServerError } from '@sveltejs/kit';
+import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
 
 export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
 	event.locals.supabase = createSupabaseServerClient({
@@ -17,20 +17,20 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 		tracesSampleRate: 1
 	});
 
-	try {
-		event.locals.getSession = async () => {
-			const {
-				data: { session }
-			} = await event.locals.supabase.auth.getSession();
+	event.locals.getSession = async () => {
+		const {
+			data: { session }
+		} = await event.locals.supabase.auth.getSession();
 
-			return session;
-		};
-	} catch (e) {}
+		return session;
+	};
 
-	if (event.url.pathname.startsWith('/session')) {
+	const pathname = event.url.pathname;
+	if (pathname.startsWith('/session') || pathname.startsWith('/create')) {
 		const session = await event.locals.getSession();
 		if (!session) {
-			throw error(303, '/');
+			// user did not sign in
+			throw redirect(303, '/');
 		}
 	}
 

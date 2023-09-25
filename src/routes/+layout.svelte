@@ -34,20 +34,18 @@
 		const {
 			data: { subscription }
 		} = supabase.auth.onAuthStateChange(async (e, _session) => {
-			if (!_session) {
-				return;
-			}
-
 			if (_session?.expires_at !== session?.expires_at) {
-				invalidate('supabase:auth');
+				await invalidate('supabase:auth');
 			}
 
-			userStore.set(_session.user);
-			setTokenStore(_session?.provider_token, _session?.provider_refresh_token);
+			if (_session?.user) {
+				userStore.set(_session.user);
+				setTokenStore(_session?.provider_token, _session?.provider_refresh_token);
+			}
 
 			// Will be false if Spotify access token expired, handle it in AuthExpireListener
 			if (!$spotifyUserProfile) {
-				const profile = await getSpotifyProfile(data?.session?.provider_token);
+				const profile = await getSpotifyProfile(_session?.provider_token);
 				spotifyUserProfile.set(profile);
 			}
 		});
@@ -61,14 +59,14 @@
 		clearInterval(timer);
 	});
 
-	page.subscribe((page) => {
-		if (page?.route?.id !== '/session/[sessionId]') {
-			onSessionDestroyed();
-			if ($devModeStore) {
-				console.log('On session destroyed has been called...');
-			}
-		}
-	});
+	// page.subscribe((page) => {
+	// 	if (page?.route?.id !== '/session/[sessionId]') {
+	// 		onSessionDestroyed();
+	// 		if ($devModeStore) {
+	// 			console.log('On session destroyed has been called...');
+	// 		}
+	// 	}
+	// });
 </script>
 
 <AuthExpireListener />
@@ -76,7 +74,7 @@
 	<SpotifyPremiumInfoModal />
 </Modal>
 <div class="w-screen h-screen overflow-x-hidden bg-dark-900">
-	<NavBar />
+	<NavBar {session} />
 	<div class="w-full grid place-items-center">
 		<slot />
 		<div class="w-80 md:w-[460px] absolute bottom-10 z-50">
