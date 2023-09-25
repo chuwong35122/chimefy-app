@@ -65,28 +65,29 @@
 	<title>Join a Session</title>
 </svelte:head>
 
-<div in:fly={{ x: -1000, duration: 400 }} class="rounded-2xl grid place-items-center mt-20">
-	<h1 class="text-4xl font-semibold">Join a Session</h1>
+<div in:fly={{ y: 10, duration: 200 }} class="rounded-2xl grid place-items-center mt-20">
+	<h1 class="text-4xl text-primary-500 font-semibold">Join a Session</h1>
 	<div class="my-4" />
 
 	<form on:submit|preventDefault={enterSession}>
 		<ButtonGroup size="lg" class="w-full focus:shadow-lg focus:shadow-white">
 			<InputAddon
-				class="!bg-[rgba(255,255,255,0.05)] !border-2 !border-r-0 !rounded-l-full border-white"
+				class="bg-dark !border-2 !border-r-0 !rounded-l-full border-white"
 			>
 				<Icon icon="material-symbols:meeting-room-rounded" width={32} height={32} />
 			</InputAddon>
 			<Input
 				bind:value={input}
 				placeholder="Session ID"
-				defaultClass="w-[320px] md:w-[400px] lg:w-[460px] text-sm md:text-lg lg:text-xl border-white p-4 border-2 !bg-[rgba(255,255,255,0.05)] !border-l-0 !border-r-0 placeholder:text-[rgba(255,255,255,0.4)] text-white focus:border-white"
+				defaultClass="w-[180px] md:w-[400px] lg:w-[460px] text-sm md:text-lg lg:text-xl !text-white !border-white border-2 !bg-dark !border-l-0 !border-r-0 placeholder:text-[rgba(255,255,255,0.4)] text-white"
 			/>
 			<Button
 				type="submit"
-				color="dark"
+				color="none"
 				aria-label="Enter Session"
 				id="search-btn"
-				btnClass="border-white bg-[rgba(255,255,255,0.05)] px-4 border-2 border-l-0 rounded-r-full hover:text-primary-500 duration-200"
+				class='bg-dark border-white px-4 border-2 border-l-0 !rounded-r-full duration-200'
+				
 			>
 				<Icon icon="mdi:location-enter" width={32} height={32} />
 			</Button>
