@@ -1,18 +1,13 @@
 <script lang="ts">
 	import { Dropdown, DropdownItem, Spinner, Toggle } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
-	import { SPOTIFY_AUTH_SCOPES } from '$spotify/user';
-	import { supabase } from '$lib/supabase/supabase';
 	import { userStore } from '$stores/auth/user';
 	import NavLink from './NavLink.svelte';
 	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
-	import { PUBLIC_SITE_URL } from '$env/static/public';
-	import { toastValue } from '$stores/notification/toast';
 	import { PUBLIC_SUPPORT_URL } from '$env/static/public';
 	import { devModeStore } from '$stores/settings';
 
-	let url = PUBLIC_SITE_URL;
+	export let spotifyAuthUrl = '';
 	let isLoading = false;
 
 	let devModeOn = false;
@@ -21,33 +16,12 @@
 		devModeStore.set(devModeOn);
 		localStorage.setItem('dev_mode', devModeOn ? 'true' : 'false');
 	}
-
-	onMount(async () => {
-		devModeOn = localStorage.getItem('dev_mode') === 'true';
-
-		const { data, error } = await supabase.auth.signInWithOAuth({
-			provider: 'spotify',
-			options: {
-				scopes: SPOTIFY_AUTH_SCOPES.join(' '),
-				skipBrowserRedirect: true,
-				redirectTo: '/'
-			}
-		});
-
-		if (data?.url) {
-			url = data.url;
-		}
-
-		if (error) {
-			toastValue.set({ message: error.message, type: 'error' });
-		}
-	});
 </script>
 
 <div class="w-full px-4 mt-1 flex flex-row items-center justify-between">
 	<a href="/" aria-label="Chimefy Home" class="grid place-items-center">
 		<div class="flex items-center">
-			<img src="/logo/chimefy/logo_dark.svg" alt="Chimefy Logo" class="w-8 h-8 " />
+			<img src="/logo/chimefy/logo_dark.svg" alt="Chimefy Logo" class="w-8 h-8" />
 			<div class="ml-4 text-lg font-semibold hidden md:block">Chimefy</div>
 		</div>
 	</a>
@@ -141,21 +115,23 @@
 			</div>
 		{:else}
 			<!-- Login to Spotify -->
-			<div class="hover:scale-105 duration-150">
-				<a href={url} aria-label="Login with Spotify" class="px-3">
-					<div class="flex flex-row items-center">
-						<Icon icon="logos:spotify-icon" width={24} height={24} />
-						<p
-							class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white hidden md:block"
-						>
-							Login to Spotify
-						</p>
-						<p class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white md:hidden">
-							Login
-						</p>
-					</div>
-				</a>
-			</div>
+			{#if spotifyAuthUrl}
+				<div class="hover:scale-105 duration-150">
+					<a href={spotifyAuthUrl} aria-label="Login with Spotify" class="px-3">
+						<div class="flex flex-row items-center">
+							<Icon icon="logos:spotify-icon" width={24} height={24} />
+							<p
+								class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white hidden md:block"
+							>
+								Login to Spotify
+							</p>
+							<p class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white md:hidden">
+								Login
+							</p>
+						</div>
+					</a>
+				</div>
+			{/if}
 		{/if}
 	</div>
 </div>

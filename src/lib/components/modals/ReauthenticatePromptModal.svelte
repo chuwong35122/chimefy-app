@@ -2,7 +2,6 @@
 	import Icon from '@iconify/svelte';
 	import SecondaryButtonWrapper from '$components/buttons/SecondaryButtonWrapper.svelte';
 	import { createEventDispatcher, onMount } from 'svelte';
-	import { supabase } from '$supabase/supabase';
 	import { SPOTIFY_AUTH_SCOPES } from '$spotify/user';
 	import { page } from '$app/stores';
 	import { applyAction, enhance } from '$app/forms';
