@@ -71,7 +71,6 @@
 	<SpotifyPremiumInfoModal  />
 </Modal>
 <div class="w-screen h-screen overflow-x-hidden bg-dark-900">
-	<div>{spotifyAuthUrl}</div>
 	<NavBar spotifyAuthUrl={spotifyAuthUrl} />
 	<div class="w-full grid place-items-center">
 		<slot />
