@@ -54,6 +54,6 @@
 </script>
 
 <form bind:this={signoutForm} action="/signout?/signout" method="POST" id="signout-form" />
-<Modal bind:open={showReauthenticateModal} permanent class="modal-glass z-50 relative">
+<!-- <Modal bind:open={showReauthenticateModal} permanent class="modal-glass z-50 relative">
 	<ReauthenticatePromptModal on:finishReauthenticate={closeModal} />
-</Modal>
+</Modal> -->

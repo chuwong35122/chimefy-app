@@ -12,8 +12,8 @@
 	import { spotifyAccessToken, spotifyUserProfile } from '$stores/spotify/user';
 
 	export let data;
-	let { supabase, session } = data;
-	$: ({ supabase, session } = data);
+	let { supabase, session, spotifyAuthUrl } = data;
+	$: ({ supabase, session, spotifyAuthUrl } = data);
 
 	let timer: NodeJS.Timer;
 	let isSpotifyPremiumModalOpen = false;
@@ -68,10 +68,11 @@
 
 <AuthExpireListener />
 <Modal open={isSpotifyPremiumModalOpen} size="lg" class="modal-glass z-50 relative">
-	<SpotifyPremiumInfoModal />
+	<SpotifyPremiumInfoModal  />
 </Modal>
 <div class="w-screen h-screen overflow-x-hidden bg-dark-900">
-	<NavBar />
+	<div>{spotifyAuthUrl}</div>
+	<NavBar spotifyAuthUrl={spotifyAuthUrl} />
 	<div class="w-full grid place-items-center">
 		<slot />
 		<div class="w-80 md:w-[460px] absolute bottom-10 z-50">
