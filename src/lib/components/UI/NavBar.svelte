@@ -99,10 +99,10 @@
 							</DropdownItem>
 							<form method="POST" action="/signout?/signout">
 								<DropdownItem defaultClass="py-2 px-4">
-									<div class="flex flex-row items-center">
+									<button class="flex flex-row items-center">
 										<Icon icon="ion:exit" class="h-4 w-4 mr-2" />
 										<p class="text-sm font-medium">Logout</p>
-									</div>
+									</button>
 								</DropdownItem>
 							</form>
 						</Dropdown>
