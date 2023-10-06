@@ -1,11 +1,9 @@
 <script lang="ts">
-	import { Label, Input, Select, Tooltip } from 'flowbite-svelte';
-	import PrimaryButtonWrapper from '$components/buttons/PrimaryButtonWrapper.svelte';
+	import { Label, Input, Select, Tooltip, Button, GradientButton } from 'flowbite-svelte';
 	import { SESSION_MUSIC_TYPES } from '$constants/types';
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import ErrorMessage from '$components/forms/ErrorMessage.svelte';
-	import SecondaryButtonWrapper from '$components/buttons/SecondaryButtonWrapper.svelte';
 	import { goto } from '$app/navigation';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import Icon from '@iconify/svelte';
@@ -52,7 +50,6 @@
 
 	<title>Create a Session</title>
 </svelte:head>
-
 
 <div class="p-10 bg-white/5 rounded-2xl duration-150 hover:bg-white/10 w-[500px] mt-20">
 	{#if $devModeStore}
@@ -140,11 +137,9 @@
 				class="text-gray-400 hover:text-gray-200 duration-150 ml-2"
 			/>
 		</div>
-		<button aria-label="Create session" disabled={loading}>
-			<PrimaryButtonWrapper isLoading={loading}>Create Session!</PrimaryButtonWrapper>
-		</button>
+		<GradientButton type='submit' disabled={loading} color="green" pill>Create Session</GradientButton>
+		<Button type="button" on:click={() => goto('/session')} color="alternative" pill class="w-full"
+			>Go Back</Button
+		>
 	</form>
-	<button on:click={() => goto('/session')} aria-label="Go back" class="w-full my-4">
-		<SecondaryButtonWrapper>Go Back</SecondaryButtonWrapper>
-	</button>
 </div>
