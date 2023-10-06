@@ -19,7 +19,6 @@ const config = {
 			$schemas: 'src/lib/schemas',
 			$utils: 'src/lib/utils',
 			$spotify: 'src/lib/spotify',
-			$supabase: 'src/lib/supabase',
 			$stores: 'src/lib/stores',
 			$assets: 'src/lib/assets',
 			$styles: 'src/styles'

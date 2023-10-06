@@ -1,11 +1,10 @@
-import { sequence } from '@sveltejs/kit/hooks';
 import * as Sentry from '@sentry/sveltekit';
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 import { PUBLIC_NODE_ENV } from '$env/static/public';
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
 
-export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
+export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.supabase = createSupabaseServerClient({
 		supabaseUrl: PUBLIC_SUPABASE_URL,
 		supabaseKey: PUBLIC_SUPABASE_ANON_KEY,
@@ -21,13 +20,14 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 		const {
 			data: { session }
 		} = await event.locals.supabase.auth.getSession();
-
 		return session;
 	};
 
 	const pathname = event.url.pathname;
+
+	const session = await event.locals.getSession();
+	console.log(session);
 	if (pathname.startsWith('/session') || pathname.startsWith('/create')) {
-		const session = await event.locals.getSession();
 		if (!session) {
 			// user did not sign in
 			throw redirect(303, '/');
@@ -39,7 +39,7 @@ export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, re
 			return name === 'content-range';
 		}
 	});
-});
+};
 
 const serverErrorHandler: HandleServerError = async ({ error, event }) => {
 	const errorPayload = {

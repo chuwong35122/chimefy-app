@@ -7,7 +7,6 @@
 	import { PUBLIC_SUPPORT_URL } from '$env/static/public';
 	import { devModeStore } from '$stores/settings';
 
-	export let spotifyAuthUrl = '';
 	let isLoading = false;
 
 	let devModeOn = false;
@@ -115,23 +114,21 @@
 			</div>
 		{:else}
 			<!-- Login to Spotify -->
-			{#if spotifyAuthUrl}
-				<div class="hover:scale-105 duration-150">
-					<a href={spotifyAuthUrl} aria-label="Login with Spotify" class="px-3">
-						<div class="flex flex-row items-center">
-							<Icon icon="logos:spotify-icon" width={24} height={24} />
-							<p
-								class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white hidden md:block"
-							>
-								Login to Spotify
-							</p>
-							<p class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white md:hidden">
-								Login
-							</p>
-						</div>
-					</a>
-				</div>
-			{/if}
+			<form method="POST" action="/auth/spotify" class="hover:scale-105 duration-150">
+				<button type="submit" aria-label="Login with Spotify" class="px-3">
+					<div class="flex flex-row items-center">
+						<Icon icon="logos:spotify-icon" width={24} height={24} />
+						<p
+							class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white hidden md:block"
+						>
+							Login to Spotify
+						</p>
+						<p class="text-lg font-semibold h-full ml-2 text-gray-200 hover:text-white md:hidden">
+							Login
+						</p>
+					</div>
+				</button>
+			</form>
 		{/if}
 	</div>
 </div>
