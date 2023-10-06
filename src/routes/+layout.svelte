@@ -34,7 +34,7 @@
 				invalidate('supabase:auth');
 			}
 
-			if (event === 'SIGNED_IN' && _session) {
+			if (_session) {
 				userStore.set(_session?.user);
 				setTokenStore(_session?.provider_token, _session?.provider_refresh_token);
 			}

@@ -26,7 +26,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const pathname = event.url.pathname;
 
 	const session = await event.locals.getSession();
-	console.log(session);
 	if (pathname.startsWith('/session') || pathname.startsWith('/create')) {
 		if (!session) {
 			// user did not sign in
