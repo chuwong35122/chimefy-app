@@ -8,13 +8,14 @@
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import Icon from '@iconify/svelte';
 	import seo from '$constants/seo';
-	import { applyAction, enhance } from '$app/forms';
 	import { devModeStore } from '$stores/settings';
 
 	export let data: PageData;
-	const { form, errors } = superForm(data.form);
-
-	let loading = false;
+	const { form, errors, delayed } = superForm(data.form, {
+		resetForm: false,
+		defaultValidator: 'keep',
+		clearOnSubmit: 'none'
+	});
 
 	const musicSessionTypes = SESSION_MUSIC_TYPES.map((type) => ({
 		name: type.name,
@@ -63,21 +64,7 @@
 		Do you want to allow your members to add track(s) to the queue?
 	</Tooltip>
 
-	<form
-		class="flex flex-col space-y-6"
-		method="POST"
-		use:enhance={() => {
-			loading = true;
-
-			return async ({ result, update }) => {
-				await applyAction(result);
-				await update();
-				if (result) {
-					loading = false;
-				}
-			};
-		}}
-	>
+	<form class="flex flex-col space-y-6" method="POST">
 		<h3 class="text-2xl font-semibold text-white p-0">Create Your Session</h3>
 		<Label class="space-y-2">
 			<span class="text-white">Your session name</span>
@@ -125,7 +112,7 @@
 		<div class="flex flex-row items-center">
 			<input
 				type="checkbox"
-				name="is_private"
+				name="allow_member_queue"
 				color="green"
 				bind:checked={$form.allow_member_queue}
 				class="text-primary mr-2 rounded-sm"
@@ -137,7 +124,9 @@
 				class="text-gray-400 hover:text-gray-200 duration-150 ml-2"
 			/>
 		</div>
-		<GradientButton type='submit' disabled={loading} color="green" pill>Create Session</GradientButton>
+		<GradientButton type="submit" disabled={$delayed} color="green" pill
+			>Create Session</GradientButton
+		>
 		<Button type="button" on:click={() => goto('/session')} color="alternative" pill class="w-full"
 			>Go Back</Button
 		>
