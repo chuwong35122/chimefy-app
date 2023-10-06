@@ -9,9 +9,9 @@ declare global {
 		interface Locals {
 			supabase: SupabaseClient<Database>;
 			getSession(): Promise<Session | null>;
-			pathName: string;
 		}
 		interface PageData {
+			supabase: SupabaseClient<Database>;
 			session: Session | null;
 		}
 		// interface Platform {}
