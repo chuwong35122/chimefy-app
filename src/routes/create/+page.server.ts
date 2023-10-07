@@ -12,7 +12,6 @@ export const load = async () => {
 export const actions = {
 	default: async (event) => {
 		const form = await superValidate(event.request, CreateSessionSchema);
-		console.log(form);
 		const session = await event.locals.getSession();
 
 		if (!form.valid) {
