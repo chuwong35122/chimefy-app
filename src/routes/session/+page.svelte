@@ -82,8 +82,8 @@
 			>Create new music session</button
 		>
 	</div>
-
-	<div class="mt-20 w-full">
+	<div class='h-60' />
+	<div class="w-full">
 		<Tabs style="pill" contentClass="bg-transparent p-4 mb-8">
 			<TabItem open title="Public Blends">
 				<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
