@@ -1,22 +1,23 @@
 <script lang="ts">
-	import {
-		Button,
-		ButtonGroup,
-		Input,
-		InputAddon,
-		TabItem,
-		Tabs,
-		Tooltip
-	} from 'flowbite-svelte';
+	import { Button, ButtonGroup, Input, InputAddon, TabItem, Tabs, Tooltip } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import { goto } from '$app/navigation';
 	import { fly } from 'svelte/transition';
 	import seo from '$constants/seo';
 	import MusicSpace from '$components/session/MusicSpace.svelte';
+	import SessionSearchFilter from '$components/session/SessionSearchFilter.svelte';
+	import type { MusicSessionInfo } from '$interfaces/session/session.interface.js';
+	import { onMount } from 'svelte';
 
 	export let data;
-	$: ({ supabase, userSpace, publicSpaces } = data);
+	$: ({ supabase, userSpace } = data);
+
 	let input = '';
+	let publicSpaces: MusicSessionInfo[] = [];
+
+	onMount(() => {
+		publicSpaces = data.publicSpaces;
+	});
 </script>
 
 <svelte:head>
@@ -82,11 +83,12 @@
 			>Create new music session</button
 		>
 	</div>
-	<div class='h-60' />
+	<div class="h-60" />
 	<div class="w-full">
 		<Tabs style="pill" contentClass="bg-transparent p-4 mb-8">
 			<TabItem open title="Public Blends">
-				<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+			<SessionSearchFilter {supabase} on:query={(e) => (publicSpaces = e.detail.spaces)} />
+				<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[460px] overflow-y-auto">
 					{#each publicSpaces as space, i}
 						<MusicSpace {space} index={i} isPrivate={space?.is_private} />
 					{/each}
@@ -94,7 +96,7 @@
 			</TabItem>
 			{#if userSpace?.length > 0}
 				<TabItem title="My Blends">
-					<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+					<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[460px] overflow-y-auto">
 						{#each userSpace as space, i}
 							<MusicSpace {space} index={i} isPrivate={space?.is_private} />
 						{/each}

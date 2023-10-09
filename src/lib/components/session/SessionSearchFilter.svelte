@@ -1,11 +1,14 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { Search, Tooltip } from 'flowbite-svelte';
-	import { onMount } from 'svelte';
-	import { searchSessionList, listSessions } from '$utils/session/search';
+	import { createEventDispatcher } from 'svelte';
 	import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
-	import type { MusicSessionInfo } from '$lib/interfaces/session/session.interface';
-	import { sessionSearchResult } from '$stores/session';
+	import type { SupabaseClient } from '@supabase/supabase-js';
+	import { queryPublicSpaces } from '$utils/session/search';
+
+	export let supabase: SupabaseClient;
+
+	const dispatch = createEventDispatcher();
 
 	export let input = {
 		sessionName: '',
@@ -13,23 +16,10 @@
 	};
 
 	async function query() {
-		sessionSearchResult.set({
-			results: [],
-			loading: true
-		});
-
 		const { sessionName, musicType } = input;
-		let data: MusicSessionInfo[] = [];
-		if (!sessionName && !musicType) {
-			data = await listSessions();
-		} else {
-			data = await searchSessionList(sessionName, musicType);
-		}
 
-		sessionSearchResult.set({
-			results: data,
-			loading: false
-		});
+		const spaces = await queryPublicSpaces(supabase, sessionName, musicType);
+		dispatch('query', { spaces });
 	}
 
 	async function resetFilter() {
@@ -41,33 +31,17 @@
 		await query();
 	}
 
-	async function handleSelectMusicType(type: string) {
-		const { musicType, sessionName } = input;
-		if (type === musicType) {
-			input.musicType = '';
-		} else {
+	async function handleChangeMusicType(type: string) {
+		{
 			input.musicType = type;
+			await query();
 		}
-
-		const data = await searchSessionList(input.sessionName, input.musicType);
-		sessionSearchResult.set({
-			results: data,
-			loading: false
-		});
 	}
-
-	onMount(async () => {
-		const data = await listSessions();
-		sessionSearchResult.set({
-			results: data,
-			loading: false
-		});
-	});
 </script>
 
 <Tooltip triggeredBy="[id=filter-refresh-btn]" placement="top">Reset Filters!</Tooltip>
 <Tooltip triggeredBy="[id=filter-search-btn]" placement="top">Search!</Tooltip>
-<form class="w-full flex gap-2">
+<form class="flex gap-2">
 	<Search
 		bind:value={input.sessionName}
 		size="md"
@@ -94,18 +68,19 @@
 	</button>
 </form>
 <!-- Chips -->
-<div class="grid grid-cols-3 md:grid-cols-4 gap-2 my-4 w-full flex-wrap justify-center">
-	{#each SESSION_MUSIC_TYPES as type}
-		<div
-			on:mousedown={() => handleSelectMusicType(type.name)}
-			class={`rounded-xl p-2 cursor-pointer hover:scale-105 duration-150 flex flex-row items-center justify-center ${
-				input.musicType === type.name ? 'ring-[3px] ring-white bg-white' : 'bg-white/[85%]'
-			}`}
-		>
-			<div class="w-6 h-6 mr-2">
-				<img src={type.img} alt={type.name} class="object-contain" />
-			</div>
-			<div class="font-semibold text-black">{type.name}</div>
-		</div>
-	{/each}
+<div class="flex flex-rows items-center gap-2 mt-4 ml-2">
+	<p class="font-semibold text-md">Type</p>
+	<div class="flex flex-row items-center gap-6 w-full flex-wrap justify-center">
+		{#each SESSION_MUSIC_TYPES as type}
+			<button
+				on:click={() => handleChangeMusicType(type.name)}
+				class={`cursor-pointer duration-150 hover:scale-105 text-sm underline underline-offset-2 ${
+					input.musicType === type.name ? 'text-primary-500' : 'text-white'
+				}`}
+			>
+				{type.name}
+			</button>
+		{/each}
+	</div>
 </div>
+<div class='my-4 w-full bg-dark-400 h-[1px]' />
