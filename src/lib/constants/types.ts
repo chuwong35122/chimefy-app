@@ -59,5 +59,9 @@ export const SESSION_MUSIC_TYPES = [
 	{
 		name: 'Indie',
 		img: IndieImg
+	},
+	{
+		name: 'Mood',
+		img: IndieImg
 	}
 ].sort((a, b) => a.name.localeCompare(b.name));
