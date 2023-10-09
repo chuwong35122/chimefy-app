@@ -1,42 +1,23 @@
 import type { MusicSessionInfo } from '$interfaces/session/session.interface';
-import { supabase } from '$supabase/supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
-export async function listSessions(): Promise<MusicSessionInfo[]> {
-	const { data } = await supabase
-		.from('session')
-		.select(
-			`
-			id, 
-			uuid, 
-			created_at, 
-			name,
-			is_private, 
-			type, 
-			session_queue( id, updated_since, queues ), 
-			created_by
-		`
-		)
-		.eq('is_private', false)
-		.order('created_at', { ascending: false })
-		.limit(36);
-
-	return ((data as any) ?? []) as MusicSessionInfo[];
-}
-
-export async function listUserSession(id: string): Promise<MusicSessionInfo[]> {
+export async function queryUserSpace(
+	supabase: SupabaseClient,
+	id: string
+): Promise<MusicSessionInfo[]> {
 	if (!id) return [];
 
 	const { data } = await supabase
 		.from('session')
 		.select(
 			`
-			id, 
-			uuid, 
-			created_at, 
+			id,
+			uuid,
+			created_at,
 			name,
-			is_private, 
-			type, 
-			session_queue( id, updated_since, queues ), 
+			is_private,
+			type,
+			session_queue( id, updated_since, queues ),
 			created_by
 		`
 		)
@@ -46,16 +27,20 @@ export async function listUserSession(id: string): Promise<MusicSessionInfo[]> {
 	return ((data as any) ?? []) as MusicSessionInfo[];
 }
 
-export async function searchSessionList(name: string, type: string): Promise<MusicSessionInfo[]> {
+export async function queryPublicSpaces(
+	supabase: SupabaseClient,
+	name: string,
+	type: string
+): Promise<MusicSessionInfo[]> {
 	const query = supabase.from('session').select(
 		`
-			id, 
-			uuid, 
-			created_at, 
+			id,
+			uuid,
+			created_at,
 			name,
 			is_private,
 			type,
-			session_queue( id, updated_since, queues ) 
+			session_queue( id, updated_since, queues )
 		`
 	);
 
