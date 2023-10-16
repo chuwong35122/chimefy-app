@@ -1,6 +1,5 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import type { MusicSessionInfo } from '$interfaces/session/session.interface';
 import { queryUserSpace, queryPublicSpaces } from '$utils/session/search';
 
 export const load: PageLoad = async ({ parent }) => {
