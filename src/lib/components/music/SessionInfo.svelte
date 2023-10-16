@@ -1,19 +1,29 @@
 <script lang="ts">
 	import { toastValue } from '$stores/notification/toast';
 	import { Button, Modal, Tooltip } from 'flowbite-svelte';
-	import { currentSession, currentSessionRole } from '$stores/session';
+	import { currentSession, spaceRoleStore, spaceStore } from '$stores/session';
 	import Icon from '@iconify/svelte';
 	import Chip from '../UI/Chip.svelte';
-	import { supabase } from '$lib/supabase/supabase';
 	import { goto } from '$app/navigation';
+	import type { SupabaseClient } from '@supabase/supabase-js';
+	import type { MusicQueueSpace } from '$interfaces/session/session.interface';
 
-	export let sessionId = '';
+	export let supabase: SupabaseClient;
 
+	let spaceTitle = '';
+	let space: MusicQueueSpace;
 	let showDeleteModel = false;
 
-	function onCopySessionId() {
-		toastValue.set({ message: "Session's ID copied!", type: 'info' });
-		navigator.clipboard.writeText(sessionId);
+	spaceStore.subscribe((val) => {
+		if (val) {
+			space = val;
+			spaceTitle = space.name.charAt(0).toUpperCase() + space.name.slice(1);
+		}
+	});
+
+	function onCopySpaceId() {
+		toastValue.set({ message: "Space's ID copied!", type: 'info' });
+		navigator.clipboard.writeText(space.uuid);
 	}
 
 	function handleOpenDeleteModal() {
@@ -48,14 +58,14 @@
 	</div>
 </Modal>
 
-<Tooltip triggeredBy="#copy-id-btn" placement="right">Copy Session's ID</Tooltip>
+<Tooltip triggeredBy="#copy-id-btn" placement="right">Copy This Space's ID</Tooltip>
 <div class="w-full flex flex-row justify-between items-end">
 	<div>
 		<div class="flex flex-row items-center">
 			<div id="isPrivate-icon" class="cursor-pointer">
-				{#if $currentSession?.is_private}
+				{#if $spaceStore?.is_private}
 					<Tooltip triggeredBy="[id=isPrivate-icon]" placement="top"
-						>This session is a private session</Tooltip
+						>This is a private space</Tooltip
 					>
 					<Icon
 						icon="material-symbols:lock"
@@ -65,9 +75,7 @@
 						class="text-dark-300 hover:text-dark-300 duration-200"
 					/>
 				{:else}
-					<Tooltip triggeredBy="[id=isPublic-icon]" placement="top"
-						>This session is a public session</Tooltip
-					>
+					<Tooltip triggeredBy="[id=isPublic-icon]" placement="top">This is a public space</Tooltip>
 					<Icon
 						id="isPublic-icon"
 						icon="material-symbols:lock-open-rounded"
@@ -78,14 +86,14 @@
 				{/if}
 			</div>
 			<h1 class="text-2xl font-medium ml-2 mr-2">
-				{$currentSession?.name ? `${$currentSession?.name}` : 'Loading...'}
+				{$spaceStore?.name ? spaceTitle : 'Loading...'}
 			</h1>
-			<Chip label={$currentSession?.type} />
+			<Chip label={$spaceStore?.type} />
 		</div>
 	</div>
 	<div class="flex flex-row items-center">
-		{#if $currentSessionRole === 'admin'}
-			<Tooltip triggeredBy="#delete-id-btn" placement="left">Delete Session</Tooltip>
+		{#if $spaceRoleStore === 'admin'}
+			<Tooltip triggeredBy="#delete-id-btn" placement="left">Delete Space</Tooltip>
 			<button
 				id="delete-id-btn"
 				aria-label="Delete this session"
@@ -102,8 +110,8 @@
 		{/if}
 		<button
 			id="copy-id-btn"
-			aria-label="Copy session ID"
-			on:click={onCopySessionId}
+			aria-label="Copy this space ID"
+			on:click={onCopySpaceId}
 			class="hover:scale-[1.1] duration-200"
 		>
 			<Icon

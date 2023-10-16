@@ -1,13 +1,24 @@
 import type { SessionMember } from '$lib/interfaces/session/member.interface';
 import type { MusicQueue, MusicSessionQueue } from '$lib/interfaces/session/queue.interface';
-import type { MusicSession, MusicSessionRole } from '$lib/interfaces/session/session.interface';
+import type {
+	MusicQueueSpace,
+	MusicSession,
+	MusicSessionRole
+} from '$lib/interfaces/session/session.interface';
 import { writable } from 'svelte/store';
 
+// old
 export const currentSession = writable<MusicSession | null>(null);
+// new
+export const spaceStore = writable<MusicQueueSpace | null>(null);
+
 export const currentSessionQueue = writable<MusicSessionQueue | null>(null);
 export const currentSessionMember = writable<SessionMember[]>([]);
 
+// old
 export const currentSessionRole = writable<MusicSessionRole>('member');
+// new
+export const spaceRoleStore = writable<MusicSessionRole>('member');
 
 export const playingInfo = writable<MusicQueue | null>(null);
 
