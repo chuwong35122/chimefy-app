@@ -22,10 +22,10 @@
 
 <svelte:head>
 	<meta charset="UTF-8" />
-	<meta name="description" content="Join a Session" />
+	<meta name="description" content="Join a Blend Space" />
 	<meta
 		name="keywords"
-		content="chimefy, spotify, listen together, join session, create session, public session, private session"
+		content="chimefy, spotify, listen together, join blend space, create blend space, public blend space, private blend space"
 	/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -46,11 +46,11 @@
 	<meta name="twitter:image" content={seo.image} />
 	<meta name="twitter:image:alt" content={seo.imageAlt} />
 
-	<title>Join a Session</title>
+	<title>Join a Space</title>
 </svelte:head>
 
 <div in:fly={{ y: 10, duration: 200 }} class="rounded-2xl grid place-items-center mt-20">
-	<h1 class="text-4xl text-primary-500 font-semibold">Join a Session</h1>
+	<h1 class="text-4xl text-primary-500 font-semibold">Join a Blend Space</h1>
 	<div class="my-4" />
 
 	<form method="POST">
@@ -80,23 +80,27 @@
 		<button
 			on:click={() => goto('/create')}
 			class="text-sm text-dark-200 font-light hover:text-white duration-200 underline underline-offset-2"
-			>Create new music session</button
+			>Create new blend space</button
 		>
 	</div>
 	<div class="h-60" />
 	<div class="w-full">
 		<Tabs style="pill" contentClass="bg-transparent p-4 mb-8">
-			<TabItem open title="Public Blends">
-			<SessionSearchFilter {supabase} on:query={(e) => (publicSpaces = e.detail.spaces)} />
-				<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[460px] overflow-y-auto">
+			<TabItem open title="Public Blend Spaces">
+				<SessionSearchFilter {supabase} on:query={(e) => (publicSpaces = e.detail.spaces)} />
+				<div
+					class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[460px] overflow-y-auto"
+				>
 					{#each publicSpaces as space, i}
 						<MusicSpace {space} index={i} isPrivate={space?.is_private} />
 					{/each}
 				</div>
 			</TabItem>
 			{#if userSpace?.length > 0}
-				<TabItem title="My Blends">
-					<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[460px] overflow-y-auto">
+				<TabItem title="My Blend Spaces">
+					<div
+						class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[460px] overflow-y-auto"
+					>
 						{#each userSpace as space, i}
 							<MusicSpace {space} index={i} isPrivate={space?.is_private} />
 						{/each}
