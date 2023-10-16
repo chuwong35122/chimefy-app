@@ -1,27 +1,20 @@
-import { supabase } from '$supabase/supabase';
-import type { PageLoad } from './$types';
 import { error } from '@sveltejs/kit';
+import type { PageLoad } from './$types';
+import { querySpaceById } from '$utils/session/search';
 
-export const load: PageLoad = async ({ params, url }) => {
-	if (params?.sessionId == null) {
+export const load: PageLoad = async ({ parent, params, url }) => {
+	const { supabase } = await parent();
+	if (!params?.sessionId) {
 		throw error(404, {
 			message: 'Session ID not provided'
 		});
 	}
-	try {
-		const { data } = await supabase.from('session').select().eq('uuid', params.sessionId);
-		const queueRes = await supabase
-			.from('session_queue')
-			.select()
-			.eq('session_uuid', params.sessionId);
-		return {
-			session: (data as any)[0],
-			queues: (queueRes.data as any)[0],
-			url: url.href
-		};
-	} catch (e) {
-		throw error(404, {
-			message: 'Session not found'
-		});
-	}
+
+	const space = await querySpaceById(supabase, params.sessionId);
+
+	return {
+		space,
+		url: url.href,
+		supabase: supabase
+	};
 };
