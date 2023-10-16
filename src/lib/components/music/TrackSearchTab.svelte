@@ -5,6 +5,9 @@
 	import type { Track } from 'spotify-types';
 	import { searchTrack } from '$utils/session/track';
 	import { spotifyAccessToken } from '$stores/spotify/user';
+	import type { SupabaseClient } from '@supabase/supabase-js';
+
+	export let supabase: SupabaseClient
 
 	let timer: NodeJS.Timer;
 	let searchTerms = '';
@@ -63,7 +66,7 @@
 			</div>
 		{:else if trackSearchResults.length > 0}
 			{#each trackSearchResults as track}
-				<MusicSearchResult {track} />
+				<MusicSearchResult {track} {supabase} />
 			{/each}
 		{:else}
 			<div class="h-[100px]" />

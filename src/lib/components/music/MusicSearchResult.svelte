@@ -6,9 +6,10 @@
 	import { toastValue } from '$stores/notification/toast';
 	import { joinArtists } from '$utils/track';
 	import { userStore } from '$stores/auth/user';
-	import { supabase } from '$supabase/supabase';
 	import type { MusicQueue } from '$interfaces/session/queue.interface';
+	import type { SupabaseClient } from '@supabase/supabase-js';
 
+	export let supabase: SupabaseClient
 	export let track: Track;
 	let imgRef: HTMLImageElement;
 
