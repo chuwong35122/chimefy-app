@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { MusicSession } from '$interfaces/session/session.interface';
 	import { onMount } from 'svelte';
-	import { currentSession, currentSessionRole, currentSessionQueue, spaceStore, spaceRoleStore } from '$stores/session';
+	import { currentSession, currentSessionRole, currentSessionQueue } from '$stores/session';
+	import { spaceRoleStore, spaceStore } from '$stores/space/index.ts';
 	import TrackSearchTab from '$components/music/TrackSearchTab.svelte';
 	import TrackQueueList from '$components/music/TrackQueueList.svelte';
 	// import MusicPlayerController from '$components/music/MusicPlayerController.svelte';
