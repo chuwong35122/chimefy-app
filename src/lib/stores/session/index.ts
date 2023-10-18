@@ -21,10 +21,6 @@ export const playingTrackId = writable('');
 export const isPlayingStatus = writable(false);
 export const playingDurationMs = writable(0);
 
-// new
-export const spaceStore = writable<MusicQueueSpace | null>(null);
-export const spaceRoleStore = writable<MusicSessionRole>('member');
-
 export function onSessionDestroyed() {
 	currentSession.set(null);
 	currentSessionQueue.set(null);
