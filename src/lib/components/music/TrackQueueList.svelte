@@ -4,10 +4,12 @@
 	import Icon from '@iconify/svelte';
 	import { Tooltip } from 'flowbite-svelte';
 	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
-	import { supabase } from '$lib/supabase/supabase';
 	import { fade, fly } from 'svelte/transition';
 	import DebugText from '$components/debugger/DebugText.svelte';
+	import type { SupabaseClient } from '@supabase/supabase-js';
 
+	export let supabase: SupabaseClient
+	
 	let imgRef: HTMLImageElement;
 	let queues: MusicQueue[] = [];
 

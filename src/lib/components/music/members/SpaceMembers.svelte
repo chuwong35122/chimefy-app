@@ -4,20 +4,22 @@
 	import { userStore } from '$stores/auth/user';
 	import { onDestroy, onMount } from 'svelte';
 	import SessionMemberAvatar from './SessionMemberAvatar.svelte';
-	import { supabase } from '$lib/supabase/supabase';
 	import { devModeStore } from '$stores/settings';
+	import type { SupabaseClient } from '@supabase/supabase-js';
 
-	export let sessionId = 0;
-	const channel = supabase.channel(`session_member_listener_${sessionId}`, {
+	export let supabase: SupabaseClient
+	export let id: number
+
+	let participants: SessionMember[] = [];
+	let self: SessionMember;
+
+	const channel = supabase.channel(`space_member_listener_${id}`, {
 		config: {
 			presence: {
 				key: 'members'
 			}
 		}
 	});
-
-	let participants: SessionMember[] = [];
-	let self: SessionMember;
 
 	userStore.subscribe((user) => {
 		self = {
@@ -29,31 +31,34 @@
 		};
 	});
 
-	currentSessionMember.subscribe((members) => {
-		if (self?.member_user_id) {
-			participants = members.filter((member) => member.member_user_id !== self.member_user_id);
-		}
-	});
+	// currentSessionMember.subscribe((members) => {
+	// 	if (self?.member_user_id) {
+	// 		participants = members.filter((member) => member.member_user_id !== self.member_user_id);
+	// 	}
+	// });
 
 	onMount(async () => {
 		channel.on('presence', { event: 'sync' }, () => {
 			const { members } = channel.presenceState();
 			if (members && members.length > 0) {
-				currentSessionMember.set(members as any as SessionMember[]);
+				console.log("sync", members)
+				// currentSessionMember.set(members as any as SessionMember[]);
 			}
 		});
 
 		channel.on('presence', { event: 'join' }, ({ newPresences }) => {
 			const newComers = newPresences as any as SessionMember[];
-			currentSessionMember.update((member) => [...member, ...newComers]);
+			console.log("join", newComers)
+			// currentSessionMember.update((member) => [...member, ...newComers]);
 		});
 
 		channel.on('presence', { event: 'leave' }, ({ leftPresences }) => {
 			leftPresences.forEach((left) => {
 				const leftId = left as any as SessionMember;
-				currentSessionMember.update((member) =>
-					member.filter((member) => member.member_user_id !== leftId.member_user_id)
-				);
+				console.log("leave", leftId)
+				// currentSessionMember.update((member) =>
+				// 	member.filter((member) => member.member_user_id !== leftId.member_user_id)
+				// );
 			});
 		});
 
@@ -77,7 +82,7 @@
 </script>
 
 <div class="mt-20">
-	<h2 class="text-3xl font-bold">Session Members</h2>
+	<h2 class="text-3xl font-bold">Space Members</h2>
 	<div
 		class="w-full p-4 rounded-xl grid grid-cols-3 lg:grid-cols-4 gap-2 lg:gap-4 max-h-96 overflow-y-auto"
 	>
