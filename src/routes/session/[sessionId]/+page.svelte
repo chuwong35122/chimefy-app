@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { currentSession, currentSessionRole, currentSessionQueue, spaceStore, spaceRoleStore } from '$stores/session';
 	import TrackSearchTab from '$components/music/TrackSearchTab.svelte';
-	// import TrackQueueList from '$components/music/TrackQueueList.svelte';
+	import TrackQueueList from '$components/music/TrackQueueList.svelte';
 	// import MusicPlayerController from '$components/music/MusicPlayerController.svelte';
 	// import SessionMembers from '$components/music/members/SessionMembers.svelte';
 	import SessionInfo from '$components/music/SessionInfo.svelte';
@@ -13,6 +13,7 @@
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { Modal } from 'flowbite-svelte';
 	import SessionHelpModal from '$components/modals/SessionHelpModal.svelte';
+	import SpaceMembers from '$components/music/members/SpaceMembers.svelte';
 
 	export let data
 	let { space, url, supabase } = data;
@@ -100,7 +101,7 @@
 						<p class="text-2xl font-semibold">Queues</p>
 					</div>
 					<div class="w-full h-[592px] overflow-y-auto">
-						<!-- <TrackQueueList /> -->
+						<TrackQueueList {supabase} />
 					</div>
 				</div>
 			</div>
@@ -111,10 +112,10 @@
 				class="text-xs underline text-dark-300 hover:text-dark-200 duration-150">Need help?</button
 			>
 		</div>
-		{#if $currentSession && $currentSession?.id}
+		{#if $spaceStore && $spaceStore?.id}
 			<div class="h-24">
 				<!-- <MusicPlayerController sessionId={$currentSession?.id} volume={playerVolume} /> -->
-				<!-- <SessionMembers sessionId={$currentSession?.id} /> -->
+				<SpaceMembers {supabase} id={$spaceStore?.id} />
 			</div>
 		{/if}
 	{/if}
