@@ -5,7 +5,7 @@
 	import { spaceRoleStore, spaceStore } from '$stores/space/index';
 	import TrackSearchTab from '$components/music/TrackSearchTab.svelte';
 	import TrackQueueList from '$components/music/TrackQueueList.svelte';
-	// import MusicPlayerController from '$components/music/MusicPlayerController.svelte';
+	import MusicPlayerController from '$components/music/MusicPlayerController.svelte';
 	// import SessionMembers from '$components/music/members/SessionMembers.svelte';
 	import SessionInfo from '$components/music/SessionInfo.svelte';
 	import { userStore } from '$stores/auth/user';
@@ -17,7 +17,7 @@
 	import SpaceMembers from '$components/music/members/SpaceMembers.svelte';
 
 	export let data;
-	let { space, url, supabase } = data;
+	$: ({ space, url, supabase } = data);
 
 	let openTutorialModal = false;
 
@@ -25,44 +25,31 @@
 	let playerVolume = 50;
 	let channel: RealtimeChannel;
 
-	$: if ($userStore?.id && $currentSession?.created_by) {
-		// TODO: remove
-		currentSessionRole.set(
-			$currentSession?.created_by.toString() === $userStore?.id.toString() ? 'admin' : 'member'
-		);
+	$: if ($userStore?.id && space?.created_by) {
 		spaceRoleStore.set(
-			$currentSession?.created_by.toString() === $userStore?.id.toString() ? 'admin' : 'member'
+			space?.created_by?.toString() === $userStore?.id.toString() ? 'admin' : 'member'
 		);
 	}
 
 	onMount(() => {
 		spaceStore.set(space);
-		// currentSession.set(session as MusicSession);
-		// sessionId = session?.uuid ?? '';
-		// currentSessionQueue.set(queues as MusicSessionQueue);
 
-		// const storedVolume = localStorage.getItem('player_volume');
-		// if (storedVolume) {
-		// 	playerVolume = Number(storedVolume);
-		// }
+		const storedVolume = localStorage.getItem('player_volume');
+		if (storedVolume) {
+			playerVolume = Number(storedVolume);
+		}
 
-		console.log(space.uuid);
 		channel = supabase
 			.channel(`session_listener_${space.uuid}`)
-			.on(
-				'postgres_changes',
-				{ event: '*', schema: 'public', table: 'session' },
-				(payload) => {
-					const _payload = payload.new as any
-					spaceStore.update((space) => {
-						return {
-							...space,
-							queues: _payload.queues,
-						}
-					});
-					
-				}
-			)
+			.on('postgres_changes', { event: '*', schema: 'public', table: 'session' }, (payload) => {
+				const _payload = payload.new as any;
+				spaceStore.update((space) => {
+					return {
+						...space,
+						queues: _payload.queues
+					};
+				});
+			})
 			.subscribe();
 	});
 </script>
@@ -123,7 +110,7 @@
 		</div>
 		{#if $spaceStore && $spaceStore?.id}
 			<div class="h-24">
-				<!-- <MusicPlayerController sessionId={$currentSession?.id} volume={playerVolume} /> -->
+				<MusicPlayerController {supabase} sessionId={$currentSession?.id} volume={playerVolume} />
 				<SpaceMembers {supabase} id={$spaceStore?.id} />
 			</div>
 		{/if}

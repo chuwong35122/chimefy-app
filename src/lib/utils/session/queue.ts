@@ -1,7 +1,7 @@
 import type { MusicQueue } from '$interfaces/session/queue.interface';
 import { playTrack } from '$spotify/player';
-import { supabase } from '$supabase/supabase';
 import { isPlayingStatus, playingDurationMs, playingInfo, playingTrackId } from '$stores/session';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 /**
  * Update queue from session by removing the track from its target ID.
@@ -12,17 +12,18 @@ import { isPlayingStatus, playingDurationMs, playingInfo, playingTrackId } from 
  * @returns queues with the topmost track removed
  */
 export async function sliceQueue(
+	supabase: SupabaseClient,
 	queues: MusicQueue[],
-	trackTargetId: string,
-	queueId: number | string
+	queueTargetId: string,
+	spaceId: number
 ): Promise<MusicQueue[]> {
 	const _queues = [...queues];
-	const filtered = _queues.filter((q) => q.track_id !== trackTargetId);
+	const filtered = _queues.filter((q) => q.track_id !== queueTargetId);
 
 	const { data } = await supabase
-		.from('session_queue')
+		.from('session')
 		.update({ queues: filtered })
-		.eq('id', queueId)
+		.eq('id', spaceId)
 		.select();
 
 	return (data as any)[0].queues;

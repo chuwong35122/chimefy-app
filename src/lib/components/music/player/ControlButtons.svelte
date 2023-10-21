@@ -1,30 +1,23 @@
 <script lang="ts">
 	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
 	import { toastValue } from '$stores/notification/toast';
-	import {
-		currentSession,
-		currentSessionQueue,
-		currentSessionRole,
-		isPlayingStatus,
-		playingDurationMs,
-		playingInfo,
-		playingTrackId
-	} from '$stores/session';
+	import { isPlayingStatus, playingDurationMs, playingInfo, playingTrackId } from '$stores/session';
 	import Icon from '@iconify/svelte';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { Tooltip } from 'flowbite-svelte';
+	import { spaceRoleStore, spaceStore } from '$stores/space/index';
 
 	export let channel: RealtimeChannel;
 
 	// Check for queues. If there are, trigger real-time channel broadcast to go forward.
 	async function onSkipTrack() {
-		if ($currentSessionRole === 'member' && !$currentSession?.allow_member_queue) {
+		if ($spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue) {
 			toastValue.set({ message: 'Admin does not allow members to skip track.', type: 'info' });
 			return;
 		}
 
-		const queues = $currentSessionQueue?.queues;
-		const queueId = $currentSessionQueue?.id;
+		const queues = $spaceStore?.queues;
+		const spaceId = $spaceStore?.id;
 
 		if (queues && queues.length < 2) {
 			toastValue.set({ message: 'Please add some tracks!', type: 'warn' });
@@ -34,7 +27,7 @@
 		toastValue.set({ message: 'Skipping track...', type: 'info' });
 		playingDurationMs.set(0);
 
-		if (queues && queues.length > 0 && queueId && $playingInfo) {
+		if (queues && queues.length > 0 && spaceId && $playingInfo) {
 			const payload: TrackBroadcastPayload = {
 				isPlaying: $isPlayingStatus,
 				playingTrackId: queues[1]?.track_id,
@@ -51,7 +44,7 @@
 
 	// Check for queues. If there are, trigger real-time channel broadcast to go back.
 	async function onRestartTrack() {
-		if ($currentSessionRole === 'member' && !$currentSession?.allow_member_queue) {
+		if ($spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue) {
 			toastValue.set({
 				message: 'Admin does not allow members to go to replay track.',
 				type: 'info'
@@ -59,7 +52,7 @@
 			return;
 		}
 
-		const queues = $currentSessionQueue?.queues;
+		const queues = $spaceStore?.queues;
 		if (queues && queues.length === 0) {
 			toastValue.set({ message: 'Please add some tracks!', type: 'warn' });
 			return;
@@ -98,7 +91,9 @@
 
 	// Send broadcast signal to other members with its playing info
 	async function onBroadcastSignal(playing: boolean) {
-		const queues = $currentSessionQueue?.queues;
+		console.log('boradcasting', playing)
+		const queues = $spaceStore?.queues;
+		console.log(queues)
 		if (queues && queues.length === 0) {
 			toastValue.set({ message: 'Please add some tracks before playing!', type: 'warn' });
 			return;
@@ -127,7 +122,7 @@
 </script>
 
 <Tooltip triggeredBy="#back-button">
-	{#if $currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
+	{#if $spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue}
 		Admin does not allow going back
 	{:else}
 		Go back
@@ -135,7 +130,7 @@
 </Tooltip>
 
 <Tooltip triggeredBy="#skip-button">
-	{#if $currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
+	{#if $spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue}
 		Admin does not allow skipping track
 	{:else}
 		Skip track
@@ -143,7 +138,7 @@
 </Tooltip>
 
 <Tooltip triggeredBy="#play-pause-button">
-	{#if $currentSessionRole === 'member'}
+	{#if $spaceRoleStore === 'member'}
 		Only admin can play/pause
 	{:else}
 		Play/Pause
@@ -153,8 +148,8 @@
 <div id="controller-section" class="flex flex-row items-center mb-2">
 	<button
 		id="back-button"
-		disabled={$currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
-		aria-disabled={$currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
+		disabled={$spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue}
+		aria-disabled={$spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue}
 		aria-label="Go to previous track"
 		on:click={onRestartTrack}
 		class="disabled:text-dark-400"
@@ -166,9 +161,9 @@
 	</button>
 	<button
 		id="play-pause-button"
-		disabled={$currentSessionRole === 'member'}
+		disabled={$spaceRoleStore === 'member'}
 		on:click={$isPlayingStatus ? togglePause : togglePlay}
-		aria-disabled={$currentSessionRole === 'member'}
+		aria-disabled={$spaceRoleStore === 'member'}
 		aria-label={$isPlayingStatus ? 'Pause track' : 'Play track'}
 		class="disabled:text-dark-400"
 	>
@@ -186,9 +181,9 @@
 	</button>
 	<button
 		id="skip-button"
-		disabled={$currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
+		disabled={$spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue}
 		on:click={onSkipTrack}
-		aria-disabled={$currentSessionRole === 'member' && !$currentSession?.allow_member_queue}
+		aria-disabled={$spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue}
 		aria-label="Go to next track"
 		class="disabled:text-dark-400"
 	>
