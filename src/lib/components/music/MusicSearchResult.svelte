@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentSession, currentSessionQueue, currentSessionRole } from '$stores/session';
+	// import { currentSession, currentSessionQueue, currentSessionRole } from '$stores/session';
 	import { millisecondToMinuteSeconds } from '$utils/common/time';
 	import Icon from '@iconify/svelte';
 	import type { Track } from 'spotify-types';
@@ -8,8 +8,9 @@
 	import { userStore } from '$stores/auth/user';
 	import type { MusicQueue } from '$interfaces/session/queue.interface';
 	import type { SupabaseClient } from '@supabase/supabase-js';
+	import { spaceStore, spaceRoleStore } from '$stores/space';
 
-	export let supabase: SupabaseClient
+	export let supabase: SupabaseClient;
 	export let track: Track;
 	let imgRef: HTMLImageElement;
 
@@ -19,11 +20,11 @@
 
 	async function handleAddQueue() {
 		const userId = $userStore?.id;
-		const sessionId = $currentSession?.id;
+		const sessionId = $spaceStore?.id;
 
 		if (!userId || !sessionId) return;
 
-		if ($currentSessionRole === 'member' && !$currentSession?.allow_member_queue) {
+		if ($spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue) {
 			toastValue.set({
 				message: "Session's admin does not allow member to queue tracks.",
 				type: 'info'
@@ -38,27 +39,29 @@
 			artist: joinArtists(track),
 			duration_ms: track.duration_ms,
 			track_image_url: track?.album?.images[0]?.url,
-			added_by: $userStore?.user_metadata?.uuid,
+			added_by: userId,
 			added_since: new Date()
 		};
 
-		if (!currentSessionQueue || !$currentSessionQueue?.queues) return;
+		console.log(queuePayload)
+
 		try {
+			const queues: MusicQueue[] = $spaceStore?.queues;
 			await supabase
-				.from('session_queue')
+				.from('session')
 				.update({
-					queues: [...$currentSessionQueue?.queues, queuePayload]
+					queues: [...queues, queuePayload]
 				})
-				.eq('session_id', $currentSession?.id);
+				.eq('id', $spaceStore?.id);
 		} catch (err) {
 			toastValue.set({ message: `Cannot add track`, type: 'error' });
 		}
 	}
 </script>
 
-<div
-	on:mousedown={handleAddQueue}
-	class="w-full p-1 my-1 hover:bg-gradient-to-r hover:from-[rgba(0,0,0,1)] to-[rgba(255,255,255,0.4)] duration-200 cursor-pointer group/track"
+<button
+	on:click={handleAddQueue}
+	class="p-1 my-1 hover:bg-gradient-to-r hover:from-[rgba(0,0,0,1)] to-[rgba(255,255,255,0.4)] duration-200 cursor-pointer group/track"
 >
 	<div class="flex flex-row items-center">
 		<div class="bg-[rgba(255,255,255,0.3)] grid place-items-center mr-4 relative overflow-hidden">
@@ -78,7 +81,7 @@
 				/>
 			</div>
 		</div>
-		<div class="w-60 md:w-80 md:pr-4">
+		<div class="w-60 md:w-80 md:pr-4 text-left">
 			<p class="font-medium text-sm text-clip">{track.name}</p>
 			<p class="font-light text-xs text-dark-300">
 				{joinArtists(track)}
@@ -86,4 +89,4 @@
 			<p class="text-xs text-dark-300">{millisecondToMinuteSeconds(track?.duration_ms ?? 0)}</p>
 		</div>
 	</div>
-</div>
+</button>

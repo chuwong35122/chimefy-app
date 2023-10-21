@@ -11,16 +11,8 @@
 
 	export let supabase: SupabaseClient;
 
-	let spaceTitle = '';
 	let space: MusicQueueSpace;
 	let showDeleteModel = false;
-
-	spaceStore.subscribe((val) => {
-		if (val) {
-			space = val;
-			spaceTitle = space.name.charAt(0).toUpperCase() + space.name.slice(1);
-		}
-	});
 
 	function onCopySpaceId() {
 		toastValue.set({ message: "Space's ID copied!", type: 'info' });
@@ -87,7 +79,7 @@
 				{/if}
 			</div>
 			<h1 class="text-2xl font-medium ml-2 mr-2">
-				{$spaceStore?.name ? spaceTitle : 'Loading...'}
+				{$spaceStore?.name ? $spaceStore?.name : 'Loading...'}
 			</h1>
 			<Chip label={$spaceStore?.type} />
 		</div>

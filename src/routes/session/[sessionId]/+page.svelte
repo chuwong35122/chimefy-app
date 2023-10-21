@@ -2,24 +2,22 @@
 	import type { MusicSession } from '$interfaces/session/session.interface';
 	import { onMount } from 'svelte';
 	import { currentSession, currentSessionRole, currentSessionQueue } from '$stores/session';
-	import { spaceRoleStore, spaceStore } from '$stores/space/index.ts';
+	import { spaceRoleStore, spaceStore } from '$stores/space/index';
 	import TrackSearchTab from '$components/music/TrackSearchTab.svelte';
 	import TrackQueueList from '$components/music/TrackQueueList.svelte';
 	// import MusicPlayerController from '$components/music/MusicPlayerController.svelte';
 	// import SessionMembers from '$components/music/members/SessionMembers.svelte';
 	import SessionInfo from '$components/music/SessionInfo.svelte';
 	import { userStore } from '$stores/auth/user';
-	import type { MusicSessionQueue } from '$interfaces/session/queue.interface';
+	import type { MusicQueue, MusicSessionQueue } from '$interfaces/session/queue.interface';
 	import seo from '$constants/seo';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { Modal } from 'flowbite-svelte';
 	import SessionHelpModal from '$components/modals/SessionHelpModal.svelte';
 	import SpaceMembers from '$components/music/members/SpaceMembers.svelte';
 
-	export let data
+	export let data;
 	let { space, url, supabase } = data;
-
-	$: spaceStore.set(space)
 
 	let openTutorialModal = false;
 
@@ -28,6 +26,7 @@
 	let channel: RealtimeChannel;
 
 	$: if ($userStore?.id && $currentSession?.created_by) {
+		// TODO: remove
 		currentSessionRole.set(
 			$currentSession?.created_by.toString() === $userStore?.id.toString() ? 'admin' : 'member'
 		);
@@ -36,27 +35,36 @@
 		);
 	}
 
-	// onMount(() => {
-	// 	currentSession.set(session as MusicSession);
-	// 	sessionId = session?.uuid ?? '';
-	// 	currentSessionQueue.set(queues as MusicSessionQueue);
+	onMount(() => {
+		spaceStore.set(space);
+		// currentSession.set(session as MusicSession);
+		// sessionId = session?.uuid ?? '';
+		// currentSessionQueue.set(queues as MusicSessionQueue);
 
-	// 	const storedVolume = localStorage.getItem('player_volume');
-	// 	if (storedVolume) {
-	// 		playerVolume = Number(storedVolume);
-	// 	}
+		// const storedVolume = localStorage.getItem('player_volume');
+		// if (storedVolume) {
+		// 	playerVolume = Number(storedVolume);
+		// }
 
-	// 	channel = supabase
-	// 		.channel(`session_queue_listener_${sessionId}`)
-	// 		.on(
-	// 			'postgres_changes',
-	// 			{ event: '*', schema: 'public', table: 'session_queue' },
-	// 			(payload) => {
-	// 				currentSessionQueue.set(payload.new as MusicSessionQueue);
-	// 			}
-	// 		)
-	// 		.subscribe();
-	// });
+		console.log(space.uuid);
+		channel = supabase
+			.channel(`session_listener_${space.uuid}`)
+			.on(
+				'postgres_changes',
+				{ event: '*', schema: 'public', table: 'session' },
+				(payload) => {
+					const _payload = payload.new as any
+					spaceStore.update((space) => {
+						return {
+							...space,
+							queues: _payload.queues,
+						}
+					});
+					
+				}
+			)
+			.subscribe();
+	});
 </script>
 
 <svelte:head>
