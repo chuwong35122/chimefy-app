@@ -11,12 +11,14 @@
 	import VolumeController from './player/VolumeController.svelte';
 	import TrackPreview from './player/TrackPreview.svelte';
 	import ControlButtons from './player/ControlButtons.svelte';
-	import { supabase } from '$lib/supabase/supabase';
 	import MemberPlayerListener from '../listeners/MemberPlayerListener.svelte';
 	import { spotifyPlayerId, spotifyAccessToken } from '$stores/spotify/user';
 	import DebugText from '$components/debugger/DebugText.svelte';
 	import { devModeStore } from '$stores/settings';
+	import type { SupabaseClient } from '@supabase/supabase-js';
+	import { spaceStore } from '$stores/space';
 
+	export let supabase: SupabaseClient;
 	export let sessionId = 0;
 	export let volume = 50;
 
@@ -82,8 +84,8 @@
 		<TrackPreview />
 		<div class="flex flex-col items-center">
 			<ControlButtons {channel} />
-			{#if $currentSession?.id}
-				<MemberPlayerListener {channel} />
+			{#if $spaceStore?.id}
+				<MemberPlayerListener {channel} {supabase} />
 			{/if}
 		</div>
 		<div class="flex flex-row">
@@ -103,5 +105,5 @@
 <DebugText text={`Spotify player ID: ${$spotifyPlayerId}`} />
 <DebugText text={`Spotify player options: ${JSON.stringify(SpotifyPlayer?._options)}`} />
 <DebugText text={`Player duration: ${$playingDurationMs} ms`} />
-<DebugText text={`Track total duration: ${$currentSessionQueue?.queues[0]?.duration_ms} ms`} />
+<DebugText text={`Track total duration: ${$spaceStore?.queues[0]?.duration_ms} ms`} />
 <DebugText text={`Player status: ${$isPlayingStatus ? 'Playing' : 'Pause'}`} />

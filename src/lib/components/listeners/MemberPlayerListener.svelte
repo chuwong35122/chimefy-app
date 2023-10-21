@@ -1,35 +1,29 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
-	import {
-		currentSessionRole,
-		isPlayingStatus,
-		playingInfo,
-		currentSessionQueue,
-		playingTrackId,
-		playingDurationMs
-	} from '$stores/session';
-	import type { RealtimeChannel } from '@supabase/supabase-js';
+	import { isPlayingStatus, playingInfo, playingTrackId, playingDurationMs } from '$stores/session';
+	import type { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
 	import { playSingleTrack, sliceQueue } from '$utils/session/queue';
 	import { pauseTrack } from '$spotify/player';
 	import type { TrackBroadcastPayload } from '$interfaces/session/broadcast.interface';
 	import { toastValue } from '$stores/notification/toast';
 	import { spotifyAccessToken, spotifyPlayerId } from '$stores/spotify/user';
 	import { devModeStore } from '$stores/settings';
+	import { spaceStore, spaceRoleStore } from '$stores/space';
 
 	export let channel: RealtimeChannel;
+	export let supabase: SupabaseClient;
 
 	// Update track playing duration once ID changes (when music is being skipped, or a song ended)
 	playingDurationMs.subscribe(async (durationMs) => {
 		const trackId = $playingTrackId;
-		const sessionQueue = $currentSessionQueue;
+		const space = $spaceStore;
 		const info = $playingInfo;
 
 		if (
 			// Do nothing if current playing duration does not exceed the track duration
 			!trackId ||
-			!sessionQueue ||
-			!sessionQueue?.id ||
-			!sessionQueue?.queues ||
+			!space?.id ||
+			!space?.queues ||
 			!info ||
 			durationMs < info?.duration_ms
 		)
@@ -37,10 +31,10 @@
 
 		if (durationMs >= info?.duration_ms) {
 			// Check if the current track has ended, play next track if so (using admin's broadcasting)
-			if ($currentSessionRole === 'admin') {
+			if ($spaceRoleStore === 'admin') {
 				const payload: TrackBroadcastPayload = {
 					isPlaying: $isPlayingStatus,
-					playingTrackId: sessionQueue.queues[1].track_id,
+					playingTrackId: space.queues[1].track_id,
 					currentDurationMs: 0
 				};
 				channel.send({ type: 'broadcast', event: 'playerForward', payload });
@@ -51,7 +45,7 @@
 
 	// Set play pause status
 	isPlayingStatus.subscribe(async (status) => {
-		if (!$currentSessionQueue?.queues || !$currentSessionQueue?.queues?.length) {
+		if (!$spaceStore?.queues || !$spaceStore?.queues?.length) {
 			return;
 		}
 
@@ -59,9 +53,9 @@
 			console.log('isPlayingStatus', status);
 		}
 
-		if ($currentSessionQueue && status) {
+		if ($spaceStore && status) {
 			await playSingleTrack(
-				$currentSessionQueue?.queues[0],
+				$spaceStore?.queues[0],
 				$spotifyPlayerId,
 				$playingDurationMs,
 				$spotifyAccessToken?.access_token
@@ -95,10 +89,10 @@
 		channel.on('broadcast', { event: 'playerBackward' }, async ({ payload }) => {
 			const _payload = payload as TrackBroadcastPayload;
 
-			if (!$currentSessionQueue?.queues || $currentSessionQueue?.queues?.length < 1) return;
+			if (!$spaceStore?.queues || $spaceStore?.queues?.length < 1) return;
 
 			await playSingleTrack(
-				$currentSessionQueue?.queues[0],
+				$spaceStore?.queues[0],
 				$spotifyPlayerId,
 				0,
 				$spotifyAccessToken?.access_token
@@ -111,14 +105,11 @@
 
 		// Listen for player event when the admin skip a track
 		channel.on('broadcast', { event: 'playerForward' }, async ({ payload }) => {
-			const sessionQueue = $currentSessionQueue;
-			if (!sessionQueue?.queues || sessionQueue?.queues?.length < 2 || !sessionQueue?.id) return;
+			const queues = $spaceStore.queues;
 
-			const sliced = await sliceQueue(
-				sessionQueue?.queues,
-				sessionQueue?.queues[0]?.track_id,
-				sessionQueue?.id
-			);
+			if (!queues || queues?.length < 2) return;
+
+			const sliced = await sliceQueue(supabase, queues, queues[0]?.track_id, $spaceStore.id);
 			const _payload = payload as TrackBroadcastPayload;
 
 			await playSingleTrack(sliced[0], $spotifyPlayerId, 0, $spotifyAccessToken?.access_token);
