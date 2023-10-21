@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SessionMember } from '$interfaces/session/member.interface';
+	import type { SessionMember } from '$lib/types/session/member.interface';
 	import { currentSession, currentSessionMember } from '$stores/session';
 	import { userStore } from '$stores/auth/user';
 	import { onDestroy, onMount } from 'svelte';

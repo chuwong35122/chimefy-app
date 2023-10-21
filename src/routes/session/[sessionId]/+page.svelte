@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { MusicSession } from '$interfaces/session/session.interface';
+	import type { MusicSession } from '$lib/types/session/session.interface.js';
 	import { onMount } from 'svelte';
 	import { currentSession, currentSessionRole, currentSessionQueue } from '$stores/session';
 	import { spaceRoleStore, spaceStore } from '$stores/space/index';
@@ -9,7 +9,7 @@
 	// import SessionMembers from '$components/music/members/SessionMembers.svelte';
 	import SessionInfo from '$components/music/SessionInfo.svelte';
 	import { userStore } from '$stores/auth/user';
-	import type { MusicQueue, MusicSessionQueue } from '$interfaces/session/queue.interface';
+	import type { MusicQueue, MusicSessionQueue } from '$lib/types/session/queue.interface.js';
 	import seo from '$constants/seo';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { Modal } from 'flowbite-svelte';

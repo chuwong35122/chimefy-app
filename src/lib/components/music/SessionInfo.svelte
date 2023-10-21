@@ -7,7 +7,7 @@
 	import Chip from '../UI/Chip.svelte';
 	import { goto } from '$app/navigation';
 	import type { SupabaseClient } from '@supabase/supabase-js';
-	import type { MusicQueueSpace } from '$interfaces/session/session.interface';
+	import type { MusicQueueSpace } from '$lib/types/session/session.interface';
 
 	export let supabase: SupabaseClient;
 

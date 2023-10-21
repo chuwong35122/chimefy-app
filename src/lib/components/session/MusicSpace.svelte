@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import type { MusicSessionInfo } from '$interfaces/session/session.interface';
+	import type { MusicSessionInfo } from '$lib/types/session/session.interface';
 	import Icon from '@iconify/svelte';
 	import { Badge, Popover } from 'flowbite-svelte';
 

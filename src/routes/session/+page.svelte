@@ -6,7 +6,7 @@
 	import seo from '$constants/seo';
 	import MusicSpace from '$components/session/MusicSpace.svelte';
 	import SessionSearchFilter from '$components/session/SessionSearchFilter.svelte';
-	import type { MusicSessionInfo } from '$interfaces/session/session.interface.js';
+	import type { MusicSessionInfo } from '$lib/types/session/session.interface.js';
 	import { onMount } from 'svelte';
 	import EmptySearchResultIndicator from '$components/session/EmptySearchResultIndicator.svelte';
 

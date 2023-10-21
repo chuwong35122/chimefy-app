@@ -1,10 +1,10 @@
-import type { SessionMember } from '$lib/interfaces/session/member.interface';
-import type { MusicQueue, MusicSessionQueue } from '$lib/interfaces/session/queue.interface';
+import type { SessionMember } from '$lib/types/session/member.interface';
+import type { MusicQueue, MusicSessionQueue } from '$lib/types/session/queue.interface';
 import type {
 	MusicQueueSpace,
 	MusicSession,
 	MusicSessionRole
-} from '$lib/interfaces/session/session.interface';
+} from '$lib/types/session/session.interface';
 import { writable } from 'svelte/store';
 
 // old

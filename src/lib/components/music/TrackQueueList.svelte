@@ -3,7 +3,7 @@
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import Icon from '@iconify/svelte';
 	import { Tooltip } from 'flowbite-svelte';
-	import type { MusicQueue } from '$lib/interfaces/session/queue.interface';
+	import type { MusicQueue } from '$lib/types/session/queue.interface';
 	import { fade, fly } from 'svelte/transition';
 	import DebugText from '$components/debugger/DebugText.svelte';
 	import type { SupabaseClient } from '@supabase/supabase-js';
