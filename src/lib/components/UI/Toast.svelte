@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Toast } from 'flowbite-svelte';
 	import { fly } from 'svelte/transition';
-	import { toastValue, type ToastType } from '$stores/notification/toast';
+	import { toastValue } from '$stores/notification/toast';
 	import Icon from '@iconify/svelte';
 
 	const COUNTER_COUNTDOWN = 5;
@@ -31,27 +31,9 @@
 			show = false;
 		}
 	}
-
-	function getToastColor(type: ToastType | undefined) {
-		if (type === 'warn') {
-			return 'yellow';
-		} else if (type === 'error') {
-			return 'red';
-		} else if (type === 'info') {
-			return 'blue';
-		}
-
-		return 'green';
-	}
 </script>
 
-<Toast
-	color={getToastColor($toastValue?.type)}
-	bind:open={show}
-	transition={fly}
-	params={{ y: 200 }}
-	divClass="p-2 w-full"
->
+<Toast bind:open={show} transition={fly} params={{ y: 200 }} contentClass="p-2 w-full">
 	<svelte:fragment slot="icon">
 		{#if $toastValue.type === 'error'}
 			<Icon icon="material-symbols:error" width={30} height={30} class="text-red-400" />
