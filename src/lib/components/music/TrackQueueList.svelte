@@ -36,7 +36,7 @@
 </script>
 
 <!-- Each Queues -->
-<div class="w-full grid place-items-center overflow-x-hidden px-2">
+<div class="w-full grid place-items-center overflow-x-hidden">
 	{#each queues as queue, i}
 		<Tooltip triggeredBy={`[id=delete-btn-${i + 1}]`} placement="right">Remove Queue</Tooltip>
 		<div

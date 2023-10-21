@@ -50,7 +50,7 @@
 	}
 </script>
 
-<div class="mt-6 px-4 w-full grid place-items-center">
+<div class="w-full grid place-items-center">
 	<form class="flex gap-2 w-full">
 		<Search
 			on:keyup={debounce}
