@@ -1,3 +1,4 @@
+import type { Database } from '$lib/types/database/supabase.types';
 import type { MusicQueue } from '$lib/types/session/queue.interface';
 import type { MusicQueueSpace, MusicSessionInfo } from '$lib/types/session/session.interface';
 import type { SupabaseClient } from '@supabase/supabase-js';
@@ -61,10 +62,7 @@ export async function queryPublicSpaces(
 	return ((data as any) ?? []) as MusicSessionInfo[];
 }
 
-export async function querySpaceById(
-	supabase: SupabaseClient,
-	id: string
-): Promise<MusicQueueSpace> {
+export async function querySpaceById(supabase: SupabaseClient<Database>, id: string) {
 	const { data } = await supabase
 		.from('session')
 		.select(
@@ -83,14 +81,14 @@ export async function querySpaceById(
 		.eq('uuid', id)
 		.single();
 
-	return data as MusicQueueSpace;
+	return data as any as MusicQueueSpace;
 }
 
 export async function querySpaceQueueById(
-	supabase: SupabaseClient,
+	supabase: SupabaseClient<Database>,
 	id: string
 ): Promise<MusicQueue | null> {
-	const result = await supabase.from('session_queue').select().eq('session_uuid', id);
+	const { data } = await supabase.from('session_queue').select().eq('session_uuid', id).single();
 
-	return (result.data as any)?.[0] ?? null;
+	return data as any as MusicQueue;
 }
