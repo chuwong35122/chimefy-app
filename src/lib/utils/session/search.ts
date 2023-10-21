@@ -1,5 +1,5 @@
-import type { MusicQueue } from '$interfaces/session/queue.interface';
-import type { MusicQueueSpace, MusicSessionInfo } from '$interfaces/session/session.interface';
+import type { MusicQueue } from '$lib/types/session/queue.interface';
+import type { MusicQueueSpace, MusicSessionInfo } from '$lib/types/session/session.interface';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 export async function queryUserSpace(

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SearchType } from '$lib/interfaces/spotify/track.interface';
+	import type { SearchType } from '$lib/types/spotify/track.interface';
 	import { Search, Spinner } from 'flowbite-svelte';
 	import MusicSearchResult from './MusicSearchResult.svelte';
 	import type { Track } from 'spotify-types';

@@ -1,4 +1,4 @@
-import type { MusicQueue } from '$interfaces/session/queue.interface';
+import type { MusicQueue } from '$lib/types/session/queue.interface';
 import { playTrack } from '$spotify/player';
 import { isPlayingStatus, playingDurationMs, playingInfo, playingTrackId } from '$stores/session';
 import type { SupabaseClient } from '@supabase/supabase-js';

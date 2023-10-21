@@ -1,6 +1,6 @@
-import type { SessionMember } from '$interfaces/session/member.interface';
-import type { MusicSessionQueue } from '$interfaces/session/queue.interface';
-import type { MusicSession } from '$interfaces/session/session.interface';
+import type { SessionMember } from '$lib/types/session/member.interface';
+import type { MusicSessionQueue } from '$lib/types/session/queue.interface';
+import type { MusicSession } from '$lib/types/session/session.interface';
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 

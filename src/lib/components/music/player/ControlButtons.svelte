@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TrackBroadcastPayload } from '$lib/interfaces/session/broadcast.interface';
+	import type { TrackBroadcastPayload } from '$lib/types/session/broadcast.interface';
 	import { toastValue } from '$stores/notification/toast';
 	import { isPlayingStatus, playingDurationMs, playingInfo, playingTrackId } from '$stores/session';
 	import Icon from '@iconify/svelte';

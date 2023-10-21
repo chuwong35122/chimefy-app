@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 import qs from 'querystring';
 import { PUBLIC_SPOTIFY_CALLBACK_URI, PUBLIC_SPOTIFY_CLIENT_ID } from '$env/static/public';
 import { PRIVATE_SPOTIFY_CLIENT_SECRET } from '$env/static/private';
-import type { AuthTokens } from '$lib/interfaces/spotify/auth.interface';
+import type { AuthTokens } from '$lib/types/spotify/auth.interface';
 
 export const GET: RequestHandler = async ({ fetch, url }) => {
 	const code = url.searchParams.get('code');
