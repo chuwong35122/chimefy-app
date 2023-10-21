@@ -18,7 +18,7 @@ export async function queryUserSpace(
 			name,
 			is_private,
 			type,
-			session_queue( id, updated_since, queues ),
+			queues,
 			created_by
 		`
 		)
@@ -41,7 +41,7 @@ export async function queryPublicSpaces(
 			name,
 			is_private,
 			type,
-			session_queue( id, updated_since, queues )
+			queues
 		`
 	);
 
@@ -64,7 +64,7 @@ export async function queryPublicSpaces(
 export async function querySpaceById(
 	supabase: SupabaseClient,
 	id: string
-): Promise<MusicQueueSpace | null> {
+): Promise<MusicQueueSpace> {
 	const { data } = await supabase
 		.from('session')
 		.select(
@@ -75,14 +75,15 @@ export async function querySpaceById(
 			name,
 			is_private,
 			type,
-			session_queue( id, updated_since, queues ),
+			allow_member_queue,
+			queues,
 			created_by
 		`
 		)
 		.eq('uuid', id)
 		.single();
 
-	return (data as any) ?? null;
+	return data as MusicQueueSpace;
 }
 
 export async function querySpaceQueueById(
