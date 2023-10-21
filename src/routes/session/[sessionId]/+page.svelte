@@ -8,7 +8,7 @@
 	import MusicPlayerController from '$components/music/MusicPlayerController.svelte';
 	// import SessionMembers from '$components/music/members/SessionMembers.svelte';
 	import SessionInfo from '$components/music/SessionInfo.svelte';
-	import { userStore } from '$stores/auth/user';
+	import { userConfigStore, userStore } from '$stores/auth/user';
 	import type { MusicQueue, MusicSessionQueue } from '$lib/types/session/queue.interface.js';
 	import seo from '$constants/seo';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
@@ -17,12 +17,11 @@
 	import SpaceMembers from '$components/music/members/SpaceMembers.svelte';
 
 	export let data;
-	$: ({ space, url, supabase } = data);
+	$: ({ space, configs, url, supabase } = data);
 
 	let openTutorialModal = false;
 
 	let sessionId: string;
-	let playerVolume = 50;
 	let channel: RealtimeChannel;
 
 	$: if ($userStore?.id && space?.created_by) {
@@ -33,11 +32,6 @@
 
 	onMount(() => {
 		spaceStore.set(space);
-
-		const storedVolume = localStorage.getItem('player_volume');
-		if (storedVolume) {
-			playerVolume = Number(storedVolume);
-		}
 
 		channel = supabase
 			.channel(`session_listener_${space.uuid}`)
@@ -108,9 +102,10 @@
 				class="text-xs underline text-dark-300 hover:text-dark-200 duration-150">Need help?</button
 			>
 		</div>
-		{#if $spaceStore && $spaceStore?.id}
+		<div>{JSON.stringify(configs)}</div>
+		{#if $spaceStore && $spaceStore?.id && configs}
 			<div class="h-24">
-				<MusicPlayerController {supabase} sessionId={$currentSession?.id} volume={playerVolume} />
+				<MusicPlayerController {supabase} sessionId={$currentSession?.id} {configs} />
 				<SpaceMembers {supabase} id={$spaceStore?.id} />
 			</div>
 		{/if}

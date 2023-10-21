@@ -17,10 +17,11 @@
 	import { devModeStore } from '$stores/settings';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { spaceStore } from '$stores/space';
+	import type { UserConfigs } from '$lib/types/user/config.interface';
 
 	export let supabase: SupabaseClient;
 	export let sessionId = 0;
-	export let volume = 50;
+	export let configs: UserConfigs
 
 	let SpotifyPlayer: Spotify.Player;
 	let trackDurationTimer: NodeJS.Timer;
@@ -40,7 +41,7 @@
 				getOAuthToken: (cb) => {
 					cb($spotifyAccessToken?.access_token);
 				},
-				volume: volume / 100
+				volume: configs.player_volume / 100
 			});
 
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
@@ -94,7 +95,7 @@
 				icon="material-symbols:speaker-group"
 				class="text-dark-200 mt-1 mr-1"
 			/>
-			<VolumeController {SpotifyPlayer} {volume} />
+			<VolumeController {supabase} {SpotifyPlayer} {configs} />
 		</div>
 		<Tooltip triggeredBy="[id=connected-player]" placement="bottom"
 			>Connected to {SpotifyPlayer?._options?.name}</Tooltip
