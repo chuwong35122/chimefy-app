@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentSessionQueue, currentSession, playingInfo } from '$stores/session';
+	import { playingInfo } from '$stores/session';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import Icon from '@iconify/svelte';
 	import { Tooltip } from 'flowbite-svelte';
@@ -7,9 +7,10 @@
 	import { fade, fly } from 'svelte/transition';
 	import DebugText from '$components/debugger/DebugText.svelte';
 	import type { SupabaseClient } from '@supabase/supabase-js';
+	import { spaceStore } from '$stores/space';
 
-	export let supabase: SupabaseClient
-	
+	export let supabase: SupabaseClient;
+
 	let imgRef: HTMLImageElement;
 	let queues: MusicQueue[] = [];
 
@@ -17,20 +18,20 @@
 		imgRef.src = '/logo/disc.png';
 	}
 
-	currentSessionQueue.subscribe((val) => {
-		if (val && val?.queues) {
-			queues = val?.queues ?? [];
+	spaceStore.subscribe((space) => {
+		if (space && space?.queues) {
+			queues = space?.queues
 		}
 	});
 
 	async function removeQueue(index: number) {
-		if (!$currentSession || !$currentSessionQueue) return;
+		if (!$spaceStore || !$spaceStore) return;
 
-		const queues: MusicQueue[] = $currentSessionQueue?.queues;
+		const queues: MusicQueue[] = $spaceStore?.queues;
 		if (queues.length > 0) {
 			queues.splice(index, 1);
 		}
-		await supabase.from('session_queue').update({ queues }).eq('id', $currentSessionQueue?.id);
+		await supabase.from('session').update({ queues }).eq('id', $spaceStore?.id);
 	}
 </script>
 
