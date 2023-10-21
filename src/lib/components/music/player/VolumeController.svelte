@@ -1,15 +1,23 @@
 <script lang="ts">
+	import type { UserConfigs } from '$lib/types/user/config.interface';
+	import { userStore } from '$stores/auth/user';
 	import { toastValue } from '$stores/notification/toast';
+	import { updateUserConfig } from '$utils/user/config';
 	import Icon from '@iconify/svelte';
+	import type { SupabaseClient } from '@supabase/supabase-js';
 
 	export let SpotifyPlayer: Spotify.Player;
+	export let configs: UserConfigs
+	export let supabase: SupabaseClient
 
-	export let volume = 50;
+	let volume = configs.player_volume
 
 	async function setSpotifyPlayerVolume() {
+		const userId = $userStore?.id
+		if(!userId)  return
 		try {
 			await SpotifyPlayer.setVolume(volume / 100);
-			localStorage.setItem('player_volume', String(volume));
+			await updateUserConfig(supabase, userId, { player_volume: volume });
 		} catch (e) {
 			console.log(e);
 		} finally {
