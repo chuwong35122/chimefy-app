@@ -6,13 +6,13 @@
 	import { invalidate } from '$app/navigation';
 	import { Modal } from 'flowbite-svelte';
 	import SpotifyPremiumInfoModal from '$components/modals/SpotifyPremiumInfoModal.svelte';
-	import { userStore } from '$stores/auth/user';
+	import { userConfigStore, userStore } from '$stores/auth/user';
 	import { setTokenStore, getSpotifyProfile } from '$spotify/user';
 	import AuthExpireListener from '$components/listeners/AuthExpireListener.svelte';
 	import { spotifyAccessToken, spotifyUserProfile } from '$stores/spotify/user';
 
 	export let data;
-	let { supabase, session } = data;
+	let { supabase, session, configs } = data;
 	$: ({ supabase, session } = data);
 
 	let isSpotifyPremiumModalOpen = false;
@@ -38,6 +38,8 @@
 				userStore.set(_session?.user);
 				setTokenStore(_session?.provider_token, _session?.provider_refresh_token);
 			}
+
+			userConfigStore.set(configs);
 		});
 
 		return () => {
