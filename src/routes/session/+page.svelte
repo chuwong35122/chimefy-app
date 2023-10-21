@@ -8,6 +8,7 @@
 	import SessionSearchFilter from '$components/session/SessionSearchFilter.svelte';
 	import type { MusicSessionInfo } from '$interfaces/session/session.interface.js';
 	import { onMount } from 'svelte';
+	import EmptySearchResultIndicator from '$components/session/EmptySearchResultIndicator.svelte';
 
 	export let data;
 	$: ({ supabase, userSpace } = data);
@@ -88,13 +89,17 @@
 		<Tabs style="pill" contentClass="bg-transparent p-4 mb-8">
 			<TabItem open title="Public Blend Spaces">
 				<SessionSearchFilter {supabase} on:query={(e) => (publicSpaces = e.detail.spaces)} />
-				<div
-					class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[460px] overflow-y-auto"
-				>
-					{#each publicSpaces as space, i}
-						<MusicSpace {space} index={i} isPrivate={space?.is_private} />
-					{/each}
-				</div>
+				{#if publicSpaces.length > 0}
+					<div
+						class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[460px] overflow-y-auto"
+					>
+						{#each publicSpaces as space, i}
+							<MusicSpace {space} index={i} isPrivate={space?.is_private} />
+						{/each}
+					</div>
+				{:else}
+				<EmptySearchResultIndicator />
+				{/if}
 			</TabItem>
 			{#if userSpace?.length > 0}
 				<TabItem title="My Blend Spaces">
@@ -106,6 +111,8 @@
 						{/each}
 					</div>
 				</TabItem>
+			{:else}
+				<EmptySearchResultIndicator />
 			{/if}
 		</Tabs>
 	</div>
