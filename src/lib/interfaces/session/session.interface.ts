@@ -9,7 +9,7 @@ export interface CreateMusicSession {
 	name: string;
 	is_private: boolean;
 	type: string;
-	queues: number | null;
+	queues: MusicQueue[];
 	created_by: string;
 	allow_member_queue: boolean;
 }
@@ -46,5 +46,6 @@ export interface MusicQueueSpace {
 	is_private: boolean;
 	type: string;
 	created_by: string;
-	session_queue: MusicQueue[];
+	allow_member_queue: boolean;
+	queues: MusicQueue[];
 }

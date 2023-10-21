@@ -8,7 +8,7 @@ export interface MusicQueue {
 	artist: string;
 	duration_ms: number;
 	track_image_url?: string;
-	added_by: MusicSessionMember;
+	added_by: string; // member_user_id of SessionMember
 }
 
 export interface MusicSessionQueue {

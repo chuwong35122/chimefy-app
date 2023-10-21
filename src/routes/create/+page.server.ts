@@ -30,32 +30,18 @@ export const actions = {
 			is_private: form.data.is_private,
 			type: form.data.type,
 			created_by: session?.user?.id,
-			queues: null
+			queues: []
 		};
 
-		const { data } = await event.locals.supabase.from('session').insert(payload).select();
+		const { data } = await event.locals.supabase.from('session').insert(payload).select().single();
 
-		if (data && data[0] && data[0]?.id && data[0]?.uuid != null) {
-			const queueResponse = await event.locals.supabase
-				.from('session_queue')
-				.insert({
-					queues: [],
-					session_id: data[0]?.id,
-					session_uuid: data[0]?.uuid
-				})
-				.select();
-
-			const _queueId = (queueResponse?.data as any)[0].id;
-			await event.locals.supabase
-				.from('session')
-				.update({ queues: _queueId })
-				.eq('id', data[0]?.id);
+		if (data && data?.id && data?.uuid != null) {
 			await event.locals.supabase
 				.from('session_member')
-				.insert({ members: [], session_uuid: data[0]?.uuid, session_id: data[0]?.id })
+				.insert({ members: [], session_uuid: data?.uuid, session_id: data?.id })
 				.select();
 
-			throw redirect(302, `/session/${data[0].uuid}`);
+			throw redirect(302, `/session/${data.uuid}`);
 		}
 
 		return { form };
