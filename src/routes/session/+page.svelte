@@ -60,14 +60,15 @@
 				<Icon icon="material-symbols:meeting-room-rounded" width={32} height={32} />
 			</InputAddon>
 			<Input
+			name='spaceId'
 				bind:value={input}
-				placeholder="Session ID"
+				placeholder="Space ID"
 				defaultClass="w-[180px] md:w-[400px] lg:w-[460px] text-sm md:text-lg lg:text-xl !text-white !border-white border-2 !bg-dark !border-l-0 !border-r-0 placeholder:text-[rgba(255,255,255,0.4)] text-white"
 			/>
 			<Button
 				type="submit"
 				color="none"
-				aria-label="Enter Session"
+				aria-label="Enter This Space"
 				id="search-btn"
 				class="bg-dark border-white px-4 border-2 border-l-0 !rounded-r-full duration-200"
 			>
