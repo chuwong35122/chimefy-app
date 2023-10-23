@@ -1,26 +1,23 @@
 <script lang="ts">
 	import { toastValue } from '$stores/notification/toast';
-	import { Button, Modal, Tooltip } from 'flowbite-svelte';
+	import { Badge, Button, Modal, Tooltip } from 'flowbite-svelte';
 	import { currentSession } from '$stores/session';
 	import { spaceRoleStore, spaceStore } from '$stores/space/index';
 	import Icon from '@iconify/svelte';
-	import Chip from '../UI/Chip.svelte';
 	import { goto } from '$app/navigation';
 	import type { SupabaseClient } from '@supabase/supabase-js';
-	import type { MusicQueueSpace } from '$lib/types/session/session.interface';
 	import { createEventDispatcher } from 'svelte';
 
 	export let supabase: SupabaseClient;
-	export let hidden: boolean
+	export let hidden: boolean;
 
-	let space: MusicQueueSpace;
 	let showDeleteModel = false;
 
 	const dispatch = createEventDispatcher();
 
 	function onCopySpaceId() {
 		toastValue.set({ message: "Space's ID copied!", type: 'info' });
-		navigator.clipboard.writeText(space.uuid);
+		navigator.clipboard.writeText($spaceStore?.uuid);
 	}
 
 	function handleOpenDeleteModal() {
@@ -61,15 +58,15 @@
 		<div class="flex flex-row items-center">
 			<div id="isPrivate-icon" class="cursor-pointer">
 				{#if $spaceStore?.is_private}
-					<Tooltip triggeredBy="[id=isPrivate-icon]" placement="top"
+					<Tooltip triggeredBy="[id=isPrivate-icon]" placement="bottom"
 						>This is a private space</Tooltip
 					>
 					<Icon
 						icon="material-symbols:lock"
 						id="isPrivate-icon"
-						width="20"
-						height="20"
-						class="text-dark-300 hover:text-dark-300 duration-200"
+						width="22"
+						height="22"
+						class="text-primary-500"
 					/>
 				{:else}
 					<Tooltip triggeredBy="[id=isPublic-icon]" placement="top">This is a public space</Tooltip>
@@ -82,44 +79,53 @@
 					/>
 				{/if}
 			</div>
-			<h1 class="text-2xl font-medium ml-2 mr-2">
+			<h1 class="text-lg font-medium mx-2">
 				{$spaceStore?.name ? $spaceStore?.name : 'Loading...'}
 			</h1>
-			<Chip label={$spaceStore?.type} />
+			<Badge rounded color="dark">{$spaceStore?.type}</Badge>
 		</div>
 	</div>
 	<div class="flex flex-row items-center gap-4">
 		{#if $spaceRoleStore === 'admin'}
 			<Tooltip triggeredBy="#delete-id-btn" placement="left">Delete Space</Tooltip>
-			<button
+			<Button
+				color="dark"
+				size="xs"
 				id="delete-id-btn"
 				aria-label="Delete this session"
 				on:click={handleOpenDeleteModal}
-				class="hover:scale-[1.1] duration-200"
+				class="hover:scale-110 p-1.5 duration-200 bg-dark-500 hover:bg-white hover:text-black"
 			>
 				<Icon
 					icon="mdi:delete"
-					width={30}
-					height={30}
+					width={22}
+					height={22}
 					class="text-red-800 hover:text-red-700 duration-200"
 				/>
-			</button>
+			</Button>
 		{/if}
-		<button
+		<Button
+			color="dark"
+			size="xs"
 			id="copy-id-btn"
 			aria-label="Copy this space ID"
 			on:click={onCopySpaceId}
-			class="hover:scale-[1.1] duration-200"
+			class="hover:scale-110 p-1.5 duration-200 bg-dark-500 hover:bg-white hover:text-black"
 		>
 			<Icon
 				icon="material-symbols:content-copy"
-				width={30}
-				height={30}
+				width={22}
+				height={22}
 				class="text-gray-500 hover:text-gray-300 duration-200"
 			/>
-		</button>
-		<Button color="light" on:click={() => dispatch('viewMember', {
-			hidden: !hidden
-		})}>View Members</Button>
+		</Button>
+		<Button
+			size="xs"
+			color="light"
+			on:click={() =>
+				dispatch('viewMember', {
+					hidden: !hidden
+				})}>View Members</Button
+		>
 	</div>
 </div>
