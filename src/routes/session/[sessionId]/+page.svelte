@@ -31,7 +31,7 @@
 	let spaceChannel: RealtimeChannel;
 	let memberChannel: RealtimeChannel;
 
-	let hidden = !true;
+	let hidden = true;
 
 	onMount(() => {
 		spaceStore.set(space);
@@ -166,8 +166,8 @@
 		
 	</div> -->
 	{#if $spaceStore && $spaceStore?.id && configs}
-		<div class="h-24">
+		<!-- <div class="h-24"> -->
 			<MusicPlayerController {supabase} sessionId={$currentSession?.id} {configs} />
-		</div>
+		<!-- </div> -->
 	{/if}
 </div>
