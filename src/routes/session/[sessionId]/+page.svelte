@@ -1,28 +1,26 @@
 <script lang="ts">
-	import type { MusicSession } from '$lib/types/session/session.interface.js';
-	import { onMount } from 'svelte';
-	import { currentSession, currentSessionRole, currentSessionQueue } from '$stores/session';
-	import { spaceRoleStore, spaceStore } from '$stores/space/index';
+	import { onDestroy, onMount } from 'svelte';
+	import { currentSession } from '$stores/session';
+	import { spaceMemberStore, spaceRoleStore, spaceStore } from '$stores/space/index';
 	import TrackSearchTab from '$components/music/TrackSearchTab.svelte';
 	import TrackQueueList from '$components/music/TrackQueueList.svelte';
 	import MusicPlayerController from '$components/music/MusicPlayerController.svelte';
-	// import SessionMembers from '$components/music/members/SessionMembers.svelte';
 	import SessionInfo from '$components/music/SessionInfo.svelte';
-	import { userConfigStore, userStore } from '$stores/auth/user';
-	import type { MusicQueue, MusicSessionQueue } from '$lib/types/session/queue.interface.js';
+	import { userStore } from '$stores/auth/user';
 	import seo from '$constants/seo';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
-	import { Modal } from 'flowbite-svelte';
+	import { Drawer, Modal } from 'flowbite-svelte';
 	import SessionHelpModal from '$components/modals/SessionHelpModal.svelte';
 	import SpaceMembers from '$components/music/members/SpaceMembers.svelte';
+	import { sineIn } from 'svelte/easing';
+	import Icon from '@iconify/svelte';
+	import type { SessionMember } from '$lib/types/session/member.interface.js';
+	import { orderSpaceMembers } from '$utils/session/members';
 
 	export let data;
 	$: ({ space, configs, url, supabase } = data);
 
 	let openTutorialModal = false;
-
-	let sessionId: string;
-	let channel: RealtimeChannel;
 
 	$: if ($userStore?.id && space?.created_by) {
 		spaceRoleStore.set(
@@ -30,11 +28,16 @@
 		);
 	}
 
+	let spaceChannel: RealtimeChannel;
+	let memberChannel: RealtimeChannel;
+
+	let hidden = !true;
+
 	onMount(() => {
 		spaceStore.set(space);
 
-		channel = supabase
-			.channel(`session_listener_${space.uuid}`)
+		spaceChannel = supabase
+			.channel(`space_listener_${space.uuid}`)
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'session' }, (payload) => {
 				const _payload = payload.new as any;
 				spaceStore.update((space) => {
@@ -45,6 +48,44 @@
 				});
 			})
 			.subscribe();
+
+		memberChannel = supabase
+			.channel(`space_member_listener_${space.uuid}`, {
+				config: {
+					presence: {
+						key: 'members'
+					}
+				}
+			})
+			.on('presence', { event: 'sync' }, () => {
+				const state = memberChannel.presenceState();
+				const ordered = orderSpaceMembers(state.members as any as SessionMember[]);
+				spaceMemberStore.set(ordered);
+			})
+			.on('presence', { event: 'join' }, ({ newPresences }) => {
+				const newMembers = newPresences as any as SessionMember[];
+				let _spaceMembers = $spaceMemberStore;
+				if (_spaceMembers) {
+					_spaceMembers = [..._spaceMembers, ...newMembers];
+				}
+				const ordered = orderSpaceMembers(_spaceMembers);
+				spaceMemberStore.set(ordered);
+			})
+			.subscribe(async (status) => {
+				if (status === 'SUBSCRIBED') {
+					await memberChannel.track({
+						joined_since: new Date(),
+						display_name: $userStore?.user_metadata?.name ?? 'Anonymous',
+						member_user_id: $userStore?.id ?? '',
+						is_admin: $spaceStore?.created_by === $userStore?.id,
+						profile_img: $userStore?.user_metadata?.avatar_url
+					} as SessionMember);
+				}
+			});
+	});
+
+	onDestroy(() => {
+		memberChannel?.unsubscribe();
 	});
 </script>
 
@@ -77,9 +118,33 @@
 <Modal bind:open={openTutorialModal} size="lg" class="modal-glass">
 	<SessionHelpModal />
 </Modal>
+
+<Drawer
+	placement="right"
+	transitionType="fly"
+	transitionParams={{
+		x: 320,
+		duration: 200,
+		easing: sineIn
+	}}
+	bind:hidden
+	id="member-sidebar"
+>
+	<div class="flex flex-row items-center justify-between text-center">
+		<h4 class="text-xl font-semibold text-black">Space's Members</h4>
+		<button
+			on:click={() => (hidden = true)}
+			class="text-dark-300 hover:text-dark-400 hover:scale-110 duration-150"
+		>
+			<Icon icon="mdi:close" />
+		</button>
+	</div>
+	<SpaceMembers />
+</Drawer>
+
 <div>
 	<div class="mt-8 mb-2">
-		<SessionInfo {supabase} />
+		<SessionInfo {supabase} {hidden} on:viewMember={(e) => (hidden = e.detail.hidden)} />
 	</div>
 	<div class="flex flex-row gap-4 w-full p-2">
 		<div class="bg-white/[0.05] rounded-xl h-full md:h-[600px] w-[1000px] flex flex-row">
@@ -92,13 +157,7 @@
 			</div>
 		</div>
 	</div>
-	<div>
-		<!-- <div class="w-28 h-full md:h-[600px] bg-white/[0.05] rounded-xl">
-			{#if $spaceStore?.id}
-				<SpaceMembers {supabase} id={$spaceStore.id} />
-			{/if}
-		</div> -->
-	</div>
+	<div></div>
 	<!-- <div class="w-full grid place-items-end my-2">
 		<button
 			on:click={() => (openTutorialModal = !openTutorialModal)}

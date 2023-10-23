@@ -8,11 +8,15 @@
 	import { goto } from '$app/navigation';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import type { MusicQueueSpace } from '$lib/types/session/session.interface';
+	import { createEventDispatcher } from 'svelte';
 
 	export let supabase: SupabaseClient;
+	export let hidden: boolean
 
 	let space: MusicQueueSpace;
 	let showDeleteModel = false;
+
+	const dispatch = createEventDispatcher();
 
 	function onCopySpaceId() {
 		toastValue.set({ message: "Space's ID copied!", type: 'info' });
@@ -51,7 +55,7 @@
 	</div>
 </Modal>
 
-<Tooltip triggeredBy="#copy-id-btn" placement="right">Copy This Space's ID</Tooltip>
+<Tooltip triggeredBy="#copy-id-btn" placement="top">Copy This Space's ID</Tooltip>
 <div class="w-full flex flex-row justify-between items-end">
 	<div>
 		<div class="flex flex-row items-center">
@@ -84,14 +88,14 @@
 			<Chip label={$spaceStore?.type} />
 		</div>
 	</div>
-	<div class="flex flex-row items-center">
+	<div class="flex flex-row items-center gap-4">
 		{#if $spaceRoleStore === 'admin'}
 			<Tooltip triggeredBy="#delete-id-btn" placement="left">Delete Space</Tooltip>
 			<button
 				id="delete-id-btn"
 				aria-label="Delete this session"
 				on:click={handleOpenDeleteModal}
-				class="hover:scale-[1.1] duration-200 mr-4"
+				class="hover:scale-[1.1] duration-200"
 			>
 				<Icon
 					icon="mdi:delete"
@@ -114,5 +118,8 @@
 				class="text-gray-500 hover:text-gray-300 duration-200"
 			/>
 		</button>
+		<Button color="light" on:click={() => dispatch('viewMember', {
+			hidden: !hidden
+		})}>View Members</Button>
 	</div>
 </div>

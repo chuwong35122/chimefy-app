@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { SearchType } from '$lib/types/spotify/track.interface';
-	import { Search, Spinner } from 'flowbite-svelte';
+	import { Button, ButtonGroup, Search, Spinner } from 'flowbite-svelte';
 	import MusicSearchResult from './MusicSearchResult.svelte';
 	import type { Track } from 'spotify-types';
 	import { searchTrack } from '$utils/session/track';
 	import { spotifyAccessToken } from '$stores/spotify/user';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 
-	export let supabase: SupabaseClient
+	export let supabase: SupabaseClient;
 
 	let timer: NodeJS.Timer;
 	let searchTerms = '';
@@ -52,12 +52,18 @@
 
 <div class="w-full grid place-items-center">
 	<form class="flex gap-2 w-full">
-		<Search
+		<div class="w-full space-y-2">
+			<Search
 			on:keyup={debounce}
 			bind:value={searchTerms}
 			size="md"
 			class="!rounded-full !blur:border-gray-200 !border-gray-200"
-		/>
+			/>
+			<ButtonGroup class="space-x-px">
+				<Button size="xs" outline color="light" class='font-medium'>Track</Button>
+				<Button size="xs" outline color="light" class='font-medium'>Playlist</Button>
+			</ButtonGroup>
+		</div>
 	</form>
 	<div class="w-full h-[400px] lg:h-[560px] overflow-y-auto overflow-x-hidden">
 		{#if loading}
