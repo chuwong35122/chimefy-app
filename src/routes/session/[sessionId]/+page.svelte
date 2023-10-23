@@ -77,37 +77,38 @@
 <Modal bind:open={openTutorialModal} size="lg" class="modal-glass">
 	<SessionHelpModal />
 </Modal>
-
-<div class="w-[400px] md:w-[640px] lg:w-[1000px] lg:h-[640px]">
-	<div class="mt-8">
+<div>
+	<div class="mt-8 mb-2">
 		<SessionInfo {supabase} />
 	</div>
-	{#if $userStore}
-		<div class="bg-[rgba(255,255,255,0.05)] rounded-xl">
-			<div class="flex flex-col lg:flex-row w-full">
+	<div class="flex flex-row gap-4 w-full p-2">
+		<div class="bg-white/[0.05] rounded-xl h-full md:h-[600px] w-[1000px] flex flex-row">
+			<div class="w-96">
 				<TrackSearchTab {supabase} />
-				<div class="w-full">
-					<div class="w-full grid place-items-center my-2 mt-8">
-						<p class="text-2xl font-semibold">Queues</p>
-					</div>
-					<div class="w-full h-[592px] overflow-y-auto">
-						<TrackQueueList {supabase} />
-					</div>
-				</div>
+			</div>
+			<div class="w-[500px]">
+				<p class="text-2xl font-semibold">Queues</p>
+				<TrackQueueList {supabase} />
 			</div>
 		</div>
-		<div class="w-full grid place-items-end my-2">
-			<button
-				on:click={() => (openTutorialModal = !openTutorialModal)}
-				class="text-xs underline text-dark-300 hover:text-dark-200 duration-150">Need help?</button
-			>
+	</div>
+	<div>
+		<!-- <div class="w-28 h-full md:h-[600px] bg-white/[0.05] rounded-xl">
+			{#if $spaceStore?.id}
+				<SpaceMembers {supabase} id={$spaceStore.id} />
+			{/if}
+		</div> -->
+	</div>
+	<!-- <div class="w-full grid place-items-end my-2">
+		<button
+			on:click={() => (openTutorialModal = !openTutorialModal)}
+			class="text-xs underline text-dark-300 hover:text-dark-200 duration-150">Need help?</button
+		>
+		
+	</div> -->
+	{#if $spaceStore && $spaceStore?.id && configs}
+		<div class="h-24">
+			<MusicPlayerController {supabase} sessionId={$currentSession?.id} {configs} />
 		</div>
-		<div>{JSON.stringify(configs)}</div>
-		{#if $spaceStore && $spaceStore?.id && configs}
-			<div class="h-24">
-				<MusicPlayerController {supabase} sessionId={$currentSession?.id} {configs} />
-				<SpaceMembers {supabase} id={$spaceStore?.id} />
-			</div>
-		{/if}
 	{/if}
 </div>
