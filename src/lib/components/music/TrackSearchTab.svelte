@@ -6,6 +6,7 @@
 	import { searchTrack } from '$utils/session/track';
 	import { spotifyAccessToken } from '$stores/spotify/user';
 	import type { SupabaseClient } from '@supabase/supabase-js';
+	import { toastValue } from '$stores/notification/toast';
 
 	export let supabase: SupabaseClient;
 
@@ -20,6 +21,7 @@
 	let trackSearchLoading = false;
 	let playlistSearchLoading = false;
 
+	$: if (searchTerms) debounce();
 	async function debounce() {
 		trackSearchLoading = true;
 		if (!$spotifyAccessToken) {
@@ -35,14 +37,20 @@
 				trackSearchResults = [];
 				return;
 			}
-			const tracks = await searchTrack(
-				debouncedSearchTerms,
-				type,
-				$spotifyAccessToken?.access_token
-			);
-			trackSearchResults = tracks;
-			trackSearchLoading = false;
-		}, 500);
+			try {
+				const tracks = await searchTrack(
+					debouncedSearchTerms,
+					type,
+					$spotifyAccessToken?.access_token
+				);
+				trackSearchResults = tracks;
+				trackSearchLoading = false;
+			} catch (e) {
+				trackSearchResults = [];
+				trackSearchLoading = false;
+				toastValue.set({ message: 'Search error', type: 'error' })
+			}
+		}, 750);
 	}
 
 	$: if (trackSearchLoading && playlistSearchLoading && !debouncedSearchTerms) {
@@ -56,12 +64,7 @@
 <div class="w-full grid place-items-center">
 	<form class="w-full">
 		<div class="w-full space-y-2">
-			<Search
-				on:keyup={debounce}
-				bind:value={searchTerms}
-				size="md"
-				class="!blur:border-gray-200 !border-gray-200"
-			/>
+			<Search bind:value={searchTerms} size="md" class="!blur:border-gray-200 !border-gray-200" />
 		</div>
 		<Tabs style="underline" contentClass="bg-transparent">
 			<TabItem open title="Tracks">
