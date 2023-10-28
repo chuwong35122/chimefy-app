@@ -143,21 +143,20 @@
 </Drawer>
 
 <div>
-	<div class="mt-8 mb-2">
+	<div class="my-6">
 		<SessionInfo {supabase} {hidden} on:viewMember={(e) => (hidden = e.detail.hidden)} />
 	</div>
-	<div class="flex flex-row gap-4 w-full p-2">
-		<div class="bg-white/[0.05] rounded-xl h-full md:h-[600px] w-[1000px] flex flex-row">
-			<div class="w-96">
+	<div class="flex flex-col md:flex-row gap-4 w-full">
+		<div class="bg-dark-500 rounded-xl h-full md:h-[560px] w-full md:w-[1000px] lg:w-[1200px] flex flex-col md:flex-row justify-between p-6">
+			<div class="w-full md:w-96">
 				<TrackSearchTab {supabase} />
 			</div>
 			<div class="w-[500px]">
-				<p class="text-2xl font-semibold">Queues</p>
+				<p class="text-lg font-semibold">Queues</p>
 				<TrackQueueList {supabase} />
 			</div>
 		</div>
 	</div>
-	<div></div>
 	<!-- <div class="w-full grid place-items-end my-2">
 		<button
 			on:click={() => (openTutorialModal = !openTutorialModal)}
@@ -166,8 +165,8 @@
 		
 	</div> -->
 	{#if $spaceStore && $spaceStore?.id && configs}
-		<!-- <div class="h-24"> -->
+		<div class="mt-4">
 			<MusicPlayerController {supabase} sessionId={$currentSession?.id} {configs} />
-		<!-- </div> -->
+		</div>
 	{/if}
 </div>
