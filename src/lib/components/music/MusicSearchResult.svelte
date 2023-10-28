@@ -1,5 +1,4 @@
 <script lang="ts">
-	// import { currentSession, currentSessionQueue, currentSessionRole } from '$stores/session';
 	import { millisecondToMinuteSeconds } from '$utils/common/time';
 	import Icon from '@iconify/svelte';
 	import type { Track } from 'spotify-types';
@@ -18,7 +17,7 @@
 		imgRef.src = '/logo/disc.png';
 	}
 
-	async function handleAddQueue() {
+async function handleAddQueue() {
 		const userId = $userStore?.id;
 		const sessionId = $spaceStore?.id;
 
@@ -35,7 +34,7 @@
 		const queuePayload: MusicQueue = {
 			track_id: track.id,
 			track_uri: track.uri,
-			track_name: track.name,
+			track_name: track.name, 
 			artist: joinArtists(track),
 			duration_ms: track.duration_ms,
 			track_image_url: track?.album?.images[0]?.url,
@@ -43,7 +42,7 @@
 			added_since: new Date()
 		};
 
-		console.log(queuePayload)
+		console.log(queuePayload);
 
 		try {
 			const queues: MusicQueue[] = $spaceStore?.queues;
@@ -61,29 +60,27 @@
 
 <button
 	on:click={handleAddQueue}
-	class="p-1 my-1 hover:bg-gradient-to-r hover:from-[rgba(0,0,0,1)] to-[rgba(255,255,255,0.4)] duration-200 cursor-pointer group/track"
+	class="w-full p-1 my-1 hover:bg-gradient-to-r hover:from-black to-white/40 duration-200 cursor-pointer group/track"
 >
 	<div class="flex flex-row items-center">
-		<div class="bg-[rgba(255,255,255,0.3)] grid place-items-center mr-4 relative overflow-hidden">
+		<div class="bg-white/30 grid place-items-center mr-4 relative overflow-hidden">
 			<div
-				class="absolute invisible group/track group-hover/track:visible text-white bg-[rgba(0,0,0,0.6)] rounded-full hover:scale-110"
+				class="absolute invisible group/track group-hover/track:visible text-white bg-black/60 rounded-full hover:scale-110"
 			>
-				<Icon icon="ic:round-add" width="40" height="40" />
+				<Icon icon="ic:round-add" width="26" height="26" />
 			</div>
-			<div class="w-[80px] h-[80px]">
-				<img
-					bind:this={imgRef}
-					src={track.album.images[0].url}
-					on:error={handleImageError}
-					alt={`${track.name} cover image`}
-					aria-label={`Track image of ${track.name}`}
-					class="object-cover"
-				/>
-			</div>
+			<img
+				bind:this={imgRef}
+				src={track.album.images[0].url}
+				on:error={handleImageError}
+				alt={`${track.name} cover image`}
+				aria-label={`Track image of ${track.name}`}
+				class="h-20 w-20 object-cover"
+			/>
 		</div>
-		<div class="w-60 md:w-80 md:pr-4 text-left">
-			<p class="font-medium text-sm text-clip">{track.name}</p>
-			<p class="font-light text-xs text-dark-300">
+		<div class="w-full md:pr-4 text-left">
+			<p class="font-medium text-sm text-clip line-clamp-2">{track.name}</p>
+			<p class="font-light text-xs text-dark-300 line-clamp-1">
 				{joinArtists(track)}
 			</p>
 			<p class="text-xs text-dark-300">{millisecondToMinuteSeconds(track?.duration_ms ?? 0)}</p>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { toastValue } from '$stores/notification/toast';
-	import { Badge, Button, Modal, Tooltip } from 'flowbite-svelte';
+	import { Badge, Button, Dropdown, DropdownItem, Modal, Tooltip } from 'flowbite-svelte';
 	import { currentSession } from '$stores/session';
 	import { spaceRoleStore, spaceStore } from '$stores/space/index';
 	import Icon from '@iconify/svelte';
@@ -12,6 +12,7 @@
 	export let hidden: boolean;
 
 	let showDeleteModel = false;
+	let dropdownOpen = false
 
 	const dispatch = createEventDispatcher();
 
@@ -53,6 +54,7 @@
 </Modal>
 
 <Tooltip triggeredBy="#copy-id-btn" placement="top">Copy This Space's ID</Tooltip>
+
 <div class="w-full flex flex-row justify-between items-end">
 	<div>
 		<div class="flex flex-row items-center">
@@ -85,47 +87,39 @@
 			<Badge rounded color="dark">{$spaceStore?.type}</Badge>
 		</div>
 	</div>
-	<div class="flex flex-row items-center gap-4">
-		{#if $spaceRoleStore === 'admin'}
-			<Tooltip triggeredBy="#delete-id-btn" placement="left">Delete Space</Tooltip>
-			<Button
-				color="dark"
-				size="xs"
-				id="delete-id-btn"
-				aria-label="Delete this session"
-				on:click={handleOpenDeleteModal}
-				class="hover:scale-110 p-1.5 duration-200 bg-dark-500 hover:bg-white hover:text-black"
-			>
-				<Icon
-					icon="mdi:delete"
-					width={22}
-					height={22}
-					class="text-red-800 hover:text-red-700 duration-200"
-				/>
-			</Button>
-		{/if}
-		<Button
-			color="dark"
-			size="xs"
+
+	
+	<Button size="xs"
+		>Options<Icon icon="mdi:chevron-down" class="w-3 h-3 ml-2 text-white dark:text-white" /></Button
+	>
+	<Dropdown bind:open={dropdownOpen} class='w-44'>
+		<DropdownItem
 			id="copy-id-btn"
 			aria-label="Copy this space ID"
 			on:click={onCopySpaceId}
-			class="hover:scale-110 p-1.5 duration-200 bg-dark-500 hover:bg-white hover:text-black"
+			class="flex flex-row items-center text-sm font-medium gap-2"
 		>
-			<Icon
-				icon="material-symbols:content-copy"
-				width={22}
-				height={22}
-				class="text-gray-500 hover:text-gray-300 duration-200"
-			/>
-		</Button>
-		<Button
-			size="xs"
-			color="light"
-			on:click={() =>
+			<Icon icon="material-symbols:share" width={16} height={16} class="text-dark-400" /><span
+				>Share to Friend</span
+			>
+		</DropdownItem>
+		<DropdownItem
+			on:click={() => {
+			dropdownOpen = false
 				dispatch('viewMember', {
 					hidden: !hidden
-				})}>View Members</Button
+				})
+			}}
+			class="flex flex-row items-center text-sm font-medium gap-2"
 		>
-	</div>
+			<Icon icon="mdi:account" width={16} height={16} class="text-dark-400" /><span
+				>View members</span
+			>
+		</DropdownItem>
+		{#if $spaceRoleStore === 'admin'}
+			<DropdownItem class="flex flex-row items-center text-sm font-medium gap-2 text-red-600">
+				<Icon icon="mdi:delete" width={16} height={16} /><span>Delete Space</span>
+			</DropdownItem>
+		{/if}
+	</Dropdown>
 </div>
