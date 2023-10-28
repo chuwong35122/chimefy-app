@@ -63,19 +63,21 @@ async function handleAddQueue() {
 	class="w-full p-1 my-1 hover:bg-gradient-to-r hover:from-black to-white/40 duration-200 cursor-pointer group/track"
 >
 	<div class="flex flex-row items-center">
-		<div class="bg-white/30 grid place-items-center mr-4 relative overflow-hidden">
+		<div class="grid place-items-center mr-4 relative overflow-hidden w-20 h-20">
+			<!-- Icon -->
 			<div
-				class="absolute invisible group/track group-hover/track:visible text-white bg-black/60 rounded-full hover:scale-110"
+				class="absolute invisible group/track group-hover/track:visible text-white bg-black/40 rounded-full hover:scale-110"
 			>
 				<Icon icon="ic:round-add" width="26" height="26" />
 			</div>
+			<!-- Icon -->
 			<img
 				bind:this={imgRef}
 				src={track.album.images[0].url}
 				on:error={handleImageError}
 				alt={`${track.name} cover image`}
 				aria-label={`Track image of ${track.name}`}
-				class="h-20 w-20 object-cover"
+				class="object-cover"
 			/>
 		</div>
 		<div class="w-full md:pr-4 text-left">
