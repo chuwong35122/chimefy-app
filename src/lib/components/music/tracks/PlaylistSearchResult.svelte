@@ -36,13 +36,12 @@
 		);
 		const randoms = randomPlaylistTracks(tracks);
 		const payloads = randoms.map((r) => mapTrackToQueuePayload(r, userId, 'playlist', playlist.id));
-    console.log(payloads)
 		try {
 			const queues: MusicQueue[] = $spaceStore?.queues;
 			await supabase
 				.from('session')
 				.update({
-					queues: [...queues, payloads]
+					queues: [...queues, ...payloads]
 				})
 				.eq('id', $spaceStore?.id);
 		} catch (err) {

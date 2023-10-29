@@ -8,6 +8,7 @@
 	import type { MusicQueue } from '$lib/types/session/queue.interface';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { spaceStore, spaceRoleStore } from '$stores/space';
+	import { mapTrackToQueuePayload } from '$utils/spotify/playlist';
 
 	export let supabase: SupabaseClient;
 	export let track: Track;
@@ -31,17 +32,9 @@ async function handleAddQueue() {
 			return;
 		}
 
-		const queuePayload: MusicQueue = {
-			track_id: track.id,
-			type: 'track',
-			track_uri: track.uri,
-			track_name: track.name, 
-			artist: joinArtists(track),
-			duration_ms: track.duration_ms,
-			track_image_url: track?.album?.images[0]?.url,
-			added_by: userId,
-			added_since: new Date()
-		};
+		const queuePayload = mapTrackToQueuePayload(
+			track, userId, 'track', null
+		)
 
 		try {
 			const queues: MusicQueue[] = $spaceStore?.queues;

@@ -38,5 +38,9 @@ export function mapTrackToQueuePayload(
 		payload.playlist_id = playlistID;
 	}
 
+	if (track.album.images[0].url) {
+		payload.image_url = track.album.images[0].url;
+	}
+
 	return payload;
 }
