@@ -1,14 +1,13 @@
 import { PUBLIC_SPOTIFY_BASE_URL } from '$env/static/public';
-import type { SearchType } from '$lib/types/spotify/track.interface';
 import { getBearerToken } from '$spotify/user';
 import qs from 'querystring';
-import type { Track } from 'spotify-types';
+import type { PlaylistTrack, SimplifiedPlaylist, Track } from 'spotify-types';
 
-export async function searchTrack(q: string, type: SearchType, access_token: string) {
+export async function searchTrack(q: string, access_token: string) {
 	const payload = {
 		q: q,
-		type: type,
-		limit: 15
+		limit: 20,
+		type: 'track'
 	};
 	const res = await fetch(`${PUBLIC_SPOTIFY_BASE_URL}/search?${qs.encode(payload)}`, {
 		headers: {
@@ -21,19 +20,46 @@ export async function searchTrack(q: string, type: SearchType, access_token: str
 	return data.tracks.items as Track[];
 }
 
-export function convertTrackMsToPercentage(
-	currentMs: number | undefined,
-	durationMs: number | undefined
-) {
-	if (!currentMs || !durationMs) return 0;
+export async function searchPlaylist(q: string, access_token: string) {
+	const payload = {
+		q: q,
+		limit: 20,
+		type: 'playlist'
+	};
 
-	return (currentMs / durationMs) * 100;
+	const res = await fetch(`${PUBLIC_SPOTIFY_BASE_URL}/search?${qs.encode(payload)}`, {
+		headers: {
+			Authorization: getBearerToken(access_token),
+			'Content-Type': 'application/json'
+		}
+	});
+
+	const data = await res.json();
+	return data.playlists.items as SimplifiedPlaylist[];
 }
 
-export function convertPercentageToTrackMs(
-	percentage: number | undefined,
-	durationMs: number | undefined
-) {
-	if (!percentage || !durationMs) return 0;
-	return (percentage / 100) * durationMs;
+export async function getPlaylistTracks(playlist_id: string, length: number, access_token: string) {
+	const LIMIT = 30;
+	const payload = {
+		playlist_id: playlist_id,
+		limit: LIMIT,
+		offset: 0
+	};
+
+	if (length > LIMIT) {
+		payload.offset = Math.floor(Math.random() * (length - LIMIT));
+	}
+
+	const res = await fetch(
+		`${PUBLIC_SPOTIFY_BASE_URL}/playlists/${playlist_id}/tracks?${qs.encode(payload)}`,
+		{
+			headers: {
+				Authorization: getBearerToken(access_token),
+				'Content-Type': 'application/json'
+			}
+		}
+	);
+
+	const data = await res.json();
+	return data.items as PlaylistTrack[];
 }
