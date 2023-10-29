@@ -1,1 +1,1 @@
-export type SearchType = 'album' | 'track';
+export type SearchType = 'album' | 'track' | 'playlist';

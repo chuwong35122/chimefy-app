@@ -33,6 +33,7 @@ async function handleAddQueue() {
 
 		const queuePayload: MusicQueue = {
 			track_id: track.id,
+			type: 'track',
 			track_uri: track.uri,
 			track_name: track.name, 
 			artist: joinArtists(track),
@@ -41,8 +42,6 @@ async function handleAddQueue() {
 			added_by: userId,
 			added_since: new Date()
 		};
-
-		console.log(queuePayload);
 
 		try {
 			const queues: MusicQueue[] = $spaceStore?.queues;
