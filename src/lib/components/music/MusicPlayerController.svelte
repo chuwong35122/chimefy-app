@@ -1,10 +1,5 @@
 <script lang="ts">
-	import {
-		currentSession,
-		isPlayingStatus,
-		playingDurationMs,
-		currentSessionQueue
-	} from '$stores/session';
+	import { isPlayingStatus, playingDurationMs } from '$stores/session';
 	import Icon from '@iconify/svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { Tooltip } from 'flowbite-svelte';
@@ -21,7 +16,7 @@
 
 	export let supabase: SupabaseClient;
 	export let sessionId = 0;
-	export let configs: UserConfigs
+	export let configs: UserConfigs;
 
 	let SpotifyPlayer: Spotify.Player;
 	let trackDurationTimer: NodeJS.Timer;
