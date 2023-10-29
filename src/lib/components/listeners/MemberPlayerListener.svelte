@@ -34,7 +34,7 @@
 			if ($spaceRoleStore === 'admin') {
 				const payload: TrackBroadcastPayload = {
 					isPlaying: $isPlayingStatus,
-					playingTrackId: space.queues[1].track_id,
+					playingTrackId: space.queues[1].id,
 					currentDurationMs: 0
 				};
 				channel.send({ type: 'broadcast', event: 'playerForward', payload });
@@ -109,7 +109,7 @@
 
 			if (!queues || queues?.length < 2) return;
 
-			const sliced = await sliceQueue(supabase, queues, queues[0]?.track_id, $spaceStore.id);
+			const sliced = await sliceQueue(supabase, queues, queues[0]?.id, $spaceStore.id);
 			const _payload = payload as TrackBroadcastPayload;
 
 			await playSingleTrack(sliced[0], $spotifyPlayerId, 0, $spotifyAccessToken?.access_token);

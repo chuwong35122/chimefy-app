@@ -20,7 +20,7 @@ export async function playTrack(
 	access_token: string
 ) {
 	const payload = {
-		uris: [queue?.track_uri],
+		uris: [queue?.uri],
 		device_id: deviceId,
 		position_ms: playingDurationMs ?? 0,
 		access_token: access_token

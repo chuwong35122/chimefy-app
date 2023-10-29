@@ -18,7 +18,7 @@ export async function sliceQueue(
 	spaceId: number
 ): Promise<MusicQueue[]> {
 	const _queues = [...queues];
-	const filtered = _queues.filter((q) => q.track_id !== queueTargetId);
+	const filtered = _queues.filter((q) => q.id !== queueTargetId);
 
 	const { data } = await supabase
 		.from('session')
@@ -45,7 +45,7 @@ export async function playSingleTrack(
 	if (!queue) return;
 
 	isPlayingStatus.set(true);
-	playingTrackId.set(queue.track_id);
+	playingTrackId.set(queue.id);
 	playingDurationMs.set(from);
 	playingInfo.set({ ...queue });
 	await playTrack(queue, playerId, from, accessToken);

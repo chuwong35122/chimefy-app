@@ -30,7 +30,7 @@
 		if (queues && queues.length > 0 && spaceId && $playingInfo) {
 			const payload: TrackBroadcastPayload = {
 				isPlaying: $isPlayingStatus,
-				playingTrackId: queues[1]?.track_id,
+				playingTrackId: queues[1]?.id,
 				currentDurationMs: 0
 			};
 
@@ -91,16 +91,14 @@
 
 	// Send broadcast signal to other members with its playing info
 	async function onBroadcastSignal(playing: boolean) {
-		console.log('boradcasting', playing)
 		const queues = $spaceStore?.queues;
-		console.log(queues)
 		if (queues && queues.length === 0) {
 			toastValue.set({ message: 'Please add some tracks before playing!', type: 'warn' });
 			return;
 		}
 
 		if (queues && queues[0]) {
-			playingTrackId.set(queues[0]?.track_id);
+			playingTrackId.set(queues[0]?.id);
 		}
 
 		clearTimeout(broadcastTimer);
