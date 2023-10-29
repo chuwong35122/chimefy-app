@@ -12,7 +12,6 @@
 	import { devModeStore } from '$stores/settings';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { spaceStore } from '$stores/space';
-	import type { UserConfigs } from '$lib/types/user/config.interface';
 	import { userConfigStore } from '$stores/auth/user';
 
 	export let supabase: SupabaseClient;

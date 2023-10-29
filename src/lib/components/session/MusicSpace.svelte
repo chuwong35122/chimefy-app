@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import type { MusicSessionInfo } from '$lib/types/session/session.interface';
 	import Icon from '@iconify/svelte';
-	import { Badge, Popover } from 'flowbite-svelte';
+	import { Badge } from 'flowbite-svelte';
 
 	export let space: MusicSessionInfo;
 	export let index = 0;
@@ -18,10 +18,10 @@
 >
 	<button type="button" on:click={() => handleSessionNavigate(space)}>
 		<div class="h-52 aspect-square overflow-hidden p-3">
-			{#if space?.session_queue && space?.session_queue[0] && space?.session_queue[0]?.queues && space?.session_queue[0]?.queues[0]?.track_image_url}
+			{#if space?.session_queue && space?.session_queue[0] && space?.session_queue[0]?.queues && space?.session_queue[0]?.queues[0]?.image_url}
 				<img
 					id={`track-img-${index}`}
-					src={space?.session_queue[0].queues[0]?.track_image_url}
+					src={space?.session_queue[0].queues[0]?.image_url}
 					alt="Playing track cover"
 					class="object-cover"
 				/>
