@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { millisecondToMinuteSeconds } from '$utils/common/time';
-	import Icon from '@iconify/svelte';
-	import type { SimplifiedPlaylist, Track } from 'spotify-types';
+		import Icon from '@iconify/svelte';
+	import type { SimplifiedPlaylist } from 'spotify-types';
 	import { toastValue } from '$stores/notification/toast';
-	import { joinArtists } from '$utils/track';
 	import { userStore } from '$stores/auth/user';
 	import type { MusicQueue } from '$lib/types/session/queue.interface';
 	import type { SupabaseClient } from '@supabase/supabase-js';
-	import { spaceStore, spaceRoleStore } from '$stores/space';
+	import { spaceStore } from '$stores/space';
 	import { Tooltip } from 'flowbite-svelte';
 	import { getPlaylistTracks } from '$utils/session/track';
 	import { spotifyAccessToken } from '$stores/spotify/user';
