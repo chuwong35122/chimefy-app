@@ -82,7 +82,7 @@
 		</div>
 		<Tabs style="underline" contentClass="bg-transparent">
 			<TabItem open title="Tracks" on:click={() => (type = 'track')}>
-				<div class="w-full h-[420px] overflow-y-auto overflow-x-hidden">
+				<div class="w-full overflow-y-auto overflow-x-hidden">
 					{#if loading}
 						<div class="w-full h-full grid place-items-center">
 							<Spinner size="10" color="green" />
@@ -95,7 +95,7 @@
 				</div>
 			</TabItem>
 			<TabItem title="Playlists" on:click={() => (type = 'playlist')}>
-				<div class="w-full h-[420px] overflow-y-auto overflow-x-hidden">
+				<div class="w-full overflow-y-auto overflow-x-hidden">
 					{#if loading}
 						<div class="w-full h-full grid place-items-center">
 							<Spinner size="10" color="green" />
