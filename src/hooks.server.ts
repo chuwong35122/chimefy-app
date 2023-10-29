@@ -3,7 +3,6 @@ import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/publi
 import { PUBLIC_NODE_ENV } from '$env/static/public';
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
-import type { UserConfigs } from '$lib/types/user/config.interface';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.supabase = createSupabaseServerClient({
@@ -22,20 +21,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 			data: { session }
 		} = await event.locals.supabase.auth.getSession();
 		return session;
-	};
-
-	// get user's app config
-	event.locals.getUserConfigs = async (userId: string) => {
-		const { data } = await event.locals.supabase
-			.from('user_configs')
-			.select('*')
-			.eq('config_owner', userId)
-			.single();
-		if (data) {
-			return data as UserConfigs;
-		} else {
-			return null;
-		}
 	};
 
 	const pathname = event.url.pathname;

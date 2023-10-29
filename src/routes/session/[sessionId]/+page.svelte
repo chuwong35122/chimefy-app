@@ -6,7 +6,7 @@
 	import TrackQueueList from '$components/music/TrackQueueList.svelte';
 	import MusicPlayerController from '$components/music/MusicPlayerController.svelte';
 	import SessionInfo from '$components/music/SessionInfo.svelte';
-	import { userStore } from '$stores/auth/user';
+	import { userConfigStore, userStore } from '$stores/auth/user';
 	import seo from '$constants/seo';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { Drawer, Modal } from 'flowbite-svelte';
@@ -18,7 +18,7 @@
 	import { orderSpaceMembers } from '$utils/session/members';
 
 	export let data;
-	$: ({ space, configs, url, supabase } = data);
+	$: ({ space, url, supabase } = data);
 
 	let openTutorialModal = false;
 
@@ -164,9 +164,9 @@
 		>
 		
 	</div> -->
-	{#if $spaceStore && $spaceStore?.id && configs}
+	{#if $spaceStore && $spaceStore?.id && $userConfigStore}
 		<div class="mt-4">
-			<MusicPlayerController {supabase} sessionId={$currentSession?.id} {configs} />
+			<MusicPlayerController {supabase} sessionId={$currentSession?.id} />
 		</div>
 	{/if}
 </div>

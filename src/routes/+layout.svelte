@@ -10,9 +10,10 @@
 	import { setTokenStore, getSpotifyProfile } from '$spotify/user';
 	import AuthExpireListener from '$components/listeners/AuthExpireListener.svelte';
 	import { spotifyAccessToken, spotifyUserProfile } from '$stores/spotify/user';
+	import { createAppConfig } from '$utils/configs/app.js';
 
 	export let data;
-	let { supabase, session, configs } = data;
+	let { supabase, session } = data;
 	$: ({ supabase, session } = data);
 
 	let isSpotifyPremiumModalOpen = false;
@@ -29,7 +30,7 @@
 	onMount(() => {
 		const {
 			data: { subscription }
-		} = supabase.auth.onAuthStateChange((event, _session) => {
+		} = supabase.auth.onAuthStateChange(async (event, _session) => {
 			if (_session?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');
 			}
@@ -37,9 +38,10 @@
 			if (_session) {
 				userStore.set(_session?.user);
 				setTokenStore(_session?.provider_token, _session?.provider_refresh_token);
-			}
 
-			userConfigStore.set(configs);
+				const configs = await createAppConfig(supabase, _session?.user?.id);
+				userConfigStore.set(configs);
+			}
 		});
 
 		return () => {
