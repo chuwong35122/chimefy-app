@@ -4,13 +4,13 @@ import { querySpaceById } from '$utils/session/search';
 
 export const load: PageLoad = async ({ parent, params, url }) => {
 	const { supabase } = await parent();
-	if (!params?.sessionId) {
+	if (!params?.spaceId) {
 		throw error(404, {
 			message: 'Session ID not provided'
 		});
 	}
 
-	const space = await querySpaceById(supabase, params.sessionId);
+	const space = await querySpaceById(supabase, params.spaceId);
 
 	return {
 		space,
