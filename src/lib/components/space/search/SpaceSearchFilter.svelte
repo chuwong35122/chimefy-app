@@ -68,19 +68,16 @@
 	</button>
 </form>
 <!-- Chips -->
-<div class="flex flex-rows items-center gap-2 mt-4 ml-2">
-	<p class="font-semibold text-md">Type</p>
-	<div class="flex flex-row items-center gap-6 w-full flex-wrap justify-center">
-		{#each SESSION_MUSIC_TYPES as type}
-			<button
-				on:click={() => handleChangeMusicType(type)}
-				class={`cursor-pointer duration-150 hover:scale-105 text-sm underline underline-offset-2 ${
-					input.musicType === type ? 'text-primary-500' : 'text-white'
-				}`}
-			>
-				{type}
-			</button>
-		{/each}
-	</div>
+<div class="flex flex-row items-center gap-6 w-full flex-wrap justify-center my-4">
+	{#each SESSION_MUSIC_TYPES as type}
+		<button
+			on:click={() => handleChangeMusicType(type)}
+			class={`cursor-pointer duration-150 hover:scale-105 text-sm underline underline-offset-2 ${
+				input.musicType === type ? 'text-primary-500' : 'text-white'
+			}`}
+		>
+			{type}
+		</button>
+	{/each}
 </div>
-<div class='my-4 w-full bg-dark-400 h-[1px]' />
+<div class="my-4 w-full bg-dark-400 h-[1px]" />
