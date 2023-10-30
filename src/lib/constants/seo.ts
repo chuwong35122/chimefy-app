@@ -7,21 +7,21 @@ const seo = {
 
 	appTitle: 'Listen to Spotify music together with friends',
 	appDescription:
-		'Create your own session with unlimited number of members and sync all your Spotify music in real-time',
+		'Create your own space with unlimited number of members and sync all your Spotify music in real-time',
 	appUrl: PUBLIC_SITE_URL,
-	session: {
-		title: 'Join a Chimefy session',
-		description: 'Create or join a session to listen together!',
-		url: PUBLIC_SITE_URL + '/session'
+	space: {
+		title: 'Join a Chimefy space',
+		description: 'Create or join a space to listen together!',
+		url: PUBLIC_SITE_URL + '/space'
 	},
-	createSession: {
-		title: 'Create a Chimefy session',
-		description: 'Create a session to listen together!',
-		url: PUBLIC_SITE_URL + '/session/create'
+	createSpace: {
+		title: 'Create a Chimefy space',
+		description: 'Create a space to listen together!',
+		url: PUBLIC_SITE_URL + '/space/create'
 	},
-	sessionInvite: {
+	spaceInvite: {
 		// title, url, image alt is dynamic
-		description: 'Your friend has invited you to join Chimefy session. Login and listen together!',
+		description: "Your friend has invited you to join Chimefy's space. Login and listen together!",
 		image: '/images/seo/enter-session.avif'
 	}
 };

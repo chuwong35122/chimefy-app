@@ -33,18 +33,18 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 	<!-- Open Graph Meta Tags -->
-	<meta property="og:title" content={seo.createSession.title} />
+	<meta property="og:title" content={seo.createSpace.title} />
 	<meta
 		property="og:description"
 		content="Create your own session with unlimited number of members and sync all your Spotify music in real-time"
 	/>
 	<meta property="og:image" content={seo.image} />
-	<meta property="og:url" content={seo.createSession.url} />
+	<meta property="og:url" content={seo.createSpace.url} />
 	<meta property="og:type" content="website" />
 
 	<!-- Twitter Meta Tags -->
-	<meta name="twitter:title" content={seo.createSession.title} />
-	<meta name="twitter:description" content={seo.session.description} />
+	<meta name="twitter:title" content={seo.createSpace.title} />
+	<meta name="twitter:description" content={seo.space.description} />
 	<meta name="twitter:card" content={seo.twitterCard} />
 	<meta name="twitter:image" content={seo.image} />
 	<meta name="twitter:image:alt" content={seo.imageAlt} />
