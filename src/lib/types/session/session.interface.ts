@@ -1,8 +1,8 @@
-import type { MusicQueue, MusicSessionQueue } from './queue.interface';
+import type { MusicQueue } from './queue.interface';
 
-export type MusicSessionRole = 'admin' | 'member';
+export type MusicSpaceRole = 'admin' | 'member';
 
-export interface CreateMusicSession {
+export interface CreateMusicSpace {
 	id?: number;
 	created_at?: Date;
 	uuid?: string;
@@ -13,32 +13,7 @@ export interface CreateMusicSession {
 	created_by: string;
 	allow_member_queue: boolean;
 }
-export interface MusicSession {
-	id?: number;
-	uuid?: string;
-	created_at?: Date;
-	name: string;
-	is_private: boolean;
-	type: string;
-	members: number | null;
-	created_by: number | null;
-	queue: number | null;
-	allow_member_queue: boolean;
-}
-
-export interface MusicSessionInfo {
-	id?: number;
-	uuid?: string;
-	created_at?: Date;
-	name: string;
-	is_private: boolean;
-	type: string;
-	session_queue: MusicSessionQueue[];
-}
-
-export type SessionBroadcastStatus = 'broadcasting' | 'waiting';
-
-export interface MusicQueueSpace {
+export interface MusicSpace {
 	id: number;
 	uuid: string;
 	created_at: Date;
@@ -49,3 +24,5 @@ export interface MusicQueueSpace {
 	allow_member_queue: boolean;
 	queues: MusicQueue[];
 }
+
+export type SessionBroadcastStatus = 'broadcasting' | 'waiting';

@@ -1,50 +1,25 @@
 import type { Database } from '$lib/types/database/supabase.types';
 import type { MusicQueue } from '$lib/types/session/queue.interface';
-import type { MusicQueueSpace, MusicSessionInfo } from '$lib/types/session/session.interface';
+import type { MusicSpace } from '$lib/types/session/session.interface';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 export async function queryUserSpace(
-	supabase: SupabaseClient,
+	supabase: SupabaseClient<Database>,
 	id: string
-): Promise<MusicSessionInfo[]> {
+): Promise<MusicSpace[]> {
 	if (!id) return [];
 
 	const { data } = await supabase
 		.from('session')
-		.select(
-			`
-			id,
-			uuid,
-			created_at,
-			name,
-			is_private,
-			type,
-			queues,
-			created_by
-		`
-		)
+		.select('*')
 		.eq('created_by', id)
 		.order('created_at', { ascending: false });
 
-	return ((data as any) ?? []) as MusicSessionInfo[];
+	return ((data as any) ?? []) as MusicSpace[];
 }
 
-export async function queryPublicSpaces(
-	supabase: SupabaseClient,
-	name: string,
-	type: string
-): Promise<MusicSessionInfo[]> {
-	const query = supabase.from('session').select(
-		`
-			id,
-			uuid,
-			created_at,
-			name,
-			is_private,
-			type,
-			queues
-		`
-	);
+export async function queryPublicSpaces(supabase: SupabaseClient<Database>, name: string, type: string) {
+	const query = supabase.from('session').select('*');
 
 	if (name) {
 		query.textSearch('name', `'${name}'`);
@@ -59,29 +34,13 @@ export async function queryPublicSpaces(
 		.filter('is_private', 'eq', false)
 		.order('created_at', { ascending: false });
 
-	return ((data as any) ?? []) as MusicSessionInfo[];
+	return ((data as any) ?? []) as MusicSpace[];
 }
 
 export async function querySpaceById(supabase: SupabaseClient<Database>, id: string) {
-	const { data } = await supabase
-		.from('session')
-		.select(
-			`
-			id,
-			uuid,
-			created_at,
-			name,
-			is_private,
-			type,
-			allow_member_queue,
-			queues,
-			created_by
-		`
-		)
-		.eq('uuid', id)
-		.single();
+	const { data } = await supabase.from('session').select('*').eq('uuid', id).single();
 
-	return data as any as MusicQueueSpace;
+	return data as any as MusicSpace;
 }
 
 export async function querySpaceQueueById(
