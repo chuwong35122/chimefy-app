@@ -8,7 +8,7 @@
 	import SpotifyPremiumInfoModal from '$components/modals/SpotifyPremiumInfoModal.svelte';
 	import { userConfigStore, userStore } from '$stores/auth/user';
 	import { setTokenStore, getSpotifyProfile } from '$spotify/user';
-	import AuthExpireListener from '$components/listeners/AuthExpireListener.svelte';
+	import AuthExpireListener from '$components/auth/AuthExpireListener.svelte';
 	import { spotifyAccessToken, spotifyUserProfile } from '$stores/spotify/user';
 	import { createAppConfig } from '$utils/configs/app.js';
 

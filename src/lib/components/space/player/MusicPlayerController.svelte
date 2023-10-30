@@ -3,10 +3,10 @@
 	import Icon from '@iconify/svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { Tooltip } from 'flowbite-svelte';
-	import VolumeController from './player/VolumeController.svelte';
-	import TrackPreview from './player/TrackPreview.svelte';
-	import ControlButtons from './player/ControlButtons.svelte';
-	import MemberPlayerListener from '../listeners/MemberPlayerListener.svelte';
+	import VolumeController from '../../music/player/VolumeController.svelte';
+	import TrackPreview from '../track/TrackPreview.svelte';
+	import ControlButtons from './ControlButtons.svelte';
+	import MemberPlayerListener from '../websocket/MemberPlayerListener.svelte';
 	import { spotifyPlayerId, spotifyAccessToken } from '$stores/spotify/user';
 	import DebugText from '$components/debugger/DebugText.svelte';
 	import { devModeStore } from '$stores/settings';
