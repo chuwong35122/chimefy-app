@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { Alert, Input, Label, Textarea } from 'flowbite-svelte';
-	import PrimaryButtonWrapper from '$components/buttons/PrimaryButtonWrapper.svelte';
+	import { Alert, Button, Input, Label, Textarea } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
@@ -166,12 +165,10 @@
 				</div>
 			</div>
 			<button on:click|preventDefault={handleMail}>
-				<PrimaryButtonWrapper {isLoading}>
-					<div class="flex flex-row items-center justify-center">
-						<span>Send</span>
-						<Icon icon="material-symbols:send" class="text-white w-6 h-6 ml-2" />
-					</div>
-				</PrimaryButtonWrapper>
+				<Button color='primary' class='w-full'>
+					<Icon icon="material-symbols:send" class="w-6 h-6 mr-2" />
+					<span>Send</span>
+				</Button>
 			</button>
 		</div>
 		{#if hasErr}
