@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
-	import { currentSession } from '$stores/session';
 	import { spaceMemberStore, spaceRoleStore, spaceStore } from '$stores/space/index';
 	import TrackSearchTab from '$components/space/track/TrackSearchTab.svelte';
 	import TrackQueueList from '$components/space/queue/TrackQueueList.svelte';
@@ -166,7 +165,7 @@
 	</div> -->
 	{#if $spaceStore && $spaceStore?.id && $userConfigStore}
 		<div class="mt-4">
-			<MusicPlayerController {supabase} spaceId={$currentSession?.id} />
+			<MusicPlayerController {supabase} spaceId={$spaceStore?.id} />
 		</div>
 	{/if}
 </div>
