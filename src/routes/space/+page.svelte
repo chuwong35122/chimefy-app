@@ -5,7 +5,7 @@
 	import { fly } from 'svelte/transition';
 	import seo from '$constants/seo';
 	import MusicSpace from '$components/space/search/MusicSpace.svelte';
-	import SessionSearchFilter from '$components/space/search/SessionSearchFilter.svelte';
+	import SpaceSearchFilter from '$components/space/search/SpaceSearchFilter.svelte';
 	import type { MusicSessionInfo } from '$lib/types/session/session.interface.js';
 	import { onMount } from 'svelte';
 	import EmptySearchResultIndicator from '$components/space/search/EmptySearchResultIndicator.svelte';
@@ -23,26 +23,26 @@
 
 <svelte:head>
 	<meta charset="UTF-8" />
-	<meta name="description" content="Join a Blend Space" />
+	<meta name="description" content="Join a Space" />
 	<meta
 		name="keywords"
-		content="chimefy, spotify, listen together, join blend space, create blend space, public blend space, private blend space"
+		content="chimefy, spotify, listen together, join space, create a space, public space, private space"
 	/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 	<!-- Open Graph Meta Tags -->
-	<meta property="og:title" content={seo.session.title} />
+	<meta property="og:title" content={seo.space.title} />
 	<meta
 		property="og:description"
-		content="Create your own session with unlimited number of members and sync all your Spotify music in real-time"
+		content="Create your own space with unlimited members and sync all your Spotify music in real-time"
 	/>
 	<meta property="og:image" content={seo.image} />
 	<meta property="og:url" content={seo.appUrl} />
 	<meta property="og:type" content="website" />
 
 	<!-- Twitter Meta Tags -->
-	<meta name="twitter:title" content={seo.session.title} />
-	<meta name="twitter:description" content={seo.session.description} />
+	<meta name="twitter:title" content={seo.space.title} />
+	<meta name="twitter:description" content={seo.space.description} />
 	<meta name="twitter:card" content={seo.twitterCard} />
 	<meta name="twitter:image" content={seo.image} />
 	<meta name="twitter:image:alt" content={seo.imageAlt} />
@@ -60,7 +60,7 @@
 				<Icon icon="material-symbols:meeting-room-rounded" width={32} height={32} />
 			</InputAddon>
 			<Input
-			name='spaceId'
+				name="spaceId"
 				bind:value={input}
 				placeholder="Space ID"
 				defaultClass="w-[180px] md:w-[400px] lg:w-[460px] text-sm md:text-lg lg:text-xl !text-white !border-white border-2 !bg-dark !border-l-0 !border-r-0 placeholder:text-[rgba(255,255,255,0.4)] text-white"
@@ -82,14 +82,14 @@
 		<button
 			on:click={() => goto('/create')}
 			class="text-sm text-dark-200 font-light hover:text-white duration-200 underline underline-offset-2"
-			>Create new blend space</button
+			>Create a space</button
 		>
 	</div>
 	<div class="h-60" />
 	<div class="w-full">
 		<Tabs style="pill" contentClass="bg-transparent p-4 mb-8">
 			<TabItem open title="Public Blend Spaces">
-				<SessionSearchFilter {supabase} on:query={(e) => (publicSpaces = e.detail.spaces)} />
+				<SpaceSearchFilter {supabase} on:query={(e) => (publicSpaces = e.detail.spaces)} />
 				{#if publicSpaces.length > 0}
 					<div
 						class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[460px] overflow-y-auto"
@@ -99,11 +99,11 @@
 						{/each}
 					</div>
 				{:else}
-				<EmptySearchResultIndicator />
+					<EmptySearchResultIndicator />
 				{/if}
 			</TabItem>
 			{#if userSpace?.length > 0}
-				<TabItem title="My Blend Spaces">
+				<TabItem title="My Spaces">
 					<div
 						class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[460px] overflow-y-auto"
 					>
