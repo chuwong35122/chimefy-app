@@ -23,9 +23,9 @@
 
 	async function handleAddPlaylist() {
 		const userId = $userStore?.id;
-		const sessionId = $spaceStore?.id;
+		const spaceId = $spaceStore?.id;
 
-		if (!userId || !sessionId) return;
+		if (!userId || !spaceId) return;
 
 		const tracks = await getPlaylistTracks(
 			playlist.id,

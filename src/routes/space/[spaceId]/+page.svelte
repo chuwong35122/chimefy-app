@@ -166,7 +166,7 @@
 	</div> -->
 	{#if $spaceStore && $spaceStore?.id && $userConfigStore}
 		<div class="mt-4">
-			<MusicPlayerController {supabase} sessionId={$currentSession?.id} />
+			<MusicPlayerController {supabase} spaceId={$currentSession?.id} />
 		</div>
 	{/if}
 </div>

@@ -15,12 +15,12 @@
 	import { userConfigStore } from '$stores/auth/user';
 
 	export let supabase: SupabaseClient;
-	export let sessionId = 0;
+	export let spaceId = 0;
 
 	let SpotifyPlayer: Spotify.Player;
 	let trackDurationTimer: NodeJS.Timer;
 
-	const channel = supabase.channel(`session_player_listener_${sessionId}`, {
+	const channel = supabase.channel(`session_player_listener_${spaceId}`, {
 		config: {
 			broadcast: {
 				self: true
