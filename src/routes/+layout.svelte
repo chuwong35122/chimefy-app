@@ -55,14 +55,6 @@
 			spotifyUserProfile.set(profile);
 		}
 	};
-	// page.subscribe((page) => {
-	// 	if (page?.route?.id !== '/session/[sessionId]') {
-	// 		onSessionDestroyed();
-	// 		if ($devModeStore) {
-	// 			console.log('On session destroyed has been called...');
-	// 		}
-	// 	}
-	// });
 </script>
 
 <AuthExpireListener />

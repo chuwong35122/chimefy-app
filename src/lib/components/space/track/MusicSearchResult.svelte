@@ -20,13 +20,13 @@
 
 async function handleAddQueue() {
 		const userId = $userStore?.id;
-		const sessionId = $spaceStore?.id;
+		const spaceId = $spaceStore?.id;
 
-		if (!userId || !sessionId) return;
+		if (!userId || !spaceId) return;
 
 		if ($spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue) {
 			toastValue.set({
-				message: "Session's admin does not allow member to queue tracks.",
+				message: "Space's admin does not allow member to queue tracks.",
 				type: 'info'
 			});
 			return;
