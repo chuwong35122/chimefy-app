@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SpaceMemberAvatar from './SpaceMemberAvatar.svelte';
+	import SpaceMemberAvatar from './SessionMemberAvatar.svelte'
 	import { spaceMemberStore } from '$stores/space';
 </script>
 

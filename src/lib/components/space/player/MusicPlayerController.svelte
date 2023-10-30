@@ -3,7 +3,7 @@
 	import Icon from '@iconify/svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { Tooltip } from 'flowbite-svelte';
-	import VolumeController from '../../music/player/VolumeController.svelte';
+	import VolumeController from '$lib/components/space/player/VolumeController.svelte'
 	import TrackPreview from '../track/TrackPreview.svelte';
 	import ControlButtons from './ControlButtons.svelte';
 	import MemberPlayerListener from '../websocket/MemberPlayerListener.svelte';
