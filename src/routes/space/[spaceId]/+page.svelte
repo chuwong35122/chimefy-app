@@ -100,15 +100,15 @@
 	<!-- Open Graph Meta Tags -->
 	<meta property="og:title" content={`Join ${space?.name}`} />
 	<meta property="og:description" content={seo.appDescription} />
-	<meta property="og:image" content={seo.sessionInvite.image} />
+	<meta property="og:image" content={seo.spaceInvite.image} />
 	<meta property="og:url" content={url} />
 	<meta property="og:type" content="website" />
 
 	<!-- Twitter Meta Tags -->
 	<meta name="twitter:title" content={`You have been invited to Chimefy: ${space?.name}`} />
-	<meta name="twitter:description" content={seo.sessionInvite.description} />
+	<meta name="twitter:description" content={seo.spaceInvite.description} />
 	<meta name="twitter:card" content={seo.twitterCard} />
-	<meta name="twitter:image" content={seo.sessionInvite.image} />
+	<meta name="twitter:image" content={seo.spaceInvite.image} />
 	<meta name="twitter:image:alt" content={`Join ${space?.name}`} />
 
 	<title>{space?.name ? `Listening to ${space?.name}` : 'Loading...'}</title>
