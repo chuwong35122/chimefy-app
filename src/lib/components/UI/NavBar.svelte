@@ -27,8 +27,8 @@
 	<div class={`flex flex-row items-center justify-between`}>
 		<NavLink
 			icon="material-symbols:meeting-room-rounded"
-			route="/session"
-			routeName="Session"
+			route="/space"
+			routeName="Space"
 			isActive={$userStore?.id != null}
 		/>
 		<NavLink icon="mdi:email" route="/contact" routeName="Contact" />
