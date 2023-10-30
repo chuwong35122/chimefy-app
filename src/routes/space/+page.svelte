@@ -79,10 +79,10 @@
 	</form>
 	<div class="h-6" />
 	<div class="w-full grid place-items-center">
-		<button
-			on:click={() => goto('/create')}
+		<a
+			href="/create"	
 			class="text-sm text-dark-200 font-light hover:text-white duration-200 underline underline-offset-2"
-			>Create a space</button
+			>Create a space</a
 		>
 	</div>
 	<div class="h-60" />
