@@ -9,7 +9,7 @@ export const CreateSessionSchema = z.object({
 		.string({
 			required_error: 'Music type is required!'
 		})
-		.refine((val) => SESSION_MUSIC_TYPES.map((music) => music.name).includes(val)),
+		.refine((val) => SESSION_MUSIC_TYPES.map((music) => music).includes(val)),
 	name: z
 		.string({
 			required_error: 'Session name is required!'
