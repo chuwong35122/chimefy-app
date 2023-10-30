@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { SessionMember } from '$lib/types/session/member.interface';
+	import type { SpaceMember } from '$lib/types/session/member.interface';
 		import { Badge } from 'flowbite-svelte';
 
-	export let member: SessionMember;
+	export let member: SpaceMember;
 </script>
 
 <div class="h-24">

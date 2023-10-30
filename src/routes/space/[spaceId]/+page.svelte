@@ -4,16 +4,16 @@
 	import TrackSearchTab from '$components/space/track/TrackSearchTab.svelte';
 	import TrackQueueList from '$components/space/queue/TrackQueueList.svelte';
 	import MusicPlayerController from '$components/space/player/MusicPlayerController.svelte';
-	import SessionInfo from '$components/space/info/SessionInfo.svelte';
+	import SpaceInfo from '$components/space/info/SpaceInfo.svelte';
 	import { userConfigStore, userStore } from '$stores/auth/user';
 	import seo from '$constants/seo';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { Drawer, Modal } from 'flowbite-svelte';
-	import SessionHelpModal from '$components/modals/SessionHelpModal.svelte';
+	import SpaceHelpModal from '$components/modals/SpaceHelpModal.svelte';
 	import SpaceMembers from '$components/space/members/SpaceMembers.svelte';
 	import { sineIn } from 'svelte/easing';
 	import Icon from '@iconify/svelte';
-	import type { SessionMember } from '$lib/types/session/member.interface.js';
+	import type { SpaceMember } from '$lib/types/session/member.interface.js';
 	import { orderSpaceMembers } from '$utils/session/members';
 
 	export let data;
@@ -58,11 +58,11 @@
 			})
 			.on('presence', { event: 'sync' }, () => {
 				const state = memberChannel.presenceState();
-				const ordered = orderSpaceMembers(state.members as any as SessionMember[]);
+				const ordered = orderSpaceMembers(state.members as any as SpaceMember[]);
 				spaceMemberStore.set(ordered);
 			})
 			.on('presence', { event: 'join' }, ({ newPresences }) => {
-				const newMembers = newPresences as any as SessionMember[];
+				const newMembers = newPresences as any as SpaceMember[];
 				let _spaceMembers = $spaceMemberStore;
 				if (_spaceMembers) {
 					_spaceMembers = [..._spaceMembers, ...newMembers];
@@ -78,7 +78,7 @@
 						member_user_id: $userStore?.id ?? '',
 						is_admin: $spaceStore?.created_by === $userStore?.id,
 						profile_img: $userStore?.user_metadata?.avatar_url
-					} as SessionMember);
+					} as SpaceMember);
 				}
 			});
 	});
@@ -115,7 +115,7 @@
 </svelte:head>
 
 <Modal bind:open={openTutorialModal} size="lg" class="modal-glass">
-	<SessionHelpModal />
+	<SpaceHelpModal />
 </Modal>
 
 <Drawer
@@ -143,7 +143,7 @@
 
 <div>
 	<div class="my-6">
-		<SessionInfo {supabase} {hidden} on:viewMember={(e) => (hidden = e.detail.hidden)} />
+		<SpaceInfo {supabase} {hidden} on:viewMember={(e) => (hidden = e.detail.hidden)} />
 	</div>
 	<div class="flex flex-col md:flex-row gap-4 w-full">
 		<div class="bg-dark-500 rounded-xl h-full md:h-[560px] w-full md:w-[1000px] lg:w-[1200px] flex flex-col md:flex-row justify-between p-6">
