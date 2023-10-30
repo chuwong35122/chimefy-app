@@ -51,7 +51,7 @@
 </svelte:head>
 
 <div in:fly={{ y: 10, duration: 200 }} class="rounded-2xl grid place-items-center mt-20">
-	<h1 class="text-4xl text-primary-500 font-semibold">Join a Blend Space</h1>
+	<h1 class="text-4xl text-primary-500 font-semibold">Join a Space</h1>
 	<div class="my-4" />
 
 	<form method="POST">
@@ -88,7 +88,7 @@
 	<div class="h-60" />
 	<div class="w-full">
 		<Tabs style="pill" contentClass="bg-transparent p-4 mb-8">
-			<TabItem open title="Public Blend Spaces">
+			<TabItem open title="Public Spaces">
 				<SpaceSearchFilter {supabase} on:query={(e) => (publicSpaces = e.detail.spaces)} />
 				{#if publicSpaces.length > 0}
 					<div
