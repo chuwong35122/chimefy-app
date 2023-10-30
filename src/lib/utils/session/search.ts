@@ -18,7 +18,11 @@ export async function queryUserSpace(
 	return ((data as any) ?? []) as MusicSpace[];
 }
 
-export async function queryPublicSpaces(supabase: SupabaseClient<Database>, name: string, type: string) {
+export async function queryPublicSpaces(
+	supabase: SupabaseClient<Database>,
+	name: string,
+	type: string
+) {
 	const query = supabase.from('session').select('*');
 
 	if (name) {
