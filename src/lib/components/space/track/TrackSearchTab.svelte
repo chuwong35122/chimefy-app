@@ -7,7 +7,7 @@
 	import { spotifyAccessToken } from '$stores/spotify/user';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { toastValue } from '$stores/notification/toast';
-	import PlaylistSearchResult from './tracks/PlaylistSearchResult.svelte';
+	import PlaylistSearchResult from './PlaylistSearchResult.svelte';
 
 	export let supabase: SupabaseClient;
 

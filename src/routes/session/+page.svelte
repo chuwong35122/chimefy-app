@@ -4,11 +4,11 @@
 	import { goto } from '$app/navigation';
 	import { fly } from 'svelte/transition';
 	import seo from '$constants/seo';
-	import MusicSpace from '$components/session/MusicSpace.svelte';
-	import SessionSearchFilter from '$components/session/SessionSearchFilter.svelte';
+	import MusicSpace from '$components/space/search/MusicSpace.svelte';
+	import SessionSearchFilter from '$components/space/search/SessionSearchFilter.svelte';
 	import type { MusicSessionInfo } from '$lib/types/session/session.interface.js';
 	import { onMount } from 'svelte';
-	import EmptySearchResultIndicator from '$components/session/EmptySearchResultIndicator.svelte';
+	import EmptySearchResultIndicator from '$components/space/search/EmptySearchResultIndicator.svelte';
 
 	export let data;
 	$: ({ supabase, userSpace } = data);
