@@ -18,8 +18,8 @@
 	});
 
 	const musicSessionTypes = SESSION_MUSIC_TYPES.map((type) => ({
-		name: type.name,
-		value: type.name
+		name: type,
+		value: type
 	}));
 </script>
 

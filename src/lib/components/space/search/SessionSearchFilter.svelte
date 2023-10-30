@@ -73,12 +73,12 @@
 	<div class="flex flex-row items-center gap-6 w-full flex-wrap justify-center">
 		{#each SESSION_MUSIC_TYPES as type}
 			<button
-				on:click={() => handleChangeMusicType(type.name)}
+				on:click={() => handleChangeMusicType(type)}
 				class={`cursor-pointer duration-150 hover:scale-105 text-sm underline underline-offset-2 ${
-					input.musicType === type.name ? 'text-primary-500' : 'text-white'
+					input.musicType === type ? 'text-primary-500' : 'text-white'
 				}`}
 			>
-				{type.name}
+				{type}
 			</button>
 		{/each}
 	</div>
