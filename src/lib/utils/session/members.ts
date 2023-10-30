@@ -1,6 +1,6 @@
-import type { SessionMember } from '$lib/types/session/member.interface';
+import type { SpaceMember } from '$lib/types/session/member.interface';
 
-export function orderSpaceMembers(members: SessionMember[]) {
+export function orderSpaceMembers(members: SpaceMember[]) {
 	if (!members) return [];
 
 	return members.sort((a, b) => {

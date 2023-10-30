@@ -1,4 +1,4 @@
-export interface SessionMember {
+export interface SpaceMember {
 	joined_since: Date;
 	display_name: string;
 	member_user_id: string;
@@ -6,9 +6,9 @@ export interface SessionMember {
 	profile_img?: string;
 }
 
-export interface MusicSessionMember {
+export interface MusicSpaceMember {
 	id?: number;
 	session_id: number;
 	session_uuid: string;
-	members: SessionMember[];
+	members: SpaceMember[];
 }

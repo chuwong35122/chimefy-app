@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { toastValue } from '$stores/notification/toast';
 	import { Badge, Button, Dropdown, DropdownItem, Modal, Tooltip } from 'flowbite-svelte';
-	import { currentSession } from '$stores/session';
 	import { spaceRoleStore, spaceStore } from '$stores/space/index';
 	import Icon from '@iconify/svelte';
 	import { goto } from '$app/navigation';
@@ -26,11 +25,11 @@
 	}
 
 	async function handleDeleteSession() {
-		if (!$currentSession?.id) return;
-		const { error } = await supabase.from('session').delete().eq('id', $currentSession.id);
+		if (!$spaceStore?.id) return;
+		const { error } = await supabase.from('session').delete().eq('id', $spaceStore.id);
 		goto('/session');
 		if (error?.code) {
-			toastValue.set({ message: 'Cannot delete session due to an error.', type: 'error' });
+			toastValue.set({ message: 'Error deleting this space.', type: 'error' });
 		}
 	}
 </script>
@@ -40,7 +39,7 @@
 		<div class="w-full grid place-items-center">
 			<Icon icon="fluent-emoji:thinking-face" class="w-20 h-20" />
 		</div>
-		<h3 class="text-white my-6">Are you sure you want to delete this session?</h3>
+		<h3 class="text-white my-6">Are you sure you want to delete this space?</h3>
 		<Button
 			on:click={handleDeleteSession}
 			color="red"

@@ -10,10 +10,10 @@ export interface MusicQueue {
 	artist: string;
 	duration_ms: number;
 	image_url?: string;
-	added_by: string; // member_user_id of SessionMember
+	added_by: string; // member_user_id of SpaceMember
 }
 
-export interface MusicSessionQueue {
+export interface MusicSpaceQueue {
 	id?: string;
 	updated_since?: Date;
 	queues: MusicQueue[];

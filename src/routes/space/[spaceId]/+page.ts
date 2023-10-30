@@ -6,7 +6,7 @@ export const load: PageLoad = async ({ parent, params, url }) => {
 	const { supabase } = await parent();
 	if (!params?.spaceId) {
 		throw error(404, {
-			message: 'Session ID not provided'
+			message: 'Space ID not provided'
 		});
 	}
 

@@ -1,7 +1,7 @@
 import { superValidate } from 'sveltekit-superforms/server';
 import { CreateSessionSchema } from '$lib/schemas/session.schema';
 import { fail, redirect } from '@sveltejs/kit';
-import type { CreateMusicSession } from '$lib/types/session/session.interface.js';
+import type { CreateMusicSpace } from '$lib/types/session/session.interface.js';
 
 export const load = async () => {
 	const form = await superValidate(CreateSessionSchema);
@@ -24,7 +24,7 @@ export const actions = {
 			});
 		}
 
-		const payload: CreateMusicSession = {
+		const payload: CreateMusicSpace = {
 			...form.data,
 			name: form.data.name,
 			is_private: form.data.is_private,
