@@ -1,7 +1,6 @@
 <script lang="ts">
-	import SecondaryButtonWrapper from '$components/buttons/SecondaryButtonWrapper.svelte';
 	import { userStore } from '$stores/auth/user';
-	import { Spinner } from 'flowbite-svelte';
+	import { Button, Spinner } from 'flowbite-svelte';
 	import { spotifyUserProfile } from '$stores/spotify/user';
 </script>
 
@@ -21,9 +20,7 @@
 		<div class="w-full h-4" />
 		<p class="text-sm">Please logout and login with a Premium Spotify account.</p>
 		<form method="POST" action="/signout?/signout">
-			<button class="w-full my-4">
-				<SecondaryButtonWrapper>Logout</SecondaryButtonWrapper>
-			</button>
+			<Button color="alternative" pill>Logout</Button>
 		</form>
 		<a
 			target="_blank"

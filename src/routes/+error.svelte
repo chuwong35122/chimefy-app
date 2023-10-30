@@ -1,8 +1,8 @@
 <script>
 	import { page } from '$app/stores';
-	import PrimaryButtonWrapper from '$components/buttons/PrimaryButtonWrapper.svelte';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
+	import { Button } from 'flowbite-svelte';
 
 	let previousPage = base || '/';
 
@@ -18,7 +18,7 @@
 		<div class="mt-4 grid place-items-center">
 			<p>Sorry, something just went wrong...</p>
 			<button on:click={goBack} class="mt-4">
-				<PrimaryButtonWrapper>Go Back</PrimaryButtonWrapper>
+				<Button color="alternative" pill>Go Back</Button>
 			</button>
 		</div>
 	</div>

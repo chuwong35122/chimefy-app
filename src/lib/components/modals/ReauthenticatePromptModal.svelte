@@ -1,10 +1,10 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import SecondaryButtonWrapper from '$components/buttons/SecondaryButtonWrapper.svelte';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { SPOTIFY_AUTH_SCOPES } from '$spotify/user';
 	import { page } from '$app/stores';
 	import { applyAction, enhance } from '$app/forms';
+	import { Button } from 'flowbite-svelte';
 
 	let url = '';
 	let hasClicked = false;
@@ -65,13 +65,11 @@
 		</p>
 
 		<button bind:this={formButton} type="submit" class="w-60 mt-4" aria-label="Signout & Login">
-			<SecondaryButtonWrapper
-				isLoading={hasClicked}
-				class="flex flex-row items-center justify-center p-0 w-full"
+			<Button color="alternative" pill
 			>
 				<Icon icon="mdi:location-enter" class="w-8 h-8 text-white mr-2" />
 				<p class="text-white">Reauthenticate</p>
-			</SecondaryButtonWrapper>
+			</Button>
 		</button>
 	</form>
 </div>
