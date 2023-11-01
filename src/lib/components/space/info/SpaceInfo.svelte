@@ -24,10 +24,10 @@
 		showDeleteModel = true;
 	}
 
-	async function handleDeleteSession() {
+	async function handleDeleteSpace() {
 		if (!$spaceStore?.id) return;
-		const { error } = await supabase.from('session').delete().eq('id', $spaceStore.id);
-		goto('/session');
+		const { error } = await supabase.from('space').delete().eq('id', $spaceStore.id);
+		goto('/space');
 		if (error?.code) {
 			toastValue.set({ message: 'Error deleting this space.', type: 'error' });
 		}
@@ -41,9 +41,9 @@
 		</div>
 		<h3 class="text-white my-6">Are you sure you want to delete this space?</h3>
 		<Button
-			on:click={handleDeleteSession}
+			on:click={handleDeleteSpace}
 			color="red"
-			aria-label="Delete session"
+			aria-label="Delete space"
 			class="mr-2 hover:scale-105 duration-150 w-40">Delete it!</Button
 		>
 		<Button color="alternative" aria-label="Cancel" class="hover:scale-105 duration-150 w-40"
