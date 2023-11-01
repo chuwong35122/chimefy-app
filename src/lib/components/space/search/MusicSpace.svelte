@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import type { MusicSpace } from '$lib/types/space/space.interface';
 	import Icon from '@iconify/svelte';
 	import { Badge } from 'flowbite-svelte';
@@ -7,16 +6,12 @@
 	export let space: MusicSpace;
 	export let index = 0;
 	export let isPrivate = false;
-
-	function handleSessionNavigate(session: MusicSpace) {
-		goto(`/space/${session?.uuid}`);
-	}
 </script>
 
 <div
 	class="flex flex-col items-center justify-between w-52 h-88 rounded-md bg-dark-400/10 hover:bg-dark-400/20 duration-150 overflow-hidden"
 >
-	<button type="button" on:click={() => handleSessionNavigate(space)}>
+	<a href={`/space/${space.uuid}`} type="button">
 		<div class="h-52 aspect-square overflow-hidden p-3">
 			{#if space?.queues && space?.queues[0] && space?.queues[0]?.image_url}
 				<img
@@ -45,5 +40,5 @@
 			<p class="capitalize font-medium text-ellipsis break-words my-2">{space?.name}</p>
 			<p class="text-sm text-dark-200">Lorem ipsum dolor sit amet consectetur</p>
 		</div>
-	</button>
+	</a>
 </div>
