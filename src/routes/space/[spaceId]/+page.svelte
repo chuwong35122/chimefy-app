@@ -14,7 +14,7 @@
 	import { sineIn } from 'svelte/easing';
 	import Icon from '@iconify/svelte';
 	import type { SpaceMember } from '$lib/types/space/member.interface.js';
-	import { orderSpaceMembers } from '$utils/session/members';
+	import { orderSpaceMembers } from '$utils/space/members.js';
 
 	export let data;
 	$: ({ space, url, supabase } = data);

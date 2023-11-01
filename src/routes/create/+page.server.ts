@@ -1,5 +1,5 @@
 import { superValidate } from 'sveltekit-superforms/server';
-import { CreateSpaceSchema } from '$lib/schemas/session.schema';
+import { CreateSpaceSchema } from '$schemas/space.schema';
 import { fail, redirect } from '@sveltejs/kit';
 
 export const load = async () => {

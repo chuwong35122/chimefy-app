@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import { querySpaceById } from '$utils/session/search';
+import { querySpaceById } from '$utils/space/search';
 
 export const load: PageLoad = async ({ parent, params, url }) => {
 	const { supabase } = await parent();
