@@ -5,10 +5,3 @@ export interface SpaceMember {
 	is_admin: boolean;
 	profile_img?: string;
 }
-
-export interface MusicSpaceMember {
-	id?: number;
-	session_id: number;
-	session_uuid: string;
-	members: SpaceMember[];
-}
