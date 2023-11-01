@@ -1,22 +1,21 @@
-import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
+import { SPACE_MUSIC_TYPES } from '$lib/constants/types';
 import { z } from 'zod';
 
-export const CreateSessionSchema = z.object({
+export const CreateSpaceSchema = z.object({
 	is_private: z.boolean({
-		required_error: "Session's privacvy is required!"
+		required_error: "Space's privacvy is required!"
 	}),
 	type: z
 		.string({
 			required_error: 'Music type is required!'
 		})
-		.refine((val) => SESSION_MUSIC_TYPES.map((music) => music).includes(val)),
+		.refine((val) => SPACE_MUSIC_TYPES.map((music) => music).includes(val)),
 	name: z
 		.string({
-			required_error: 'Session name is required!'
+			required_error: 'Space name is required!'
 		})
-		.min(6, 'Session name is too short!')
-		.max(50, 'Session name is too long!')
-		.nonempty('Session name is required!'),
+		.min(6, 'Space name is too short!')
+		.max(50, 'Space name is too long!'),
 	allow_member_queue: z
 		.boolean({
 			required_error: "Member's queue allowance is required!"

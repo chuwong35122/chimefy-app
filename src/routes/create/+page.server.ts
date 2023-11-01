@@ -1,16 +1,16 @@
 import { superValidate } from 'sveltekit-superforms/server';
-import { CreateSessionSchema } from '$lib/schemas/session.schema';
+import { CreateSpaceSchema } from '$lib/schemas/session.schema';
 import { fail, redirect } from '@sveltejs/kit';
 
 export const load = async () => {
-	const form = await superValidate(CreateSessionSchema);
+	const form = await superValidate(CreateSpaceSchema);
 
 	return { form };
 };
 
 export const actions = {
 	default: async (event) => {
-		const form = await superValidate(event.request, CreateSessionSchema);
+		const form = await superValidate(event.request, CreateSpaceSchema);
 		const session = await event.locals.getSession();
 
 		if (!form.valid) {

@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import { Search, Tooltip } from 'flowbite-svelte';
 	import { createEventDispatcher } from 'svelte';
-	import { SESSION_MUSIC_TYPES } from '$lib/constants/types';
+	import { SPACE_MUSIC_TYPES } from '$lib/constants/types';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { queryPublicSpaces } from '$utils/session/search';
 
@@ -69,7 +69,7 @@
 </form>
 <!-- Chips -->
 <div class="flex flex-row items-center gap-6 w-full flex-wrap justify-center my-4">
-	{#each SESSION_MUSIC_TYPES as type}
+	{#each SPACE_MUSIC_TYPES as type}
 		<button
 			on:click={() => handleChangeMusicType(type)}
 			class={`cursor-pointer duration-150 hover:scale-105 text-sm underline underline-offset-2 ${

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Label, Input, Select, Tooltip, Button, GradientButton } from 'flowbite-svelte';
-	import { SESSION_MUSIC_TYPES } from '$constants/types';
+	import { SPACE_MUSIC_TYPES } from '$constants/types';
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import ErrorMessage from '$components/forms/ErrorMessage.svelte';
@@ -17,7 +17,7 @@
 		clearOnSubmit: 'none'
 	});
 
-	const musicSessionTypes = SESSION_MUSIC_TYPES.map((type) => ({
+	const musicSessionTypes = SPACE_MUSIC_TYPES.map((type) => ({
 		name: type,
 		value: type
 	}));

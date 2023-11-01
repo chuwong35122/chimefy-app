@@ -1,4 +1,4 @@
-export const SESSION_MUSIC_TYPES = [
+export const SPACE_MUSIC_TYPES = [
 	'Chill',
 	'Hiphop',
 	'Anime',
