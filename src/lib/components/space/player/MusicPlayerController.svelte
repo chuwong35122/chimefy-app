@@ -20,7 +20,7 @@
 	let SpotifyPlayer: Spotify.Player;
 	let trackDurationTimer: NodeJS.Timer;
 
-	const channel = supabase.channel(`session_player_listener_${spaceId}`, {
+	const channel = supabase.channel(`space_player_listener_${spaceId}`, {
 		config: {
 			broadcast: {
 				self: true
