@@ -1,5 +1,5 @@
-import type { SpaceMember } from '$lib/types/session/member.interface';
-import type { MusicQueueSpace, MusicSpaceRole } from '$lib/types/session/session.interface';
+import type { SpaceMember } from '$lib/types/space/member.interface';
+import type { MusicQueueSpace, MusicSpaceRole } from '$lib/types/space/space.interface';
 import { writable } from 'svelte/store';
 
 export const spaceStore = writable<MusicQueueSpace>();

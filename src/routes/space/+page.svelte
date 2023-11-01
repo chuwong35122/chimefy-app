@@ -6,7 +6,7 @@
 	import seo from '$constants/seo';
 	import MusicSpace from '$components/space/search/MusicSpace.svelte';
 	import SpaceSearchFilter from '$components/space/search/SpaceSearchFilter.svelte';
-	import type { MusicSpace as MusicSpaceType } from '$lib/types/session/session.interface.js';
+	import type { MusicSpace as MusicSpaceType } from '$lib/types/space/space.interface.js';
 	import { onMount } from 'svelte';
 	import EmptySearchResultIndicator from '$components/space/search/EmptySearchResultIndicator.svelte';
 

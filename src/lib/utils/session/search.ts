@@ -1,6 +1,6 @@
 import type { Database } from '$lib/types/database/supabase.types';
-import type { MusicQueue } from '$lib/types/session/queue.interface';
-import type { MusicSpace } from '$lib/types/session/session.interface';
+import type { MusicQueue } from '$lib/types/space/queue.interface';
+import type { MusicSpace } from '$lib/types/space/space.interface';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 export async function queryUserSpace(

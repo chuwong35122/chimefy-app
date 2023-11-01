@@ -4,7 +4,7 @@
 	import type { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
 	import { playSingleTrack, sliceQueue } from '$utils/session/queue';
 	import { pauseTrack } from '$spotify/player';
-	import type { TrackBroadcastPayload } from '$lib/types/session/broadcast.interface';
+	import type { TrackBroadcastPayload } from '$lib/types/space/broadcast.interface';
 	import { toastValue } from '$stores/notification/toast';
 	import { spotifyAccessToken, spotifyPlayerId } from '$stores/spotify/user';
 	import { devModeStore } from '$stores/settings';

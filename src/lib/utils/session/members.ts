@@ -1,4 +1,4 @@
-import type { SpaceMember } from '$lib/types/session/member.interface';
+import type { SpaceMember } from '$lib/types/space/member.interface';
 
 export function orderSpaceMembers(members: SpaceMember[]) {
 	if (!members) return [];
