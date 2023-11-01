@@ -4,7 +4,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { SPACE_MUSIC_TYPES } from '$lib/constants/types';
 	import type { SupabaseClient } from '@supabase/supabase-js';
-	import { queryPublicSpaces } from '$utils/session/search';
+	import { queryPublicSpaces } from '$utils/space/search';
 
 	export let supabase: SupabaseClient;
 

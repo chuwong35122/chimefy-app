@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import { queryUserSpace, queryPublicSpaces } from '$utils/session/search';
+import { queryUserSpace, queryPublicSpaces } from '$utils/space/search';
 
 export const load: PageLoad = async ({ parent }) => {
 	const { supabase, session } = await parent();

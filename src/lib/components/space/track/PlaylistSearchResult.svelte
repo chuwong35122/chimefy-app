@@ -7,7 +7,7 @@
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { spaceStore } from '$stores/space';
 	import { Tooltip } from 'flowbite-svelte';
-	import { getPlaylistTracks } from '$utils/session/track';
+	import { getPlaylistTracks } from '$utils/space/track';
 	import { spotifyAccessToken } from '$stores/spotify/user';
 	import { mapTrackToQueuePayload, randomPlaylistTracks } from '$utils/spotify/playlist';
 

@@ -2,7 +2,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { isPlayingStatus, playingInfo, playingTrackId, playingDurationMs } from '$stores/session';
 	import type { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
-	import { playSingleTrack, sliceQueue } from '$utils/session/queue';
+	import { playSingleTrack, sliceQueue } from '$utils/space/queue';
 	import { pauseTrack } from '$spotify/player';
 	import type { TrackBroadcastPayload } from '$lib/types/space/broadcast.interface';
 	import { toastValue } from '$stores/notification/toast';

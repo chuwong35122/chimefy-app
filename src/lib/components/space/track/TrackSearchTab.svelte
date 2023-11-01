@@ -3,7 +3,7 @@
 	import { Search, Spinner, TabItem, Tabs } from 'flowbite-svelte';
 	import MusicSearchResult from './MusicSearchResult.svelte';
 	import type { Track, SimplifiedPlaylist } from 'spotify-types';
-	import { searchPlaylist, searchTrack } from '$utils/session/track';
+	import { searchPlaylist, searchTrack } from '$utils/space/track';
 	import { spotifyAccessToken } from '$stores/spotify/user';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { toastValue } from '$stores/notification/toast';
