@@ -17,7 +17,7 @@
 		clearOnSubmit: 'none'
 	});
 
-	const musicSessionTypes = SPACE_MUSIC_TYPES.map((type) => ({
+	const musicSpaceTypes = SPACE_MUSIC_TYPES.map((type) => ({
 		name: type,
 		value: type
 	}));
@@ -25,10 +25,10 @@
 
 <svelte:head>
 	<meta charset="UTF-8" />
-	<meta name="description" content="Create a Session" />
+	<meta name="description" content="Create a Space" />
 	<meta
 		name="keywords"
-		content="chimefy, spotify, listen together, join session, create session, public session, private session"
+		content="chimefy, spotify, listen together, join space, create space, public space, private space"
 	/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -36,7 +36,7 @@
 	<meta property="og:title" content={seo.createSpace.title} />
 	<meta
 		property="og:description"
-		content="Create your own session with unlimited number of members and sync all your Spotify music in real-time"
+		content="Create your own space with unlimited number of members and sync all your Spotify music in real-time"
 	/>
 	<meta property="og:image" content={seo.image} />
 	<meta property="og:url" content={seo.createSpace.url} />
@@ -49,7 +49,7 @@
 	<meta name="twitter:image" content={seo.image} />
 	<meta name="twitter:image:alt" content={seo.imageAlt} />
 
-	<title>Create a Session</title>
+	<title>Create a space</title>
 </svelte:head>
 
 <div class="p-10 bg-white/5 rounded-2xl duration-150 hover:bg-white/10 w-[500px] mt-20">
@@ -58,21 +58,21 @@
 	{/if}
 
 	<Tooltip triggeredBy="[id=private-info]" placement="right">
-		Private session will not be shown on the search section.
+		Private space will not be shown on the search section.
 	</Tooltip>
 	<Tooltip triggeredBy="[id=allow-queue-info]" placement="right">
 		Do you want to allow your members to add track(s) to the queue?
 	</Tooltip>
 
-	<form class="flex flex-col space-y-6" method="POST">
-		<h3 class="text-2xl font-semibold text-white p-0">Create Your Session</h3>
+	<form class="flex flex-col space-y-4" method="POST">
+		<h3 class="text-2xl font-semibold text-primary-500 p-0">Create a Space</h3>
 		<Label class="space-y-2">
-			<span class="text-white">Your session name</span>
+			<span class="text-white">Your space name</span>
 			<Input
 				bind:value={$form.name}
 				name="name"
 				type="text"
-				placeholder="Session Name"
+				placeholder="Space Name"
 				required
 				color="green"
 			/>
@@ -87,7 +87,7 @@
 				underline
 				bind:value={$form.type}
 				placeholder="Select music type"
-				items={musicSessionTypes}
+				items={musicSpaceTypes}
 				class="!text-white mb-2"
 			/>
 			{#if $errors?.type}
@@ -102,7 +102,7 @@
 				bind:checked={$form.is_private}
 				class="text-primary mr-2 rounded-sm"
 			/>
-			<p>Set this session private?</p>
+			<p>Set this space private?</p>
 			<Icon
 				icon="material-symbols:info"
 				id="private-info"
@@ -125,9 +125,9 @@
 			/>
 		</div>
 		<GradientButton type="submit" disabled={$delayed} color="green" pill
-			>Create Session</GradientButton
+			>Create Space</GradientButton
 		>
-		<Button type="button" on:click={() => goto('/session')} color="alternative" pill class="w-full"
+		<Button type="button" on:click={() => goto('/space')} color="alternative" pill class="w-full"
 			>Go Back</Button
 		>
 	</form>
