@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SpaceMember } from '$lib/types/session/member.interface';
+	import type { SpaceMember } from '$lib/types/space/member.interface';
 		import { Badge } from 'flowbite-svelte';
 
 	export let member: SpaceMember;

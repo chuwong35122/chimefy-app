@@ -1,4 +1,4 @@
-import type { MusicQueue } from '$lib/types/session/queue.interface';
+import type { MusicQueue } from '$lib/types/space/queue.interface';
 import type { SearchType } from '$lib/types/spotify/track.interface';
 import { joinArtists } from '$utils/track';
 import type { PlaylistTrack, Track } from 'spotify-types';

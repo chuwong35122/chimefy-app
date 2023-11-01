@@ -3,7 +3,7 @@
 	import type { SimplifiedPlaylist } from 'spotify-types';
 	import { toastValue } from '$stores/notification/toast';
 	import { userStore } from '$stores/auth/user';
-	import type { MusicQueue } from '$lib/types/session/queue.interface';
+	import type { MusicQueue } from '$lib/types/space/queue.interface';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { spaceStore } from '$stores/space';
 	import { Tooltip } from 'flowbite-svelte';

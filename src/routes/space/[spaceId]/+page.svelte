@@ -13,7 +13,7 @@
 	import SpaceMembers from '$components/space/members/SpaceMembers.svelte';
 	import { sineIn } from 'svelte/easing';
 	import Icon from '@iconify/svelte';
-	import type { SpaceMember } from '$lib/types/session/member.interface.js';
+	import type { SpaceMember } from '$lib/types/space/member.interface.js';
 	import { orderSpaceMembers } from '$utils/session/members';
 
 	export let data;
@@ -93,7 +93,7 @@
 	<meta name="description" content="Listen together" />
 	<meta
 		name="keywords"
-		content="chimefy, spotify, listen together, join session, public session, private session"
+		content="chimefy, spotify, listen together, join space, public space, private space"
 	/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 

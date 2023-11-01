@@ -1,4 +1,4 @@
-import type { MusicQueue } from '$lib/types/session/queue.interface';
+import type { MusicQueue } from '$lib/types/space/queue.interface';
 
 export async function setActiveSpotifyPlayer(device_id: string, access_token: string) {
 	await fetch('/api/spotify/playback/transfer', {

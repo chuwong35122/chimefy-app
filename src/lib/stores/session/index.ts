@@ -1,4 +1,4 @@
-import type { MusicQueue } from '$lib/types/session/queue.interface';
+import type { MusicQueue } from '$lib/types/space/queue.interface';
 import { writable } from 'svelte/store';
 
 export const playingInfo = writable<MusicQueue | null>(null);
