@@ -75,7 +75,7 @@
 					<button
 						on:click={() => removeQueue(i)}
 						aria-label="Remove this queue"
-						class="absolute z-20 p-2 top-4 right-0 active:scale-125 duration-150 hidden group-hover:block"
+						class="absolute z-20 p-2 top-5 right-4 active:scale-125 duration-150 hidden group-hover:block"
 					>
 						<Icon
 							icon="material-symbols:close"
