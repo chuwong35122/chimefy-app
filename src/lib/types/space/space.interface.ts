@@ -24,5 +24,3 @@ export interface MusicSpace {
 	allow_member_queue: boolean;
 	queues: MusicQueue[];
 }
-
-export type SessionBroadcastStatus = 'broadcasting' | 'waiting';
