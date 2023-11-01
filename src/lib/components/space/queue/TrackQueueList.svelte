@@ -78,7 +78,7 @@
 						class="absolute z-20 p-2 top-4 right-0 active:scale-125 duration-150 hidden group-hover:block"
 					>
 						<Icon
-							icon="mdi:trash"
+							icon="material-symbols:close"
 							class="w-6 h-6 text-dark-200 hover:scale-110 hover:text-primary-700 duration-200"
 						/>
 					</button>
