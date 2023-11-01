@@ -37,7 +37,7 @@
 
 		spaceChannel = supabase
 			.channel(`space_listener_${space.uuid}`)
-			.on('postgres_changes', { event: '*', schema: 'public', table: 'session' }, (payload) => {
+			.on('postgres_changes', { event: '*', schema: 'public', table: 'space' }, (payload) => {
 				const _payload = payload.new as any;
 				spaceStore.update((space) => {
 					return {
