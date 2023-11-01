@@ -67,12 +67,6 @@
 			}
 		}, 750);
 	}
-
-	// $: if (loading && !debouncedSearchTerms) {
-	// 	setTimeout(() => {
-	// 		loading = false
-	// 	}, 1000);
-	// }
 </script>
 
 <div class="w-full grid place-items-center">
@@ -82,9 +76,9 @@
 		</div>
 		<Tabs style="underline" contentClass="bg-transparent">
 			<TabItem open title="Tracks" on:click={() => (type = 'track')}>
-				<div class="w-full overflow-y-auto overflow-x-hidden">
+				<div class="w-full h-[420px] overflow-y-auto overflow-x-hidden">
 					{#if loading}
-						<div class="w-full h-full grid place-items-center">
+						<div class="grid place-items-center h-full w-full">
 							<Spinner size="10" color="green" />
 						</div>
 					{:else if trackSearchResults.length > 0}
