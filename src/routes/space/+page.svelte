@@ -80,7 +80,7 @@
 	<div class="h-6" />
 	<div class="w-full grid place-items-center">
 		<a
-			href="/create"	
+			href="create"	
 			class="text-sm text-dark-200 font-light hover:text-white duration-200 underline underline-offset-2"
 			>Create a space</a
 		>
