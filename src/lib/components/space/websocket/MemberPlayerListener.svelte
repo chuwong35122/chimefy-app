@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
-	import { isPlayingStatus, playingInfo, playingTrackId, playingDurationMs } from '$stores/session';
+	import { isPlayingStatus, playingInfo, playingTrackId, playingDurationMs } from '$stores/player';
 	import type { RealtimeChannel, SupabaseClient } from '@supabase/supabase-js';
 	import { playSingleTrack, sliceQueue } from '$utils/space/queue';
 	import { pauseTrack } from '$spotify/player';

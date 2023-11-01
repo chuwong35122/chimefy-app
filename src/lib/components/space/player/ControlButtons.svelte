@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { TrackBroadcastPayload } from '$lib/types/space/broadcast.interface';
 	import { toastValue } from '$stores/notification/toast';
-	import { isPlayingStatus, playingDurationMs, playingInfo, playingTrackId } from '$stores/session';
+	import { isPlayingStatus, playingDurationMs, playingInfo, playingTrackId } from '$stores/player';
 	import Icon from '@iconify/svelte';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { Tooltip } from 'flowbite-svelte';

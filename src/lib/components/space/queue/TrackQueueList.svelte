@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { playingInfo } from '$stores/session';
+	import { playingInfo } from '$stores/player';
 	import { millisecondToMinuteSeconds } from '$lib/utils/common/time';
 	import Icon from '@iconify/svelte';
 	import type { MusicQueue } from '$lib/types/space/queue.interface';
