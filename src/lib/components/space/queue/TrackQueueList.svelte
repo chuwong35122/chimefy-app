@@ -31,7 +31,7 @@
 		if (queues.length > 0) {
 			queues.splice(index, 1);
 		}
-		await supabase.from('session').update({ queues }).eq('id', $spaceStore?.id);
+		await supabase.from('space').update({ queues }).eq('id', $spaceStore?.id);
 	}
 </script>
 

@@ -39,7 +39,7 @@ async function handleAddQueue() {
 		try {
 			const queues: MusicQueue[] = $spaceStore?.queues;
 			await supabase
-				.from('session')
+				.from('space')
 				.update({
 					queues: [...queues, queuePayload]
 				})

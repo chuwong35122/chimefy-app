@@ -21,7 +21,7 @@ export async function sliceQueue(
 	const filtered = _queues.filter((q) => q.id !== queueTargetId);
 
 	const { data } = await supabase
-		.from('session')
+		.from('space')
 		.update({ queues: filtered })
 		.eq('id', spaceId)
 		.select();

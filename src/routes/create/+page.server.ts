@@ -1,7 +1,6 @@
 import { superValidate } from 'sveltekit-superforms/server';
 import { CreateSessionSchema } from '$lib/schemas/session.schema';
 import { fail, redirect } from '@sveltejs/kit';
-import type { CreateMusicSpace } from '$lib/types/session/session.interface.js';
 
 export const load = async () => {
 	const form = await superValidate(CreateSessionSchema);
@@ -24,24 +23,25 @@ export const actions = {
 			});
 		}
 
-		const payload: CreateMusicSpace = {
+		const payload = {
 			...form.data,
 			name: form.data.name,
 			is_private: form.data.is_private,
 			type: form.data.type,
 			created_by: session?.user?.id,
-			queues: []
+			queues: [],
+			allow_member_queue: form.data.allow_member_queue
 		};
 
-		const { data } = await event.locals.supabase.from('session').insert(payload).select().single();
+		const { data } = await event.locals.supabase.from('space').insert(payload).select().single();
 
 		if (data && data?.id && data?.uuid != null) {
 			await event.locals.supabase
-				.from('session_member')
-				.insert({ members: [], session_uuid: data?.uuid, session_id: data?.id })
+				.from('space_member')
+				.insert({ members: [], space_uuid: data?.uuid, space_id: data?.id })
 				.select();
 
-			throw redirect(302, `/session/${data.uuid}`);
+			throw redirect(302, `/space/${data.uuid}`);
 		}
 
 		return { form };

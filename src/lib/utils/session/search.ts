@@ -10,7 +10,7 @@ export async function queryUserSpace(
 	if (!id) return [];
 
 	const { data } = await supabase
-		.from('session')
+		.from('space')
 		.select('*')
 		.eq('created_by', id)
 		.order('created_at', { ascending: false });
@@ -23,7 +23,7 @@ export async function queryPublicSpaces(
 	name: string,
 	type: string
 ) {
-	const query = supabase.from('session').select('*');
+	const query = supabase.from('space').select('*');
 
 	if (name) {
 		query.textSearch('name', `'${name}'`);
@@ -42,7 +42,7 @@ export async function queryPublicSpaces(
 }
 
 export async function querySpaceById(supabase: SupabaseClient<Database>, id: string) {
-	const { data } = await supabase.from('session').select('*').eq('uuid', id).single();
+	const { data } = await supabase.from('space').select('*').eq('uuid', id).single();
 
 	return data as any as MusicSpace;
 }
@@ -51,7 +51,7 @@ export async function querySpaceQueueById(
 	supabase: SupabaseClient<Database>,
 	id: string
 ): Promise<MusicQueue | null> {
-	const { data } = await supabase.from('session_queue').select().eq('session_uuid', id).single();
+	const { data } = await supabase.from('space_queue').select().eq('space_uuid', id).single();
 
 	return data as any as MusicQueue;
 }

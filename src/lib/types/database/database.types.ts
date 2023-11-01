@@ -39,7 +39,7 @@ export interface Database {
 				};
 				Relationships: [
 					{
-						foreignKeyName: 'session_created_by_fkey';
+						foreignKeyName: 'space_created_by_fkey';
 						columns: ['created_by'];
 						referencedRelation: 'users';
 						referencedColumns: ['id'];
@@ -70,9 +70,9 @@ export interface Database {
 				};
 				Relationships: [
 					{
-						foreignKeyName: 'session_member_space_id_fkey';
+						foreignKeyName: 'space_member_space_id_fkey';
 						columns: ['space_id'];
-						referencedRelation: 'session';
+						referencedRelation: 'space';
 						referencedColumns: ['id'];
 					}
 				];
