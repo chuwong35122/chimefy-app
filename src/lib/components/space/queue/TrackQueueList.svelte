@@ -7,12 +7,14 @@
 	import DebugText from '$components/debugger/DebugText.svelte';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { spaceStore } from '$stores/space';
-	import { Badge } from 'flowbite-svelte';
+	import { Badge, Dropdown, DropdownItem } from 'flowbite-svelte';
 
 	export let supabase: SupabaseClient;
 
 	let imgRef: HTMLImageElement;
 	let queues: MusicQueue[] = [];
+
+	let showRemovalMenu = false;
 
 	function handleImageError() {
 		imgRef.src = '/logo/disc.png';
@@ -24,23 +26,41 @@
 		}
 	});
 
-	async function removeQueue(index: number) {
-		if (!$spaceStore || !$spaceStore) return;
-
+	async function removeSingleQueue(index: number) {
+		if (!$spaceStore) return;
+		
 		const queues: MusicQueue[] = $spaceStore?.queues;
 		if (queues.length > 0) {
 			queues.splice(index, 1);
 		}
 		await supabase.from('space').update({ queues }).eq('id', $spaceStore?.id);
+		
+		showRemovalMenu = false
+	}
+
+	async function removeEntirePlaylist(playlistId: string | null) {
+		if (!$spaceStore) return;
+
+		const queues: MusicQueue[] = $spaceStore?.queues;
+		const filtered = queues.filter((queue) => queue.playlist_id !== playlistId);
+		await supabase.from('space').update({ queues: filtered }).eq('id', $spaceStore?.id);
+
+		showRemovalMenu = false
+	}
+
+	function handleOpenDropdown() {
+		showRemovalMenu = true;
 	}
 </script>
 
 <!-- Each Queues -->
-<div class="w-full h-[500px] overflow-y-auto grid place-items-center overflow-x-hidden">
+<div class="w-full h-[500px] overflow-y-auto overflow-x-hidden">
 	{#each queues as queue, i}
 		<div
+			on:mouseleave={() => (showRemovalMenu = false)}
 			in:fly={{ duration: 200, x: 200 }}
 			out:fade={{ duration: 200 }}
+			role="listitem"
 			class={`mb-1 flex flex-row items-center w-full relative cursor-pointer h-20 hover:bg-black duration-200 rounded-md group ${
 				queue?.uri === $playingInfo?.uri ? 'bg-white/10' : null
 			}`}
@@ -59,7 +79,7 @@
 				<div class="text-ellipsis w-[80%]">
 					<div class="flex flex-row gap-2 mb-1">
 						{#if queue.playlist_id}
-							<Badge rounded color="green" class='text-xs py-0.5 px-1'>Playlist</Badge>
+							<Badge rounded color="green" class="text-xs py-0.5 px-1">Playlist</Badge>
 						{/if}
 						<p class="text-sm font-medium line-clamp-1">{queue.name}</p>
 					</div>
@@ -73,7 +93,9 @@
 				</div>
 				{#if queue?.uri !== $playingInfo?.uri}
 					<button
-						on:click={() => removeQueue(i)}
+						on:mouseenter={() => (showRemovalMenu = queue?.playlist_id ? true : false)}
+						on:click={() =>
+							queue?.playlist_id ? handleOpenDropdown : removeSingleQueue(i)}
 						aria-label="Remove this queue"
 						class="absolute z-20 p-2 top-5 right-4 active:scale-125 duration-150 hidden group-hover:block"
 					>
@@ -82,6 +104,15 @@
 							class="w-6 h-6 text-dark-200 hover:scale-110 hover:text-primary-700 duration-200"
 						/>
 					</button>
+					{#if showRemovalMenu}
+						<Dropdown class="w-48">
+							<DropdownItem on:click={() => removeSingleQueue(i)}>Delete this queue</DropdownItem>
+							<DropdownItem
+								on:click={() => removeEntirePlaylist(queue.playlist_id)}
+								class="text-red-500">Delete entire playlist</DropdownItem
+							>
+						</Dropdown>
+					{/if}
 				{/if}
 			</div>
 		</div>
