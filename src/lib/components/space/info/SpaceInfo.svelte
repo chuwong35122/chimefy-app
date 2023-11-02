@@ -11,7 +11,7 @@
 	export let hidden: boolean;
 
 	let showDeleteModel = false;
-	let dropdownOpen = false
+	let dropdownOpen = false;
 
 	const dispatch = createEventDispatcher();
 
@@ -20,16 +20,15 @@
 		navigator.clipboard.writeText($spaceStore?.uuid);
 	}
 
-	function handleOpenDeleteModal() {
-		showDeleteModel = true;
-	}
-
 	async function handleDeleteSpace() {
 		if (!$spaceStore?.id) return;
+
 		const { error } = await supabase.from('space').delete().eq('id', $spaceStore.id);
-		goto('/space');
-		if (error?.code) {
+
+		if (error) {
 			toastValue.set({ message: 'Error deleting this space.', type: 'error' });
+		} else {
+			goto('/space');
 		}
 	}
 </script>
@@ -87,11 +86,10 @@
 		</div>
 	</div>
 
-	
 	<Button size="xs"
 		>Options<Icon icon="mdi:chevron-down" class="w-3 h-3 ml-2 text-white dark:text-white" /></Button
 	>
-	<Dropdown bind:open={dropdownOpen} class='w-44'>
+	<Dropdown bind:open={dropdownOpen} class="w-44">
 		<DropdownItem
 			id="copy-id-btn"
 			aria-label="Copy this space ID"
@@ -104,10 +102,10 @@
 		</DropdownItem>
 		<DropdownItem
 			on:click={() => {
-			dropdownOpen = false
+				dropdownOpen = false;
 				dispatch('viewMember', {
 					hidden: !hidden
-				})
+				});
 			}}
 			class="flex flex-row items-center text-sm font-medium gap-2"
 		>
@@ -116,7 +114,10 @@
 			>
 		</DropdownItem>
 		{#if $spaceRoleStore === 'admin'}
-			<DropdownItem class="flex flex-row items-center text-sm font-medium gap-2 text-red-600">
+			<DropdownItem
+				on:click={() => (showDeleteModel = true)}
+				class="flex flex-row items-center text-sm font-medium gap-2 text-red-600"
+			>
 				<Icon icon="mdi:delete" width={16} height={16} /><span>Delete Space</span>
 			</DropdownItem>
 		{/if}
