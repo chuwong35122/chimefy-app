@@ -9,7 +9,7 @@
 </script>
 
 <div
-	class="flex flex-col items-center justify-between w-52 h-88 rounded-md bg-dark-400/10 hover:bg-dark-400/20 duration-150 overflow-hidden"
+	class="flex flex-col items-center justify-between w-52 h-[360px] rounded-md bg-dark-400/40 hover:scale-105 duration-150 overflow-hidden"
 >
 	<a href={`/space/${space.uuid}`} type="button">
 		<div class="h-52 aspect-square overflow-hidden p-3">
@@ -37,8 +37,8 @@
 				{/if}
 			</div>
 
-			<p class="capitalize font-medium text-ellipsis break-words my-2">{space?.name}</p>
-			<p class="text-sm text-dark-200">Lorem ipsum dolor sit amet consectetur</p>
+			<p class="capitalize font-medium text-ellipsis break-words my-2 line-clamp-2">{space?.name}</p>
+			<p class="text-sm text-dark-200 line-clamp-2">Lorem ipsum dolor sit amet consectetur</p>
 		</div>
 	</a>
 </div>

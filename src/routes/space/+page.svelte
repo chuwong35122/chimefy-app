@@ -105,7 +105,7 @@
 			{#if userSpace?.length > 0}
 				<TabItem title="My Spaces">
 					<div
-						class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[460px] overflow-y-auto"
+						class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 min-h-[400px] max-h-[460px] overflow-y-auto"
 					>
 						{#each userSpace as space, i}
 							<MusicSpace {space} index={i} isPrivate={space?.is_private} />
