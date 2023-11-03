@@ -36,11 +36,11 @@
 					<Icon icon="ic:round-lock" width={14} height={14} />
 				{/if}
 			</div>
-			<p class="capitalize font-medium text-ellipsis break-words my-2 line-clamp-2">
+			<p class="capitalize text-sm font-medium text-ellipsis break-words my-2 line-clamp-2">
 				{space?.name}
 			</p>
 			{#if space.description}
-				<p class="text-sm text-dark-200 line-clamp-2">{space?.description}</p>
+				<p class="text-xs text-dark-200 line-clamp-3">{space?.description}</p>
 			{/if}
 		</div>
 	</a>
