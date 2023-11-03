@@ -41,19 +41,19 @@ input:focus {
 }
 
 .background-animate {
-    background-size: 200%;
+	background-size: 200%;
 
-    -webkit-animation: animate-gradient 30s ease infinite;
-    -moz-animation: animate-gradient 30s ease infinite;
-    animation: animate-gradient 30s ease infinite;
-  }
+	-webkit-animation: animate-gradient 30s ease infinite;
+	-moz-animation: animate-gradient 30s ease infinite;
+	animation: animate-gradient 30s ease infinite;
+}
 
-  @keyframes animate-gradient {
-    0%,
-    100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-  }
+@keyframes animate-gradient {
+	0%,
+	100% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+}
