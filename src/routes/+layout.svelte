@@ -61,7 +61,9 @@
 <Modal open={isSpotifyPremiumModalOpen} size="lg" class="modal-glass z-50 relative">
 	<SpotifyPremiumInfoModal />
 </Modal>
-<div class="w-screen h-screen overflow-x-hidden bg-dark-900">
+<div
+	class="min-h-screen overflow-x-hidden bg-black bg-gradient-to-r from-primary-800/20 via-dark-600/50 to-primary-600/20 background-animate"
+>
 	<NavBar />
 	<div class="w-full grid place-items-center">
 		<slot />
