@@ -29,7 +29,8 @@ export const actions = {
 			created_by: session?.user?.id,
 			queues: [],
 			allow_member_queue: form.data.allow_member_queue,
-			cover_image: form.data.cover_image
+			cover_image: form.data.cover_image,
+			description: form.data.description
 		};
 
 		const { data } = await event.locals.supabase.from('space').insert(payload).select().single();
