@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+	.bg-glass {
+		@apply backdrop-blur-md;
+		@apply bg-white/5;
+		@apply border;
+		@apply border-white/10;
+	}
+}
+
 html {
 	@apply text-white;
 }
