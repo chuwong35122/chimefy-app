@@ -91,12 +91,13 @@
 					required
 					color="green"
 				/>
+				<p class="text-xs text-dark-200">This image will show when you don't have queues</p>
 				{#if $errors?.cover_image && $errors.cover_image[0]}
 					<ErrorMessage message={$errors?.cover_image[0]} />
 				{/if}
 			</Label>
 			<Label class="space-y-2">
-				<span class="text-white">Your space name</span>
+				<span class="text-white">Name</span>
 				<Input
 					bind:value={$form.name}
 					name="name"
@@ -110,7 +111,7 @@
 				{/if}
 			</Label>
 			<Label class="space-y-2">
-				<span class="text-white">Your space description</span>
+				<span class="text-white">Description</span>
 				<Input
 					bind:value={$form.description}
 					name="description"
