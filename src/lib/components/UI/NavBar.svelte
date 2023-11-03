@@ -35,7 +35,7 @@
 	</div>
 	<div>
 		{#if $userStore?.id}
-			<div class="relative z-50">
+			<div class="relative">
 				<!-- Large Profile -->
 				<div class="md:w-[200px]">
 					{#if $userStore?.user_metadata?.avatar_url}
@@ -48,7 +48,7 @@
 									src={$userStore?.user_metadata?.avatar_url}
 									alt="Spotify Profile"
 									draggable="false"
-									class="rounded-full w-[40px] h-[40px]"
+									class="rounded-full w-10 h-10"
 								/>
 							</div>
 							<div
@@ -77,7 +77,6 @@
 											bind:checked={devModeOn}
 											on:change={handleChangeDevMode}
 											color="green"
-											class="!mx-[-4px]"
 										/>
 									</div>
 								</div>
