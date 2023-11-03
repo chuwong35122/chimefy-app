@@ -4,7 +4,6 @@ import { fail, redirect } from '@sveltejs/kit';
 
 export const load = async () => {
 	const form = await superValidate(CreateSpaceSchema);
-
 	return { form };
 };
 
@@ -24,13 +23,13 @@ export const actions = {
 		}
 
 		const payload = {
-			...form.data,
 			name: form.data.name,
 			is_private: form.data.is_private,
 			type: form.data.type,
 			created_by: session?.user?.id,
 			queues: [],
-			allow_member_queue: form.data.allow_member_queue
+			allow_member_queue: form.data.allow_member_queue,
+			cover_image: form.data.cover_image
 		};
 
 		const { data } = await event.locals.supabase.from('space').insert(payload).select().single();

@@ -20,5 +20,6 @@ export const CreateSpaceSchema = z.object({
 		.boolean({
 			required_error: "Member's queue allowance is required!"
 		})
-		.default(true)
+		.default(true),
+	cover_image: z.string().url({ message: 'This is not a valid URL!' }).default('')
 });

@@ -53,9 +53,7 @@
 </svelte:head>
 
 <div class="w-full grid place-items-center">
-	<div
-		class="p-10 bg-glass rounded-2xl duration-150 hover:bg-white/[0.08] w-[500px] mt-20"
-	>
+	<div class="p-10 bg-glass rounded-2xl duration-150 hover:bg-white/[0.08] w-[500px] mt-8">
 		{#if $devModeStore}
 			<SuperDebug data={$form} />
 		{/if}
@@ -68,7 +66,35 @@
 		</Tooltip>
 
 		<form class="flex flex-col space-y-4" method="POST">
-			<h3 class="text-2xl font-semibold text-primary-500 p-0">Create a Space</h3>
+			<h3 class="text-2xl font-semibold text-primary-500 text-center">Create a Space</h3>
+			<div class="m-auto w-full">
+				<div class="w-full grid place-items-center space-y-2">
+					<div class="w-24 h-24 m-auto rounded-md bg-white grid place-items-center overflow-hidden">
+						{#if $form.cover_image}
+							<img src={$form.cover_image} alt="Space Cover" class="object-cover w-24 h-24" />
+						{:else}
+							<Icon icon="material-symbols:image-rounded" class="w-20 h-20 text-dark-500" />
+						{/if}
+					</div>
+					<a href="https://unsplash.com/" target="_blank" class="text-xs"
+						>Browse from <span class="text-primary underline">Unsplash</span></a
+					>
+				</div>
+			</div>
+			<Label class="space-y-2">
+				<span class="text-white">Cover Image (Optional)</span>
+				<Input
+					bind:value={$form.cover_image}
+					name="cover_image"
+					type="url"
+					placeholder="Image URL"
+					required
+					color="green"
+				/>
+				{#if $errors?.cover_image && $errors.cover_image[0]}
+					<ErrorMessage message={$errors?.cover_image[0]} />
+				{/if}
+			</Label>
 			<Label class="space-y-2">
 				<span class="text-white">Your space name</span>
 				<Input
