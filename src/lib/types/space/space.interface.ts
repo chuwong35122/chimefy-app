@@ -18,6 +18,7 @@ export interface MusicSpace {
 	uuid: string;
 	created_at: Date;
 	name: string;
+	description: string | null;
 	cover_image: string | null;
 	is_private: boolean;
 	type: string;

@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const CreateSpaceSchema = z.object({
 	is_private: z.boolean({
-		required_error: "Space's privacvy is required!"
+		required_error: 'Privacy is required!'
 	}),
 	type: z
 		.string({
@@ -12,14 +12,19 @@ export const CreateSpaceSchema = z.object({
 		.refine((val) => SPACE_MUSIC_TYPES.map((music) => music).includes(val)),
 	name: z
 		.string({
-			required_error: 'Space name is required!'
+			required_error: 'Name is required!'
 		})
-		.min(6, 'Space name is too short!')
-		.max(50, 'Space name is too long!'),
+		.min(6, 'Name is too short!')
+		.max(50, 'Name is too long!'),
+	description: z.string().min(1, 'Description is required!').max(40, 'Description is too long!'),
 	allow_member_queue: z
 		.boolean({
 			required_error: "Member's queue allowance is required!"
 		})
 		.default(true),
-	cover_image: z.string().url({ message: 'This is not a valid URL!' }).default('')
+	cover_image: z
+		.string()
+		.url({ message: 'This is not a valid URL!' })
+		.min(1, { message: 'Cover image is required' })
+		.default('')
 });

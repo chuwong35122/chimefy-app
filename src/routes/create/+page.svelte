@@ -52,8 +52,8 @@
 	<title>Create a space</title>
 </svelte:head>
 
-<div class="w-full grid place-items-center">
-	<div class="p-10 bg-glass rounded-2xl duration-150 hover:bg-white/[0.08] w-[500px] mt-8">
+<div class="w-full grid place-items-center mt-4">
+	<div class="p-8 bg-glass rounded-2xl duration-150 hover:bg-white/[0.08] w-[500px]">
 		{#if $devModeStore}
 			<SuperDebug data={$form} />
 		{/if}
@@ -65,7 +65,7 @@
 			Do you want to allow your members to add track(s) to the queue?
 		</Tooltip>
 
-		<form class="flex flex-col space-y-4" method="POST">
+		<form class="flex flex-col space-y-3" method="POST">
 			<h3 class="text-2xl font-semibold text-primary-500 text-center">Create a Space</h3>
 			<div class="m-auto w-full">
 				<div class="w-full grid place-items-center space-y-2">
@@ -82,7 +82,7 @@
 				</div>
 			</div>
 			<Label class="space-y-2">
-				<span class="text-white">Cover Image (Optional)</span>
+				<span class="text-white">Cover Image</span>
 				<Input
 					bind:value={$form.cover_image}
 					name="cover_image"
@@ -102,6 +102,20 @@
 					name="name"
 					type="text"
 					placeholder="Space Name"
+					required
+					color="green"
+				/>
+				{#if $errors?.name && $errors.name[0]}
+					<ErrorMessage message={$errors?.name[0]} />
+				{/if}
+			</Label>
+			<Label class="space-y-2">
+				<span class="text-white">Your space description</span>
+				<Input
+					bind:value={$form.description}
+					name="description"
+					type="text"
+					placeholder="Some description about your music or space"
 					required
 					color="green"
 				/>

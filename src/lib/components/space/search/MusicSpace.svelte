@@ -18,14 +18,14 @@
 					id={`track-img-${index}`}
 					src={space?.queues[0]?.image_url}
 					alt="Playing track cover"
-					class="object-cover"
+					class="object-cover w-full h-full"
 				/>
 			{:else}
 				<img
 					id={`track-img-${index}`}
-					src="/images/placeholders/blend.avif"
+					src={space?.cover_image}
 					alt="Playing track placeholder cover"
-					class="object-cover -hue-rotate-60"
+					class="object-cover w-full h-full"
 				/>
 			{/if}
 		</div>
@@ -36,9 +36,12 @@
 					<Icon icon="ic:round-lock" width={14} height={14} />
 				{/if}
 			</div>
-
-			<p class="capitalize font-medium text-ellipsis break-words my-2 line-clamp-2">{space?.name}</p>
-			<p class="text-sm text-dark-200 line-clamp-2">Lorem ipsum dolor sit amet consectetur</p>
+			<p class="capitalize font-medium text-ellipsis break-words my-2 line-clamp-2">
+				{space?.name}
+			</p>
+			{#if space.description}
+				<p class="text-sm text-dark-200 line-clamp-2">{space?.description}</p>
+			{/if}
 		</div>
 	</a>
 </div>
