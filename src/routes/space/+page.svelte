@@ -80,7 +80,7 @@
 	<div class="h-6" />
 	<div class="w-full grid place-items-center">
 		<a
-			href="create"	
+			href="create"
 			class="text-sm text-dark-200 font-light hover:text-white duration-200 underline underline-offset-2"
 			>Create a space</a
 		>
@@ -92,7 +92,7 @@
 				<SpaceSearchFilter {supabase} on:query={(e) => (publicSpaces = e.detail.spaces)} />
 				{#if publicSpaces.length > 0}
 					<div
-						class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[460px] overflow-y-auto"
+						class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 h-[560px] overflow-y-auto pt-4 px-4"
 					>
 						{#each publicSpaces as space, i}
 							<MusicSpace {space} index={i} isPrivate={space?.is_private} />
@@ -105,7 +105,7 @@
 			{#if userSpace?.length > 0}
 				<TabItem title="My Spaces">
 					<div
-						class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 min-h-[400px] max-h-[460px] overflow-y-auto"
+						class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 h-[560px] overflow-y-auto pt-4 px-4"
 					>
 						{#each userSpace as space, i}
 							<MusicSpace {space} index={i} isPrivate={space?.is_private} />
