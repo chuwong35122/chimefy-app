@@ -74,7 +74,7 @@
 	<script src="https://sdk.scdn.co/spotify-player.js"></script>
 </svelte:head>
 
-<div class="relative w-full p-2 rounded-xl bg-dark-500 hover:bg-white/10 duration-200">
+<div class="relative w-full p-2 rounded-xl bg-glass hover:bg-white/10 duration-200">
 	<div class="flex flex-row items-center justify-between">
 		<TrackPreview />
 		<div class="flex flex-col items-center">

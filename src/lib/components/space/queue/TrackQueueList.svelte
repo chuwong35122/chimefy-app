@@ -61,7 +61,7 @@
 			in:fly={{ duration: 200, x: 200 }}
 			out:fade={{ duration: 200 }}
 			role="listitem"
-			class={`mb-1 flex flex-row items-center w-full relative cursor-pointer h-20 hover:bg-black duration-200 rounded-md group ${
+			class={`mb-1 flex flex-row items-center w-full relative cursor-pointer h-20 hover:bg-white/20 duration-200 rounded-md group ${
 				queue?.uri === $playingInfo?.uri ? 'bg-white/10' : null
 			}`}
 		>

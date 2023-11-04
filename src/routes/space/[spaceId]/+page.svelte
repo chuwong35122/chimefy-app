@@ -146,7 +146,7 @@
 		<SpaceInfo {supabase} {hidden} on:viewMember={(e) => (hidden = e.detail.hidden)} />
 	</div>
 	<div class="flex flex-col md:flex-row gap-4 w-full">
-		<div class="bg-dark-500 rounded-xl h-full md:h-[560px] w-full md:w-[1000px] flex flex-col md:flex-row justify-between p-6">
+		<div class="bg-glass rounded-xl h-full md:h-[560px] w-full md:w-[1000px] flex flex-col md:flex-row justify-between p-6">
 			<div class="w-full md:w-96">
 				<TrackSearchTab {supabase} />
 			</div>
@@ -156,13 +156,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- <div class="w-full grid place-items-end my-2">
-		<button
-			on:click={() => (openTutorialModal = !openTutorialModal)}
-			class="text-xs underline text-dark-300 hover:text-dark-200 duration-150">Need help?</button
-		>
-		
-	</div> -->
 	{#if $spaceStore && $spaceStore?.id && $userConfigStore}
 		<div class="mt-4">
 			<MusicPlayerController {supabase} spaceId={$spaceStore?.id} />
