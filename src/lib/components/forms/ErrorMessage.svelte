@@ -5,8 +5,8 @@
 </script>
 
 {#if message}
-	<div class="flex flex-row items-center text-sp leading-none">
-		<Icon icon="material-symbols:error-rounded" class="w-5 h-5 text-red-500 mr-2" />
-		<span class="text-sm font-light text-red-500">{message}</span>
+	<div class="flex flex-row items-center leading-none mt-0.5">
+		<Icon icon="clarity:error-line" class="w-5 h-5 text-pink-500 mr-2" />
+		<span class="text-xs text-pink-500">{message}</span>
 	</div>
 {/if}
