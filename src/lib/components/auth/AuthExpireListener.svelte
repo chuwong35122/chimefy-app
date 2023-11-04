@@ -1,8 +1,6 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { refreshSpotifyToken, setTokenStore } from '$spotify/user';
 	import { onDestroy } from 'svelte';
-	import ReauthenticatePromptModal from '$components/modals/ReauthenticatePromptModal.svelte';
-	import { Modal } from 'flowbite-svelte';
 	import { hasRefreshedToken, spotifyAccessToken } from '$stores/spotify/user';
 
 	let timer: NodeJS.Timer;
@@ -56,4 +54,4 @@
 <form bind:this={signoutForm} action="/signout?/signout" method="POST" id="signout-form" />
 <!-- <Modal bind:open={showReauthenticateModal} permanent class="modal-glass z-50 relative">
 	<ReauthenticatePromptModal on:finishReauthenticate={closeModal} />
-</Modal> -->
+</Modal> --> -->

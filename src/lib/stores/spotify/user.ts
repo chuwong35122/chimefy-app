@@ -12,4 +12,3 @@ export const spotifyAccessToken = writable<{
 });
 export const spotifyPlayerId = writable('');
 export const spotifyUserProfile = writable<PrivateUser | null>(null);
-export const hasRefreshedToken = writable(false);
