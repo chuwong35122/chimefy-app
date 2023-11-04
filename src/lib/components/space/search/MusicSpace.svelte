@@ -9,7 +9,7 @@
 </script>
 
 <div
-	class="flex flex-col items-center justify-between w-52 h-[360px] rounded-md bg-dark-400/40 hover:scale-105 duration-150 overflow-hidden"
+	class="flex flex-col items-center justify-between w-52 h-[360px] rounded-md bg-glass hover:scale-105 duration-150 overflow-hidden"
 >
 	<a href={`/space/${space.uuid}`} type="button">
 		<div class="h-52 aspect-square overflow-hidden p-3">
