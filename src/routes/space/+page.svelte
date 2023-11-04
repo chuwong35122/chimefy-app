@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Button, ButtonGroup, Input, InputAddon, TabItem, Tabs, Tooltip } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
-	import { goto } from '$app/navigation';
 	import { fly } from 'svelte/transition';
 	import seo from '$constants/seo';
 	import MusicSpace from '$components/space/search/MusicSpace.svelte';
@@ -86,7 +85,7 @@
 		>
 	</div>
 	<div class="h-60" />
-	<div class="w-full">
+	<div class="w-full animate-in fade-in">
 		<Tabs style="pill" contentClass="bg-transparent p-4 mb-8">
 			<TabItem open title="Public Spaces">
 				<SpaceSearchFilter {supabase} on:query={(e) => (publicSpaces = e.detail.spaces)} />
