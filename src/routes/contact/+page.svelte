@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Alert, Button, Input, Label, Textarea } from 'flowbite-svelte';
+	import { Alert, Badge, Button, Input, Label, Spinner, Textarea } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
@@ -86,10 +86,9 @@
 	<SuperDebug data={$form} />
 {/if}
 
-<h1 class="text-2xl font-bold mt-8 mb-4">Contact</h1>
-<div class="w-full h-full grid place-items-center">
+<div class="w-full h-full grid place-items-center animate-in fade-in slide-in-from-top mt-12">
 	<div
-		class="flex flex-row items-center rounded-2xl overflow-hidden w-[400px] md:w-[900px] h-[640px]"
+		class="flex flex-row items-center rounded-lg bg-glass overflow-hidden w-[400px] md:w-[900px] h-[640px]"
 	>
 		<!------ Image ------>
 		<div
@@ -98,25 +97,22 @@
 			<img
 				src="/images/contact/paper-plane.avif"
 				alt="Contact us"
-				class="h-full object-cover hover:scale-110 duration-[2000ms] transform-o"
+				draggable="false"
+				class="h-full object-cover hover:scale-105 duration-1000"	
 			/>
-			<div
-				class="invisible absolute right-[50%] bottom-6 bg-black/30 rounded-full p-2 group-hover/cover-img:visible"
-			>
-				Image by teravector
-			</div>
+			<Badge color='dark' rounded class='absolute left-4 bottom-6 invisible group-hover/cover-img:visible'>Image by teravector</Badge>
 		</div>
 		<!----- Form ------>
-		<div class="bg-white p-8 w-full h-full flex flex-col justify-between">
+		<div class="p-8 w-full h-full flex flex-col justify-between bg-gradient-to-b from-black/10 to-white/5">
 			<div class="flex flex-col gap-2">
 				<!-- Header -->
 				<div class="w-full grid place-items-start">
-					<h2 class="text-black text-2xl font-bold">Feel free to contact the project owner!</h2>
-					<p class="text-black">Give feedbacks or request for a new feature.</p>
+					<h2 class="text-2xl font-bold">Feel free to contact the project owner!</h2>
+					<p class="text-sm text-dark-300">Give feedbacks or request for a new feature.</p>
 				</div>
 				<!-- Name -->
 				<div>
-					<Label>Name</Label>
+					<Label class='text-white'>Name</Label>
 					<Input name="name" bind:value={$form.name} color="green" placeholder="Your name" />
 					{#if $errors?.name && $errors.name[0]}
 						<ErrorMessage message={$errors?.name[0]} />
@@ -124,7 +120,7 @@
 				</div>
 				<!-- Email -->
 				<div>
-					<Label>Your Email</Label>
+					<Label class='text-white'>Your Email</Label>
 					<Input
 						name="email"
 						type="email"
@@ -138,7 +134,7 @@
 				</div>
 				<!-- Subject -->
 				<div>
-					<Label>Subject</Label>
+					<Label class='text-white'>Subject</Label>
 					<Input
 						name="subject"
 						bind:value={$form.subject}
@@ -151,7 +147,7 @@
 				</div>
 				<!-- Details -->
 				<div>
-					<Label>Details</Label>
+					<Label class='text-white'>Details</Label>
 					<Textarea
 						name="detail"
 						bind:value={$form.detail}
@@ -166,7 +162,11 @@
 			</div>
 			<button on:click|preventDefault={handleMail}>
 				<Button color='primary' class='w-full'>
+					{#if isLoading}
+					<Spinner color='green' size='6' class='mr-2' />
+					{:else}
 					<Icon icon="material-symbols:send" class="w-6 h-6 mr-2" />
+					{/if}
 					<span>Send</span>
 				</Button>
 			</button>
@@ -182,13 +182,13 @@
 		{/if}
 	</div>
 
-	<div class="flex flex-row items-center my-4">
+	<div class="mx-auto">
 		<a
-			href="/contact/report-bug"
+			href="https://github.com/chuwong35122/chimefy-app/issues"
 			aria-label="Report bugs"
 			target="_blank"
 			rel="noopener noreferrer"
-			class="underline">Report bugs?</a
+			class="text-sm">🐞 Report bugs (in Github)</a
 		>
 	</div>
 </div>
