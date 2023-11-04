@@ -52,7 +52,7 @@
 	<title>Create a space</title>
 </svelte:head>
 
-<div class="w-full grid place-items-center mt-4">
+<div class="w-full grid place-items-center mt-4 animate-in fade-in">
 	<div class="p-8 bg-glass rounded-2xl duration-150 hover:bg-white/[0.08] w-[500px]">
 		{#if $devModeStore}
 			<SuperDebug data={$form} />
