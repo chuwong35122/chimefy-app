@@ -26,9 +26,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const pathname = event.url.pathname;
 
 	const session = await event.locals.getSession();
-	if (pathname.startsWith('/space') || pathname.startsWith('/create')) {
-		if (!session) {
-			// user did not sign in
+
+	if (!session?.user) {
+		if (pathname.startsWith('/space') || pathname.startsWith('/create')) {
 			throw redirect(303, '/');
 		}
 	}
