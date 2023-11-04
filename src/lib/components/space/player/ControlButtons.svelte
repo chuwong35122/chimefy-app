@@ -121,9 +121,9 @@
 
 <Tooltip triggeredBy="#back-button">
 	{#if $spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue}
-		Admin does not allow going back
+		Admin does not allow going back to start
 	{:else}
-		Go back
+		Go to start
 	{/if}
 </Tooltip>
 
