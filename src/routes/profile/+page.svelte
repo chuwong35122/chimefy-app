@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { userStore } from '$stores/auth/user';
-	import Icon from '@iconify/svelte';
 	import { PUBLIC_SUPPORT_URL } from '$env/static/public';
+	import { Button, Card } from 'flowbite-svelte';
+	import type { PageData } from './$types';
 
-	let loggedout = false;
+	export let data: PageData;
+
+	const date = new Date(data?.user?.email_confirmed_at ?? '');
 </script>
 
 <svelte:head>
@@ -15,45 +18,31 @@
 	<title>Welcome to Chimefy</title>
 </svelte:head>
 
-{#if !loggedout}
-	<div class="w-[600px] mt-20">
-		<div class="flex place-items-end">
-			{#if $userStore && $userStore?.user_metadata && $userStore?.user_metadata?.avatar_url}
+<div class="mt-40">
+	<Card class="bg-glass space-y-4 animate-in slide-in-from-top-40 duration-1000">
+		<h2 class="text-lg font-bold text-white">Profile Card</h2>
+		<div class="flex flex-row gap-4 items-end">
+			<div class="animate-in fade-in-0 delay-500 duration-700">
 				<img
+					alt="profile"
 					src={$userStore?.user_metadata?.avatar_url}
-					alt="My Profile"
-					class="w-[260px] h-[260px] rounded-full"
+					class="w-16 h-16 rounded-full"
 				/>
-			{/if}
-
-			<div class="flex flex-col ml-8">
-				<p class="text-xl">Hello there,</p>
-				<p class="text-3xl font-bold">{$userStore?.user_metadata?.name ?? ''}</p>
-				<p class="text-dark-200">Your email: {$userStore?.email ?? ''}</p>
-
-				<form method="POST" action="/signout?/signout">
-					<button
-						class="text-lg bg-white rounded-full p-1.5 w-full text-black flex flex-row items-center justify-center hover:scale-105 duration-150 mt-8"
-					>
-						<Icon icon="ion:exit" class="w-6 h-6 mr-2" />
-						<p>Logout</p>
-					</button>
-				</form>
-
-				<button
-					class="text-lg text-black bg-primary-500 rounded-full p-1.5 w-full flex flex-row items-center justify-center hover:scale-105 duration-150 mt-4 shadow-md shadow-primary-600/50"
-				>
-					<Icon icon="mdi:gift" class="w-6 h-6 mr-2" />
-					<a
-						target="_blank"
-						rel="noopener noreferrer"
-						href={PUBLIC_SUPPORT_URL}
-						aria-label="Support Chimefy">Support Chimefy!</a
-					>
-				</button>
+			</div>
+			<div>
+				<span class="text-sm text-dark-200">Hello there,</span>
+				<h5 class="text-lg font-medium text-white">{data.user?.user_metadata?.name}</h5>
 			</div>
 		</div>
-	</div>
-{:else}
-	<div />
-{/if}
+		<div>
+			<p class="text-white text-sm leading-tight">
+				This is your Chimefy member card. You have been a member since <span
+					class="font-medium text-primary">{date.toJSON().slice(0, 10)}</span
+				>.
+			</p>
+		</div>
+		<a href={PUBLIC_SUPPORT_URL} target="_blank">
+			<Button class="w-fit">Support Chimefy!</Button>
+		</a>
+	</Card>
+</div>
