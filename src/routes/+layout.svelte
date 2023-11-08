@@ -65,7 +65,7 @@
 	<NavBar />
 	<div class="w-full grid place-items-center">
 		<slot />
-		<div class="w-80 md:w-[460px] absolute bottom-10 z-50">
+		<div class="fixed overflow-hidden bottom-8 right-8 z-50">
 			<Toast />
 		</div>
 	</div>

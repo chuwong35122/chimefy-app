@@ -33,7 +33,7 @@
 	}
 </script>
 
-<Toast bind:open={show} transition={fly} params={{ y: 200 }} contentClass="w-full">
+<Toast bind:open={show} transition={fly} params={{ x: 100 }} class="w-full bg-glass">
 	<svelte:fragment slot="icon">
 		{#if $toastValue.type === 'error'}
 			<Icon icon="material-symbols:error" width={30} height={30} class="text-red-400" />
@@ -46,5 +46,5 @@
 			<span class="sr-only">Info icon</span>
 		{/if}
 	</svelte:fragment>
-	<div>{$toastValue?.message}</div>
+	<div class="text-white">{$toastValue?.message}</div>
 </Toast>
