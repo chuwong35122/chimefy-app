@@ -28,7 +28,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const session = await event.locals.getSession();
 
 	if (!session?.user) {
-		if (pathname.startsWith('/space') || pathname.startsWith('/create')) {
+		if (
+			pathname.startsWith('/space') ||
+			pathname.startsWith('/create') ||
+			pathname.startsWith('/profile')
+		) {
 			throw redirect(303, '/');
 		}
 	}
