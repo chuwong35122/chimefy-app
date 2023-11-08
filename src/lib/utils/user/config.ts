@@ -7,7 +7,11 @@ export async function updateUserConfig(
 	userId: string,
 	config: Partial<UserConfigs>
 ): Promise<UserConfigs | null> {
-	const result = await supabase.from('user_configs').update(config).eq('id', userId).single();
+	const result = await supabase
+		.from('user_configs')
+		.update(config)
+		.eq('config_owner', userId)
+		.single();
 
 	return result.data;
 }
