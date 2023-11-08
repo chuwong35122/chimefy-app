@@ -87,20 +87,5 @@
 			</p>
 			<p class="text-xs text-dark-300">{playlist.tracks.total} tracks</p>
 		</div>
-		{#if isHovering}
-			<a
-				href={playlist.uri}
-				target="_blank"
-				rel="noopener noreferrer"
-				aria-label="View in Spotify"
-				class="animate-in zoom-in slide-in-from-left-4 absolute right-4 top-7 hover:scale-110 duration-300"
-			>
-				<Icon
-					id={`view-in-spotify-btn-${playlist.id}`}
-					icon="ic:baseline-chevron-right"
-					class="w-8 h-8 text-primary-500"
-				/>
-			</a>
-		{/if}
 	</div>
 </div>
