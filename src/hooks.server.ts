@@ -4,6 +4,8 @@ import { PUBLIC_NODE_ENV } from '$env/static/public';
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
 
+const UNPROTECTED_ROUTES = ['/', '/contact', '/auth/spotify'];
+
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.supabase = createSupabaseServerClient({
 		supabaseUrl: PUBLIC_SUPABASE_URL,
@@ -24,17 +26,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	};
 
 	const pathname = event.url.pathname;
-
 	const session = await event.locals.getSession();
 
-	if (!session?.user) {
-		if (
-			pathname.startsWith('/space') ||
-			pathname.startsWith('/create') ||
-			pathname.startsWith('/profile')
-		) {
-			throw redirect(303, '/');
-		}
+	if (!session?.user && !UNPROTECTED_ROUTES.includes(pathname)) {
+		throw redirect(303, '/');
 	}
 
 	return resolve(event, {
