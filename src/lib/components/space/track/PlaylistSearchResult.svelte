@@ -51,7 +51,7 @@
 <Tooltip
 	triggeredBy={`[id=view-in-spotify-btn-${playlist.id}]`}
 	placement="right"
-	class="relative z-20">View playlist in Spotify</Tooltip
+	class="relative">View playlist in Spotify</Tooltip
 >
 <div
 	role="contentinfo"
@@ -87,5 +87,18 @@
 			</p>
 			<p class="text-xs text-dark-300">{playlist.tracks.total} tracks</p>
 		</div>
+			<a
+				href={playlist.uri}
+				id={`view-in-spotify-btn-${playlist.id}`}
+				target="_blank"
+				rel="noopener noreferrer"
+				aria-label="View in Spotify"
+				class="animate-in zoom-in slide-in-from-left-4 absolute right-4 top-7 hover:scale-110 duration-300"
+			>
+				<Icon
+					icon="ic:baseline-chevron-right"
+					class="w-8 h-8 text-white/40"
+				/>
+			</a>
 	</div>
 </div>
