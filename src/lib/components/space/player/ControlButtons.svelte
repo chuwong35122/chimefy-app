@@ -34,6 +34,11 @@
 				currentDurationMs: 0
 			};
 
+			toastValue.set({
+			message: 'Thank you, next 👉',
+			type: 'info'
+		})
+
 			channel.send({
 				type: 'broadcast',
 				event: 'playerForward',
@@ -71,6 +76,11 @@
 			playingTrackId: $playingTrackId,
 			currentDurationMs: $playingDurationMs
 		};
+
+		toastValue.set({
+			message: 'Going back... 🤞',
+			type: 'info'
+		})
 
 		channel.send({
 			type: 'broadcast',
