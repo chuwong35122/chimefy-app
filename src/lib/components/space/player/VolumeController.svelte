@@ -19,11 +19,12 @@
 	async function setSpotifyPlayerVolume() {
 		const userId = $userStore?.id;
 		if (!userId) return;
+
 		try {
 			await SpotifyPlayer.setVolume(volume / 100);
 			await updateUserConfig(supabase, userId, { player_volume: volume });
 		} catch (e) {
-			console.log(e);
+			toastValue.set({ message: 'Sorry, volume set error 😭', type: 'info' });
 		} finally {
 			toastValue.set({ message: 'Volume set ✅', type: 'info' });
 		}
