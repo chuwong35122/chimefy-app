@@ -3,7 +3,7 @@
 	import Icon from '@iconify/svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { Tooltip } from 'flowbite-svelte';
-	import VolumeController from '$lib/components/space/player/VolumeController.svelte'
+	import VolumeController from '$lib/components/space/player/VolumeController.svelte';
 	import TrackPreview from '../track/TrackPreview.svelte';
 	import ControlButtons from './ControlButtons.svelte';
 	import MemberPlayerListener from '../websocket/MemberPlayerListener.svelte';
@@ -13,6 +13,7 @@
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { spaceStore } from '$stores/space';
 	import { userConfigStore } from '$stores/auth/user';
+	import { toastValue } from '$stores/notification/toast';
 
 	export let supabase: SupabaseClient;
 	export let spaceId = 0;
@@ -39,6 +40,7 @@
 			});
 
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
+				toastValue.set({ message: 'You have been connected to Spotify player 📻', type: 'info' });
 				if ($devModeStore) {
 					console.log('Ready with Device ID', device_id);
 				}
@@ -46,6 +48,7 @@
 			});
 
 			SpotifyPlayer.on('initialization_error', (err) => {
+				toastValue.set({ message: 'Sorry, there is an error connecting to Spotify player. Please refresh the page 😭...', type: 'error' });
 				if ($devModeStore) {
 					console.error(err);
 				}
