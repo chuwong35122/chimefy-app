@@ -7,7 +7,6 @@
 	import SpaceSearchFilter from '$components/space/search/SpaceSearchFilter.svelte';
 	import type { MusicSpace as MusicSpaceType } from '$lib/types/space/space.interface.js';
 	import { onMount } from 'svelte';
-	import EmptySearchResultIndicator from '$components/space/search/EmptySearchResultIndicator.svelte';
 
 	export let data;
 	$: ({ supabase, userSpace } = data);
@@ -87,9 +86,9 @@
 	<div class="h-60" />
 	<div class="w-full animate-in fade-in">
 		<Tabs style="pill" contentClass="bg-transparent p-4 mb-8">
-			<TabItem open title="Public Spaces">
-				<SpaceSearchFilter {supabase} on:query={(e) => (publicSpaces = e.detail.spaces)} />
-				{#if publicSpaces.length > 0}
+			{#if publicSpaces.length > 0}
+				<TabItem open title="Public Spaces">
+					<SpaceSearchFilter {supabase} on:query={(e) => (publicSpaces = e.detail.spaces)} />
 					<div
 						class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 h-[560px] overflow-y-auto pt-4 px-4"
 					>
@@ -97,10 +96,8 @@
 							<MusicSpace {space} index={i} isPrivate={space?.is_private} />
 						{/each}
 					</div>
-				{:else}
-					<EmptySearchResultIndicator />
-				{/if}
-			</TabItem>
+				</TabItem>
+			{/if}
 			{#if userSpace?.length > 0}
 				<TabItem title="My Spaces">
 					<div
@@ -111,8 +108,6 @@
 						{/each}
 					</div>
 				</TabItem>
-			{:else}
-				<EmptySearchResultIndicator />
 			{/if}
 		</Tabs>
 	</div>
