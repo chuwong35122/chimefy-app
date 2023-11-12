@@ -14,17 +14,6 @@ export function getBearerToken(access_token: string) {
 	return `Bearer ${access_token}`;
 }
 
-export async function refreshSpotifyToken(refresh_token: string) {
-	const res = await fetch('/api/spotify/auth/refresh', {
-		method: 'POST',
-		body: JSON.stringify({
-			refresh_token
-		})
-	});
-
-	return (await res.json()) as AccessToken;
-}
-
 export async function getSpotifyProfile(accessToken: string | null | undefined) {
 	if (!accessToken) return null;
 
