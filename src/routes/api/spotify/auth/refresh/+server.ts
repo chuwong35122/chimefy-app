@@ -1,6 +1,5 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from '../$types';
-import qs from 'querystring';
 import type { AuthTokens } from '$lib/types/spotify/auth.interface';
 import { PUBLIC_SPOTIFY_CLIENT_ID } from '$env/static/public';
 import { PRIVATE_SPOTIFY_CLIENT_SECRET } from '$env/static/private';
