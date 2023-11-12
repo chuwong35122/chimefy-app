@@ -4,7 +4,7 @@ import { PUBLIC_NODE_ENV } from '$env/static/public';
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
 
-const UNPROTECTED_ROUTES = ['/', '/contact', '/auth/spotify'];
+const UNPROTECTED_ROUTES = ['/', '/contact', '/auth/spotify', '/auth/callback', '/auth/refresh'];
 
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.supabase = createSupabaseServerClient({
