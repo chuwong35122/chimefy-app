@@ -2,7 +2,7 @@
 	import type { Session } from '@supabase/supabase-js';
 	import { onDestroy, onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { spotifyAccessToken } from '$stores/spotify/user';
+	import { appTokenStore } from '$stores/spotify/user';
 
 	export let session: Session | null = null;
 
@@ -33,5 +33,5 @@
 
 <form bind:this={formRef} method="POST" action="/auth?/refresh">
 	<input type="hidden" name="redirect_to" bind:value={$page.url.pathname} />
-	<input type="hidden" name="refresh_token" bind:value={$spotifyAccessToken.refresh_token} />
+	<input type="hidden" name="refresh_token" bind:value={$appTokenStore.refresh_token} />
 </form>

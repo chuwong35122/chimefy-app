@@ -7,7 +7,7 @@
 	import TrackPreview from '../track/TrackPreview.svelte';
 	import ControlButtons from './ControlButtons.svelte';
 	import MemberPlayerListener from '../websocket/MemberPlayerListener.svelte';
-	import { spotifyPlayerId, spotifyAccessToken } from '$stores/spotify/user';
+	import { spotifyPlayerId, appTokenStore } from '$stores/spotify/user';
 	import DebugText from '$components/debugger/DebugText.svelte';
 	import { devModeStore } from '$stores/settings';
 	import type { SupabaseClient } from '@supabase/supabase-js';
@@ -34,7 +34,7 @@
 			SpotifyPlayer = new Spotify.Player({
 				name: 'Chimefy Player',
 				getOAuthToken: (cb) => {
-					cb($spotifyAccessToken?.access_token);
+					cb($appTokenStore?.access_token);
 				},
 				volume: $userConfigStore?.player_volume / 100
 			});
