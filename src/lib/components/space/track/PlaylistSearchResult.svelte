@@ -30,7 +30,7 @@
 		const tracks = await getPlaylistTracks(
 			playlist.id,
 			playlist.tracks.total,
-			$appTokenStore?.access_token
+			$appTokenStore?.spotify_access_token
 		);
 		const randoms = randomPlaylistTracks(tracks);
 		const payloads = randoms.map((r) => mapTrackToQueuePayload(r, userId, 'playlist', playlist.id));

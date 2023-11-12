@@ -49,12 +49,15 @@
 
 			try {
 				if (type === 'track') {
-					const tracks = await searchTrack(debouncedSearchTerms, $appTokenStore?.access_token);
+					const tracks = await searchTrack(
+						debouncedSearchTerms,
+						$appTokenStore?.spotify_access_token
+					);
 					trackSearchResults = tracks;
 				} else if (type === 'playlist') {
 					const playlists = await searchPlaylist(
 						debouncedSearchTerms,
-						$appTokenStore?.access_token
+						$appTokenStore?.spotify_access_token
 					);
 					playlistSearchResults = playlists;
 				}

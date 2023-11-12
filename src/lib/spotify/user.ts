@@ -14,17 +14,6 @@ export function getBearerToken(access_token: string) {
 	return `Bearer ${access_token}`;
 }
 
-export function setTokenStore(
-	access_token: string | null | undefined,
-	refresh_token: string | null | undefined
-) {
-	appTokenStore.set({
-		access_token: access_token ?? '',
-		refresh_token: refresh_token ?? '',
-		since: new Date()
-	});
-}
-
 export async function refreshSpotifyToken(refresh_token: string) {
 	const res = await fetch('/api/spotify/auth/refresh', {
 		method: 'POST',

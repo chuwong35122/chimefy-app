@@ -34,7 +34,7 @@
 			SpotifyPlayer = new Spotify.Player({
 				name: 'Chimefy Player',
 				getOAuthToken: (cb) => {
-					cb($appTokenStore?.access_token);
+					cb($appTokenStore?.spotify_access_token);
 				},
 				volume: $userConfigStore?.player_volume / 100
 			});
@@ -48,7 +48,11 @@
 			});
 
 			SpotifyPlayer.on('initialization_error', (err) => {
-				toastValue.set({ message: 'Sorry, there is an error connecting to Spotify player. Please refresh the page 😭...', type: 'error' });
+				toastValue.set({
+					message:
+						'Sorry, there is an error connecting to Spotify player. Please refresh the page 😭...',
+					type: 'error'
+				});
 				if ($devModeStore) {
 					console.error(err);
 				}
