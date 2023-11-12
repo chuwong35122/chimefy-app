@@ -6,7 +6,7 @@
 	import { pauseTrack } from '$spotify/player';
 	import type { TrackBroadcastPayload } from '$lib/types/space/broadcast.interface';
 	import { toastValue } from '$stores/notification/toast';
-	import { spotifyAccessToken, spotifyPlayerId } from '$stores/spotify/user';
+	import { appTokenStore, spotifyPlayerId } from '$stores/spotify/user';
 	import { devModeStore } from '$stores/settings';
 	import { spaceStore, spaceRoleStore } from '$stores/space';
 
@@ -58,10 +58,10 @@
 				$spaceStore?.queues[0],
 				$spotifyPlayerId,
 				$playingDurationMs,
-				$spotifyAccessToken?.access_token
+				$appTokenStore?.access_token
 			);
 		} else {
-			await pauseTrack($spotifyPlayerId, $spotifyAccessToken?.access_token);
+			await pauseTrack($spotifyPlayerId, $appTokenStore?.access_token);
 		}
 	});
 
@@ -95,7 +95,7 @@
 				$spaceStore?.queues[0],
 				$spotifyPlayerId,
 				0,
-				$spotifyAccessToken?.access_token
+				$appTokenStore?.access_token
 			);
 
 			if ($devModeStore) {
@@ -112,7 +112,7 @@
 			const sliced = await sliceQueue(supabase, queues, queues[0]?.id, $spaceStore.id);
 			const _payload = payload as TrackBroadcastPayload;
 
-			await playSingleTrack(sliced[0], $spotifyPlayerId, 0, $spotifyAccessToken?.access_token);
+			await playSingleTrack(sliced[0], $spotifyPlayerId, 0, $appTokenStore?.access_token);
 
 			if ($devModeStore) {
 				console.log('playerForward', _payload);

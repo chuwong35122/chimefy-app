@@ -4,7 +4,7 @@
 	import MusicSearchResult from './MusicSearchResult.svelte';
 	import type { Track, SimplifiedPlaylist } from 'spotify-types';
 	import { searchPlaylist, searchTrack } from '$utils/space/track';
-	import { spotifyAccessToken } from '$stores/spotify/user';
+	import { appTokenStore } from '$stores/spotify/user';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { toastValue } from '$stores/notification/toast';
 	import PlaylistSearchResult from './PlaylistSearchResult.svelte';
@@ -26,7 +26,7 @@
 	async function debounce() {
 		loading = true;
 
-		if (!$spotifyAccessToken) {
+		if (!$appTokenStore) {
 			loading = false;
 			trackSearchResults = [];
 			playlistSearchResults = [];
@@ -49,12 +49,12 @@
 
 			try {
 				if (type === 'track') {
-					const tracks = await searchTrack(debouncedSearchTerms, $spotifyAccessToken?.access_token);
+					const tracks = await searchTrack(debouncedSearchTerms, $appTokenStore?.access_token);
 					trackSearchResults = tracks;
 				} else if (type === 'playlist') {
 					const playlists = await searchPlaylist(
 						debouncedSearchTerms,
-						$spotifyAccessToken?.access_token
+						$appTokenStore?.access_token
 					);
 					playlistSearchResults = playlists;
 				}

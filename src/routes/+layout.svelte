@@ -8,7 +8,7 @@
 	import SpotifyPremiumInfoModal from '$components/modals/SpotifyPremiumInfoModal.svelte';
 	import { userConfigStore, userStore } from '$stores/auth/user';
 	import { setTokenStore, getSpotifyProfile } from '$spotify/user';
-	import { spotifyAccessToken, spotifyUserProfile } from '$stores/spotify/user';
+	import { appTokenStore, spotifyUserProfile } from '$stores/spotify/user';
 	import { createAppConfig } from '$utils/configs/app.js';
 	import AuthExpireListener from '$components/auth/AuthExpireListener.svelte';
 
@@ -20,7 +20,7 @@
 
 	// Check if user has Spotify premium
 	spotifyUserProfile.subscribe((user) => {
-		if (user && user?.product !== 'premium' && $spotifyAccessToken?.access_token) {
+		if (user && user?.product !== 'premium' && $appTokenStore?.access_token) {
 			isSpotifyPremiumModalOpen = true;
 		}
 	});
@@ -52,8 +52,8 @@
 	});
 
 	$: async () => {
-		if ($spotifyAccessToken) {
-			const profile = await getSpotifyProfile($spotifyAccessToken?.access_token);
+		if ($appTokenStore) {
+			const profile = await getSpotifyProfile($appTokenStore?.access_token);
 			spotifyUserProfile.set(profile);
 		}
 	};

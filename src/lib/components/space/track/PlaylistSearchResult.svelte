@@ -8,7 +8,7 @@
 	import { spaceStore } from '$stores/space';
 	import { Tooltip } from 'flowbite-svelte';
 	import { getPlaylistTracks } from '$utils/space/track';
-	import { spotifyAccessToken } from '$stores/spotify/user';
+	import { appTokenStore } from '$stores/spotify/user';
 	import { mapTrackToQueuePayload, randomPlaylistTracks } from '$utils/spotify/playlist';
 
 	export let supabase: SupabaseClient;
@@ -30,7 +30,7 @@
 		const tracks = await getPlaylistTracks(
 			playlist.id,
 			playlist.tracks.total,
-			$spotifyAccessToken?.access_token
+			$appTokenStore?.access_token
 		);
 		const randoms = randomPlaylistTracks(tracks);
 		const payloads = randoms.map((r) => mapTrackToQueuePayload(r, userId, 'playlist', playlist.id));

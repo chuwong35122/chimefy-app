@@ -1,4 +1,4 @@
-import { spotifyAccessToken } from '$stores/spotify/user';
+import { appTokenStore } from '$stores/spotify/user';
 import type { PrivateUser, AccessToken } from 'spotify-types';
 
 export const SPOTIFY_AUTH_SCOPES = [
@@ -18,7 +18,7 @@ export function setTokenStore(
 	access_token: string | null | undefined,
 	refresh_token: string | null | undefined
 ) {
-	spotifyAccessToken.set({
+	appTokenStore.set({
 		access_token: access_token ?? '',
 		refresh_token: refresh_token ?? '',
 		since: new Date()
