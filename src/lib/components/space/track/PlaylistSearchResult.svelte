@@ -51,7 +51,7 @@
 <Tooltip
 	triggeredBy={`[id=view-in-spotify-btn-${playlist.id}]`}
 	placement="right"
-	class="relative">View playlist in Spotify</Tooltip
+	class="relative z-50">View playlist in Spotify</Tooltip
 >
 <div
 	role="contentinfo"
