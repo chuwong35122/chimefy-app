@@ -9,12 +9,15 @@ export async function getAppConfig(supabase: SupabaseClient<Database>, userID: s
 		.eq('config_owner', userID)
 		.single();
 
-	return data as UserConfigs;
+	return data as any as UserConfigs;
 }
 
-export async function createAppConfig(supabase: SupabaseClient<Database>, userID: string) {
+export async function createAppConfigIfNotExist(
+	supabase: SupabaseClient<Database>,
+	userID: string
+) {
 	const _config = await getAppConfig(supabase, userID);
-	if (_config) return _config;
+	if (_config?.id) return _config;
 
 	const { data } = await supabase
 		.from('user_configs')
@@ -25,5 +28,5 @@ export async function createAppConfig(supabase: SupabaseClient<Database>, userID
 		.select('*')
 		.single();
 
-	return data as UserConfigs;
+	return data as any as UserConfigs;
 }

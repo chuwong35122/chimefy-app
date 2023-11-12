@@ -9,7 +9,7 @@
 	import { userConfigStore, userStore } from '$stores/auth/user';
 	import { getSpotifyProfile } from '$spotify/user';
 	import { appTokenStore, spotifyUserProfile } from '$stores/spotify/user';
-	import { createAppConfig } from '$utils/configs/app.js';
+	import { createAppConfigIfNotExist } from '$utils/configs/app.js';
 	import AuthExpireListener from '$components/auth/AuthExpireListener.svelte';
 
 	export let data;
@@ -31,8 +31,6 @@
 		const {
 			data: { subscription }
 		} = supabase.auth.onAuthStateChange(async (event, _session) => {
-			console.log(event);
-			console.log(_session);
 			if (_session?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');
 			}
@@ -47,8 +45,10 @@
 					since: new Date()
 				});
 
-				const configs = await createAppConfig(supabase, _session?.user?.id);
-				userConfigStore.set(configs);
+				if (!$userConfigStore && (event === 'INITIAL_SESSION' || event === 'USER_UPDATED')) {
+					const configs = await createAppConfigIfNotExist(supabase, _session?.user?.id);
+					userConfigStore.set(configs);
+				}
 			}
 		});
 
