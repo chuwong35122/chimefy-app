@@ -58,10 +58,10 @@
 				$spaceStore?.queues[0],
 				$spotifyPlayerId,
 				$playingDurationMs,
-				$appTokenStore?.access_token
+				$appTokenStore?.spotify_access_token
 			);
 		} else {
-			await pauseTrack($spotifyPlayerId, $appTokenStore?.access_token);
+			await pauseTrack($spotifyPlayerId, $appTokenStore?.spotify_access_token);
 		}
 	});
 
@@ -95,7 +95,7 @@
 				$spaceStore?.queues[0],
 				$spotifyPlayerId,
 				0,
-				$appTokenStore?.access_token
+				$appTokenStore?.spotify_access_token
 			);
 
 			if ($devModeStore) {
@@ -112,7 +112,7 @@
 			const sliced = await sliceQueue(supabase, queues, queues[0]?.id, $spaceStore.id);
 			const _payload = payload as TrackBroadcastPayload;
 
-			await playSingleTrack(sliced[0], $spotifyPlayerId, 0, $appTokenStore?.access_token);
+			await playSingleTrack(sliced[0], $spotifyPlayerId, 0, $appTokenStore?.spotify_access_token);
 
 			if ($devModeStore) {
 				console.log('playerForward', _payload);

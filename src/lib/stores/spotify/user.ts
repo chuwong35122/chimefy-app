@@ -1,13 +1,19 @@
 import type { PrivateUser } from 'spotify-types';
 import { writable } from 'svelte/store';
 
-export const appTokenStore = writable<{
-	access_token: string;
-	refresh_token: string;
+interface AppTokenStore {
+	supabase_access_token: string;
+	supabase_refresh_token: string;
+	spotify_access_token: string;
+	spotify_refresh_token: string;
 	since: Date | null;
-}>({
-	access_token: '',
-	refresh_token: '',
+}
+
+export const appTokenStore = writable<AppTokenStore>({
+	supabase_access_token: '',
+	supabase_refresh_token: '',
+	spotify_access_token: '',
+	spotify_refresh_token: '',
 	since: null
 });
 export const spotifyPlayerId = writable('');

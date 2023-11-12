@@ -7,7 +7,7 @@
 	import { Modal } from 'flowbite-svelte';
 	import SpotifyPremiumInfoModal from '$components/modals/SpotifyPremiumInfoModal.svelte';
 	import { userConfigStore, userStore } from '$stores/auth/user';
-	import { setTokenStore, getSpotifyProfile } from '$spotify/user';
+	import { getSpotifyProfile } from '$spotify/user';
 	import { appTokenStore, spotifyUserProfile } from '$stores/spotify/user';
 	import { createAppConfig } from '$utils/configs/app.js';
 	import AuthExpireListener from '$components/auth/AuthExpireListener.svelte';
@@ -20,7 +20,7 @@
 
 	// Check if user has Spotify premium
 	spotifyUserProfile.subscribe((user) => {
-		if (user && user?.product !== 'premium' && $appTokenStore?.access_token) {
+		if (user && user?.product !== 'premium' && $appTokenStore?.spotify_access_token) {
 			isSpotifyPremiumModalOpen = true;
 		}
 	});
@@ -31,15 +31,21 @@
 		const {
 			data: { subscription }
 		} = supabase.auth.onAuthStateChange(async (event, _session) => {
-			console.log(event)
-			console.log(_session)
+			console.log(event);
+			console.log(_session);
 			if (_session?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');
 			}
 
 			if (_session) {
 				userStore.set(_session?.user);
-				setTokenStore(_session?.provider_token, _session?.provider_refresh_token);
+				appTokenStore.set({
+					supabase_access_token: _session?.access_token,
+					supabase_refresh_token: _session?.refresh_token,
+					spotify_access_token: String(_session?.provider_token),
+					spotify_refresh_token: String(_session?.provider_refresh_token),
+					since: new Date()
+				});
 
 				const configs = await createAppConfig(supabase, _session?.user?.id);
 				userConfigStore.set(configs);
@@ -53,7 +59,7 @@
 
 	$: async () => {
 		if ($appTokenStore) {
-			const profile = await getSpotifyProfile($appTokenStore?.access_token);
+			const profile = await getSpotifyProfile($appTokenStore?.spotify_access_token);
 			spotifyUserProfile.set(profile);
 		}
 	};
@@ -62,7 +68,7 @@
 <Modal open={isSpotifyPremiumModalOpen} size="lg" class="modal-glass z-50 relative">
 	<SpotifyPremiumInfoModal />
 </Modal>
-<AuthExpireListener session={session} />
+<AuthExpireListener {session} />
 <div
 	class="min-h-screen overflow-x-hidden bg-black bg-gradient-to-r from-primary-800/20 via-dark-600/50 to-primary-600/20 background-animate"
 >
