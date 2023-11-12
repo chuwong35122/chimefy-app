@@ -1,49 +1,29 @@
-<!-- <script lang="ts">
-	import { refreshSpotifyToken, setTokenStore } from '$spotify/user';
-	import { onDestroy } from 'svelte';
-	import { hasRefreshedToken, spotifyAccessToken } from '$stores/spotify/user';
+<script lang="ts">
+	import type { Session } from '@supabase/supabase-js';
+	import { onDestroy, onMount } from 'svelte';
+	import { page } from '$app/stores';
+	import { spotifyAccessToken } from '$stores/spotify/user';
+
+	export let session: Session | null = null;
+
+  let formRef: HTMLFormElement
+
+	const SESSION_THRESHOLD = 0; // seconds
+	let SESSION_EXPIRE_IN = session?.expires_in ?? 0;
 
 	let timer: NodeJS.Timer;
-	const TIMER_INTERVAL = 500;
-	let remainingTokenTime = 0;
 
-	let showReauthenticateModal = false;
+	onMount(() => {
+		if (!session) return;
 
-	let signoutForm: HTMLFormElement;
-
-	function closeModal() {
-		showReauthenticateModal = false;
-		hasRefreshedToken.set(false);
-	}
-
-	// Create a countdown timer to the moment token expires
-	spotifyAccessToken.subscribe(async ({ access_token, since }) => {
-		if (!access_token) {
-			if (signoutForm) {
-				signoutForm.submit();
+		timer = setInterval(() => {
+			SESSION_EXPIRE_IN -= 1;
+      console.log(session?.expires_in, SESSION_EXPIRE_IN)
+			if (SESSION_EXPIRE_IN < SESSION_THRESHOLD) {
+        formRef.submit()
+        clearInterval(timer)
 			}
-		}
-
-		if (!since) return;
-
-		timer = setInterval(async () => {
-			const now = new Date().getTime();
-			const timeDiff = now - since.getTime();
-
-			remainingTokenTime = 3_600_000 - timeDiff;
-
-			if ($hasRefreshedToken) {
-				// show modal asking to re-authenticate
-				showReauthenticateModal = true;
-			} else {
-				// refresh token if remaining time <= 15 seconds
-				if (remainingTokenTime <= 15_000) {
-					const token = await refreshSpotifyToken($spotifyAccessToken.refresh_token);
-					setTokenStore(token.access_token, '');
-					hasRefreshedToken.set(true);
-				}
-			}
-		}, TIMER_INTERVAL);
+		}, 1000);
 	});
 
 	onDestroy(() => {
@@ -51,7 +31,7 @@
 	});
 </script>
 
-<form bind:this={signoutForm} action="/signout?/signout" method="POST" id="signout-form" />
-<!-- <Modal bind:open={showReauthenticateModal} permanent class="modal-glass z-50 relative">
-	<ReauthenticatePromptModal on:finishReauthenticate={closeModal} />
-</Modal> --> -->
+<form bind:this={formRef} method="POST" action="/auth?/refresh">
+	<input type="hidden" name="redirect_to" bind:value={$page.url.pathname} />
+	<input type="hidden" name="refresh_token" bind:value={$spotifyAccessToken.refresh_token} />
+</form>
