@@ -8,8 +8,8 @@
 
 	let formRef: HTMLFormElement;
 
-	let count = 0;
-	const REFRESH_TIME = 3_530; // seconds
+	const REFRESH_TIME_THRESHOLD = 30; // seconds
+	let countdown = session?.expires_in ?? 30;
 
 	let timer: NodeJS.Timer;
 
@@ -17,8 +17,8 @@
 		if (!session) return;
 
 		timer = setInterval(() => {
-			count++;
-			if (count >= REFRESH_TIME) {
+			countdown--;
+			if (countdown <= REFRESH_TIME_THRESHOLD) {
 				localStorage.setItem('refresh_session', 'true'); // read in NavBar
 				toastValue.set({ type: 'warn', message: 'Refreshing session. Please wait 🔄' });
 				formRef.submit();
