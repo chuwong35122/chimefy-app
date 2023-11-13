@@ -6,15 +6,28 @@
 	import { goto } from '$app/navigation';
 	import { PUBLIC_SUPPORT_URL } from '$env/static/public';
 	import { devModeStore } from '$stores/settings';
+	import { onMount } from 'svelte';
 
 	let isLoading = false;
 
 	let devModeOn = false;
 
+	let loginButton: HTMLButtonElement;
+
 	function handleChangeDevMode() {
 		devModeStore.set(devModeOn);
 		localStorage.setItem('dev_mode', devModeOn ? 'true' : 'false');
 	}
+
+	// For auto-refresh Supabase & Spotify session by re-login and auto-redirect to the last page
+	onMount(() => {
+		if(!window) return
+		const refreshed = window.localStorage.getItem('refresh_session');
+		if (refreshed) {
+			loginButton.click();
+			window.localStorage.removeItem('refresh_session');
+		}
+	});
 </script>
 
 <div class="w-full px-4 mt-1 flex flex-row items-center justify-between">
@@ -114,7 +127,7 @@
 		{:else}
 			<!-- Login to Spotify -->
 			<form method="POST" action="/auth/spotify" class="hover:scale-105 duration-150">
-				<button type="submit" aria-label="Login with Spotify" class="px-3">
+				<button bind:this={loginButton} type="submit" aria-label="Login with Spotify" class="px-3">
 					<div class="flex flex-row items-center">
 						<Icon icon="logos:spotify-icon" width={24} height={24} />
 						<p

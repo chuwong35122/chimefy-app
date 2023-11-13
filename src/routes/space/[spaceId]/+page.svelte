@@ -15,9 +15,10 @@
 	import Icon from '@iconify/svelte';
 	import type { SpaceMember } from '$lib/types/space/member.interface.js';
 	import { orderSpaceMembers } from '$utils/space/members.js';
+	import AuthExpireListener from '$components/auth/AuthExpireListener.svelte';
 
 	export let data;
-	$: ({ space, url, supabase } = data);
+	$: ({ space, url, supabase, session } = data);
 
 	let openTutorialModal = false;
 
@@ -114,6 +115,7 @@
 	<title>{space?.name ? `Listening to ${space?.name}` : 'Loading...'}</title>
 </svelte:head>
 
+<AuthExpireListener {session} />
 <Modal bind:open={openTutorialModal} size="lg" class="modal-glass">
 	<SpaceHelpModal />
 </Modal>

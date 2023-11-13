@@ -3,14 +3,14 @@
 	import NavBar from '$components/UI/NavBar.svelte';
 	import Toast from '$components/UI/Toast.svelte';
 	import { onMount } from 'svelte';
-	import { invalidate } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
 	import { Modal } from 'flowbite-svelte';
 	import SpotifyPremiumInfoModal from '$components/modals/SpotifyPremiumInfoModal.svelte';
 	import { userConfigStore, userStore } from '$stores/auth/user';
 	import { getSpotifyProfile } from '$spotify/user';
 	import { appTokenStore, spotifyUserProfile } from '$stores/spotify/user';
 	import { createAppConfigIfNotExist } from '$utils/configs/app.js';
-	import AuthExpireListener from '$components/auth/AuthExpireListener.svelte';
+	import { updateUserConfig } from '$utils/user/config.js';
 
 	export let data;
 	let { supabase, session } = data;
@@ -47,6 +47,16 @@
 
 				if (!$userConfigStore && (event === 'INITIAL_SESSION' || event === 'USER_UPDATED')) {
 					const configs = await createAppConfigIfNotExist(supabase, _session?.user?.id);
+
+					if (configs.session_refresh_redirect_url) {
+						goto(configs.session_refresh_redirect_url);
+						await updateUserConfig(supabase, _session?.user?.id, {
+							session_refresh_redirect_url: null
+						})
+						configs.session_refresh_redirect_url = null;
+					}
+
+					
 					userConfigStore.set(configs);
 				}
 			}
@@ -68,7 +78,6 @@
 <Modal open={isSpotifyPremiumModalOpen} size="lg" class="modal-glass z-50 relative">
 	<SpotifyPremiumInfoModal />
 </Modal>
-<AuthExpireListener {session} />
 <div
 	class="min-h-screen overflow-x-hidden bg-black bg-gradient-to-r from-primary-800/20 via-dark-600/50 to-primary-600/20 background-animate"
 >
