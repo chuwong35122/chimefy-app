@@ -1,24 +1,38 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
+import { updateUserConfig } from '$utils/user/config';
+import { SPOTIFY_AUTH_SCOPES } from '$spotify/user';
 
 export const actions: Actions = {
 	refresh: async ({ request, locals }) => {
 		const data = await request.formData();
-		const refreshToken = String(data.get('refresh_token'));
-		const redirectTo = data.get('redirectTo')?.toString();
+		const redirectTo = data.get('redirect_to');
+		const userID = data.get('user_id');
+		const { supabase } = locals;
 
-		console.log(refreshToken, redirectTo);
-
-		console.log(refreshToken, redirectTo);
-
-		if (!refreshToken) {
-			throw error(400, 'No refresh token provided');
+		if (!userID?.toString()) {
+			throw error(400, 'No user ID provided');
 		}
 
-		// const result = await locals.supabase.auth.({ refresh_token: refreshToken });
-		// if (result.error) {
-		// console.log(result.error);
-		// }
-		throw redirect(301, redirectTo ?? '/space');
+		await updateUserConfig(supabase, userID?.toString(), {
+			session_refresh_redirect_url: redirectTo?.toString() ?? '/space'
+		});
+
+		// Same code as /auth/spotify/+page.server.ts
+		await supabase.auth.signOut();
+		const oauth = await supabase.auth.signInWithOAuth({
+			provider: 'spotify',
+			options: {
+				scopes: SPOTIFY_AUTH_SCOPES.join(' '),
+				skipBrowserRedirect: true,
+				redirectTo: '/'
+			}
+		});
+
+		if (oauth.error) {
+			throw error(404, oauth.error);
+		}
+
+		throw redirect(301, oauth.data.url);
 	}
 };

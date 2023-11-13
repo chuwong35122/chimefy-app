@@ -2,6 +2,15 @@ import type { Database } from '$lib/types/database/supabase.types';
 import type { UserConfigs } from '$lib/types/user/config.interface';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
+export async function getUserConfigs(
+	supabase: SupabaseClient<Database>,
+	userId: string
+): Promise<UserConfigs | null> {
+	const result = await supabase.from('user_configs').select().eq('config_owner', userId).single();
+
+	return result.data as any;
+}
+
 export async function updateUserConfig(
 	supabase: SupabaseClient<Database>,
 	userId: string,
