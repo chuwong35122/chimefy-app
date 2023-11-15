@@ -5,7 +5,7 @@ import { SPOTIFY_AUTH_SCOPES } from '$spotify/user';
 export const actions: Actions = {
 	default: async ({ locals: { supabase } }) => {
 		await supabase.auth.signOut();
-		
+
 		const oauth = await supabase.auth.signInWithOAuth({
 			provider: 'spotify',
 			options: {
