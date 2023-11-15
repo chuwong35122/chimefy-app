@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { createEventDispatcher } from 'svelte';
+	import SpaceMemberPreview from '../members/SpaceMemberPreview.svelte';
 
 	export let supabase: SupabaseClient;
 	export let hidden: boolean;
@@ -86,40 +87,46 @@
 		</div>
 	</div>
 
-	<Button size="xs"
-		>Options<Icon icon="mdi:chevron-down" class="w-3 h-3 ml-2 text-white dark:text-white" /></Button
-	>
-	<Dropdown bind:open={dropdownOpen} class="w-44">
-		<DropdownItem
-			id="copy-id-btn"
-			aria-label="Copy this space ID"
-			on:click={onCopySpaceId}
-			class="flex flex-row items-center text-sm font-medium gap-2"
+	<div class="flex flex-row gap-4">
+		<SpaceMemberPreview />
+		<Button size="xs"
+			>Options<Icon
+				icon="mdi:chevron-down"
+				class="w-3 h-3 ml-2 text-white dark:text-white"
+			/></Button
 		>
-			<Icon icon="material-symbols:share" width={16} height={16} class="text-dark-400" /><span
-				>Share to Friend</span
-			>
-		</DropdownItem>
-		<DropdownItem
-			on:click={() => {
-				dropdownOpen = false;
-				dispatch('viewMember', {
-					hidden: !hidden
-				});
-			}}
-			class="flex flex-row items-center text-sm font-medium gap-2"
-		>
-			<Icon icon="mdi:account" width={16} height={16} class="text-dark-400" /><span
-				>View members</span
-			>
-		</DropdownItem>
-		{#if $spaceRoleStore === 'admin'}
+		<Dropdown bind:open={dropdownOpen} class="w-44">
 			<DropdownItem
-				on:click={() => (showDeleteModel = true)}
-				class="flex flex-row items-center text-sm font-medium gap-2 text-red-600"
+				id="copy-id-btn"
+				aria-label="Copy this space ID"
+				on:click={onCopySpaceId}
+				class="flex flex-row items-center text-sm font-medium gap-2"
 			>
-				<Icon icon="mdi:delete" width={16} height={16} /><span>Delete Space</span>
+				<Icon icon="material-symbols:share" width={16} height={16} class="text-dark-400" /><span
+					>Share to Friend</span
+				>
 			</DropdownItem>
-		{/if}
-	</Dropdown>
+			<DropdownItem
+				on:click={() => {
+					dropdownOpen = false;
+					dispatch('viewMember', {
+						hidden: !hidden
+					});
+				}}
+				class="flex flex-row items-center text-sm font-medium gap-2"
+			>
+				<Icon icon="mdi:account" width={16} height={16} class="text-dark-400" /><span
+					>View members</span
+				>
+			</DropdownItem>
+			{#if $spaceRoleStore === 'admin'}
+				<DropdownItem
+					on:click={() => (showDeleteModel = true)}
+					class="flex flex-row items-center text-sm font-medium gap-2 text-red-600"
+				>
+					<Icon icon="mdi:delete" width={16} height={16} /><span>Delete Space</span>
+				</DropdownItem>
+			{/if}
+		</Dropdown>
+	</div>
 </div>
