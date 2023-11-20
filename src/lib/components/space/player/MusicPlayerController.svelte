@@ -59,6 +59,7 @@
 		trackDurationTimer = setInterval(() => {
 			if ($isPlayingStatus === false) return;
 
+			// Update player's duration every second if playing
 			playingDurationMs.update((prev) => prev + 1000);
 		}, 1000);
 	});
