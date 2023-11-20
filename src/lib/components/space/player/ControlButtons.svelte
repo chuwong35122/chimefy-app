@@ -125,7 +125,7 @@
 				event: 'playerStart',
 				payload
 			});
-		}, 1000);
+		}, 4000); // Note: Should use multiple of 1000 since we use setInterval() of 1000ms to update playingDurationMs
 	}
 </script>
 
