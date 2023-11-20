@@ -3,8 +3,10 @@ import type { Actions } from './$types';
 import { PUBLIC_NODE_ENV } from '$env/static/public';
 
 export const actions: Actions = {
-	signout: async ({ locals: { supabase } }) => {
-		await supabase.auth.signOut();
+	signout: async ({ fetch }) => {
+		await fetch('/api/auth/signout', {
+			method: 'POST'
+		});
 		throw redirect(303, '/');
 	},
 	reauthenticate: async ({ locals: { supabase }, request }) => {
