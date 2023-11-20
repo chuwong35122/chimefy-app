@@ -8,7 +8,6 @@
 	import ControlButtons from './ControlButtons.svelte';
 	import MemberPlayerListener from '../websocket/MemberPlayerListener.svelte';
 	import { spotifyPlayerId, appTokenStore } from '$stores/spotify/user';
-	import DebugText from '$components/debugger/DebugText.svelte';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { spaceStore } from '$stores/space';
 	import { userConfigStore } from '$stores/auth/user';
@@ -96,9 +95,3 @@
 		>
 	</div>
 </div>
-
-<DebugText text={`Spotify player ID: ${$spotifyPlayerId}`} />
-<DebugText text={`Spotify player options: ${JSON.stringify(SpotifyPlayer?._options)}`} />
-<DebugText text={`Player duration: ${$playingDurationMs} ms`} />
-<DebugText text={`Track total duration: ${$spaceStore?.queues[0]?.duration_ms} ms`} />
-<DebugText text={`Player status: ${$isPlayingStatus ? 'Playing' : 'Pause'}`} />
