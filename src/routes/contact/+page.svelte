@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Alert, Badge, Button, Input, Label, Spinner, Textarea } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 	import type { PageData } from './$types';
 	import ErrorMessage from '$components/forms/ErrorMessage.svelte';
@@ -15,7 +14,6 @@
 		PUBLIC_EMAILJS_PUBLIC_KEY
 	} from '$env/static/public';
 	import { goto } from '$app/navigation';
-	import { devModeStore } from '$stores/settings';
 
 	export let data: PageData;
 	const { form, errors, validate } = superForm(data.form, {
@@ -81,10 +79,6 @@
 
 	<title>Contact Chimefy</title>
 </svelte:head>
-
-{#if $devModeStore}
-	<SuperDebug data={$form} />
-{/if}
 
 <div class="w-full h-full grid place-items-center animate-in fade-in slide-in-from-top mt-12">
 	<div

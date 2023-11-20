@@ -1,23 +1,15 @@
 <script lang="ts">
-	import { Dropdown, DropdownItem, Spinner, Toggle } from 'flowbite-svelte';
+	import { Dropdown, DropdownItem, Spinner } from 'flowbite-svelte';
 	import Icon from '@iconify/svelte';
 	import { userStore } from '$stores/auth/user';
 	import NavLink from './NavLink.svelte';
 	import { goto } from '$app/navigation';
 	import { PUBLIC_SUPPORT_URL } from '$env/static/public';
-	import { devModeStore } from '$stores/settings';
 	import { onMount } from 'svelte';
 
 	let isLoading = false;
 
-	let devModeOn = false;
-
 	let loginButton: HTMLButtonElement;
-
-	function handleChangeDevMode() {
-		devModeStore.set(devModeOn);
-		localStorage.setItem('dev_mode', devModeOn ? 'true' : 'false');
-	}
 
 	// For auto-refresh Supabase & Spotify session by re-login and auto-redirect to the last page
 	onMount(() => {
@@ -79,19 +71,6 @@
 								<div class="flex flex-row items-center">
 									<Icon icon="material-symbols:person" class="h-4 w-4 mr-2" />
 									<p class="text-sm font-medium">View Profile</p>
-								</div>
-							</DropdownItem>
-							<DropdownItem class="hover:mouse-pointer">
-								<div class="flex flex-row items-center">
-									<Icon icon="ic:outline-code" class="w-6 h-6" />
-									<p class="text-sm font-medium mx-1.5 w-[100px]">Dev Mode</p>
-									<div class="scale-[0.8]">
-										<Toggle
-											bind:checked={devModeOn}
-											on:change={handleChangeDevMode}
-											color="green"
-										/>
-									</div>
 								</div>
 							</DropdownItem>
 							<DropdownItem
