@@ -7,7 +7,6 @@
 	import type { TrackBroadcastPayload } from '$lib/types/space/broadcast.interface';
 	import { toastValue } from '$stores/notification/toast';
 	import { appTokenStore, spotifyPlayerId } from '$stores/spotify/user';
-	import { devModeStore } from '$stores/settings';
 	import { spaceStore, spaceRoleStore } from '$stores/space';
 
 	export let channel: RealtimeChannel;
@@ -49,10 +48,6 @@
 			return;
 		}
 
-		if ($devModeStore) {
-			console.log('isPlayingStatus', status);
-		}
-
 		if ($spaceStore && status) {
 			await playSingleTrack(
 				$spaceStore?.queues[0],
@@ -76,13 +71,6 @@
 			playingDurationMs.set(_payload?.currentDurationMs);
 			playingTrackId.set(_payload?.playingTrackId);
 			isPlayingStatus.set(_payload?.isPlaying);
-
-			if ($devModeStore) {
-				const rnd = Math.random();
-				if (rnd < 0.2) {
-					console.log('playerStart', _payload);
-				}
-			}
 		});
 
 		// Listen for player event when the admin press backward
@@ -97,10 +85,6 @@
 				0,
 				$appTokenStore?.spotify_access_token
 			);
-
-			if ($devModeStore) {
-				console.log('playerBackward', _payload);
-			}
 		});
 
 		// Listen for player event when the admin skip a track
@@ -113,10 +97,6 @@
 			const _payload = payload as TrackBroadcastPayload;
 
 			await playSingleTrack(sliced[0], $spotifyPlayerId, 0, $appTokenStore?.spotify_access_token);
-
-			if ($devModeStore) {
-				console.log('playerForward', _payload);
-			}
 		});
 	});
 

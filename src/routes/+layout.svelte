@@ -37,6 +37,7 @@
 				invalidate('supabase:auth');
 			}
 
+			console.log(_session?.expires_in)
 			if (_session) {
 				setAuthStores(_session);
 

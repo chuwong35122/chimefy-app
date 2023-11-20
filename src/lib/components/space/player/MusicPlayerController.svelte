@@ -9,7 +9,6 @@
 	import MemberPlayerListener from '../websocket/MemberPlayerListener.svelte';
 	import { spotifyPlayerId, appTokenStore } from '$stores/spotify/user';
 	import DebugText from '$components/debugger/DebugText.svelte';
-	import { devModeStore } from '$stores/settings';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { spaceStore } from '$stores/space';
 	import { userConfigStore } from '$stores/auth/user';
@@ -41,9 +40,6 @@
 
 			SpotifyPlayer.on('ready', async ({ device_id }) => {
 				toastValue.set({ message: 'You have been connected to Spotify player 📻', type: 'info' });
-				if ($devModeStore) {
-					console.log('Ready with Device ID', device_id);
-				}
 				spotifyPlayerId.set(device_id);
 			});
 
@@ -53,9 +49,6 @@
 						'Sorry, there is an error connecting to Spotify player. Please refresh the page 😭...',
 					type: 'error'
 				});
-				if ($devModeStore) {
-					console.error(err);
-				}
 			});
 
 			// Put the connect() at the bottom most of player.on()
