@@ -4,7 +4,6 @@
 	import Icon from '@iconify/svelte';
 	import type { MusicQueue } from '$lib/types/space/queue.interface';
 	import { fade, fly } from 'svelte/transition';
-	import DebugText from '$components/debugger/DebugText.svelte';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { spaceStore } from '$stores/space';
 	import { Badge, Dropdown, DropdownItem } from 'flowbite-svelte';
@@ -83,7 +82,6 @@
 						{/if}
 						<p class="text-sm font-medium line-clamp-1">{queue.name}</p>
 					</div>
-					<DebugText text={queue?.id} />
 					<p class="leading-tight text-dark-100 text-xs">
 						{queue?.artist}
 					</p>
