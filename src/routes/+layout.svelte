@@ -41,7 +41,7 @@
 			if (_session) {
 				setAuthStores(_session);
 
-				if (!$userConfigStore && (event === 'INITIAL_SESSION' || event === 'USER_UPDATED')) {
+				if (!$userConfigStore && (event === 'INITIAL_SESSION' || event === 'USER_UPDATED' || event === 'TOKEN_REFRESHED')) {
 					await readUserAppConfig(supabase, _session);
 					await fetchSpotifyProfileOrLogout(session?.provider_token);
 				}
