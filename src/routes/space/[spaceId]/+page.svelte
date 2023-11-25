@@ -6,7 +6,6 @@
 	import MusicPlayerController from '$components/space/player/MusicPlayerController.svelte';
 	import SpaceInfo from '$components/space/info/SpaceInfo.svelte';
 	import { userConfigStore, userStore } from '$stores/auth/user';
-	import seo from '$constants/seo';
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { Drawer, Modal } from 'flowbite-svelte';
 	import SpaceHelpModal from '$components/modals/SpaceHelpModal.svelte';
@@ -90,27 +89,11 @@
 </script>
 
 <svelte:head>
-	<meta charset="UTF-8" />
-	<meta name="description" content="Listen together" />
-	<meta
-		name="keywords"
-		content="chimefy, spotify, listen together, join space, public space, private space"
-	/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
 	<!-- Open Graph Meta Tags -->
-	<meta property="og:title" content={`Join ${space?.name}`} />
-	<meta property="og:description" content={seo.appDescription} />
-	<meta property="og:image" content={seo.spaceInvite.image} />
-	<meta property="og:url" content={url} />
-	<meta property="og:type" content="website" />
+	<meta property="og:title" content={`You have been invited to ${space?.name}`} />
 
 	<!-- Twitter Meta Tags -->
-	<meta name="twitter:title" content={`You have been invited to Chimefy: ${space?.name}`} />
-	<meta name="twitter:description" content={seo.spaceInvite.description} />
-	<meta name="twitter:card" content={seo.twitterCard} />
-	<meta name="twitter:image" content={seo.spaceInvite.image} />
-	<meta name="twitter:image:alt" content={`Join ${space?.name}`} />
+	<meta name="twitter:title" content={`You have been invited to ${space?.name}`} />
 
 	<title>{space?.name ? `Listening to ${space?.name}` : 'Loading...'}</title>
 </svelte:head>
@@ -148,7 +131,9 @@
 		<SpaceInfo {supabase} {hidden} on:viewMember={(e) => (hidden = e.detail.hidden)} />
 	</div>
 	<div class="flex flex-col md:flex-row gap-4 w-full">
-		<div class="bg-glass rounded-xl h-full md:h-[560px] w-full md:w-[1000px] flex flex-col md:flex-row justify-between p-6">
+		<div
+			class="bg-glass rounded-xl h-full md:h-[560px] w-full md:w-[1000px] flex flex-col md:flex-row justify-between p-6"
+		>
 			<div class="w-full md:w-96">
 				<TrackSearchTab {supabase} />
 			</div>

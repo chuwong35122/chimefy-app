@@ -24,28 +24,13 @@
 <svelte:head>
 	<meta charset="UTF-8" />
 	<meta name="description" content="Create a Space" />
-	<meta
-		name="keywords"
-		content="chimefy, spotify, listen together, join space, create space, public space, private space"
-	/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 	<!-- Open Graph Meta Tags -->
 	<meta property="og:title" content={seo.createSpace.title} />
-	<meta
-		property="og:description"
-		content="Create your own space with unlimited number of members and sync all your Spotify music in real-time"
-	/>
-	<meta property="og:image" content={seo.image} />
-	<meta property="og:url" content={seo.createSpace.url} />
-	<meta property="og:type" content="website" />
 
 	<!-- Twitter Meta Tags -->
 	<meta name="twitter:title" content={seo.createSpace.title} />
-	<meta name="twitter:description" content={seo.space.description} />
-	<meta name="twitter:card" content={seo.twitterCard} />
-	<meta name="twitter:image" content={seo.image} />
-	<meta name="twitter:image:alt" content={seo.imageAlt} />
+	<meta name="twitter:description" content={seo.createSpace.description} />
 
 	<title>Create a space</title>
 </svelte:head>
