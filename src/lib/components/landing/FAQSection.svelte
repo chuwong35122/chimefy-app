@@ -3,12 +3,30 @@
 	import { Accordion, AccordionItem } from 'flowbite-svelte';
 </script>
 
-<div class="w-full mt-20">
+<div class="w-full">
 	<div class="w-full grid place-items-center mb-2">
 		<p class="text-3xl font-bold">FAQs</p>
 	</div>
 	<Accordion defaultClass="w-[440px] md:w-[800px]">
-		<!-- 1 -->
+		<AccordionItem>
+			<span slot="header" class="text-base flex gap-2">
+				<Icon icon="ri:question-fill" class="w-8 h-8" />
+				<span>How to use Chimefy?</span>
+			</span>
+			<p>Using Chimefy is easy! Just follow the steps below</p>
+			<br />
+			<ol class="list-decimal list-inside ml-8">
+				<li>Login to your Spotify Premium account</li>
+				<li>Create or join a Space</li>
+				<li>Invite your friends with Space's ID</li>
+				<li>Play & Listen together!</li>
+			</ol>
+			<br />
+			<span class="text-sm text-dark-300">
+				Note: Please refresh if there's bug or error... Sorry for the inconvenience.
+			</span>
+		</AccordionItem>
+		<!-- 2 -->
 		<AccordionItem>
 			<span slot="header" class="text-base flex gap-2">
 				<Icon icon="fluent-emoji-high-contrast:thinking-face" class="w-6 h-6" />
@@ -36,7 +54,7 @@
 				</span>
 			</p>
 		</AccordionItem>
-		<!-- 2 -->
+		<!-- 3 -->
 		<AccordionItem>
 			<span slot="header" class="text-base flex gap-2">
 				<Icon icon="mdi:account" class="w-6 h-6" />
@@ -47,7 +65,7 @@
 				with any amount of members!
 			</p>
 		</AccordionItem>
-		<!-- 3 -->
+		<!-- 4 -->
 		<AccordionItem>
 			<span slot="header" class="text-base flex gap-2">
 				<Icon icon="fa-brands:spotify" class="w-6 h-6" />
