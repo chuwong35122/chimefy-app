@@ -10,12 +10,8 @@
 </script>
 
 <svelte:head>
-	<title>My Profile</title>
-	<meta charset="UTF-8" />
+	<title>View My Profile</title>
 	<meta name="description" content="View my Chimefy profile" />
-	<meta name="keywords" content="chimefy, spotify, listen together, sync spotify, view profile" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Welcome to Chimefy</title>
 </svelte:head>
 
 <div class="mt-40">

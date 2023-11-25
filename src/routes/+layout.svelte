@@ -13,6 +13,7 @@
 		readUserAppConfig,
 		setAuthStores
 	} from '$utils/user/auth/helper.js';
+	import seo from '$constants/seo.js';
 
 	export let data;
 	let { supabase, session } = data;
@@ -53,6 +54,26 @@
 		};
 	});
 </script>
+
+<svelte:head>
+	<meta charset="UTF-8" />
+	<meta name="description" content={seo.appTitle} />
+	<meta name="keywords" content="chimefy, spotify, listen together, sync spotify" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<!-- Open Graph Meta Tags -->
+	<meta property="og:title" content={seo.appTitle} />
+	<meta property="og:description" content={seo.appDescription} />
+	<meta property="og:url" content={seo.appUrl} />
+	<meta property="og:type" content="website" />
+
+	<!-- Twitter Meta Tags -->
+	<meta name="twitter:title" content={seo.appTitle} />
+	<meta name="twitter:description" content={seo.appDescription} />
+	<meta name="twitter:card" content={seo.twitterCard} />
+
+	<title>Welcome to Chimefy</title>
+</svelte:head>
 
 <Modal open={isSpotifyPremiumModalOpen} size="lg" class="modal-glass z-50 relative">
 	<SpotifyPremiumInfoModal />
