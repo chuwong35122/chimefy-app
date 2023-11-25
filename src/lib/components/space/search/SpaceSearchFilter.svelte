@@ -11,20 +11,20 @@
 	const dispatch = createEventDispatcher();
 
 	export let input = {
-		sessionName: '',
+		name: '',
 		musicType: ''
 	};
 
 	async function query() {
-		const { sessionName, musicType } = input;
+		const { name, musicType } = input;
 
-		const spaces = await queryPublicSpaces(supabase, sessionName, musicType);
+		const spaces = await queryPublicSpaces(supabase, name, musicType);
 		dispatch('query', { spaces });
 	}
 
 	async function resetFilter() {
 		input = {
-			sessionName: '',
+			name: '',
 			musicType: ''
 		};
 
@@ -43,7 +43,7 @@
 <Tooltip triggeredBy="[id=filter-search-btn]" placement="top">Search!</Tooltip>
 <form class="flex gap-2">
 	<Search
-		bind:value={input.sessionName}
+		bind:value={input.name}
 		size="md"
 		class="flex gap-2 items-center"
 		placeholder="Search Session Name"
