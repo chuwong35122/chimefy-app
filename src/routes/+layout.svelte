@@ -14,6 +14,7 @@
 		setAuthStores
 	} from '$utils/user/auth/helper.js';
 	import seo from '$constants/seo.js';
+	import Footer from '$components/UI/Footer.svelte';
 
 	export let data;
 	let { supabase, session } = data;
@@ -38,7 +39,6 @@
 				invalidate('supabase:auth');
 			}
 
-			console.log(_session?.expires_in)
 			if (_session) {
 				setAuthStores(_session);
 
@@ -88,4 +88,5 @@
 			<Toast />
 		</div>
 	</div>
+	<Footer />
 </div>
