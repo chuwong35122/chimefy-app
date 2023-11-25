@@ -14,9 +14,9 @@
 	<meta name="description" content="View my Chimefy profile" />
 </svelte:head>
 
-<div class="mt-40 min-h-screen">
-	<Card class="bg-glass space-y-4 animate-in slide-in-from-top-40 duration-1000">
-		<h2 class="text-lg font-bold text-white">Profile Card</h2>
+<div class="h-[calc(100vh-330px)] grid place-items-center">
+	<Card class="bg-glass bg-white/10 space-y-4 animate-in slide-in-from-top-20 duration-1000">
+		<h2 class="text-lg font-bold text-white">Member Card</h2>
 		<div class="flex flex-row gap-4 items-end">
 			<div class="animate-in fade-in-0 delay-500 duration-700">
 				<img
