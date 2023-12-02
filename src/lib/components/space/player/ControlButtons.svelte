@@ -6,6 +6,10 @@
 	import type { RealtimeChannel } from '@supabase/supabase-js';
 	import { Tooltip } from 'flowbite-svelte';
 	import { spaceRoleStore, spaceStore } from '$stores/space/index';
+	import { onDestroy, onMount } from 'svelte';
+	import qs from 'query-string';
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 
 	export let channel: RealtimeChannel;
 
@@ -35,9 +39,9 @@
 			};
 
 			toastValue.set({
-			message: 'Thank you, next 👉',
-			type: 'info'
-		})
+				message: 'Thank you, next 👉',
+				type: 'info'
+			});
 
 			channel.send({
 				type: 'broadcast',
@@ -74,13 +78,13 @@
 		const payload: TrackBroadcastPayload = {
 			isPlaying: $isPlayingStatus,
 			playingTrackId: $playingTrackId,
-			currentDurationMs: $playingDurationMs
+			currentDurationMs: 0
 		};
 
 		toastValue.set({
 			message: 'Going back... 🤞',
 			type: 'info'
-		})
+		});
 
 		channel.send({
 			type: 'broadcast',
@@ -92,10 +96,18 @@
 	let broadcastTimer: NodeJS.Timer;
 
 	function togglePlay() {
+		toastValue.set({
+			message: "Playing... Please wait ⏳",
+			type: 'info'
+		})
 		onBroadcastSignal(true);
 	}
 
 	function togglePause() {
+		toastValue.set({
+			message: "Pausing... Please wait ⏳",
+			type: 'info'
+		})
 		onBroadcastSignal(false);
 	}
 
@@ -120,13 +132,37 @@
 				currentDurationMs: $playingDurationMs
 			};
 
+			// Important: Do not change this 4,500ms delay. It is to make sure that the
 			channel.send({
 				type: 'broadcast',
 				event: 'playerStart',
 				payload
 			});
-		}, 4000); // Note: Should use multiple of 1000 since we use setInterval() of 1000ms to update playingDurationMs
+		}, 4500);
 	}
+
+	// Check whether user just go redirected into this page to auto play previous track
+	onMount(() => {
+		const url = $page.url.href;
+		const parsed = qs.parse(url);
+
+		$page.url.searchParams.delete('isPlaying');
+		$page.url.searchParams.delete('isAdmin');
+		$page.url.searchParams.delete('positionMs');
+		goto($page.url.href, {replaceState: false});
+
+		if (parsed.isPlaying === 'true' && $spaceRoleStore === 'admin') {
+			if (parsed.positionMs) {
+				playingDurationMs.set(Number(parsed.positionMs));
+			}
+
+			togglePlay();
+		}
+	});
+
+	onDestroy(() => {
+		clearTimeout(broadcastTimer);
+	})
 </script>
 
 <Tooltip triggeredBy="#back-button">

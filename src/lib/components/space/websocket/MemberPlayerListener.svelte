@@ -34,7 +34,7 @@
 				const payload: TrackBroadcastPayload = {
 					isPlaying: $isPlayingStatus,
 					playingTrackId: space.queues[1].id,
-					currentDurationMs: 0
+					currentDurationMs: durationMs
 				};
 				channel.send({ type: 'broadcast', event: 'playerForward', payload });
 			}
@@ -68,7 +68,10 @@
 	onMount(() => {
 		channel.on('broadcast', { event: 'playerStart' }, async ({ payload }) => {
 			const _payload = payload as TrackBroadcastPayload;
-			playingDurationMs.set(_payload?.currentDurationMs);
+			// console.log(_payload);
+			if(!$playingDurationMs) {
+				playingDurationMs.set(_payload?.currentDurationMs);
+			}
 			playingTrackId.set(_payload?.playingTrackId);
 			isPlayingStatus.set(_payload?.isPlaying);
 		});
