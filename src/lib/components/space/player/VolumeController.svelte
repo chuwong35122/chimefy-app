@@ -5,6 +5,8 @@
 	import { updateUserConfig } from '$utils/user/config';
 	import Icon from '@iconify/svelte';
 	import type { SupabaseClient } from '@supabase/supabase-js';
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
 	export let SpotifyPlayer: Spotify.Player;
 	export let supabase: SupabaseClient;
@@ -29,6 +31,12 @@
 			toastValue.set({ message: 'Volume set ✅', type: 'info' });
 		}
 	}
+
+	onMount(() => {
+		if($page.url.searchParams.get("is_playing")) {
+					console.log('yes')
+			}
+	})
 </script>
 
 <div class="flex flex-row items-center">

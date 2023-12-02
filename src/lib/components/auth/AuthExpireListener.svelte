@@ -3,6 +3,8 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { toastValue } from '$stores/notification/toast';
+	import { isPlayingStatus, playingDurationMs } from '$stores/player/index';
+	import { spaceRoleStore } from '$stores/space/index';
 
 	export let session: Session | null = null;
 
@@ -34,4 +36,7 @@
 <form bind:this={formRef} method="POST" action="/auth?/refresh">
 	<input type="hidden" name="redirect_to" value={$page.url.pathname} />
 	<input type="hidden" name="user_id" value={session?.user?.id} />
+	<input type="hidden" name="is_admin" value={$spaceRoleStore} />
+	<input type="hidden" name="is_playing" value={$isPlayingStatus} />
+	<input type='hidden' name="position_ms" value={$playingDurationMs} />
 </form>
