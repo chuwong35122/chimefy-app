@@ -13,6 +13,8 @@
 
 	export let channel: RealtimeChannel;
 
+	let buttonDisabled = false;
+
 	// Check for queues. If there are, trigger real-time channel broadcast to go forward.
 	async function onSkipTrack() {
 		if ($spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue) {
@@ -113,6 +115,8 @@
 
 	// Send broadcast signal to other members with its playing info
 	async function onBroadcastSignal(playing: boolean) {
+		buttonDisabled = true
+
 		const queues = $spaceStore?.queues;
 		if (queues && queues.length === 0) {
 			toastValue.set({ message: 'Please add some tracks before playing!', type: 'warn' });
@@ -138,6 +142,7 @@
 				event: 'playerStart',
 				payload
 			});
+			buttonDisabled = false
 		}, 4500);
 	}
 
@@ -192,7 +197,7 @@
 <div id="controller-section" class="flex flex-row items-center mb-2">
 	<button
 		id="back-button"
-		disabled={$spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue}
+		disabled={($spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue) || buttonDisabled}
 		aria-disabled={$spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue}
 		aria-label="Go to previous track"
 		on:click={onRestartTrack}
@@ -205,7 +210,7 @@
 	</button>
 	<button
 		id="play-pause-button"
-		disabled={$spaceRoleStore === 'member'}
+		disabled={$spaceRoleStore === 'member' || buttonDisabled}
 		on:click={$isPlayingStatus ? togglePause : togglePlay}
 		aria-disabled={$spaceRoleStore === 'member'}
 		aria-label={$isPlayingStatus ? 'Pause track' : 'Play track'}
@@ -225,7 +230,7 @@
 	</button>
 	<button
 		id="skip-button"
-		disabled={$spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue}
+		disabled={($spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue) || buttonDisabled}
 		on:click={onSkipTrack}
 		aria-disabled={$spaceRoleStore === 'member' && !$spaceStore?.allow_member_queue}
 		aria-label="Go to next track"
