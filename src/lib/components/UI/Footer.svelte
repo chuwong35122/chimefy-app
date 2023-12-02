@@ -10,7 +10,7 @@
 	import Icon from '@iconify/svelte';
 </script>
 
-<Footer footerType="socialmedia" class="bg-transparent">
+<Footer footerType="socialmedia" class="bg-transparent border-t border-white/20 mt-20">
 	<div class="md:flex md:justify-between">
 		<div class="mb-6 md:mb-0 flex flex-row items-center gap-4">
 			<FooterBrand src="/logo/chimefy/logo_light.svg" alt="Chimefy Logo" name="Chimefy" />
@@ -34,8 +34,7 @@
 			</div>
 		</div>
 	</div>
-	<hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-	<div class="sm:flex sm:items-center sm:justify-between">
+	<div class="sm:flex sm:items-center sm:justify-between mt-4">
 		<FooterCopyright href="/" by="Chimefy" />
 		<div class="flex mt-4 space-x-6 sm:justify-center sm:mt-0">
 			<FooterIcon href="https://github.com/chuwong35122/chimefy-app" aClass='flex flex-row gap-2 items-center'>
