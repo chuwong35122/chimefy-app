@@ -1,10 +1,16 @@
 import * as Sentry from '@sentry/sveltekit';
-import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
+import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, PUBLIC_NODE_ENV } from '$env/static/public';
 import { createServerClient } from '@supabase/ssr';
 import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
-import { PUBLIC_NODE_ENV } from '$env/static/public';
 
-const UNPROTECTED_ROUTES = ['/', '/contact', '/auth/spotify', '/auth/callback', '/auth/refresh'];
+const UNPROTECTED_ROUTES = [
+	'/',
+	'/contact',
+	'/auth/spotify',
+	'/auth/callback',
+	'/auth/refresh',
+	'/auth/auth-code-error'
+];
 
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
