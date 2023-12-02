@@ -11,7 +11,7 @@ export const actions: Actions = {
 			options: {
 				scopes: SPOTIFY_AUTH_SCOPES.join(' '),
 				skipBrowserRedirect: true,
-				redirectTo: '/'
+				redirectTo: '/auth/callback'
 			}
 		});
 
