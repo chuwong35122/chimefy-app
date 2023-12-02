@@ -1,16 +1,22 @@
 import * as Sentry from '@sentry/sveltekit';
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
-import { PUBLIC_NODE_ENV } from '$env/static/public';
-import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
+import { createServerClient } from '@supabase/ssr';
 import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
+import { PUBLIC_NODE_ENV } from '$env/static/public';
 
 const UNPROTECTED_ROUTES = ['/', '/contact', '/auth/spotify', '/auth/callback', '/auth/refresh'];
 
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.supabase = createSupabaseServerClient({
-		supabaseUrl: PUBLIC_SUPABASE_URL,
-		supabaseKey: PUBLIC_SUPABASE_ANON_KEY,
-		event
+	event.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+		cookies: {
+			get: (key) => event.cookies.get(key),
+			set: (key, value, options) => {
+				event.cookies.set(key, value, options);
+			},
+			remove: (key, options) => {
+				event.cookies.delete(key, options);
+			}
+		}
 	});
 
 	Sentry.init({
@@ -18,12 +24,15 @@ export const handle: Handle = async ({ event, resolve }) => {
 		tracesSampleRate: 1
 	});
 
+	/**
+	 * a little helper that is written for convenience so that instead
+	 * of calling `const { data: { session } } = await supabase.auth.getSession()`
+	 * you just call this `await getSession()`
+	 */
 	event.locals.getSession = async () => {
 		const {
-			data: { session },
-			error
+			data: { session }
 		} = await event.locals.supabase.auth.getSession();
-
 		return session;
 	};
 
