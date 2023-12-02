@@ -47,13 +47,13 @@
 		size="md"
 		class="flex gap-2 items-center"
 		placeholder="Search Session Name"
-		defaultClass="w-full focus:border-primary-500 !rounded-full"
+		defaultClass="w-full focus:border-primary-500 !rounded-full !bg-white/10 !text-white"
 	/>
 	<button
 		id="filter-search-btn"
 		on:click={query}
 		aria-label="Search"
-		class="hover:scale-110 duration-150"
+		class="hover:scale-110 duration-150 place-items-center"
 	>
 		<Icon icon="material-symbols:manage-search-rounded" class="w-8 h-8 text-white" />
 	</button>
@@ -68,16 +68,15 @@
 	</button>
 </form>
 <!-- Chips -->
-<div class="flex flex-row items-center gap-6 w-full flex-wrap justify-center my-4">
+<div class="flex flex-row items-center gap-2 w-full flex-wrap justify-center my-4">
 	{#each SPACE_MUSIC_TYPES as type}
 		<button
 			on:click={() => handleChangeMusicType(type)}
-			class={`cursor-pointer duration-150 hover:scale-105 text-sm underline underline-offset-2 ${
-				input.musicType === type ? 'text-primary-500' : 'text-white'
+			class={`duration-150 hover:scale-105 text-sm bg-glass p-2 px-4 rounded-full ${
+				input.musicType === type ? 'text-primary-500 bg-white/20 font-semimedium' : 'text-white'
 			}`}
 		>
 			{type}
 		</button>
 	{/each}
 </div>
-<div class="my-4 w-full bg-dark-400 h-[1px]" />

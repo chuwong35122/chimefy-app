@@ -7,12 +7,21 @@
 	import SpaceSearchFilter from '$components/space/search/SpaceSearchFilter.svelte';
 	import type { MusicSpace as MusicSpaceType } from '$lib/types/space/space.interface.js';
 	import { onMount } from 'svelte';
+	import { toastValue } from '$stores/notification/toast.js';
 
 	export let data;
 	$: ({ supabase, userSpace } = data);
 
 	let input = '';
 	let publicSpaces: MusicSpaceType[] = [];
+
+	function handleSetQueryResults(e: CustomEvent<{publicSpaces: MusicSpaceType[]}>) {
+		if(e.detail.publicSpaces?.length > 0) {
+			publicSpaces = data.publicSpaces;
+		}else{
+			toastValue.set({type: 'info', message: 'No results found'})
+		}
+	}
 
 	onMount(() => {
 		publicSpaces = data.publicSpaces;
@@ -67,23 +76,23 @@
 	</div>
 	<div class="h-60" />
 	<div class="w-full animate-in fade-in">
-		<Tabs style="pill" contentClass="bg-transparent p-4 mb-8">
+		<Tabs style="underline" contentClass="bg-transparent pt-8">
 			{#if publicSpaces.length > 0}
 				<TabItem open title="Public Spaces">
-					<SpaceSearchFilter {supabase} on:query={(e) => (publicSpaces = e.detail.spaces)} />
-					<div
-						class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 h-[560px] overflow-y-auto pt-4 px-4"
-					>
-						{#each publicSpaces as space, i}
-							<MusicSpace {space} index={i} isPrivate={space?.is_private} />
-						{/each}
-					</div>
+						<SpaceSearchFilter {supabase} on:query={handleSetQueryResults} />
+						<div
+							class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 h-[560px] overflow-y-auto pt-4 px-4"
+						>
+							{#each publicSpaces as space, i}
+								<MusicSpace {space} index={i} isPrivate={space?.is_private} />
+							{/each}
+						</div>
 				</TabItem>
 			{/if}
 			{#if userSpace?.length > 0}
 				<TabItem title="My Spaces">
 					<div
-						class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 h-[560px] overflow-y-auto pt-4 px-4"
+						class="grid grid-cols-1 place-items-center md:grid-cols-3 lg:grid-cols-4 gap-4 h-[560px] overflow-y-auto pt-4 px-4"
 					>
 						{#each userSpace as space, i}
 							<MusicSpace {space} index={i} isPrivate={space?.is_private} />
