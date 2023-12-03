@@ -15,8 +15,6 @@
 	export let playlist: SimplifiedPlaylist;
 	let imgRef: HTMLImageElement;
 
-	let isHovering = false;
-
 	function handleImageError() {
 		imgRef.src = '/logo/disc.png';
 	}
@@ -55,21 +53,17 @@
 >
 <div
 	role="contentinfo"
-	on:mouseenter={() => (isHovering = true)}
-	on:mouseleave={() => (isHovering = false)}
-	class="w-full p-1 my-1 hover:bg-gradient-to-r hover:from-black to-white/40 duration-200 cursor-pointer group/track relative"
+	class="w-full hover:bg-gradient-to-r hover:from-black/40 to-white/40 duration-200 cursor-pointer group relative rounded"
 >
-	<div class="flex flex-row items-center">
+<div class="flex flex-row items-center space-x-2">
+		<div class="group/track text-primary rounded-full hover:scale-110 invisible group-hover:visible ml-1">
+			<Icon icon="ic:round-add" width="26" height="26" />
+		</div>
+		<!-- Icon -->
 		<button
 			on:click={handleAddPlaylist}
-			class="grid place-items-center mr-4 relative overflow-hidden w-20 h-20"
+			class="flex flex-row relative overflow-hidden w-28"
 		>
-			<!-- Icon -->
-			{#if isHovering}
-				<div class="absolute group/track text-white bg-black/40 rounded-full hover:scale-110">
-					<Icon icon="ic:round-add" width="26" height="26" />
-				</div>
-			{/if}
 			<img
 				bind:this={imgRef}
 				src={playlist.images[0].url}
