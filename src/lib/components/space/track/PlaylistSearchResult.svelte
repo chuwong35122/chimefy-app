@@ -1,12 +1,11 @@
 <script lang="ts">
-		import Icon from '@iconify/svelte';
+	import Icon from '@iconify/svelte';
 	import type { SimplifiedPlaylist } from 'spotify-types';
 	import { toastValue } from '$stores/notification/toast';
 	import { userStore } from '$stores/auth/user';
 	import type { MusicQueue } from '$lib/types/space/queue.interface';
 	import type { SupabaseClient } from '@supabase/supabase-js';
 	import { spaceStore } from '$stores/space';
-	import { Tooltip } from 'flowbite-svelte';
 	import { getPlaylistTracks } from '$utils/space/track';
 	import { appTokenStore } from '$stores/spotify/user';
 	import { mapTrackToQueuePayload, randomPlaylistTracks } from '$utils/spotify/playlist';
@@ -20,6 +19,10 @@
 	}
 
 	async function handleAddPlaylist() {
+		toastValue.set({
+			message: 'Adding playlist...',
+			type: 'info'
+		});
 		const userId = $userStore?.id;
 		const spaceId = $spaceStore?.id;
 
@@ -46,24 +49,18 @@
 	}
 </script>
 
-<Tooltip
-	triggeredBy={`[id=view-in-spotify-btn-${playlist.id}]`}
-	placement="right"
-	class="relative z-50">View playlist in Spotify</Tooltip
->
 <div
 	role="contentinfo"
-	class="w-full hover:bg-gradient-to-r hover:from-black/40 to-white/40 duration-200 cursor-pointer group relative rounded"
+	class="w-full hover:bg-gradient-to-r hover:from-black/40 to-white/40 duration-200 cursor-pointer group relative rounded flex flex-row items-center justify-between"
 >
-<div class="flex flex-row items-center space-x-2">
-		<div class="group/track text-primary rounded-full hover:scale-110 invisible group-hover:visible ml-1">
+	<button on:click={handleAddPlaylist} class="flex flex-row items-center space-x-2">
+		<div
+			class="group/track text-primary rounded-full hover:scale-110 invisible group-hover:visible ml-1"
+		>
 			<Icon icon="ic:round-add" width="26" height="26" />
 		</div>
 		<!-- Icon -->
-		<button
-			on:click={handleAddPlaylist}
-			class="flex flex-row relative overflow-hidden w-28"
-		>
+		<div class="flex flex-row overflow-hidden w-28">
 			<img
 				bind:this={imgRef}
 				src={playlist.images[0].url}
@@ -73,7 +70,7 @@
 				class="object-cover aspect-square"
 			/>
 			<!-- Icon -->
-		</button>
+		</div>
 		<div class="w-full md:pr-4 text-left">
 			<p class="font-medium text-sm text-clip line-clamp-2">{playlist.name}</p>
 			<p class="font-light text-xs text-dark-300 line-clamp-3">
@@ -81,18 +78,5 @@
 			</p>
 			<p class="text-xs text-dark-300">{playlist.tracks.total} tracks</p>
 		</div>
-			<a
-				href={playlist.uri}
-				id={`view-in-spotify-btn-${playlist.id}`}
-				target="_blank"
-				rel="noopener noreferrer"
-				aria-label="View in Spotify"
-				class="animate-in zoom-in slide-in-from-left-4 absolute right-4 top-7 hover:scale-110 duration-300"
-			>
-				<Icon
-					icon="ic:baseline-chevron-right"
-					class="w-8 h-8 text-white/40"
-				/>
-			</a>
-	</div>
+	</button>
 </div>
