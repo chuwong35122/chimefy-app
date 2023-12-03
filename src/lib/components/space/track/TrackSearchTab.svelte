@@ -93,7 +93,7 @@
 			</TabItem>
 			<TabItem title="Playlists" on:click={() => (type = 'playlist')}>
 				<p class="text-xs text-gray-400 mt-2">Maximum of 30 tracks can be added to the queue</p>
-				<div class="w-full h-[420px] overflow-y-auto overflow-x-hidden">
+				<div class="w-full h-[420px] overflow-y-auto overflow-x-hidden space-y-2">
 					{#if loading}
 						<div class="w-full h-full grid place-items-center">
 							<Spinner size="10" color="green" />
