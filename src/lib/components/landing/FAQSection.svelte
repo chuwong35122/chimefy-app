@@ -53,7 +53,7 @@
 				>. To be able to use this app, Spotify premium is needed (as required by Spotify).
 				<br />
 				<br />
-				<span class="text-sm">
+				<span class="text-sm text-dark-300">
 					Note: that Chimefy did not broadcast the music, it only syncs the music between the users.
 				</span>
 			</p>
