@@ -67,7 +67,7 @@
 				on:error={handleImageError}
 				alt={`${playlist.name} cover image`}
 				aria-label={`Track image of ${playlist.name}`}
-				class="object-cover"
+				class="object-cover aspect-square"
 			/>
 			<!-- Icon -->
 		</div>

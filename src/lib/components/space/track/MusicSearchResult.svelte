@@ -68,7 +68,7 @@ async function handleAddQueue() {
 				on:error={handleImageError}
 				alt={`${track.name} cover image`}
 				aria-label={`Track image of ${track.name}`}
-				class="object-cover"
+				class="object-cover aspect-square"
 			/>
 			<!-- Icon -->
 		</div>
