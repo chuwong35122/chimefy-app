@@ -130,11 +130,11 @@
 	<div class="my-6">
 		<SpaceInfo {supabase} {hidden} on:viewMember={(e) => (hidden = e.detail.hidden)} />
 	</div>
-	<div class="flex flex-col md:flex-row gap-4 w-full">
+	<div class="flex flex-row gap-4 w-full">
 		<div
-			class="bg-glass rounded-xl h-full md:h-[560px] w-full md:w-[1000px] flex flex-col md:flex-row justify-between p-6"
+			class="bg-glass rounded-xl h-[560px] w-[1000px] flex flex-row justify-between p-6"
 		>
-			<div class="w-full md:w-96">
+			<div class="w-96">
 				<TrackSearchTab {supabase} />
 			</div>
 			<div class="w-[500px]">

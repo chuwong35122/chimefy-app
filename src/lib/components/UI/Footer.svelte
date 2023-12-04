@@ -10,7 +10,7 @@
 	import Icon from '@iconify/svelte';
 </script>
 
-<Footer footerType="socialmedia" class="bg-transparent border-t border-white/20 mt-20">
+<Footer footerType="socialmedia" class="bg-transparent mt-20 w-full">
 	<div class="md:flex md:justify-between">
 		<div class="mb-6 md:mb-0 flex flex-row items-center gap-4">
 			<FooterBrand src="/logo/chimefy/logo_light.svg" alt="Chimefy Logo" name="Chimefy" />

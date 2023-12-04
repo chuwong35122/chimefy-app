@@ -76,7 +76,9 @@
 
 <div class="relative w-full p-2 rounded-xl bg-glass hover:bg-white/10 duration-200">
 	<div class="flex flex-row items-center justify-between">
-		<TrackPreview />
+		<div class="w-1/3">
+			<TrackPreview />
+		</div>
 		<div class="flex flex-col items-center">
 			<ControlButtons {channel} />
 			{#if $spaceStore?.id}
