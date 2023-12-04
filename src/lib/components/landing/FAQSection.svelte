@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
 	import { Accordion, AccordionItem } from 'flowbite-svelte';
 </script>
 
@@ -10,7 +9,6 @@
 	<Accordion defaultClass="w-[440px] md:w-[800px]">
 		<AccordionItem>
 			<span slot="header" class="text-base flex gap-2">
-				<Icon icon="ri:question-fill" class="w-8 h-8" />
 				<span>How to use Chimefy?</span>
 			</span>
 			<p>Using Chimefy is easy! Just follow the steps below</p>
@@ -29,7 +27,6 @@
 		<!-- 2 -->
 		<AccordionItem>
 			<span slot="header" class="text-base flex gap-2">
-				<Icon icon="fluent-emoji-high-contrast:thinking-face" class="w-6 h-6" />
 				<span>How does it work (For Nerds)</span>
 			</span>
 			<p class="mb-2 text-dark-100">
@@ -57,7 +54,6 @@
 		<!-- 3 -->
 		<AccordionItem>
 			<span slot="header" class="text-base flex gap-2">
-				<Icon icon="mdi:account" class="w-6 h-6" />
 				<span>Who is this app for?</span>
 			</span>
 			<p class="mb-2 text-dark-100">
@@ -68,7 +64,6 @@
 		<!-- 4 -->
 		<AccordionItem>
 			<span slot="header" class="text-base flex gap-2">
-				<Icon icon="fa-brands:spotify" class="w-6 h-6" />
 				<span>How to get Spotify Premium?</span>
 			</span>
 			<p class="mb-2 text-dark-100">
