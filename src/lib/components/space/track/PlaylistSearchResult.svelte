@@ -49,7 +49,6 @@
 	}
 </script>
 
-<!-- FIXME: do not remove the playing track -->
 <div
 	role="contentinfo"
 	class="h-20 hover:bg-gradient-to-r hover:from-black/40 to-white/40 duration-200 cursor-pointer group relative rounded flex flex-row items-center justify-between"
