@@ -27,24 +27,29 @@
 
 	async function removeSingleQueue(index: number) {
 		if (!$spaceStore) return;
-		
+
 		const queues: MusicQueue[] = $spaceStore?.queues;
 		if (queues.length > 0) {
 			queues.splice(index, 1);
 		}
 		await supabase.from('space').update({ queues }).eq('id', $spaceStore?.id);
-		
-		showRemovalMenu = false
+
+		showRemovalMenu = false;
 	}
 
 	async function removeEntirePlaylist(playlistId: string | null) {
 		if (!$spaceStore) return;
 
-		const queues: MusicQueue[] = $spaceStore?.queues;
+		let queues: MusicQueue[] = $spaceStore?.queues;
+		const playingTrack = queues[0];
 		const filtered = queues.filter((queue) => queue.playlist_id !== playlistId);
+
+		if(playingTrack?.playlist_id === playlistId) {
+			filtered.unshift(playingTrack);
+		}
 		await supabase.from('space').update({ queues: filtered }).eq('id', $spaceStore?.id);
 
-		showRemovalMenu = false
+		showRemovalMenu = false;
 	}
 
 	function handleOpenDropdown() {
@@ -92,8 +97,7 @@
 				{#if queue?.uri !== $playingInfo?.uri}
 					<button
 						on:mouseenter={() => (showRemovalMenu = queue?.playlist_id ? true : false)}
-						on:click={() =>
-							queue?.playlist_id ? handleOpenDropdown : removeSingleQueue(i)}
+						on:click={() => (queue?.playlist_id ? handleOpenDropdown : removeSingleQueue(i))}
 						aria-label="Remove this queue"
 						class="absolute z-20 p-2 top-5 right-4 active:scale-125 duration-150 hidden group-hover:block"
 					>
