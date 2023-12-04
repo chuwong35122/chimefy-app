@@ -50,19 +50,18 @@ async function handleAddQueue() {
 	}
 </script>
 
-<button
-	on:click={handleAddQueue}
-	class="w-full p-1 my-1 hover:bg-gradient-to-r hover:from-black to-white/40 duration-200 cursor-pointer group/track"
+<div
+	role="contentinfo"
+	class="h-20 hover:bg-gradient-to-r hover:from-black/40 to-white/40 duration-200 cursor-pointer group relative rounded"
 >
-	<div class="flex flex-row items-center">
-		<div class="grid place-items-center mr-4 relative overflow-hidden w-20 h-20">
-			<!-- Icon -->
-			<div
-				class="absolute invisible group/track group-hover/track:visible text-white bg-black/40 rounded-full hover:scale-110"
-			>
-				<Icon icon="ic:round-add" width="26" height="26" />
-			</div>
-			<!-- Icon -->
+	<button on:click={handleAddQueue} class="flex flex-row items-center space-x-2 h-full w-full">
+		<div
+			class="group/track text-primary rounded-full hover:scale-110 invisible group-hover:visible ml-1"
+		>
+			<Icon icon="ic:round-add" width="26" height="26" />
+		</div>
+		<!-- Icon -->
+		<div class="overflow-hidden w-28 aspect-square">
 			<img
 				bind:this={imgRef}
 				src={track.album.images[0].url}
@@ -71,6 +70,7 @@ async function handleAddQueue() {
 				aria-label={`Track image of ${track.name}`}
 				class="object-cover"
 			/>
+			<!-- Icon -->
 		</div>
 		<div class="w-full md:pr-4 text-left">
 			<p class="font-medium text-sm text-clip line-clamp-2">{track.name}</p>
@@ -79,5 +79,5 @@ async function handleAddQueue() {
 			</p>
 			<p class="text-xs text-dark-300">{millisecondToMinuteSeconds(track?.duration_ms ?? 0)}</p>
 		</div>
-	</div>
-</button>
+	</button>
+</div>

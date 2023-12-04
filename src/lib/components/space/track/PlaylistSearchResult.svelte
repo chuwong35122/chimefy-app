@@ -49,25 +49,26 @@
 	}
 </script>
 
+<!-- FIXME: do not remove the playing track -->
 <div
 	role="contentinfo"
-	class="w-full hover:bg-gradient-to-r hover:from-black/40 to-white/40 duration-200 cursor-pointer group relative rounded flex flex-row items-center justify-between"
+	class="h-20 hover:bg-gradient-to-r hover:from-black/40 to-white/40 duration-200 cursor-pointer group relative rounded flex flex-row items-center justify-between"
 >
-	<button on:click={handleAddPlaylist} class="flex flex-row items-center space-x-2">
+	<button on:click={handleAddPlaylist} class="flex flex-row items-center space-x-2 w-full">
 		<div
 			class="group/track text-primary rounded-full hover:scale-110 invisible group-hover:visible ml-1"
 		>
 			<Icon icon="ic:round-add" width="26" height="26" />
 		</div>
 		<!-- Icon -->
-		<div class="flex flex-row overflow-hidden w-28">
+		<div class="overflow-hidden w-28 aspect-square">
 			<img
 				bind:this={imgRef}
 				src={playlist.images[0].url}
 				on:error={handleImageError}
 				alt={`${playlist.name} cover image`}
 				aria-label={`Track image of ${playlist.name}`}
-				class="object-cover aspect-square"
+				class="object-cover"
 			/>
 			<!-- Icon -->
 		</div>
