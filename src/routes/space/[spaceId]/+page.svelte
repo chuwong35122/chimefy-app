@@ -134,7 +134,7 @@
 		<div
 			class="bg-glass rounded-xl h-[560px] w-[1000px] flex flex-row justify-between p-6"
 		>
-			<div class="w-96">
+			<div class="w-[420px]">
 				<TrackSearchTab {supabase} />
 			</div>
 			<div class="w-[500px]">
