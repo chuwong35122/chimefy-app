@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Icon from '@iconify/svelte';
 	import { Accordion, AccordionItem } from 'flowbite-svelte';
 </script>
 
@@ -6,9 +7,9 @@
 	<div class="w-full grid place-items-center mb-2">
 		<p class="text-3xl font-bold">FAQs</p>
 	</div>
-	<Accordion defaultClass="w-[440px] md:w-[800px]">
+	<Accordion flush defaultClass="w-[440px] md:w-[800px]">
 		<AccordionItem>
-			<span slot="header" class="text-base flex gap-2">
+			<span slot="header" class="text-base text-white font-bold">
 				<span>How to use Chimefy?</span>
 			</span>
 			<p>Using Chimefy is easy! Just follow the steps below</p>
@@ -23,13 +24,19 @@
 			<span class="text-sm text-dark-300">
 				Note: Please refresh if there's bug or error... Sorry for the inconvenience.
 			</span>
+			<span slot="arrowdown">
+				<Icon icon="mdi:chevron-down" class="h-8 w-8 text-white" />
+			</span>
+			<span slot="arrowup">
+				<Icon icon="mdi:chevron-up" class="h-8 w-8 text-white" />
+			</span>
 		</AccordionItem>
 		<!-- 2 -->
 		<AccordionItem>
-			<span slot="header" class="text-base flex gap-2">
+			<span slot="header" class="text-base text-white font-bold flex gap-2">
 				<span>How does it work (For Nerds)</span>
 			</span>
-			<p class="mb-2 text-dark-100">
+			<p class="mb-2">
 				All the queues added were saved in the database. Once played, using the <a
 					aria-label="Spotify API"
 					target="_blank"
@@ -50,23 +57,35 @@
 					Note: that Chimefy did not broadcast the music, it only syncs the music between the users.
 				</span>
 			</p>
+			<span slot="arrowdown">
+				<Icon icon="mdi:chevron-down" class="h-8 w-8 text-white" />
+			</span>
+			<span slot="arrowup">
+				<Icon icon="mdi:chevron-up" class="h-8 w-8 text-white" />
+			</span>
 		</AccordionItem>
 		<!-- 3 -->
 		<AccordionItem>
-			<span slot="header" class="text-base flex gap-2">
+			<span slot="header" class="text-base text-white font-bold">
 				<span>Who is this app for?</span>
 			</span>
-			<p class="mb-2 text-dark-100">
+			<p class="mb-2">
 				This app is for Premium Spotify users who wanted to listen to Spotify with friends, family,
 				with any amount of members!
 			</p>
+			<span slot="arrowdown">
+				<Icon icon="mdi:chevron-down" class="h-8 w-8 text-white" />
+			</span>
+			<span slot="arrowup">
+				<Icon icon="mdi:chevron-up" class="h-8 w-8 text-white" />
+			</span>
 		</AccordionItem>
 		<!-- 4 -->
 		<AccordionItem>
-			<span slot="header" class="text-base flex gap-2">
+			<span slot="header" class="text-base text-white font-bold">
 				<span>How to get Spotify Premium?</span>
 			</span>
-			<p class="mb-2 text-dark-100">
+			<p class="mb-2">
 				You can select and purchase your premium plan <a
 					aria-label="View Spotify Premium Plans"
 					target="_blank"
@@ -75,6 +94,12 @@
 					class="text-blue-500 underline">here</a
 				>.
 			</p>
+			<span slot="arrowdown">
+				<Icon icon="mdi:chevron-down" class="h-8 w-8 text-white" />
+			</span>
+			<span slot="arrowup">
+				<Icon icon="mdi:chevron-up" class="h-8 w-8 text-white" />
+			</span>
 		</AccordionItem>
 	</Accordion>
 </div>
