@@ -79,13 +79,13 @@
 		<div class="w-1/3">
 			<TrackPreview />
 		</div>
-		<div class="flex flex-col items-center">
+		<div class="w-1/3 flex flex-col items-center">
 			<ControlButtons {channel} />
 			{#if $spaceStore?.id}
 				<MemberPlayerListener {channel} {supabase} />
 			{/if}
 		</div>
-		<div class="flex flex-row">
+		<div class="w-1/3 flex flex-row justify-end">
 			<Icon
 				id="connected-player"
 				icon="material-symbols:speaker-group"
