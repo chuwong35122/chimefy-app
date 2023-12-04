@@ -42,7 +42,10 @@
 			if (_session) {
 				setAuthStores(_session);
 
-				if (!$userConfigStore && (event === 'INITIAL_SESSION' || event === 'USER_UPDATED' || event === 'TOKEN_REFRESHED')) {
+				if (
+					!$userConfigStore &&
+					(event === 'INITIAL_SESSION' || event === 'USER_UPDATED' || event === 'TOKEN_REFRESHED')
+				) {
 					await readUserAppConfig(supabase, _session);
 					await fetchSpotifyProfileOrLogout(session?.provider_token);
 				}
@@ -79,7 +82,7 @@
 	<SpotifyPremiumInfoModal />
 </Modal>
 <div
-	class="min-h-screen overflow-x-hidden bg-black bg-gradient-to-r from-primary-800/20 via-dark-600/50 to-primary-600/20 background-animate"
+	class="min-h-screen bg-black overflow-auto bg-gradient-to-r from-primary-800/20 via-dark-600/50 to-primary-600/20 background-animate"
 >
 	<NavBar />
 	<div class="w-full grid place-items-center">
@@ -88,5 +91,5 @@
 			<Toast />
 		</div>
 	</div>
-	<Footer />
+		<Footer />
 </div>

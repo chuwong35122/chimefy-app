@@ -22,7 +22,7 @@
 	});
 </script>
 
-<div class="w-full px-4 mt-1 flex flex-row items-center justify-between">
+<div class="w-full px-4 pt-2 flex flex-row items-center justify-between">
 	<a href="/" aria-label="Chimefy Home" class="grid place-items-center">
 		<div class="flex items-center">
 			<img src="/logo/chimefy/logo_light.svg" alt="Chimefy Logo" class="w-8 h-8" />
