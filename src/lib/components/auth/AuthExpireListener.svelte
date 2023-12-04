@@ -25,7 +25,7 @@
 				toastValue.set({ type: 'warn', message: 'Refreshing session. Please wait 🔄' });
 				formRef.submit();
 			}
-		}, 1000);
+		}, 10_000);
 	});
 
 	onDestroy(() => {
